@@ -7,25 +7,29 @@ class NavigationBar extends Component {
   render() {
     const NavBar = () => {
       return (
-        <div className="menu">
-          <NavLink exact to="/home" className="btn nav">
-            Home
+        <React.Fragment>
+          <NavLink exact to="/home">
+            <img src="images/home.png" />
           </NavLink>
-          <NavLink exact to="/messages" className="btn nav">
-            Messages
+          <span style={{ width: 25, display: "inline-block" }}></span>
+          <NavLink exact to="/messages">
+            <img src="images/send.png" />
           </NavLink>
-          <NavLink exact to="/" className="btn nav">
-            Profile
+          <span style={{ width: 25, display: "inline-block" }}></span>
+          <NavLink exact to="/notifications">
+            <img src="images/heart.png" />
           </NavLink>
-        </div>
+          <span style={{ width: 25, display: "inline-block" }}></span>
+          <NavLink exact to="/">
+            <img
+              src="images/download.jfif"
+              style={{ width: 24, height: 24, borderRadius: 50 }}
+            />
+          </NavLink>
+        </React.Fragment>
       );
     };
-    return (
-      <nav>
-        <NavBar />
-        <span className="line"></span>
-      </nav>
-    );
+    return <NavBar />;
   }
 }
 

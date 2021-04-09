@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import {
   Grid,
-  Profile,
   Photo,
   GridControlBar,
   GridControlBarItem,
 } from "react-instagram-ui-kit";
 import PostModal from "./PostModal";
+import ProfileHeader from "./ProfileHeader";
 
-class Profiles extends Component {
+class MyProfile extends Component {
   state = {
     showPostModal: false,
   };
@@ -32,15 +32,7 @@ class Profiles extends Component {
             onShowChange={this.displayModalPost.bind(this)}
           />
         ) : null}
-        <Profile
-          bio={`
-        Lead guitarist of AC⚡DC
-      `}
-          pictureSrc="images/download.jfif"
-          username="angusyoung"
-          followersData={[photos.length, 3000000, 55]}
-          fullname="Angus Young"
-        />
+        <ProfileHeader />
         <Grid>
           <GridControlBar>
             <GridControlBarItem isActive>𐄹 Posts</GridControlBarItem>
@@ -60,4 +52,4 @@ class Profiles extends Component {
   }
 }
 
-export default Profiles;
+export default MyProfile;
