@@ -8,7 +8,7 @@ class NavigationBar extends Component {
     const NavBar = () => {
       return (
         <React.Fragment>
-          <NavLink exact to="/home">
+          <NavLink exact to="/">
             <img src="images/home.png" />
           </NavLink>
           <span style={{ width: 25, display: "inline-block" }}></span>
@@ -20,7 +20,7 @@ class NavigationBar extends Component {
             <img src="images/heart.png" />
           </NavLink>
           <span style={{ width: 25, display: "inline-block" }}></span>
-          <NavLink exact to="/">
+          <NavLink exact to="/profile">
             <img
               src="images/download.jfif"
               style={{ width: 24, height: 24, borderRadius: 50 }}
