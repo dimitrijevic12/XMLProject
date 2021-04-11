@@ -7,22 +7,15 @@ class Header extends Component {
     debugger;
     return (
       <header className="pt-4">
-        <label>Ništagram</label>
+        <b>Ništagram</b>
         <span style={{ width: 400, display: "inline-block" }}></span>
         <input
           style={{ textAlign: "center" }}
           type="text"
           placeholder="Search"
         />
-        <span style={{ width: 300, display: "inline-block" }}></span>
-        <img src="images/home.png" />
-        <span style={{ width: 25, display: "inline-block" }}></span>
-        <img src="images/send.png" />
-        <span style={{ width: 25, display: "inline-block" }}></span>
-        <img
-          src="images/download.jfif"
-          style={{ width: 24, height: 24, borderRadius: 50 }}
-        />
+        <span style={{ width: 200, display: "inline-block" }}></span>
+        <NavigationBar />
         <hr />
       </header>
     );

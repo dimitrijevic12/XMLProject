@@ -2,16 +2,32 @@ import React from "react";
 import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import ProfilePage from "./pages/ProfilePage";
+import PrivateProfilePage from "./pages/PrivateProfilePage";
+import SomeoneProfilePage from "./pages/SomeoneProfilePage";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
+import CreatePostPage from "./pages/CreatePostPage";
+import EditProfilePage from "./pages/EditProfilePage";
 
 function App() {
   return (
     <Router>
       <div>
         <Switch>
-        <Route path="/login">
+        <Route exact path="/login">
             <LoginPage />
+        </Route>
+          <Route exact path="/post">
+            <CreatePostPage />
+          </Route>
+          <Route exact path="/private">
+            <PrivateProfilePage />
+          </Route>
+          <Route exact path="/someone">
+            <SomeoneProfilePage />
+          </Route>
+          <Route exact path="/edit">
+            <EditProfilePage />
           </Route>
           <Route path="/:username">
             <ProfilePage />

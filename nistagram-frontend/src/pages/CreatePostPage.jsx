@@ -1,15 +1,15 @@
 import React, { Component } from "react";
-import MyProfile from "../components/Profile/MyProfile";
+import CreatePost from "../components/Post/CreatePost";
 import Layout from "../layouts/Layout";
 
-class ProfilePage extends Component {
+class CreatePostPage extends Component {
   render() {
     return (
       <Layout>
-        <MyProfile />
+        <CreatePost />
       </Layout>
     );
   }
 }
 
-export default ProfilePage;
+export default CreatePostPage;
