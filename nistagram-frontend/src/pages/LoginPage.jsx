@@ -11,7 +11,6 @@ class LoginPage extends Component {
             height:1080, backgroundImage: `url(${background})` }} >
         <div id="wrapper">
         <div class="main-content">
-         
           <div class="l-part">
             <input type="text" placeholder="Username" class="input-1" />
             <div class="overlap-text">

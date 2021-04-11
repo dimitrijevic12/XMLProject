@@ -8,12 +8,16 @@ import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import CreatePostPage from "./pages/CreatePostPage";
 import EditProfilePage from "./pages/EditProfilePage";
+import RegistrationPage from "./pages/RegistrationPage";
 
 function App() {
   return (
     <Router>
       <div>
         <Switch>
+        <Route exact path="/registration">
+            <RegistrationPage />
+        </Route>
         <Route exact path="/login">
             <LoginPage />
         </Route>
