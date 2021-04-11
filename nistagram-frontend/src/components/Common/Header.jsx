@@ -14,7 +14,7 @@ class Header extends Component {
           type="text"
           placeholder="Search"
         />
-        <span style={{ width: 250, display: "inline-block" }}></span>
+        <span style={{ width: 200, display: "inline-block" }}></span>
         <NavigationBar />
         <hr />
       </header>

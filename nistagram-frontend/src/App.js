@@ -5,20 +5,28 @@ import ProfilePage from "./pages/ProfilePage";
 import PrivateProfilePage from "./pages/PrivateProfilePage";
 import SomeoneProfilePage from "./pages/SomeoneProfilePage";
 import HomePage from "./pages/HomePage";
+import CreatePostPage from "./pages/CreatePostPage";
+import EditProfilePage from "./pages/EditProfilePage";
 
 function App() {
   return (
     <Router>
       <div>
         <Switch>
-          <Route path="/:username">
-            <ProfilePage />
+          <Route exact path="/post">
+            <CreatePostPage />
           </Route>
-          <Route path="/private">
+          <Route exact path="/private">
             <PrivateProfilePage />
           </Route>
           <Route exact path="/someone">
             <SomeoneProfilePage />
+          </Route>
+          <Route exact path="/edit">
+            <EditProfilePage />
+          </Route>
+          <Route path="/:username">
+            <ProfilePage />
           </Route>
           <Route path="/">
             <HomePage />

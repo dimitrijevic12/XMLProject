@@ -1,5 +1,12 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
+import {
+  NavbarBrand,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  UncontrolledDropdown,
+} from "reactstrap";
 
 class NavigationBar extends Component {
   state = {};
@@ -26,6 +33,18 @@ class NavigationBar extends Component {
               style={{ width: 24, height: 24, borderRadius: 50 }}
             />
           </NavLink>
+          <UncontrolledDropdown>
+            <DropdownToggle nav caret></DropdownToggle>
+            <DropdownMenu right>
+              <DropdownItem>
+                <NavLink to="/edit">Edit profile</NavLink>
+              </DropdownItem>
+              <DropdownItem divider />
+              <DropdownItem>
+                <NavLink to="/logout">Logout</NavLink>
+              </DropdownItem>
+            </DropdownMenu>
+          </UncontrolledDropdown>
         </React.Fragment>
       );
     };
