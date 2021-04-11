@@ -7,6 +7,7 @@ import SomeoneProfilePage from "./pages/SomeoneProfilePage";
 import HomePage from "./pages/HomePage";
 import CreatePostPage from "./pages/CreatePostPage";
 import EditProfilePage from "./pages/EditProfilePage";
+import VerificationRequestPage from "./pages/VerificationRequestPage";
 
 function App() {
   return (
@@ -24,6 +25,9 @@ function App() {
           </Route>
           <Route exact path="/edit">
             <EditProfilePage />
+          </Route>
+          <Route exact path="/verification">
+            <VerificationRequestPage />
           </Route>
           <Route path="/:username">
             <ProfilePage />
