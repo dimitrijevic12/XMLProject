@@ -6,7 +6,6 @@ class Story extends Component {
     showStoryModal: false,
   };
   render() {
-    debugger;
     return (
       <div>
         {this.state.showStoryModal ? (

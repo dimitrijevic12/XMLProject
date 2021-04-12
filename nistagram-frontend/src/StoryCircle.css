@@ -24,7 +24,6 @@
   grid-gap: 20px;
   grid-auto-columns: 50px;
   grid-auto-flow: column dense;
-  overflow: auto;
 }
 ::-webkit-scrollbar {
   display: none;
@@ -37,4 +36,35 @@
 
 .story-modal-body {
   padding: 0px;
+}
+
+.column {
+  flex: 1 1 0px;
+  align-items: stretch;
+}
+
+.scroll-left-button {
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  border: lightgray;
+  top: 30%;
+  justify-self: center;
+  left: 0;
+  position: absolute;
+  z-index: 2;
+  background-color: transparent;
+}
+
+.scroll-right-button {
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  border: lightgray;
+  top: 30%;
+  justify-self: center;
+  right: 0;
+  position: absolute;
+  z-index: 1;
+  background-color: transparent;
 }
