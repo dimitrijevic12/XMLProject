@@ -33,7 +33,7 @@ class NavigationBar extends Component {
               style={{ width: 24, height: 24, borderRadius: 50 }}
             />
           </NavLink>
-          <UncontrolledDropdown>
+          <UncontrolledDropdown className="float-right">
             <DropdownToggle nav caret></DropdownToggle>
             <DropdownMenu right>
               <DropdownItem>
