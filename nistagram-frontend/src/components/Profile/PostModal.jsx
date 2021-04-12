@@ -11,8 +11,6 @@ class PostModal extends Component {
     showPostModal: this.props.show,
   };
   render() {
-    debugger;
-    console.log(this.props.post);
     return (
       <Modal
         style={{
@@ -32,8 +30,15 @@ class PostModal extends Component {
         </ModalHeader>
         <ModalBody>
           <div>
-            <img src={this.props.post} style={{ width: 800, height: 320 }} />
+            <img
+              src={this.props.post}
+              style={{ width: 800, height: 320 }}
+              className="mb-3"
+            />
             September 29, 2020
+            <a style={{ float: "right" }} className="mr-4" href="javascript:;">
+              Report
+            </a>
             <br />
             <br />
             <FormControlLabel

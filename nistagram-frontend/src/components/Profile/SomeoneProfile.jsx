@@ -5,6 +5,7 @@ import {
   GridControlBar,
   GridControlBarItem,
 } from "react-instagram-ui-kit";
+import OptionsButton from "./OptionsButton";
 import PostModal from "./PostModal";
 import ProfileHeader from "./ProfileHeader";
 
@@ -32,6 +33,7 @@ class SomeoneProfile extends Component {
             onShowChange={this.displayModalPost.bind(this)}
           />
         ) : null}
+        <OptionsButton />
         <ProfileHeader />
         <button
           style={{ float: "right" }}

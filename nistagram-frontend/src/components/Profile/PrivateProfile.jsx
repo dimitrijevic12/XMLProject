@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import OptionsButton from "./OptionsButton";
 import ProfileHeader from "./ProfileHeader";
 
 class PrivateProfile extends Component {
@@ -6,6 +7,7 @@ class PrivateProfile extends Component {
   render() {
     return (
       <div>
+        <OptionsButton />
         <ProfileHeader />
         <hr />
         <div

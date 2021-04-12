@@ -8,6 +8,7 @@ import HomePage from "./pages/HomePage";
 import CreatePostPage from "./pages/CreatePostPage";
 import EditProfilePage from "./pages/EditProfilePage";
 import VerificationRequestPage from "./pages/VerificationRequestPage";
+import PrivacyPage from "./pages/PrivacyPage";
 
 function App() {
   return (
@@ -22,6 +23,9 @@ function App() {
           </Route>
           <Route exact path="/someone">
             <SomeoneProfilePage />
+          </Route>
+          <Route exact path="/privacy">
+            <PrivacyPage />
           </Route>
           <Route exact path="/edit">
             <EditProfilePage />
