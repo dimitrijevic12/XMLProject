@@ -6,7 +6,7 @@ class Header extends Component {
   render() {
     debugger;
     return (
-      <header className="pt-4">
+      <header  className="pt-4">
         <b>Ništagram</b>
         <span style={{ width: 400, display: "inline-block" }}></span>
         <input
