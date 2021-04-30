@@ -11,6 +11,9 @@ import EditProfilePage from "./pages/EditProfilePage";
 import VerificationRequestPage from "./pages/VerificationRequestPage";
 import PrivacyPage from "./pages/PrivacyPage";
 import RegistrationPage from "./pages/RegistrationPage";
+import ApprovalAgentPage from "./pages/ApprovalAgentPage";
+import CreateItemPage from "./pages/CreateItemPage";
+import ReviewItemPage from "./pages/ReviewItemPage";
 
 function App() {
   return (
@@ -40,6 +43,15 @@ function App() {
           </Route>
           <Route exact path="/verification">
             <VerificationRequestPage />
+          </Route>
+          <Route exact path="/approval">
+            <ApprovalAgentPage />
+          </Route>
+          <Route exact path="/create-item">
+            <CreateItemPage />
+          </Route>
+          <Route exact path="/review-item">
+            <ReviewItemPage />
           </Route>
           <Route path="/:username">
             <ProfilePage />
