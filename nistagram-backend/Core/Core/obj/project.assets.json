@@ -50,19 +50,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Aleksa\\.nuget\\packages\\": {}
+    "C:\\Users\\Nemanja\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\XMLProjekat\\XMLProject\\nistagram-backend\\Core\\Core\\Core.csproj",
+      "projectUniqueName": "C:\\8. semestar\\XMLProject\\nistagram-backend\\Core\\Core\\Core.csproj",
       "projectName": "Core",
-      "projectPath": "C:\\XMLProjekat\\XMLProject\\nistagram-backend\\Core\\Core\\Core.csproj",
-      "packagesPath": "C:\\Users\\Aleksa\\.nuget\\packages\\",
-      "outputPath": "C:\\XMLProjekat\\XMLProject\\nistagram-backend\\Core\\Core\\obj\\",
+      "projectPath": "C:\\8. semestar\\XMLProject\\nistagram-backend\\Core\\Core\\Core.csproj",
+      "packagesPath": "C:\\Users\\Nemanja\\.nuget\\packages\\",
+      "outputPath": "C:\\8. semestar\\XMLProject\\nistagram-backend\\Core\\Core\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Aleksa\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Nemanja\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -108,7 +108,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
       }
     }
   }
