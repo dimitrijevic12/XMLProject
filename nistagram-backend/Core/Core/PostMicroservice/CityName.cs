@@ -1,5 +1,4 @@
 ﻿using CSharpFunctionalExtensions;
-using System;
 using System.Collections.Generic;
 
 namespace Core.PostMicroservice
@@ -15,7 +14,6 @@ namespace Core.PostMicroservice
 
         public static Result<CityName> Create(string name)
         {
-            if (String.IsNullOrWhiteSpace(name)) return Result.Failure<CityName>("City name cannot be empty, or contain only white spaces");
             if (name.Length > 30) return Result.Failure<CityName>("City name cannot contain more than 30 characters");
             return Result.Success(new CityName(name));
         }

@@ -1,5 +1,4 @@
 ﻿using CSharpFunctionalExtensions;
-using System;
 using System.Collections.Generic;
 
 namespace Core.PostMicroservice
@@ -15,7 +14,6 @@ namespace Core.PostMicroservice
 
         public static Result<Street> Create(string name)
         {
-            if (String.IsNullOrWhiteSpace(name)) return Result.Failure<Street>("Street cannot be empty, or contain only white spaces");
             if (name.Length > 50) return Result.Failure<Street>("Street cannot contain more than 50 characters");
             return Result.Success(new Street(name));
         }
@@ -25,6 +23,6 @@ namespace Core.PostMicroservice
             yield return name;
         }
 
-        public static implicit operator string(Street Street) => Street.name;
+        public static implicit operator string(Street street) => street.name;
     }
 }

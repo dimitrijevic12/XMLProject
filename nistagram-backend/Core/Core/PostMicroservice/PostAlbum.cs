@@ -7,25 +7,36 @@ namespace Core.PostMicroservice
     public class PostAlbum
     {
         private readonly Guid id;
-        private readonly ContentPath contentPath;
+        private readonly List<ContentPath> contentPaths;
         private readonly DateTime timeStamp;
         private Description description;
         private RegisteredUser registeredUser;
+        private readonly IEnumerable<RegisteredUser> likes;
+        private readonly IEnumerable<RegisteredUser> dislikes;
+        private readonly IEnumerable<Comment> comments;
+        private readonly Location location;
 
-        private PostAlbum(Guid id, ContentPath contentPath, DateTime timeStamp, Description description,
-            RegisteredUser registeredUser)
+        private PostAlbum(Guid id, List<ContentPath> contentPaths, DateTime timeStamp, Description description,
+            RegisteredUser registeredUser, IEnumerable<RegisteredUser> likes,
+            IEnumerable<RegisteredUser> dislikes, IEnumerable<Comment> comments, Location location)
         {
             this.id = id;
-            this.contentPath = contentPath;
+            this.contentPaths = contentPaths;
             this.timeStamp = timeStamp;
             this.description = description;
             this.registeredUser = registeredUser;
+            this.likes = likes;
+            this.dislikes = dislikes;
+            this.comments = comments;
+            this.location = location;
         }
 
-        public static Result<PostAlbum> Create(Guid id, ContentPath contentPath, DateTime timeStamp,
-            Description description, RegisteredUser registeredUser)
+        public static Result<PostAlbum> Create(Guid id, List<ContentPath> contentPaths, DateTime timeStamp, Description description,
+            RegisteredUser registeredUser, IEnumerable<RegisteredUser> likes,
+            IEnumerable<RegisteredUser> dislikes, IEnumerable<Comment> comments, Location location)
         {
-            return Result.Success(new PostAlbum(id, contentPath, timeStamp, description, registeredUser));
+            return Result.Success(new PostAlbum(id, contentPaths, timeStamp, description,
+                                registeredUser, likes, dislikes, comments, location));
         }
     }
 }
