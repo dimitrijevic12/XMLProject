@@ -1,7 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using System;
 
-namespace Core.StoryMicroservice
+namespace Core.ChatMicroservice
 {
     public class RegisteredUser
     {
