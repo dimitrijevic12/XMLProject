@@ -10,11 +10,11 @@
         "projectUniqueName": "C:\\XMLProjekat\\XMLProject\\nistagram-backend\\Core\\Core\\Core.csproj",
         "projectName": "Core",
         "projectPath": "C:\\XMLProjekat\\XMLProject\\nistagram-backend\\Core\\Core\\Core.csproj",
-        "packagesPath": "C:\\Users\\Stefan\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\Aleksa\\.nuget\\packages\\",
         "outputPath": "C:\\XMLProjekat\\XMLProject\\nistagram-backend\\Core\\Core\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Stefan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Aleksa\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
