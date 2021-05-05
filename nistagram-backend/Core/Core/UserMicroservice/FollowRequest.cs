@@ -8,19 +8,19 @@ namespace Core.UserMicroservice
         private readonly Guid id;
         private DateTime timestamp;
         private readonly RegisteredUser requestsFollow;
-        private readonly RegisteredUser recievesFollow;
+        private readonly RegisteredUser receivesFollow;
 
-        protected FollowRequest(Guid id, DateTime timestamp, RegisteredUser requestsFollow, RegisteredUser recievesFollow)
+        protected FollowRequest(Guid id, DateTime timestamp, RegisteredUser requestsFollow, RegisteredUser receivesFollow)
         {
             this.id = id;
             this.timestamp = timestamp;
             this.requestsFollow = requestsFollow;
-            this.requestsFollow = recievesFollow;
+            this.receivesFollow = receivesFollow;
         }
 
-        public static Result<FollowRequest> Create(Guid id, DateTime timestamp, RegisteredUser requestsFollow, RegisteredUser recievesFollow)
+        public static Result<FollowRequest> Create(Guid id, DateTime timestamp, RegisteredUser requestsFollow, RegisteredUser receivesFollow)
         {
-            return Result.Success(new FollowRequest(id, timestamp, requestsFollow, recievesFollow));
+            return Result.Success(new FollowRequest(id, timestamp, requestsFollow, receivesFollow));
         }
     }
 }

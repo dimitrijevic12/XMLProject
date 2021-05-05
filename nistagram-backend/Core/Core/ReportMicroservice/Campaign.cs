@@ -1,7 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using System;
 
-namespace Core.ChatMicroservice
+namespace Core.ReportMicroservice
 {
     internal class Campaign : Content
     {
