@@ -14,7 +14,7 @@ namespace Core.PostMicroservice
 
         public static Result<Description> Create(string description)
         {
-            if (description.Length > 50) return Result.Failure<Description>("Description cannot contain more than 50 characters");
+            if (description.Length > 200) return Result.Failure<Description>("Description cannot contain more than 200 characters");
             return Result.Success(new Description(description));
         }
 

@@ -5,20 +5,23 @@ namespace Core.UserMicroservice
 {
     public class VerificationRequest
     {
-        private readonly Guid id;
+        private readonly bool isApproved;
         private readonly DocumentImagePath documentImagePath;
-        private readonly bool approved;
+        private readonly Guid id;
+        private readonly RegisteredUser registeredUser;
 
-        private VerificationRequest(Guid id, DocumentImagePath documentImagePath, bool approved)
+        private VerificationRequest(Guid id, DocumentImagePath documentImagePath, bool isApproved, RegisteredUser registeredUser)
         {
             this.id = id;
             this.documentImagePath = documentImagePath;
-            this.approved = approved;
+            this.isApproved = isApproved;
+            this.registeredUser = registeredUser;
         }
 
-        public static Result<VerificationRequest> Create(Guid id, DocumentImagePath documentImagePath, bool approved)
+        public static Result<VerificationRequest> Create(Guid id, DocumentImagePath documentImagePath,
+            bool isApproved, RegisteredUser registeredUser)
         {
-            return Result.Success(new VerificationRequest(id, documentImagePath, approved));
+            return Result.Success(new VerificationRequest(id, documentImagePath, isApproved, registeredUser));
         }
     }
 }

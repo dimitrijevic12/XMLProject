@@ -5,18 +5,18 @@ namespace Core.UserMicroservice
 {
     public class PrivateFollowRequest : FollowRequest
     {
-        private readonly bool approved;
+        private readonly bool isApproved;
 
-        private PrivateFollowRequest(Guid id, DateTime timestamp, RegisteredUser requestsFollow, RegisteredUser receivesFollow, bool approved)
+        private PrivateFollowRequest(Guid id, DateTime timestamp, RegisteredUser requestsFollow, RegisteredUser receivesFollow, bool isApproved)
             : base(id, timestamp, requestsFollow, receivesFollow)
         {
-            this.approved = approved;
+            this.isApproved = isApproved;
         }
 
         public static Result<PrivateFollowRequest> Create(Guid id, DateTime timestamp, RegisteredUser requestsFollow,
-            RegisteredUser receivesFollow, bool approved)
+            RegisteredUser receivesFollow, bool isApproved)
         {
-            return Result.Success(new PrivateFollowRequest(id, timestamp, requestsFollow, receivesFollow, approved));
+            return Result.Success(new PrivateFollowRequest(id, timestamp, requestsFollow, receivesFollow, isApproved));
         }
     }
 }

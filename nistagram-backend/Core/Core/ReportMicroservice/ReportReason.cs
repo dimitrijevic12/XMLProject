@@ -16,7 +16,7 @@ namespace Core.ReportMicroservice
         public static Result<ReportReason> Create(string reason)
         {
             if (String.IsNullOrWhiteSpace(reason)) return Result.Failure<ReportReason>("Reason for reporting cannot be empty.");
-            if (reason.Length > 50) return Result.Failure<ReportReason>("Reason for reporting cannot contain more than 50 characters.");
+            if (reason.Length > 250) return Result.Failure<ReportReason>("Reason for reporting cannot contain more than 250 characters.");
             return Result.Success(new ReportReason(reason));
         }
 
