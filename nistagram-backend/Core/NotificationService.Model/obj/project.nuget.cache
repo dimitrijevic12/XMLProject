@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "YxQwmz46XKs1vcc1G30ueqnkxHQhNfR/Qqi0sj1T/uwTr2Y88c9R1PssLJtceePzDFlbMlOO5ZUu9z1HMBd81A==",
+  "success": true,
+  "projectFilePath": "C:\\8. semestar\\XMLProject\\nistagram-backend\\Core\\NotificationService.Model\\NotificationService.Core.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Nemanja\\.nuget\\packages\\csharpfunctionalextensions\\2.15.2\\csharpfunctionalextensions.2.15.2.nupkg.sha512"
+  ],
+  "logs": []
+}

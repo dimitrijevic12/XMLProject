@@ -1,0 +1,11 @@
+C:\8. semestar\XMLProject\nistagram-backend\Core\ChatMicroservice.DataAccess\bin\Debug\net5.0\ChatMicroservice.DataAccess.deps.json
+C:\8. semestar\XMLProject\nistagram-backend\Core\ChatMicroservice.DataAccess\bin\Debug\net5.0\ChatMicroservice.DataAccess.dll
+C:\8. semestar\XMLProject\nistagram-backend\Core\ChatMicroservice.DataAccess\bin\Debug\net5.0\ref\ChatMicroservice.DataAccess.dll
+C:\8. semestar\XMLProject\nistagram-backend\Core\ChatMicroservice.DataAccess\bin\Debug\net5.0\ChatMicroservice.DataAccess.pdb
+C:\8. semestar\XMLProject\nistagram-backend\Core\ChatMicroservice.DataAccess\obj\Debug\net5.0\ChatMicroservice.DataAccess.GeneratedMSBuildEditorConfig.editorconfig
+C:\8. semestar\XMLProject\nistagram-backend\Core\ChatMicroservice.DataAccess\obj\Debug\net5.0\ChatMicroservice.DataAccess.AssemblyInfoInputs.cache
+C:\8. semestar\XMLProject\nistagram-backend\Core\ChatMicroservice.DataAccess\obj\Debug\net5.0\ChatMicroservice.DataAccess.AssemblyInfo.cs
+C:\8. semestar\XMLProject\nistagram-backend\Core\ChatMicroservice.DataAccess\obj\Debug\net5.0\ChatMicroservice.DataAccess.csproj.CoreCompileInputs.cache
+C:\8. semestar\XMLProject\nistagram-backend\Core\ChatMicroservice.DataAccess\obj\Debug\net5.0\ChatMicroservice.DataAccess.dll
+C:\8. semestar\XMLProject\nistagram-backend\Core\ChatMicroservice.DataAccess\obj\Debug\net5.0\ref\ChatMicroservice.DataAccess.dll
+C:\8. semestar\XMLProject\nistagram-backend\Core\ChatMicroservice.DataAccess\obj\Debug\net5.0\ChatMicroservice.DataAccess.pdb

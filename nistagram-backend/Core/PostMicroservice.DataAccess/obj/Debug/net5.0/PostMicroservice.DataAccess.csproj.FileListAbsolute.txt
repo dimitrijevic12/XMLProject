@@ -1,0 +1,11 @@
+C:\8. semestar\XMLProject\nistagram-backend\Core\PostMicroservice.DataAccess\bin\Debug\net5.0\PostMicroservice.DataAccess.deps.json
+C:\8. semestar\XMLProject\nistagram-backend\Core\PostMicroservice.DataAccess\bin\Debug\net5.0\PostMicroservice.DataAccess.dll
+C:\8. semestar\XMLProject\nistagram-backend\Core\PostMicroservice.DataAccess\bin\Debug\net5.0\ref\PostMicroservice.DataAccess.dll
+C:\8. semestar\XMLProject\nistagram-backend\Core\PostMicroservice.DataAccess\bin\Debug\net5.0\PostMicroservice.DataAccess.pdb
+C:\8. semestar\XMLProject\nistagram-backend\Core\PostMicroservice.DataAccess\obj\Debug\net5.0\PostMicroservice.DataAccess.GeneratedMSBuildEditorConfig.editorconfig
+C:\8. semestar\XMLProject\nistagram-backend\Core\PostMicroservice.DataAccess\obj\Debug\net5.0\PostMicroservice.DataAccess.AssemblyInfoInputs.cache
+C:\8. semestar\XMLProject\nistagram-backend\Core\PostMicroservice.DataAccess\obj\Debug\net5.0\PostMicroservice.DataAccess.AssemblyInfo.cs
+C:\8. semestar\XMLProject\nistagram-backend\Core\PostMicroservice.DataAccess\obj\Debug\net5.0\PostMicroservice.DataAccess.csproj.CoreCompileInputs.cache
+C:\8. semestar\XMLProject\nistagram-backend\Core\PostMicroservice.DataAccess\obj\Debug\net5.0\PostMicroservice.DataAccess.dll
+C:\8. semestar\XMLProject\nistagram-backend\Core\PostMicroservice.DataAccess\obj\Debug\net5.0\ref\PostMicroservice.DataAccess.dll
+C:\8. semestar\XMLProject\nistagram-backend\Core\PostMicroservice.DataAccess\obj\Debug\net5.0\PostMicroservice.DataAccess.pdb

@@ -1,0 +1,11 @@
+C:\8. semestar\XMLProject\nistagram-backend\Core\CampaignService.DataAccess\bin\Debug\net5.0\CampaignService.DataAccess.deps.json
+C:\8. semestar\XMLProject\nistagram-backend\Core\CampaignService.DataAccess\bin\Debug\net5.0\CampaignService.DataAccess.dll
+C:\8. semestar\XMLProject\nistagram-backend\Core\CampaignService.DataAccess\bin\Debug\net5.0\ref\CampaignService.DataAccess.dll
+C:\8. semestar\XMLProject\nistagram-backend\Core\CampaignService.DataAccess\bin\Debug\net5.0\CampaignService.DataAccess.pdb
+C:\8. semestar\XMLProject\nistagram-backend\Core\CampaignService.DataAccess\obj\Debug\net5.0\CampaignService.DataAccess.GeneratedMSBuildEditorConfig.editorconfig
+C:\8. semestar\XMLProject\nistagram-backend\Core\CampaignService.DataAccess\obj\Debug\net5.0\CampaignService.DataAccess.AssemblyInfoInputs.cache
+C:\8. semestar\XMLProject\nistagram-backend\Core\CampaignService.DataAccess\obj\Debug\net5.0\CampaignService.DataAccess.AssemblyInfo.cs
+C:\8. semestar\XMLProject\nistagram-backend\Core\CampaignService.DataAccess\obj\Debug\net5.0\CampaignService.DataAccess.csproj.CoreCompileInputs.cache
+C:\8. semestar\XMLProject\nistagram-backend\Core\CampaignService.DataAccess\obj\Debug\net5.0\CampaignService.DataAccess.dll
+C:\8. semestar\XMLProject\nistagram-backend\Core\CampaignService.DataAccess\obj\Debug\net5.0\ref\CampaignService.DataAccess.dll
+C:\8. semestar\XMLProject\nistagram-backend\Core\CampaignService.DataAccess\obj\Debug\net5.0\CampaignService.DataAccess.pdb

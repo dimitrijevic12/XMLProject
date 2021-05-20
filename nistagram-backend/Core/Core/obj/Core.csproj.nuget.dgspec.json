@@ -42,7 +42,7 @@
           "dependencies": {
             "CSharpFunctionalExtensions": {
               "target": "Package",
-              "version": "[2.15.1, )"
+              "version": "[2.15.2, )"
             }
           },
           "imports": [

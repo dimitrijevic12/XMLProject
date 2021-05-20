@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "xYkpTLuD/yv3/HELgP50iGDZ40nx7pjhytn3/vTYYPKBJY5ADeSVFKsUsDfe/eY/k4ToI9rlCOzTTemxzrfiGw==",
+  "success": true,
+  "projectFilePath": "C:\\8. semestar\\XMLProject\\nistagram-backend\\Core\\UserMicroservice.Model\\UserMicroservice.Core.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Nemanja\\.nuget\\packages\\csharpfunctionalextensions\\2.15.2\\csharpfunctionalextensions.2.15.2.nupkg.sha512"
+  ],
+  "logs": []
+}

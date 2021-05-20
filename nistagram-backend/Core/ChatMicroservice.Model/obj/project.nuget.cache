@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "VKPLvJAYflKkIDJuxDDiZy8uKAyIk9l0Jxeq9ZSVxYXZz1Dxlzk6xDkYT1wTeDG8ns8fLe9UP3fFEq9zbbh20Q==",
+  "success": true,
+  "projectFilePath": "C:\\8. semestar\\XMLProject\\nistagram-backend\\Core\\ChatMicroservice.Model\\ChatMicroservice.Core.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Nemanja\\.nuget\\packages\\csharpfunctionalextensions\\2.15.2\\csharpfunctionalextensions.2.15.2.nupkg.sha512"
+  ],
+  "logs": []
+}

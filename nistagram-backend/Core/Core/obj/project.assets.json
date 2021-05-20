@@ -2,7 +2,7 @@
   "version": 3,
   "targets": {
     "net5.0": {
-      "CSharpFunctionalExtensions/2.15.1": {
+      "CSharpFunctionalExtensions/2.15.2": {
         "type": "package",
         "compile": {
           "lib/net5.0/CSharpFunctionalExtensions.dll": {}
@@ -14,14 +14,14 @@
     }
   },
   "libraries": {
-    "CSharpFunctionalExtensions/2.15.1": {
-      "sha512": "L/MDGN9az/cQAupHLIOWLWBYjqEXkxDl01M2mTWQOP83wzqJUH0/ZAaCYWJ+Lz4Ruimooe5CAGf5yIVbfjvUog==",
+    "CSharpFunctionalExtensions/2.15.2": {
+      "sha512": "6kgcXpytp7RDu3lBoSS/3Rj2NchDrHfrKu9HVUc4DiyXic4PNXjaXv2EouZ7/I8827IaKOKhZmpXYk1flI7d4w==",
       "type": "package",
-      "path": "csharpfunctionalextensions/2.15.1",
+      "path": "csharpfunctionalextensions/2.15.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "csharpfunctionalextensions.2.15.1.nupkg.sha512",
+        "csharpfunctionalextensions.2.15.2.nupkg.sha512",
         "csharpfunctionalextensions.nuspec",
         "lib/net40/CSharpFunctionalExtensions.dll",
         "lib/net40/CSharpFunctionalExtensions.pdb",
@@ -46,7 +46,7 @@
   },
   "projectFileDependencyGroups": {
     "net5.0": [
-      "CSharpFunctionalExtensions >= 2.15.1"
+      "CSharpFunctionalExtensions >= 2.15.2"
     ]
   },
   "packageFolders": {
@@ -90,7 +90,7 @@
         "dependencies": {
           "CSharpFunctionalExtensions": {
             "target": "Package",
-            "version": "[2.15.1, )"
+            "version": "[2.15.2, )"
           }
         },
         "imports": [

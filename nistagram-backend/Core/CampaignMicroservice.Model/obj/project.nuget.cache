@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "BtRPFC5fIM1fOn1ZUEWfmx0Ol60snqX4dhBred9RH5ZZnGm8bPxO9Zsu2l5WcOSNc3CMeg8YgwlSdILgV5ktjQ==",
+  "success": true,
+  "projectFilePath": "C:\\8. semestar\\XMLProject\\nistagram-backend\\Core\\CampaignMicroservice.Model\\CampaignMicroservice.Core.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Nemanja\\.nuget\\packages\\csharpfunctionalextensions\\2.15.2\\csharpfunctionalextensions.2.15.2.nupkg.sha512"
+  ],
+  "logs": []
+}

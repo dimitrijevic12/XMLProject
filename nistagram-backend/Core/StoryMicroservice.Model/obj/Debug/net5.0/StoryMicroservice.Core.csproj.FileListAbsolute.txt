@@ -1,0 +1,11 @@
+C:\8. semestar\XMLProject\nistagram-backend\Core\StoryMicroservice.Model\bin\Debug\net5.0\StoryMicroservice.Core.deps.json
+C:\8. semestar\XMLProject\nistagram-backend\Core\StoryMicroservice.Model\bin\Debug\net5.0\StoryMicroservice.Core.dll
+C:\8. semestar\XMLProject\nistagram-backend\Core\StoryMicroservice.Model\bin\Debug\net5.0\ref\StoryMicroservice.Core.dll
+C:\8. semestar\XMLProject\nistagram-backend\Core\StoryMicroservice.Model\bin\Debug\net5.0\StoryMicroservice.Core.pdb
+C:\8. semestar\XMLProject\nistagram-backend\Core\StoryMicroservice.Model\obj\Debug\net5.0\StoryMicroservice.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\8. semestar\XMLProject\nistagram-backend\Core\StoryMicroservice.Model\obj\Debug\net5.0\StoryMicroservice.Core.AssemblyInfoInputs.cache
+C:\8. semestar\XMLProject\nistagram-backend\Core\StoryMicroservice.Model\obj\Debug\net5.0\StoryMicroservice.Core.AssemblyInfo.cs
+C:\8. semestar\XMLProject\nistagram-backend\Core\StoryMicroservice.Model\obj\Debug\net5.0\StoryMicroservice.Core.csproj.CoreCompileInputs.cache
+C:\8. semestar\XMLProject\nistagram-backend\Core\StoryMicroservice.Model\obj\Debug\net5.0\StoryMicroservice.Core.dll
+C:\8. semestar\XMLProject\nistagram-backend\Core\StoryMicroservice.Model\obj\Debug\net5.0\ref\StoryMicroservice.Core.dll
+C:\8. semestar\XMLProject\nistagram-backend\Core\StoryMicroservice.Model\obj\Debug\net5.0\StoryMicroservice.Core.pdb

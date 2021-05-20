@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "GJpzzXpTh1iKtrt7TRpX0VVMwtpW8aR7nSW+GYR8KnQstg5p/FJJ6jW+89LzsPhIombrRD0L2E+qnqdcl9fg3A==",
+  "success": true,
+  "projectFilePath": "C:\\8. semestar\\XMLProject\\nistagram-backend\\Core\\ProjectMicroservice.DataAccess\\ProjectMicroservice.DataAccess.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Nemanja\\.nuget\\packages\\csharpfunctionalextensions\\2.15.2\\csharpfunctionalextensions.2.15.2.nupkg.sha512"
+  ],
+  "logs": []
+}
