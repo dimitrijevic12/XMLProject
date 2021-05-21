@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "xYkpTLuD/yv3/HELgP50iGDZ40nx7pjhytn3/vTYYPKBJY5ADeSVFKsUsDfe/eY/k4ToI9rlCOzTTemxzrfiGw==",
+  "dgSpecHash": "JVpXeNjWlP5nsOtpjB+VZAe/mY9FUecDFWU4QRcBan236bhcPZq/PSUHU4bnBcbIvnCGZoA1sdpxy2bo7wH0MA==",
   "success": true,
-  "projectFilePath": "C:\\8. semestar\\XMLProject\\nistagram-backend\\Core\\UserMicroservice.Model\\UserMicroservice.Core.csproj",
+  "projectFilePath": "C:\\XMLProjekat\\XMLProject\\nistagram-backend\\Core\\UserMicroservice.Model\\UserMicroservice.Core.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Nemanja\\.nuget\\packages\\csharpfunctionalextensions\\2.15.2\\csharpfunctionalextensions.2.15.2.nupkg.sha512"
+    "C:\\Users\\Stefan\\.nuget\\packages\\csharpfunctionalextensions\\2.15.2\\csharpfunctionalextensions.2.15.2.nupkg.sha512"
   ],
   "logs": []
 }

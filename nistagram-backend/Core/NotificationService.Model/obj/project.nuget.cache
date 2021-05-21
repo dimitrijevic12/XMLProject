@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "YxQwmz46XKs1vcc1G30ueqnkxHQhNfR/Qqi0sj1T/uwTr2Y88c9R1PssLJtceePzDFlbMlOO5ZUu9z1HMBd81A==",
+  "dgSpecHash": "OUkjNd2VT6Sq9vSFahz5SeX0o1rKlkruqRzkOAHlpaM1lou3d4hpJwnumTL3Ke8nA6XtC6qUNYc0+l9q3xBDoA==",
   "success": true,
-  "projectFilePath": "C:\\8. semestar\\XMLProject\\nistagram-backend\\Core\\NotificationService.Model\\NotificationService.Core.csproj",
+  "projectFilePath": "C:\\XMLProjekat\\XMLProject\\nistagram-backend\\Core\\NotificationService.Model\\NotificationService.Core.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Nemanja\\.nuget\\packages\\csharpfunctionalextensions\\2.15.2\\csharpfunctionalextensions.2.15.2.nupkg.sha512"
+    "C:\\Users\\Stefan\\.nuget\\packages\\csharpfunctionalextensions\\2.15.2\\csharpfunctionalextensions.2.15.2.nupkg.sha512"
   ],
   "logs": []
 }

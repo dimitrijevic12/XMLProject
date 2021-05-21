@@ -3,21 +3,21 @@ using System;
 
 namespace CampaignMicroservice.Core.Model
 {
-    public class OneTimeCampaign : Campaign
+    public class OneTimePostCampaign : Campaign
     {
         private readonly DateTime exposureDate;
 
-        private OneTimeCampaign(Guid id, TargetAudience targetAudience, Agent agent,
+        private OneTimePostCampaign(Guid id, TargetAudience targetAudience, Agent agent,
             CampaignStatistics campaignStatistics, DateTime exposureDate)
             : base(id, targetAudience, agent, campaignStatistics)
         {
             this.exposureDate = exposureDate;
         }
 
-        public static Result<OneTimeCampaign> Create(Guid id, TargetAudience targetAudience, Agent agent,
+        public static Result<OneTimePostCampaign> Create(Guid id, TargetAudience targetAudience, Agent agent,
             CampaignStatistics campaignStatistics, DateTime exposureDate)
         {
-            return Result.Success(new OneTimeCampaign(id, targetAudience, agent,
+            return Result.Success(new OneTimePostCampaign(id, targetAudience, agent,
             campaignStatistics, exposureDate));
         }
     }

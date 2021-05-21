@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "BtRPFC5fIM1fOn1ZUEWfmx0Ol60snqX4dhBred9RH5ZZnGm8bPxO9Zsu2l5WcOSNc3CMeg8YgwlSdILgV5ktjQ==",
+  "dgSpecHash": "9yqQ7IVYB8AiTmCmJrYtjJyUiqwLl+tCW17mQwbVd3WTRTKy7zDzkPNq0x2LSgoci67KFQv+ludTPO/RBa1X0A==",
   "success": true,
-  "projectFilePath": "C:\\8. semestar\\XMLProject\\nistagram-backend\\Core\\CampaignMicroservice.Model\\CampaignMicroservice.Core.csproj",
+  "projectFilePath": "C:\\XMLProjekat\\XMLProject\\nistagram-backend\\Core\\CampaignMicroservice.Model\\CampaignMicroservice.Core.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Nemanja\\.nuget\\packages\\csharpfunctionalextensions\\2.15.2\\csharpfunctionalextensions.2.15.2.nupkg.sha512"
+    "C:\\Users\\Stefan\\.nuget\\packages\\csharpfunctionalextensions\\2.15.2\\csharpfunctionalextensions.2.15.2.nupkg.sha512"
   ],
   "logs": []
 }

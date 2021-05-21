@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "Pt/v9fHvre5boQzTy0N6nAkkxZ/BajamurKSCsMqGSauITHlVv6Xt14R4Xu0ZE9NOErfqODv+B7E3xNL5QKJyQ==",
+  "dgSpecHash": "D2+Tn2KA5yMP8Ex1y14lpSAxzI3jVYObjGkA5xY5ibwqK4dPMgUMVmVn5EAnG2Iw+aYDTO3XzOGp8Cedcu76uw==",
   "success": true,
-  "projectFilePath": "C:\\8. semestar\\XMLProject\\nistagram-backend\\Core\\UserMicroservice.DataAccess\\UserMicroservice.DataAccess.csproj",
+  "projectFilePath": "C:\\XMLProjekat\\XMLProject\\nistagram-backend\\Core\\UserMicroservice.DataAccess\\UserMicroservice.DataAccess.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Nemanja\\.nuget\\packages\\csharpfunctionalextensions\\2.15.2\\csharpfunctionalextensions.2.15.2.nupkg.sha512"
+    "C:\\Users\\Stefan\\.nuget\\packages\\csharpfunctionalextensions\\2.15.2\\csharpfunctionalextensions.2.15.2.nupkg.sha512"
   ],
   "logs": []
 }

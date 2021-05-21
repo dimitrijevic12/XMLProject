@@ -50,19 +50,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Nemanja\\.nuget\\packages\\": {}
+    "C:\\Users\\Stefan\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\8. semestar\\XMLProject\\nistagram-backend\\Core\\ReportMicroservice.DataAccess\\ReportMicroservice.DataAccess.csproj",
+      "projectUniqueName": "C:\\XMLProjekat\\XMLProject\\nistagram-backend\\Core\\ReportMicroservice.DataAccess\\ReportMicroservice.DataAccess.csproj",
       "projectName": "ReportMicroservice.DataAccess",
-      "projectPath": "C:\\8. semestar\\XMLProject\\nistagram-backend\\Core\\ReportMicroservice.DataAccess\\ReportMicroservice.DataAccess.csproj",
-      "packagesPath": "C:\\Users\\Nemanja\\.nuget\\packages\\",
-      "outputPath": "C:\\8. semestar\\XMLProject\\nistagram-backend\\Core\\ReportMicroservice.DataAccess\\obj\\",
+      "projectPath": "C:\\XMLProjekat\\XMLProject\\nistagram-backend\\Core\\ReportMicroservice.DataAccess\\ReportMicroservice.DataAccess.csproj",
+      "packagesPath": "C:\\Users\\Stefan\\.nuget\\packages\\",
+      "outputPath": "C:\\XMLProjekat\\XMLProject\\nistagram-backend\\Core\\ReportMicroservice.DataAccess\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Nemanja\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Stefan\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -108,7 +108,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
       }
     }
   }

@@ -4,39 +4,26 @@ using System.Collections.Generic;
 
 namespace PostMicroservice.Core.Model
 {
-    public class PostAlbum
+    public class PostAlbum : Post
     {
-        private readonly Guid id;
-        private readonly List<ContentPath> contentPaths;
-        private readonly DateTime timeStamp;
-        private Description description;
-        private RegisteredUser registeredUser;
-        private readonly IEnumerable<RegisteredUser> likes;
-        private readonly IEnumerable<RegisteredUser> dislikes;
-        private readonly IEnumerable<Comment> comments;
-        private readonly Location location;
+        private readonly IEnumerable<ContentPath> contentPaths;
 
-        private PostAlbum(Guid id, List<ContentPath> contentPaths, DateTime timeStamp, Description description,
+        private PostAlbum(Guid id, DateTime timeStamp, Description description,
             RegisteredUser registeredUser, IEnumerable<RegisteredUser> likes,
-            IEnumerable<RegisteredUser> dislikes, IEnumerable<Comment> comments, Location location)
+            IEnumerable<RegisteredUser> dislikes, IEnumerable<Comment> comments,
+            Location location, IEnumerable<ContentPath> contentPaths)
+            : base(id, timeStamp, description, registeredUser, likes, dislikes, comments, location)
         {
-            this.id = id;
             this.contentPaths = contentPaths;
-            this.timeStamp = timeStamp;
-            this.description = description;
-            this.registeredUser = registeredUser;
-            this.likes = likes;
-            this.dislikes = dislikes;
-            this.comments = comments;
-            this.location = location;
         }
 
-        public static Result<PostAlbum> Create(Guid id, List<ContentPath> contentPaths, DateTime timeStamp, Description description,
+        public static Result<PostAlbum> Create(Guid id, DateTime timeStamp, Description description,
             RegisteredUser registeredUser, IEnumerable<RegisteredUser> likes,
-            IEnumerable<RegisteredUser> dislikes, IEnumerable<Comment> comments, Location location)
+            IEnumerable<RegisteredUser> dislikes, IEnumerable<Comment> comments,
+            Location location, List<ContentPath> contentPaths)
         {
-            return Result.Success(new PostAlbum(id, contentPaths, timeStamp, description,
-                                registeredUser, likes, dislikes, comments, location));
+            return Result.Success(new PostAlbum(id, timeStamp, description,
+                                registeredUser, likes, dislikes, comments, location, contentPaths));
         }
     }
 }
