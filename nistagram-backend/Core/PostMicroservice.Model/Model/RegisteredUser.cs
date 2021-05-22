@@ -12,7 +12,7 @@ namespace PostMicroservice.Core.Model
         private readonly bool isPrivate;
         private readonly bool isAcceptingTags;
 
-        public RegisteredUser(Guid id, Username username, FirstName firstName, LastName lastName,
+        private RegisteredUser(Guid id, Username username, FirstName firstName, LastName lastName,
             bool isPrivate, bool isAcceptingTags)
         {
             this.id = id;
