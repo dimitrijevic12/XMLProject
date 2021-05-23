@@ -5,13 +5,13 @@ namespace ChatMicroservice.Core.Model
 {
     public class RegularMessage : Message
     {
-        public RegularMessage(Guid id, DateTime timeStamp, MessageContent messageContent, Chat chat) : base(id, timeStamp, messageContent, chat)
+        public RegularMessage(Guid id, DateTime timeStamp, MessageContent messageContent, RegisteredUser messageReceiver, RegisteredUser messageSender) : base(id, timeStamp, messageContent, messageReceiver, messageSender)
         {
         }
 
-        public static new Result<RegularMessage> Create(Guid id, DateTime timeStamp, MessageContent messageContent, Chat chat)
+        public static new Result<RegularMessage> Create(Guid id, DateTime timeStamp, MessageContent messageContent, RegisteredUser messageReceiver, RegisteredUser messageSender)
         {
-            return Result.Success(new RegularMessage(id, timeStamp, messageContent, chat));
+            return Result.Success(new RegularMessage(id, timeStamp, messageContent, messageReceiver, messageSender));
         }
     }
 }

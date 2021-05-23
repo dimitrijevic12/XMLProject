@@ -9,15 +9,15 @@ namespace ChatMicroservice.Core.Model
         private readonly IEnumerable<ContentPath> contentPaths;
         private Description description;
 
-        public PostAlbum(Guid id, DateTime timestamp, IEnumerable<ContentPath> contentPaths, Description description) : base(id, timestamp)
+        public PostAlbum(Guid id, IEnumerable<ContentPath> contentPaths, Description description) : base(id)
         {
             this.contentPaths = contentPaths;
             this.description = description;
         }
 
-        public static Result<PostAlbum> Create(Guid id, DateTime timestamp, IEnumerable<ContentPath> contentPaths, Description description)
+        public static Result<PostAlbum> Create(Guid id, IEnumerable<ContentPath> contentPaths, Description description)
         {
-            return Result.Success(new PostAlbum(id, timestamp, contentPaths, description));
+            return Result.Success(new PostAlbum(id, contentPaths, description));
         }
     }
 }
