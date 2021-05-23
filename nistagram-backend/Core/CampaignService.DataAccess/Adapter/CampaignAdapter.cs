@@ -4,18 +4,18 @@ using System.Data;
 
 namespace CampaignService.DataAccess.Adapter
 {
-    public class CapaignAdapter : ITarget
-    {
-        private readonly CampaignAdaptee campaignAdaptee;
+    /* public class CapaignAdapter : ITarget
+     {
+         private readonly CampaignAdaptee campaignAdaptee;
 
-        public CapaignAdapter(CampaignAdaptee campaignAdaptee)
-        {
-            this.campaignAdaptee = campaignAdaptee;
-        }
+         public CapaignAdapter(CampaignAdaptee campaignAdaptee)
+         {
+             this.campaignAdaptee = campaignAdaptee;
+         }
 
-        public object ConvertSql(DataRow dataRow)
-        {
-            return campaignAdaptee.ConvertSqlDataReaderToCampaign(dataRow);
-        }
-    }
+         public object ConvertSql(DataRow dataRow)
+         {
+             return campaignAdaptee.ConvertSqlDataReaderToCampaign(dataRow);
+         }
+     }*/
 }

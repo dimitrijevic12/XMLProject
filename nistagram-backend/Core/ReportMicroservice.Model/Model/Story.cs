@@ -5,16 +5,13 @@ namespace ReportMicroservice.Core.Model
 {
     public class Story : Content
     {
-        private readonly ContentPath contentPath;
-
-        public Story(Guid id, DateTime timestamp, ContentPath contentPath) : base(id, timestamp)
+        private Story(Guid id) : base(id)
         {
-            this.contentPath = contentPath;
         }
 
-        public static Result<Story> Create(Guid id, DateTime timestamp, ContentPath contentPath)
+        public static Result<Story> Create(Guid id)
         {
-            return Result.Success(new Story(id, timestamp, contentPath));
+            return Result.Success(new Story(id));
         }
     }
 }

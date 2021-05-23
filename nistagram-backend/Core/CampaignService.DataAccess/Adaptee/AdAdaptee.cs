@@ -7,7 +7,7 @@ namespace CampaignService.DataAccess.Adaptee
 {
     public class AdAdaptee
     {
-        public Ad ConvertSqlDataReaderToAd(DataRow dataRow)
+        /*public Ad ConvertSqlDataReaderToAd(DataRow dataRow)
         {
             return Ad.Create(
                     id: Guid.Parse(dataRow[0].ToString().Trim()),
@@ -30,6 +30,6 @@ namespace CampaignService.DataAccess.Adaptee
                     verifiedUser: VerifiedUser.Create(
                         id: Guid.Parse(dataRow[9].ToString().Trim()),
                         category: Category.Create(dataRow[10].ToString().Trim()).Value).Value).Value;
-        }
+        }*/
     }
 }

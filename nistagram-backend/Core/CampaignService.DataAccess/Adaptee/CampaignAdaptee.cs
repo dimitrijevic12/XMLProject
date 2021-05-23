@@ -7,7 +7,7 @@ namespace CampaignService.DataAccess.Adaptee
 {
     public class CampaignAdaptee
     {
-        public Campaign ConvertSqlDataReaderToCampaign(DataRow dataRow)
+        /*public Campaign ConvertSqlDataReaderToCampaign(DataRow dataRow)
         {
             return Campaign.Create(
                     id: Guid.Parse(dataRow[0].ToString().Trim()),
@@ -22,6 +22,6 @@ namespace CampaignService.DataAccess.Adaptee
                         dislikesCount: DislikesCount.Create(int.Parse(dataRow[6].ToString().Trim())).Value,
                         exposureCount: ExposureCount.Create(int.Parse(dataRow[7].ToString().Trim())).Value,
                         clickCount: ClickCount.Create(int.Parse(dataRow[8].ToString().Trim())).Value).Value).Value;
-        }
+        }*/
     }
 }

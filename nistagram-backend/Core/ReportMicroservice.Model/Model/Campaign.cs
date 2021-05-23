@@ -5,13 +5,13 @@ namespace ReportMicroservice.Core.Model
 {
     internal class Campaign : Content
     {
-        private Campaign(Guid id, DateTime timestamp) : base(id, timestamp)
+        private Campaign(Guid id) : base(id)
         {
         }
 
-        public static new Result<Campaign> Create(Guid id, DateTime timestamp)
+        public static Result<Campaign> Create(Guid id)
         {
-            return Result.Success(new Campaign(id, timestamp));
+            return Result.Success(new Campaign(id));
         }
     }
 }
