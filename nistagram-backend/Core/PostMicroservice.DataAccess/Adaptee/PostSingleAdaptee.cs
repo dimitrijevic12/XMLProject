@@ -19,7 +19,11 @@ namespace PostMicroservice.DataAccess.Adaptee
                                         firstName: FirstName.Create(dataRow[5].ToString().Trim()).Value,
                                         lastName: LastName.Create(dataRow[6].ToString().Trim()).Value,
                                         isPrivate: bool.Parse(dataRow[7].ToString().Trim()),
-                                        isAcceptingTags: bool.Parse(dataRow[8].ToString().Trim())).Value,
+                                        isAcceptingTags: bool.Parse(dataRow[8].ToString().Trim()),
+                                        blockedUsers: new List<RegisteredUser>(),
+                                        blockedByUsers: new List<RegisteredUser>(),
+                                        following: new List<RegisteredUser>(),
+                                        followers: new List<RegisteredUser>()).Value,
                 likes: new List<RegisteredUser>(),
                 dislikes: new List<RegisteredUser>(),
                 comments: new List<Comment>(),
@@ -27,6 +31,8 @@ namespace PostMicroservice.DataAccess.Adaptee
                                           street: Street.Create(dataRow[10].ToString().Trim()).Value,
                                           cityName: CityName.Create(dataRow[11].ToString().Trim()).Value,
                                           country: Country.Create(dataRow[12].ToString().Trim()).Value).Value,
+                taggedUsers: new List<RegisteredUser>(),
+                hashTags: new List<HashTag>(),
                 contentPath: ContentPath.Create(dataRow[13].ToString().Trim()).Value).Value;
         }
     }

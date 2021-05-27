@@ -13,10 +13,13 @@ namespace PostMicroservice.Core.Model
         private readonly IEnumerable<RegisteredUser> dislikes;
         private readonly IEnumerable<Comment> comments;
         private readonly Location location;
+        private readonly IEnumerable<RegisteredUser> taggedUsers;
+        private readonly IEnumerable<HashTag> hashTags;
 
         protected Post(Guid id, DateTime timeStamp, Description description,
             RegisteredUser registeredUser, IEnumerable<RegisteredUser> likes,
-            IEnumerable<RegisteredUser> dislikes, IEnumerable<Comment> comments, Location location)
+            IEnumerable<RegisteredUser> dislikes, IEnumerable<Comment> comments, Location location,
+            IEnumerable<RegisteredUser> taggedUsers, IEnumerable<HashTag> hashTags)
         {
             this.id = id;
             this.timeStamp = timeStamp;
@@ -26,6 +29,8 @@ namespace PostMicroservice.Core.Model
             this.dislikes = dislikes;
             this.comments = comments;
             this.location = location;
+            this.taggedUsers = taggedUsers;
+            this.hashTags = hashTags;
         }
     }
 }

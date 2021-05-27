@@ -1,5 +1,6 @@
 ﻿using PostMicroservice.Core.Model;
 using System;
+using System.Collections.Generic;
 using System.Data;
 
 namespace PostMicroservice.DataAccess.Adaptee
@@ -17,7 +18,12 @@ namespace PostMicroservice.DataAccess.Adaptee
                                         firstName: FirstName.Create(dataRow[5].ToString().Trim()).Value,
                                         lastName: LastName.Create(dataRow[6].ToString().Trim()).Value,
                                         isPrivate: bool.Parse(dataRow[7].ToString().Trim()),
-                                        isAcceptingTags: bool.Parse(dataRow[8].ToString().Trim())).Value).Value;
+                                        isAcceptingTags: bool.Parse(dataRow[8].ToString().Trim()),
+                                        blockedUsers: new List<RegisteredUser>(),
+                                        blockedByUsers: new List<RegisteredUser>(),
+                                        following: new List<RegisteredUser>(),
+                                        followers: new List<RegisteredUser>()).Value,
+                                   taggedUsers: new List<RegisteredUser>()).Value;
         }
     }
 }

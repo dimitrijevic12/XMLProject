@@ -11,8 +11,8 @@ namespace PostMicroservice.Core.Model
         private PostSingle(Guid id, DateTime timeStamp, Description description,
             RegisteredUser registeredUser, IEnumerable<RegisteredUser> likes,
             IEnumerable<RegisteredUser> dislikes, IEnumerable<Comment> comments,
-            Location location, ContentPath contentPath)
-            : base(id, timeStamp, description, registeredUser, likes, dislikes, comments, location)
+            Location location, IEnumerable<RegisteredUser> taggedUsers, IEnumerable<HashTag> hashTags, ContentPath contentPath)
+            : base(id, timeStamp, description, registeredUser, likes, dislikes, comments, location, taggedUsers, hashTags)
         {
             this.contentPath = contentPath;
         }
@@ -20,10 +20,10 @@ namespace PostMicroservice.Core.Model
         public static Result<PostSingle> Create(Guid id, DateTime timeStamp, Description description,
             RegisteredUser registeredUser, IEnumerable<RegisteredUser> likes,
             IEnumerable<RegisteredUser> dislikes, IEnumerable<Comment> comments,
-            Location location, ContentPath contentPath)
+            Location location, IEnumerable<RegisteredUser> taggedUsers, IEnumerable<HashTag> hashTags, ContentPath contentPath)
         {
             return Result.Success(new PostSingle(id, timeStamp, description,
-                                registeredUser, likes, dislikes, comments, location, contentPath));
+                                registeredUser, likes, dislikes, comments, location, taggedUsers, hashTags, contentPath));
         }
     }
 }
