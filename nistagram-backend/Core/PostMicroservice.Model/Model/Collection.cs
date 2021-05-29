@@ -6,15 +6,15 @@ namespace PostMicroservice.Core.Model
 {
     public class Collection
     {
-        private readonly Guid id;
-        private readonly CollectionName collectionName;
-        private readonly IEnumerable<Post> posts;
+        public Guid Id { get; }
+        public CollectionName CollectionName { get; }
+        public IEnumerable<Post> Posts { get; }
 
         public Collection(Guid id, CollectionName collectionName, IEnumerable<Post> posts)
         {
-            this.id = id;
-            this.collectionName = collectionName;
-            this.posts = posts;
+            Id = id;
+            CollectionName = collectionName;
+            Posts = posts;
         }
 
         public static Result<Collection> Create(Guid id, CollectionName collectionName, IEnumerable<Post> posts)

@@ -5,32 +5,32 @@ namespace PostMicroservice.Core.Model
 {
     public abstract class Post
     {
-        private Guid id;
-        private readonly DateTime timeStamp;
-        private readonly Description description;
-        private readonly RegisteredUser registeredUser;
-        private readonly IEnumerable<RegisteredUser> likes;
-        private readonly IEnumerable<RegisteredUser> dislikes;
-        private readonly IEnumerable<Comment> comments;
-        private readonly Location location;
-        private readonly IEnumerable<RegisteredUser> taggedUsers;
-        private readonly IEnumerable<HashTag> hashTags;
+        public Guid Id { get; }
+        public DateTime TimeStamp { get; }
+        public Description Description { get; }
+        public RegisteredUser RegisteredUser { get; }
+        public IEnumerable<RegisteredUser> Likes { get; }
+        public IEnumerable<RegisteredUser> Dislikes { get; }
+        public IEnumerable<Comment> Comments { get; }
+        public Location Location { get; }
+        public IEnumerable<RegisteredUser> TaggedUsers { get; }
+        public IEnumerable<HashTag> HashTags { get; }
 
         protected Post(Guid id, DateTime timeStamp, Description description,
             RegisteredUser registeredUser, IEnumerable<RegisteredUser> likes,
             IEnumerable<RegisteredUser> dislikes, IEnumerable<Comment> comments, Location location,
             IEnumerable<RegisteredUser> taggedUsers, IEnumerable<HashTag> hashTags)
         {
-            this.id = id;
-            this.timeStamp = timeStamp;
-            this.description = description;
-            this.registeredUser = registeredUser;
-            this.likes = likes;
-            this.dislikes = dislikes;
-            this.comments = comments;
-            this.location = location;
-            this.taggedUsers = taggedUsers;
-            this.hashTags = hashTags;
+            Id = id;
+            TimeStamp = timeStamp;
+            Description = description;
+            RegisteredUser = registeredUser;
+            Likes = likes;
+            Dislikes = dislikes;
+            Comments = comments;
+            Location = location;
+            TaggedUsers = taggedUsers;
+            HashTags = hashTags;
         }
     }
 }

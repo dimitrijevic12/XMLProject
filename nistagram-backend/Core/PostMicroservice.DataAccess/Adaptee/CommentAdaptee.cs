@@ -17,6 +17,7 @@ namespace PostMicroservice.DataAccess.Adaptee
                                         username: Username.Create(dataRow[4].ToString().Trim()).Value,
                                         firstName: FirstName.Create(dataRow[5].ToString().Trim()).Value,
                                         lastName: LastName.Create(dataRow[6].ToString().Trim()).Value,
+                                        profileImagePath: ProfileImagePath.Create(dataRow[4].ToString().Trim()).Value,
                                         isPrivate: bool.Parse(dataRow[7].ToString().Trim()),
                                         isAcceptingTags: bool.Parse(dataRow[8].ToString().Trim()),
                                         blockedUsers: new List<RegisteredUser>(),

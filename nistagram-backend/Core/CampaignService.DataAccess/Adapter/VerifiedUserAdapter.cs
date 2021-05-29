@@ -4,7 +4,7 @@ using System.Data;
 
 namespace CampaignService.DataAccess.Adapter
 {
-    public class VerifiedUserAdapter : ITarget
+    /*public class VerifiedUserAdapter : ITarget
     {
         private readonly VerifiedUserAdaptee verifiedUserAdaptee;
 
@@ -17,5 +17,5 @@ namespace CampaignService.DataAccess.Adapter
         {
             return verifiedUserAdaptee.ConvertSqlDataReaderToVerifiedUser(dataRow);
         }
-    }
+    }*/
 }

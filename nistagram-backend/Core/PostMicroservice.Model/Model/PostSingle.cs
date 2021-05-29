@@ -6,7 +6,7 @@ namespace PostMicroservice.Core.Model
 {
     public class PostSingle : Post
     {
-        private readonly ContentPath contentPath;
+        public ContentPath ContentPath { get; }
 
         private PostSingle(Guid id, DateTime timeStamp, Description description,
             RegisteredUser registeredUser, IEnumerable<RegisteredUser> likes,
@@ -14,7 +14,7 @@ namespace PostMicroservice.Core.Model
             Location location, IEnumerable<RegisteredUser> taggedUsers, IEnumerable<HashTag> hashTags, ContentPath contentPath)
             : base(id, timeStamp, description, registeredUser, likes, dislikes, comments, location, taggedUsers, hashTags)
         {
-            this.contentPath = contentPath;
+            ContentPath = contentPath;
         }
 
         public static Result<PostSingle> Create(Guid id, DateTime timeStamp, Description description,

@@ -6,19 +6,19 @@ namespace PostMicroservice.Core.Model
 {
     public class Comment
     {
-        private readonly Guid id;
-        private readonly DateTime timeStamp;
-        private readonly CommentText commentText;
-        private readonly RegisteredUser registeredUser;
-        private readonly IEnumerable<RegisteredUser> taggedUsers;
+        public Guid Id { get; }
+        public DateTime TimeStamp { get; }
+        public CommentText CommentText { get; }
+        public RegisteredUser RegisteredUser { get; }
+        public IEnumerable<RegisteredUser> TaggedUsers { get; }
 
         private Comment(Guid id, DateTime timeStamp, CommentText commentText, RegisteredUser registeredUser, IEnumerable<RegisteredUser> taggedUsers)
         {
-            this.id = id;
-            this.timeStamp = timeStamp;
-            this.commentText = commentText;
-            this.registeredUser = registeredUser;
-            this.taggedUsers = taggedUsers;
+            Id = id;
+            TimeStamp = timeStamp;
+            CommentText = commentText;
+            RegisteredUser = registeredUser;
+            TaggedUsers = taggedUsers;
         }
 
         public static Result<Comment> Create(Guid id, DateTime timeStamp, CommentText commentText, RegisteredUser registeredUser, IEnumerable<RegisteredUser> taggedUsers)

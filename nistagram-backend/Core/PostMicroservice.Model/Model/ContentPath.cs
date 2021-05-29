@@ -15,7 +15,7 @@ namespace PostMicroservice.Core.Model
 
         public static Result<ContentPath> Create(string path)
         {
-            if (!File.Exists(path)) return Result.Failure<ContentPath>("File does not exist on given path");
+            //if (!File.Exists(path)) return Result.Failure<ContentPath>("File does not exist on given path");
             return Result.Success(new ContentPath(path));
         }
 

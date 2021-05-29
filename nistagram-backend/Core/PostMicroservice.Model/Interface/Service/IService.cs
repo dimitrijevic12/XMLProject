@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace PostMicroservice.Contracts.Interface.Repository
+namespace PostMicroservice.Core.Interface.Service
 {
-    public interface IRepository<T>
+    public interface IService<T>
     {
         IEnumerable<T> GetAll();
 

@@ -1,6 +1,6 @@
 ﻿using PostMicroservice.Core.Model;
 
-namespace PostMicroservice.Contracts.Interface.Repository
+namespace PostMicroservice.Core.Interface.Repository
 {
     public interface IPostRepository : IRepository<Post>
     {

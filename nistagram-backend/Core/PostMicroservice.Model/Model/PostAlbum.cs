@@ -6,7 +6,7 @@ namespace PostMicroservice.Core.Model
 {
     public class PostAlbum : Post
     {
-        private readonly IEnumerable<ContentPath> contentPaths;
+        public IEnumerable<ContentPath> ContentPaths { get; }
 
         private PostAlbum(Guid id, DateTime timeStamp, Description description,
             RegisteredUser registeredUser, IEnumerable<RegisteredUser> likes,
@@ -14,7 +14,7 @@ namespace PostMicroservice.Core.Model
             Location location, IEnumerable<RegisteredUser> taggedUsers, IEnumerable<HashTag> hashTags, IEnumerable<ContentPath> contentPaths)
             : base(id, timeStamp, description, registeredUser, likes, dislikes, comments, location, taggedUsers, hashTags)
         {
-            this.contentPaths = contentPaths;
+            ContentPaths = contentPaths;
         }
 
         public static Result<PostAlbum> Create(Guid id, DateTime timeStamp, Description description,

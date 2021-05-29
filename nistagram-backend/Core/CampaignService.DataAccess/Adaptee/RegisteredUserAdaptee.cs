@@ -1,5 +1,6 @@
 ﻿using CampaignMicroservice.Core.Model;
 using System;
+using System.Collections.Generic;
 using System.Data;
 
 namespace CampaignService.DataAccess.Adaptee
@@ -14,7 +15,10 @@ namespace CampaignService.DataAccess.Adaptee
                     firstName: FirstName.Create(dataRow[2].ToString().Trim()).Value,
                     lastName: LastName.Create(dataRow[3].ToString().Trim()).Value,
                     dateOfBirth: DateTime.Parse(dataRow[4].ToString().Trim()),
-                    gender: Gender.Create(dataRow[5].ToString().Trim()).Value).Value;
+                    gender: Gender.Create(dataRow[5].ToString().Trim()).Value,
+                    blockedByAgents: new List<Agent>(),
+                    blockedAgents: new List<Agent>(),
+                    followsAgents: new List<Agent>()).Value;
         }
     }
 }

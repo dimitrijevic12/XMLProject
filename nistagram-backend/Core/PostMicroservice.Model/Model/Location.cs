@@ -5,17 +5,17 @@ namespace PostMicroservice.Core.Model
 {
     public class Location
     {
-        private readonly Guid id;
-        private readonly Street street;
-        private readonly CityName cityName;
-        private readonly Country country;
+        public Guid Id { get; }
+        public Street Street { get; }
+        public CityName CityName { get; }
+        public Country Country { get; }
 
         private Location(Guid id, Street street, CityName cityName, Country country)
         {
-            this.id = id;
-            this.cityName = cityName;
-            this.street = street;
-            this.country = country;
+            Id = id;
+            CityName = cityName;
+            Street = street;
+            Country = country;
         }
 
         public static Result<Location> Create(Guid id, Street street, CityName cityName, Country country)

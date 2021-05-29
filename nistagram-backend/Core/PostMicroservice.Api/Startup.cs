@@ -4,6 +4,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using PostMicroservice.Api.Factories;
+using PostMicroservice.Core.Interface.Repository;
+using PostMicroservice.Core.Interface.Service;
+using PostMicroservice.Core.Services;
+using PostMicroservice.DataAccess.Implementation;
 
 namespace PostMicroservice.Api
 {
@@ -24,11 +29,26 @@ namespace PostMicroservice.Api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PostMicroservice.Api", Version = "v1" });
             });
+
+            services.AddScoped<IPostService, PostService>();
+            services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<LocationFactory>();
+            services.AddScoped<PostSingleFactory>();
+            services.AddScoped<RegisteredUserFactory>();
+
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors("MyPolicy");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
