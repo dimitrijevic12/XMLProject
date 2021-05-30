@@ -9,12 +9,12 @@ namespace PostMicroservice.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PostController : ControllerBase
+    public class PostsController : ControllerBase
     {
         private readonly IPostService _postService;
         private readonly PostSingleFactory postSingleFactory;
 
-        public PostController(IPostService postService, PostSingleFactory postSingleFactory)
+        public PostsController(IPostService postService, PostSingleFactory postSingleFactory)
         {
             _postService = postService;
             this.postSingleFactory = postSingleFactory;

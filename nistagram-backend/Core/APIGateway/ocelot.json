@@ -1,0 +1,18 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/posts",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44333
+        }
+      ],
+      "UpstreamPathTemplate": "/api/posts"
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:37101"
+  }
+}
