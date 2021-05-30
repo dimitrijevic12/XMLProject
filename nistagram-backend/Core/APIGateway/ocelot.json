@@ -1,7 +1,7 @@
 {
   "Routes": [
     {
-      "DownstreamPathTemplate": "/api/posts",
+      "DownstreamPathTemplate": "/api/posts/users/{id}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -9,7 +9,7 @@
           "Port": 44333
         }
       ],
-      "UpstreamPathTemplate": "/api/posts"
+      "UpstreamPathTemplate": "/api/posts/users/{id}"
     }
   ],
   "GlobalConfiguration": {

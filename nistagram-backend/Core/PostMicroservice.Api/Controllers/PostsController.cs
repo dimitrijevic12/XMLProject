@@ -20,7 +20,7 @@ namespace PostMicroservice.Api.Controllers
             this.postSingleFactory = postSingleFactory;
         }
 
-        [HttpGet("user/{id}")]
+        [HttpGet("users/{id}")]
         public IActionResult GetByUserId(Guid id)
         {
             return Ok(_postService.GetByUserId(id).ToList().
