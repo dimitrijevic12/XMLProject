@@ -8,20 +8,34 @@ import {
 import OptionsButton from "./OptionsButton";
 import PostModal from "./PostModal";
 import ProfileHeader from "./ProfileHeader";
+import { getPostsByUserId } from "../../actions/actions";
+import { connect } from "react-redux";
 
 class SomeoneProfile extends Component {
   state = {
     showPostModal: false,
+    posts: [],
   };
+
+  componentDidMount() {
+    debugger;
+    this.props.getPostsByUserId("12345678-1234-1234-1234-123456789123");
+  }
+
   render() {
-    const photos = Array.from({ length: 5 }, (x, i) => (
-      <Photo
-        src="images/nature.jpg"
-        onClick={() => {
-          this.displayModalPost();
-        }}
-      />
-    ));
+    if (this.props.posts == undefined) {
+      return null;
+    }
+    const posts = this.props.posts;
+    const Posts = () =>
+      posts.map((post) => (
+        <Photo
+          src="images/nature.jpg"
+          onClick={() => {
+            this.displayModalPost();
+          }}
+        />
+      ));
     return (
       <div>
         {this.state.showPostModal ? (
@@ -46,7 +60,7 @@ class SomeoneProfile extends Component {
             <GridControlBarItem isActive>𐄹 Posts</GridControlBarItem>
             <GridControlBarItem>웃 Tagged</GridControlBarItem>
           </GridControlBar>
-          {photos}
+          <Posts />
         </Grid>
       </div>
     );
@@ -60,4 +74,6 @@ class SomeoneProfile extends Component {
   }
 }
 
-export default SomeoneProfile;
+const mapStateToProps = (state) => ({ posts: state.posts });
+
+export default connect(mapStateToProps, { getPostsByUserId })(SomeoneProfile);
