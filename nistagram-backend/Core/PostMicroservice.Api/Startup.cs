@@ -35,6 +35,8 @@ namespace PostMicroservice.Api
             services.AddScoped<LocationFactory>();
             services.AddScoped<PostSingleFactory>();
             services.AddScoped<RegisteredUserFactory>();
+            services.AddScoped<CommentFactory>();
+            services.AddScoped<HashTagFactory>();
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {

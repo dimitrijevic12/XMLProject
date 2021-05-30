@@ -5,12 +5,27 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Favorite from "@material-ui/icons/Favorite";
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
+import moment from "moment";
+import { getPost } from "../../actions/actions";
+import { connect } from "react-redux";
+import TaggedUsersModal from "./TaggedUsersModal";
 
 class PostModal extends Component {
   state = {
     showPostModal: this.props.show,
+    showTaggedModal: false,
   };
+
+  componentDidMount() {
+    debugger;
+    this.props.getPost(this.props.postId);
+  }
+
   render() {
+    if (this.props.post == undefined) {
+      return null;
+    }
+    const post = this.props.post;
     return (
       <Modal
         style={{
@@ -21,6 +36,13 @@ class PostModal extends Component {
         centered={true}
       >
         <ModalHeader toggle={this.toggle.bind(this)}>
+          {this.state.showTaggedModal ? (
+            <TaggedUsersModal
+              show={this.state.showTaggedModal}
+              postId={post.id}
+              onShowChange={this.displayModalPost.bind(this)}
+            />
+          ) : null}
           <img
             src={this.props.personPhoto}
             style={{ width: 32, height: 32, borderRadius: 50 }}
@@ -31,11 +53,27 @@ class PostModal extends Component {
         <ModalBody>
           <div>
             <img
-              src={this.props.post}
+              onClick={() => {
+                this.displayModalPost();
+              }}
+              src="images/nature.jpg"
               style={{ width: 800, height: 320 }}
               className="mb-3"
             />
-            September 29, 2020
+            {post.hashTags.map((hashTag) => (
+              <div>{hashTag.hashTagText}</div>
+            ))}
+            {post.description}
+            <br />
+            {moment(post.timeStamp).format("DD/MM/YYYY HH:mm")}
+            {Object.entries(post.location).length !== 0
+              ? ", " +
+                post.location.street +
+                " " +
+                post.location.cityName +
+                ", " +
+                post.location.country
+              : ""}
             <a style={{ float: "right" }} className="mr-4" href="javascript:;">
               Report
             </a>
@@ -56,11 +94,19 @@ class PostModal extends Component {
             <img src="images/send.png" />
             <br />
             <br />
-            Likes: <a href="javascript:;">61</a> <br />
+            Likes:{" "}
+            <a href="javascript:;" className="mr-2">
+              {post.likes.length}
+            </a>
+            Dislikes: <a href="javascript:;">{post.dislikes.length}</a> <br />
             <hr />
-            <img src="images/user.png" /> Nice photo great eye
-            <br />
-            <hr />
+            {post.comments.map((comment) => (
+              <div>
+                <img src="images/user.png" /> {comment.commentText}
+                <br />
+                <hr />
+              </div>
+            ))}
             <div style={{ float: "left" }}>
               <input
                 style={{ border: 0 }}
@@ -83,6 +129,15 @@ class PostModal extends Component {
     this.setState({ showPostModal: false });
     this.props.onShowChange();
   }
+
+  displayModalPost() {
+    debugger;
+    this.setState({
+      showTaggedModal: !this.state.showTaggedModal,
+    });
+  }
 }
 
-export default PostModal;
+const mapStateToProps = (state) => ({ post: state.post });
+
+export default connect(mapStateToProps, { getPost })(PostModal);

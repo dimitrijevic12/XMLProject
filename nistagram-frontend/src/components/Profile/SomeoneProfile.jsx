@@ -10,6 +10,7 @@ import PostModal from "./PostModal";
 import ProfileHeader from "./ProfileHeader";
 import { getPostsByUserId } from "../../actions/actions";
 import { connect } from "react-redux";
+import { VerifiedUser } from "@material-ui/icons";
 
 class SomeoneProfile extends Component {
   state = {
@@ -27,6 +28,8 @@ class SomeoneProfile extends Component {
       return null;
     }
     const posts = this.props.posts;
+    const user = posts[0].registeredUser;
+    debugger;
     const Posts = () =>
       posts.map((post) => (
         <Photo
@@ -41,14 +44,14 @@ class SomeoneProfile extends Component {
         {this.state.showPostModal ? (
           <PostModal
             show={this.state.showPostModal}
-            post="images/nature.jpg"
+            postId={posts[0].id}
             personPhoto="images/download.jfif"
-            person="angusyoung"
+            person={user.username}
             onShowChange={this.displayModalPost.bind(this)}
           />
         ) : null}
         <OptionsButton />
-        <ProfileHeader />
+        <ProfileHeader user={user} postsCount={posts.length} />
         <button
           style={{ float: "right" }}
           className="btn btn-block btn-primary btn-md mt-4 mb-4"

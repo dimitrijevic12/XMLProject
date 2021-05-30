@@ -21,9 +21,9 @@ namespace PostMicroservice.Core.Services
             return _postRepository.GetAll();
         }
 
-        public Post GetById(int id)
+        public Post GetById(Guid id)
         {
-            throw new NotImplementedException();
+            return _postRepository.GetById(id);
         }
 
         public Post Save(Post obj)

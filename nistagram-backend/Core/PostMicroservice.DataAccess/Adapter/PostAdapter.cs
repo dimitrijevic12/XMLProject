@@ -1,10 +1,11 @@
-﻿using PostMicroservice.DataAccess.Adaptee;
-using PostMicroservice.DataAccess.Target;
+﻿using PostMicroservice.Core.Model;
+using PostMicroservice.DataAccess.Adaptee;
+using System.Collections.Generic;
 using System.Data;
 
 namespace PostMicroservice.DataAccess.Adapter
 {
-    public class PostAdapter : ITarget
+    public class PostAdapter
     {
         private readonly PostAdaptee postAdaptee;
 
@@ -13,9 +14,12 @@ namespace PostMicroservice.DataAccess.Adapter
             this.postAdaptee = postAdaptee;
         }
 
-        public object ConvertSql(DataRow dataRow)
+        public object ConvertSqlWithAttributes(DataRow dataRow, IEnumerable<RegisteredUser> likes,
+            IEnumerable<RegisteredUser> dislikes, IEnumerable<HashTag> hashTags,
+            IEnumerable<Comment> comments, IEnumerable<RegisteredUser> taggedUsers)
         {
-            return postAdaptee.ConvertSqlDataReaderToPost(dataRow);
+            return postAdaptee.ConvertSqlDataReaderToPostWithAttributes(dataRow, likes, dislikes,
+                hashTags, comments, taggedUsers);
         }
     }
 }

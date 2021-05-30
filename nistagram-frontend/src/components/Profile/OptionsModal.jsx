@@ -28,7 +28,7 @@ class OptionsModal extends Component {
             }}
             className="btn btn-block btn-md mb-2"
           >
-            <label style={{ color: "red" }}>Block this user</label>
+            <label>Block this user</label>
           </button>
           <hr />
           <button
@@ -41,7 +41,7 @@ class OptionsModal extends Component {
             }}
             className="btn btn-block btn-md mb-2"
           >
-            <label style={{ color: "red" }}>Mute this user</label>
+            <label>Mute this user</label>
           </button>
           <hr />
           <button
@@ -53,7 +53,7 @@ class OptionsModal extends Component {
             }}
             className="btn btn-block btn-md mb-2"
           >
-            <label style={{ color: "red" }}>Report this user</label>
+            <label>Report this user</label>
           </button>
           <hr />
         </ModalBody>

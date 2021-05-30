@@ -10,6 +10,17 @@
         }
       ],
       "UpstreamPathTemplate": "/api/posts/users/{id}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/posts/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44333
+        }
+      ],
+      "UpstreamPathTemplate": "/api/posts/{id}"
     }
   ],
   "GlobalConfiguration": {

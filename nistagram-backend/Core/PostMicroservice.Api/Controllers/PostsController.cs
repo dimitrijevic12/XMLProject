@@ -26,5 +26,12 @@ namespace PostMicroservice.Api.Controllers
             return Ok(_postService.GetByUserId(id).ToList().
                 Select(post => postSingleFactory.Create((PostSingle)post)));
         }
+
+        [HttpGet("{id}")]
+        public IActionResult GetById(Guid id)
+        {
+            Post post = _postService.GetById(id);
+            return Ok(postSingleFactory.Create((PostSingle)_postService.GetById(id)));
+        }
     }
 }
