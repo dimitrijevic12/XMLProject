@@ -59,6 +59,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotificationMicroservice.Da
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StoryMicroservice.DataAccess", "StoryMicroservice.DataAccess\StoryMicroservice.DataAccess.csproj", "{DC82C225-DDE7-4D03-905D-9A533F9B3673}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "APIGateway", "APIGateway", "{41E05658-5C79-4114-B83F-97855DD8AB63}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
