@@ -3,7 +3,6 @@ using PostMicroservice.Api.Factories;
 using PostMicroservice.Core.Interface.Service;
 using PostMicroservice.Core.Model;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace PostMicroservice.Api.Controllers
@@ -24,8 +23,8 @@ namespace PostMicroservice.Api.Controllers
         [HttpGet("user/{id}")]
         public IActionResult GetByUserId(Guid id)
         {
-            List<Post> posts = _postService.GetByUserId(id).ToList();
-            return Ok(posts.Select(post => postSingleFactory.Create((PostSingle)post)));
+            return Ok(_postService.GetByUserId(id).ToList().
+                Select(post => postSingleFactory.Create((PostSingle)post)));
         }
     }
 }
