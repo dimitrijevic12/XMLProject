@@ -40,5 +40,10 @@ namespace PostMicroservice.Core.Services
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<Post> GetByUserId(Guid id)
+        {
+            return _postRepository.GetByUserId(id);
+        }
     }
 }

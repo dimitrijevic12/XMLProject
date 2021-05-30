@@ -19,7 +19,7 @@ class OptionsButton extends Component {
             this.displayModalOptions();
           }}
           style={{ float: "right" }}
-          className="btn mr-5"
+          className="btn-sm mr-5"
         >
           <label style={{ fontSize: "2.2rem" }}>...</label>
         </button>
