@@ -6,24 +6,25 @@ namespace UserMicroservice.Core.Model
 {
     public class RegisteredUser : User
     {
-        private readonly FirstName firstName;
-        private readonly LastName lastName;
-        private readonly DateTime dateOfBirth;
-        private readonly PhoneNumber phoneNumber;
-        private readonly Gender gender;
-        private readonly WebsiteAddress websiteAddress;
-        private readonly Bio bio;
-        private readonly bool isPrivate;
-        private readonly bool isAcceptingMessages;
-        private readonly bool isAcceptingTags;
-        private readonly IEnumerable<RegisteredUser> blockedUsers;
-        private readonly IEnumerable<RegisteredUser> blockedByUsers;
-        private readonly IEnumerable<RegisteredUser> mutedUsers;
-        private readonly IEnumerable<RegisteredUser> mutedByUsers;
-        private readonly IEnumerable<RegisteredUser> following;
-        private readonly IEnumerable<RegisteredUser> followers;
-        private readonly IEnumerable<RegisteredUser> myCloseFriends;
-        private readonly IEnumerable<RegisteredUser> closeFriendTo;
+        public FirstName FirstName { get; }
+        public LastName LastName { get; }
+        public DateTime DateOfBirth { get; }
+        public PhoneNumber PhoneNumber { get; }
+        public Gender Gender { get; }
+        public WebsiteAddress WebsiteAddress { get; }
+        public Bio Bio { get; }
+        public Password Password { get; }
+        public bool IsPrivate { get; }
+        public bool IsAcceptingMessages { get; }
+        public bool IsAcceptingTags { get; }
+        public IEnumerable<RegisteredUser> BlockedUsers { get; }
+        public IEnumerable<RegisteredUser> BlockedByUsers { get; }
+        public IEnumerable<RegisteredUser> MutedUsers { get; }
+        public IEnumerable<RegisteredUser> MutedByUsers { get; }
+        public IEnumerable<RegisteredUser> Following { get; }
+        public IEnumerable<RegisteredUser> Followers { get; }
+        public IEnumerable<RegisteredUser> MyCloseFriends { get; }
+        public IEnumerable<RegisteredUser> CloseFriendTo { get; }
 
         protected RegisteredUser(Guid id, Username username, EmailAddress emailAddress, FirstName firstName,
             LastName lastName, DateTime dateOfBirth, PhoneNumber phoneNumber,
@@ -34,24 +35,24 @@ namespace UserMicroservice.Core.Model
             IEnumerable<RegisteredUser> myCloseFriends, IEnumerable<RegisteredUser> closeFriendTo)
             : base(id, username, emailAddress)
         {
-            this.firstName = firstName;
-            this.lastName = lastName;
-            this.dateOfBirth = dateOfBirth;
-            this.phoneNumber = phoneNumber;
-            this.gender = gender;
-            this.websiteAddress = websiteAddress;
-            this.bio = bio;
-            this.isPrivate = isPrivate;
-            this.isAcceptingMessages = isAcceptingMessages;
-            this.isAcceptingTags = isAcceptingTags;
-            this.blockedUsers = blockedUsers;
-            this.blockedByUsers = blockedByUsers;
-            this.mutedUsers = mutedUsers;
-            this.mutedByUsers = mutedByUsers;
-            this.following = following;
-            this.followers = followers;
-            this.myCloseFriends = myCloseFriends;
-            this.closeFriendTo = closeFriendTo;
+            FirstName = firstName;
+            LastName = lastName;
+            DateOfBirth = dateOfBirth;
+            PhoneNumber = phoneNumber;
+            Gender = gender;
+            WebsiteAddress = websiteAddress;
+            Bio = bio;
+            IsPrivate = isPrivate;
+            IsAcceptingMessages = isAcceptingMessages;
+            IsAcceptingTags = isAcceptingTags;
+            BlockedUsers = blockedUsers;
+            BlockedByUsers = blockedByUsers;
+            MutedUsers = mutedUsers;
+            MutedByUsers = mutedByUsers;
+            Following = following;
+            Followers = followers;
+            MyCloseFriends = myCloseFriends;
+            CloseFriendTo = closeFriendTo;
         }
 
         public static Result<RegisteredUser> Create(Guid id, Username username, EmailAddress emailAddress, FirstName firstName,
