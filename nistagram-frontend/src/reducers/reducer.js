@@ -3,12 +3,15 @@ import {
   GET_POST,
   GET_HASHTAGS_BY_TEXT,
   GET_POSTS_BY_HASHTAG,
+  LOAD_IMAGE,
+  SAVE_POST,
 } from "../types/types";
 
 const initialState = {
   posts: [],
   post: {},
   hashtags: {},
+  loadedImage: "",
 };
 
 function reducer(state = initialState, action) {
@@ -32,6 +35,16 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         posts: action.payload,
+      };
+    case LOAD_IMAGE:
+      return {
+        ...state,
+        loadedImage: action.payload,
+      };
+    case SAVE_POST:
+      return {
+        ...state,
+        post: action.payload,
       };
     default:
       return state;

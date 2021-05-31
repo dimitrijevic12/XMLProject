@@ -7,5 +7,6 @@ namespace PostMicroservice.Core.Interface.Repository
     public interface IPostRepository : IRepository<Post>
     {
         public IEnumerable<Post> GetBy(Guid id, string hashTag);
+        public Post SaveSinglePost(PostSingle post);
     }
 }

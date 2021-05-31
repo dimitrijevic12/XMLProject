@@ -68,15 +68,40 @@ namespace PostMicroservice.DataAccess.Implementation
 
         public Post Save(Post obj)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
-        public Post Edit(Post obj)
+        public Post SaveSinglePost(PostSingle post)
+        {
+            StringBuilder queryBuilder = new StringBuilder("INSERT INTO dbo.Post ");
+            queryBuilder.Append("(id, timestamp, description, registered_user_id, type, location_id) ");
+            queryBuilder.Append("VALUES (@id, @timestamp, @description, @registered_user_id, @type, @location_id);");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+            {
+                new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = post.Id },
+                new SqlParameter("@timestamp", SqlDbType.NVarChar) { Value = post.TimeStamp },
+                new SqlParameter("@description", SqlDbType.NVarChar) { Value = post.Description.ToString() },
+                new SqlParameter("@registered_user_id", SqlDbType.UniqueIdentifier) { Value = post.RegisteredUser.Id },
+                new SqlParameter("@type", SqlDbType.NVarChar) { Value = "single" },
+                new SqlParameter("@location_id", SqlDbType.UniqueIdentifier) { Value = post.Location.Id }
+            };
+
+            ExecuteQuery(query, parameters);
+
+            SaveContentPath(post);
+
+            return post;
+        }
+
+        public Post Edit(Post post)
         {
             throw new System.NotImplementedException();
         }
 
-        public Post Delete(Post obj)
+        public Post Delete(Post post)
         {
             throw new System.NotImplementedException();
         }
@@ -137,6 +162,8 @@ namespace PostMicroservice.DataAccess.Implementation
             List<SqlParameter> parameters = new List<SqlParameter>() { parameterHashTag };
 
             DataTable dataTable = ExecuteQuery(query, parameters);
+
+            int rowsCount = dataTable.Rows.Count;
 
             return (from DataRow dataRow in dataTable.Rows
                     select (Post)_target.ConvertSqlWithAttributes(dataRow, GetLikesForPost((Guid)dataRow[0]),
@@ -237,6 +264,24 @@ namespace PostMicroservice.DataAccess.Implementation
 
             return (from DataRow dataRow in dataTable.Rows
                     select (RegisteredUser)_registeredUserTarget.ConvertSql(dataRow)).ToList();
+        }
+
+        private void SaveContentPath(PostSingle post)
+        {
+            StringBuilder queryBuilder = new StringBuilder("INSERT INTO dbo.Content ");
+            queryBuilder.Append("(id, post_id, content_path) ");
+            queryBuilder.Append("VALUES (@id, @post_id, @content_path);");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+            {
+                new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = Guid.NewGuid() },
+                new SqlParameter("@post_id", SqlDbType.UniqueIdentifier) { Value = post.Id },
+                new SqlParameter("@content_path", SqlDbType.NVarChar) { Value = post.ContentPath.ToString() }
+            };
+
+            ExecuteQuery(query, parameters);
         }
     }
 }

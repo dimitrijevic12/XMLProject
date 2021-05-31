@@ -6,7 +6,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Favorite from "@material-ui/icons/Favorite";
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
 import moment from "moment";
-import { getPost } from "../../actions/actions";
+import { getPost, loadImage } from "../../actions/actions";
 import { connect } from "react-redux";
 import TaggedUsersModal from "./TaggedUsersModal";
 
@@ -22,10 +22,12 @@ class PostModal extends Component {
   }
 
   render() {
-    if (this.props.post == undefined) {
+    if (this.props.post == undefined || this.props.loadImage == undefined) {
       return null;
     }
     const post = this.props.post;
+    const loadedImage = this.props.loadedImage;
+    debugger;
     return (
       <Modal
         style={{
@@ -44,7 +46,7 @@ class PostModal extends Component {
             />
           ) : null}
           <img
-            src={this.props.personPhoto}
+            src={"data:image/jpg;base64," + loadedImage}
             style={{ width: 32, height: 32, borderRadius: 50 }}
           />
           <span style={{ width: 15, display: "inline-block" }}></span>
@@ -56,7 +58,7 @@ class PostModal extends Component {
               onClick={() => {
                 this.displayModalPost();
               }}
-              src="images/nature.jpg"
+              src={"data:image/jpg;base64," + loadedImage}
               style={{ width: 800, height: 320 }}
               className="mb-3"
             />
@@ -138,6 +140,9 @@ class PostModal extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({ post: state.post });
+const mapStateToProps = (state) => ({
+  post: state.post,
+  loadedImage: state.loadedImage,
+});
 
-export default connect(mapStateToProps, { getPost })(PostModal);
+export default connect(mapStateToProps, { getPost, loadImage })(PostModal);

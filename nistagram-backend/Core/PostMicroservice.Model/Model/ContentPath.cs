@@ -24,6 +24,11 @@ namespace PostMicroservice.Core.Model
             yield return path;
         }
 
+        public override string ToString()
+        {
+            return this.path;
+        }
+
         public static implicit operator string(ContentPath contentPath) => contentPath.path;
     }
 }

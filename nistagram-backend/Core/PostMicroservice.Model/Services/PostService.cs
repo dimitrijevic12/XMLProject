@@ -3,7 +3,7 @@ using PostMicroservice.Core.Interface.Service;
 using PostMicroservice.Core.Model;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 
 namespace PostMicroservice.Core.Services
 {
@@ -16,19 +16,45 @@ namespace PostMicroservice.Core.Services
             _postRepository = postRepository;
         }
 
-        public Post Save(Post obj)
+        public IEnumerable<Post> GetAll()
+        {
+            return _postRepository.GetAll();
+        }
+
+        public Post GetById(Guid id)
+        {
+            return _postRepository.GetById(id);
+        }
+
+        public Post Save(Post post)
+        {
+            return _postRepository.Save(post);
+        }
+
+        public Post Edit(Post post)
         {
             throw new NotImplementedException();
         }
 
-        public Post Edit(Post obj)
+        public Post Delete(Post post)
         {
             throw new NotImplementedException();
         }
 
-        public Post Delete(Post obj)
+        public IEnumerable<Post> GetByUserId(Guid id)
         {
-            throw new NotImplementedException();
+            return _postRepository.GetByUserId(id);
+        }
+
+        public byte[] GetImage(string path, string fileName)
+        {
+            path = path + "\\images\\" + fileName;
+            return File.ReadAllBytes(path);
+        }
+
+        public Post SaveSinglePost(PostSingle post)
+        {
+            return _postRepository.SaveSinglePost(post);
         }
     }
 }

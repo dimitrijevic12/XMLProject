@@ -34,6 +34,17 @@
       "UpstreamPathTemplate": "/api/hashtags?text={text}"
     },
     {
+      "DownstreamPathTemplate": "/api/posts/contents/{fileName}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44333
+        }
+      ],
+      "UpstreamPathTemplate": "/api/posts/contents/{fileName}"
+    },
+    {
       "DownstreamPathTemplate": "/api/posts?{everything}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
@@ -43,6 +54,17 @@
         }
       ],
       "UpstreamPathTemplate": "/api/posts?{everything}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/posts/",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44333
+        }
+      ],
+      "UpstreamPathTemplate": "/api/posts/"
     }
   ],
   "GlobalConfiguration": {

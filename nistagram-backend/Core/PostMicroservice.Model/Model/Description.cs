@@ -23,6 +23,11 @@ namespace PostMicroservice.Core.Model
             yield return description;
         }
 
+        public override string ToString()
+        {
+            return this.description;
+        }
+
         public static implicit operator string(Description description) => description.description;
     }
 }
