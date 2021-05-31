@@ -32,6 +32,8 @@ namespace PostMicroservice.Api
 
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<IHashTagRepository, HashTagRepository>();
+            services.AddScoped<HashTagFactory>();
             services.AddScoped<LocationFactory>();
             services.AddScoped<PostSingleFactory>();
             services.AddScoped<RegisteredUserFactory>();
