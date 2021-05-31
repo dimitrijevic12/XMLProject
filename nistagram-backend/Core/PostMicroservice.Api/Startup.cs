@@ -30,9 +30,9 @@ namespace PostMicroservice.Api
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PostMicroservice.Api", Version = "v1" });
             });
 
-            services.AddScoped<IPostService, PostService>();
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<IHashTagRepository, HashTagRepository>();
+            services.AddScoped<PostService>();
             services.AddScoped<HashTagFactory>();
             services.AddScoped<LocationFactory>();
             services.AddScoped<PostSingleFactory>();

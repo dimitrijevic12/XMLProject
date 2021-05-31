@@ -7,23 +7,13 @@ using System.Linq;
 
 namespace PostMicroservice.Core.Services
 {
-    public class PostService : IPostService
+    public class PostService
     {
         private readonly IPostRepository _postRepository;
 
         public PostService(IPostRepository postRepository)
         {
             _postRepository = postRepository;
-        }
-
-        public IEnumerable<Post> GetAll()
-        {
-            return _postRepository.GetAll();
-        }
-
-        public Post GetById(Guid id)
-        {
-            return _postRepository.GetById(id);
         }
 
         public Post Save(Post obj)
@@ -39,11 +29,6 @@ namespace PostMicroservice.Core.Services
         public Post Delete(Post obj)
         {
             throw new NotImplementedException();
-        }
-
-        public IEnumerable<Post> GetByUserId(Guid id)
-        {
-            return _postRepository.GetByUserId(id);
         }
     }
 }

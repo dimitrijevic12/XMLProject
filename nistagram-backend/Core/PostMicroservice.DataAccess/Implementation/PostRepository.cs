@@ -81,21 +81,60 @@ namespace PostMicroservice.DataAccess.Implementation
             throw new System.NotImplementedException();
         }
 
-        public IEnumerable<Post> GetByUserId(Guid id)
+        public IEnumerable<Post> GetBy(Guid id, string hashTag)
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT p.id, p.timestamp, p.description, " +
                 "p.type, l.id, l.street, l.city_name, l.country, r.id, r.username, r.first_name, " +
                 "r.last_name, r.profilePicturePath, r.isPrivate, r.isAcceptingTags, c.content_path ");
             queryBuilder.Append("FROM dbo.Post AS p, dbo.Location AS l, dbo.RegisteredUser AS r, " +
-                "dbo.Content AS c ");
-            queryBuilder.Append("WHERE p.location_id=l.id AND p.registered_user_id=r.id AND p.id=c.post_id " +
-                "AND r.Id = @Id;");
+                "dbo.Content AS c, dbo.HashTags AS h ");
+            queryBuilder.Append("WHERE p.location_id=l.id AND p.registered_user_id=r.id AND p.id=c.post_id ");
+
+            List<SqlParameter> parameters = new List<SqlParameter>();
+
+            if (id != Guid.Empty || !String.IsNullOrWhiteSpace(hashTag))
+            {
+                if (id != Guid.Empty)
+                {
+                    queryBuilder.Append("AND r.Id = @Id ");
+
+                    SqlParameter parameterId = new SqlParameter("@Id", SqlDbType.UniqueIdentifier) { Value = id };
+                    parameters.Add(parameterId);
+                }
+                if (!String.IsNullOrWhiteSpace(hashTag))
+                {
+                    queryBuilder.Append("AND h.text = @HashTag ");
+
+                    SqlParameter parameterHashTag = new SqlParameter("@HashTag", SqlDbType.NVarChar) { Value = hashTag };
+                    parameters.Add(parameterHashTag);
+                }
+            }
 
             string query = queryBuilder.ToString();
 
-            SqlParameter parameterId = new SqlParameter("@Id", SqlDbType.UniqueIdentifier) { Value = id };
+            DataTable dataTable = ExecuteQuery(query, parameters);
 
-            List<SqlParameter> parameters = new List<SqlParameter>() { parameterId };
+            return (from DataRow dataRow in dataTable.Rows
+                    select (Post)_target.ConvertSqlWithAttributes(dataRow, GetLikesForPost((Guid)dataRow[0]),
+                    GetDislikesForPost((Guid)dataRow[0]), GetHashTagsForPost((Guid)dataRow[0]),
+                    GetCommentsForPost((Guid)dataRow[0]), GetTaggedPeopleForPost((Guid)dataRow[0]))).ToList();
+        }
+
+        public IEnumerable<Post> GetByHashTag(string hashTag)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT p.id, p.timestamp, p.description, " +
+                "p.type, l.id, l.street, l.city_name, l.country, r.id, r.username, r.first_name, " +
+                "r.last_name, r.profilePicturePath, r.isPrivate, r.isAcceptingTags, c.content_path ");
+            queryBuilder.Append("FROM dbo.Post AS p, dbo.Location AS l, dbo.RegisteredUser AS r, " +
+                "dbo.Content AS c, dbo.HashTags AS h ");
+            queryBuilder.Append("WHERE p.location_id=l.id AND p.registered_user_id=r.id AND p.id=c.post_id " +
+                "AND h.text = @HashTag;");
+
+            string query = queryBuilder.ToString();
+
+            SqlParameter parameterHashTag = new SqlParameter("@HashTag", SqlDbType.UniqueIdentifier) { Value = "%" + hashTag + "%" };
+
+            List<SqlParameter> parameters = new List<SqlParameter>() { parameterHashTag };
 
             DataTable dataTable = ExecuteQuery(query, parameters);
 

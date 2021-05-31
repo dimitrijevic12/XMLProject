@@ -23,7 +23,7 @@ namespace PostMicroservice.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetByText([FromQuery] string text)
+        public IActionResult GetBy([FromQuery] string text)
         {
             return Ok(hashTagFactory.CreateHashTags(_hashTagRepository.GetByText(text)));
         }
