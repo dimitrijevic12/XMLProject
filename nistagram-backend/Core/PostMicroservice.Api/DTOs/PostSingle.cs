@@ -11,8 +11,10 @@ namespace PostMicroservice.Api.DTOs
         public RegisteredUser RegisteredUser { get; set; }
         public IEnumerable<RegisteredUser> Likes { get; set; }
         public IEnumerable<RegisteredUser> Dislikes { get; set; }
+        public IEnumerable<Comment> Comments { get; set; }
         public Location Location { get; set; }
-        public IEnumerable<string> HashTags { get; set; }
+        public IEnumerable<RegisteredUser> TaggedUsers { get; set; }
+        public IEnumerable<HashTag> HashTags { get; set; }
         public string ContentPath { get; set; }
     }
 }

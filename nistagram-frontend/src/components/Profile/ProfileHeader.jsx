@@ -2,7 +2,10 @@ import React, { Component } from "react";
 import { Profile } from "react-instagram-ui-kit";
 
 class ProfileHeader extends Component {
-  state = {};
+  state = {
+    user: this.props.user,
+    postsCount: this.props.postsCount,
+  };
   render() {
     return (
       <Profile
@@ -10,9 +13,13 @@ class ProfileHeader extends Component {
         Lead guitarist of AC⚡DC
       `}
         pictureSrc="images/download.jfif"
-        username="angusyoung"
-        followersData={[5, 3000000, 55]}
-        fullname="Angus Young"
+        username={this.state.user.username}
+        followersData={[
+          this.state.postsCount,
+          this.state.user.followers.length,
+          this.state.user.following.length,
+        ]}
+        fullname={this.state.user.firstName + " " + this.state.user.lastName}
       />
     );
   }

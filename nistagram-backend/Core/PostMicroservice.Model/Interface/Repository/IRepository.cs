@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace PostMicroservice.Core.Interface.Repository
 {
@@ -6,7 +7,7 @@ namespace PostMicroservice.Core.Interface.Repository
     {
         IEnumerable<T> GetAll();
 
-        T GetById(int id);
+        T GetById(Guid id);
 
         T Save(T obj);
 

@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { savePost } from "../../actions/actions";
+import { connect } from "react-redux";
 
 class CreatePost extends Component {
   state = {
@@ -9,6 +11,7 @@ class CreatePost extends Component {
     location: "",
     tag: "",
   };
+
   render() {
     return (
       <React.Fragment>
@@ -71,10 +74,19 @@ class CreatePost extends Component {
           </div>
         </div>
         <div className="mt-5 pb-5">
-          <button className="btn btn-primary btn-block">Post</button>
+          <button
+            onClick={this.createPost.bind(this)}
+            className="btn btn-primary btn-block"
+          >
+            Post
+          </button>
         </div>
       </React.Fragment>
     );
+  }
+
+  async createRegistration() {
+    this.props.savePost(this.state.post);
   }
 
   choosePost = async (event) => {
@@ -92,4 +104,6 @@ class CreatePost extends Component {
   };
 }
 
-export default CreatePost;
+const mapStateToProps = (state) => ({});
+
+export default connect(mapStateToProps, { savePost })(CreatePost);

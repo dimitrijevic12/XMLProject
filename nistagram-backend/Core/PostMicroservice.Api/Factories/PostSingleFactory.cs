@@ -7,11 +7,16 @@ namespace PostMicroservice.Api.Factories
     {
         private readonly RegisteredUserFactory registeredUserFactory;
         private readonly LocationFactory locationFactory;
+        private readonly CommentFactory commentFactory;
+        private readonly HashTagFactory hashTagFactory;
 
-        public PostSingleFactory(RegisteredUserFactory registeredUserFactory, LocationFactory locationFactory)
+        public PostSingleFactory(RegisteredUserFactory registeredUserFactory, LocationFactory locationFactory,
+            CommentFactory commentFactory, HashTagFactory hashTagFactory)
         {
             this.registeredUserFactory = registeredUserFactory;
             this.locationFactory = locationFactory;
+            this.commentFactory = commentFactory;
+            this.hashTagFactory = hashTagFactory;
         }
 
         public PostSingle Create(Core.Model.PostSingle post)
@@ -22,10 +27,12 @@ namespace PostMicroservice.Api.Factories
                 TimeStamp = post.TimeStamp,
                 Description = post.Description,
                 RegisteredUser = registeredUserFactory.Create(post.RegisteredUser),
-                Likes = new List<RegisteredUser>(),
-                Dislikes = new List<RegisteredUser>(),
+                Likes = registeredUserFactory.CreateUsers(post.Likes),
+                Dislikes = registeredUserFactory.CreateUsers(post.Dislikes),
+                Comments = commentFactory.CreateComments(post.Comments),
                 Location = locationFactory.Create(post.Location),
-                HashTags = new List<string>(),
+                TaggedUsers = registeredUserFactory.CreateUsers(post.TaggedUsers),
+                HashTags = hashTagFactory.CreateHashTags(post.HashTags),
                 ContentPath = post.ContentPath
             };
         }

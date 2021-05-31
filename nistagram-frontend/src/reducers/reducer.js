@@ -1,10 +1,15 @@
 import { GET_POSTS_BY_USER_ID,
-         REGISTER_USER
+         REGISTER_USER,
+         GET_POST,
+         LOAD_IMAGE,
+         SAVE_POST,
 } from "../types/types";
 
 const initialState = {
   posts: [],
-  registeredUser: {}
+  registeredUser: {},
+  post: {},
+  loadedImage: "",
 };
 
 function reducer(state = initialState, action) {
@@ -18,6 +23,21 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         registeredUser: action.payload,
+      };
+    case GET_POST:
+      return {
+        ...state,
+        post: action.payload,
+      };
+    case LOAD_IMAGE:
+      return {
+        ...state,
+        loadedImage: action.payload,
+      };
+    case SAVE_POST:
+      return {
+        ...state,
+        post: action.payload,
       };
     default:
       return state;

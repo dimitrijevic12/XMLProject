@@ -7,19 +7,26 @@ namespace PostMicroservice.DataAccess.Adaptee
 {
     public class PostAdaptee
     {
-        public Post ConvertSqlDataReaderToPost(DataRow dataRow)
+        public Post ConvertSqlDataReaderToPostWithAttributes(DataRow dataRow, IEnumerable<RegisteredUser> likes,
+            IEnumerable<RegisteredUser> dislikes, IEnumerable<HashTag> hashTags,
+            IEnumerable<Comment> comments, IEnumerable<RegisteredUser> taggedUsers)
         {
             if (dataRow[3].ToString().Trim().Equals("album", StringComparison.InvariantCultureIgnoreCase))
             {
-                return ConvertSqlDataReaderToPostAlbum(dataRow);
+                return ConvertSqlDataReaderToPostAlbumWithAttributes(dataRow, likes, dislikes,
+                hashTags, comments, taggedUsers);
             }
             else
             {
-                return ConvertSqlDataReaderToPostSingle(dataRow);
+                return ConvertSqlDataReaderToPostSingleWithAttributes(dataRow, likes, dislikes,
+                hashTags, comments, taggedUsers);
             }
         }
 
-        private PostAlbum ConvertSqlDataReaderToPostAlbum(DataRow dataRow)
+        private PostAlbum ConvertSqlDataReaderToPostAlbumWithAttributes(DataRow dataRow,
+            IEnumerable<RegisteredUser> likes, IEnumerable<RegisteredUser> dislikes,
+            IEnumerable<HashTag> hashTags, IEnumerable<Comment> comments,
+            IEnumerable<RegisteredUser> taggedUsers)
         {
             return PostAlbum.Create(
                 id: Guid.Parse(dataRow[0].ToString().Trim()),
@@ -37,19 +44,22 @@ namespace PostMicroservice.DataAccess.Adaptee
                                         blockedByUsers: new List<RegisteredUser>(),
                                         following: new List<RegisteredUser>(),
                                         followers: new List<RegisteredUser>()).Value,
-                likes: new List<RegisteredUser>(),
-                dislikes: new List<RegisteredUser>(),
-                comments: new List<Comment>(),
+                likes: likes,
+                dislikes: dislikes,
+                comments: comments,
                 location: Location.Create(id: Guid.Parse(dataRow[4].ToString().Trim()),
                                           street: Street.Create(dataRow[5].ToString().Trim()).Value,
                                           cityName: CityName.Create(dataRow[6].ToString().Trim()).Value,
                                           country: Country.Create(dataRow[7].ToString().Trim()).Value).Value,
-                taggedUsers: new List<RegisteredUser>(),
-                hashTags: new List<HashTag>(),
+                taggedUsers: taggedUsers,
+                hashTags: hashTags,
                 contentPaths: new List<ContentPath>()).Value;
         }
 
-        private PostSingle ConvertSqlDataReaderToPostSingle(DataRow dataRow)
+        private PostSingle ConvertSqlDataReaderToPostSingleWithAttributes(DataRow dataRow,
+            IEnumerable<RegisteredUser> likes, IEnumerable<RegisteredUser> dislikes,
+            IEnumerable<HashTag> hashTags, IEnumerable<Comment> comments,
+            IEnumerable<RegisteredUser> taggedUsers)
         {
             return PostSingle.Create(
                 id: Guid.Parse(dataRow[0].ToString().Trim()),
@@ -67,15 +77,15 @@ namespace PostMicroservice.DataAccess.Adaptee
                                         blockedByUsers: new List<RegisteredUser>(),
                                         following: new List<RegisteredUser>(),
                                         followers: new List<RegisteredUser>()).Value,
-                likes: new List<RegisteredUser>(),
-                dislikes: new List<RegisteredUser>(),
-                comments: new List<Comment>(),
+                likes: likes,
+                dislikes: dislikes,
+                comments: comments,
                 location: Location.Create(id: Guid.Parse(dataRow[4].ToString().Trim()),
                                           street: Street.Create(dataRow[5].ToString().Trim()).Value,
                                           cityName: CityName.Create(dataRow[6].ToString().Trim()).Value,
                                           country: Country.Create(dataRow[7].ToString().Trim()).Value).Value,
-                taggedUsers: new List<RegisteredUser>(),
-                hashTags: new List<HashTag>(),
+                taggedUsers: taggedUsers,
+                hashTags: hashTags,
                 contentPath: ContentPath.Create(dataRow[15].ToString().Trim()).Value).Value;
         }
     }

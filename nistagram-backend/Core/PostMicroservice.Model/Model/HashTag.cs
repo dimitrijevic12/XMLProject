@@ -4,11 +4,11 @@ namespace PostMicroservice.Core.Model
 {
     public class HashTag
     {
-        private readonly HashTagText hashTagText;
+        public HashTagText HashTagText { get; }
 
         private HashTag(HashTagText hashTagText)
         {
-            this.hashTagText = hashTagText;
+            this.HashTagText = hashTagText;
         }
 
         public static Result<HashTag> Create(HashTagText hashTagText)
