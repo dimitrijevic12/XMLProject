@@ -1,6 +1,7 @@
 ﻿using PostMicroservice.Core.Interface.Repository;
 using PostMicroservice.Core.Model;
 using System;
+using System.Collections.Generic;
 
 namespace PostMicroservice.Core.Services
 {
@@ -16,6 +17,11 @@ namespace PostMicroservice.Core.Services
         public RegisteredUser GetById(Guid id)
         {
             return _userRepository.GetById(id);
+        }
+
+        public IEnumerable<RegisteredUser> GetTaggable()
+        {
+            return _userRepository.GetTaggable();
         }
     }
 }

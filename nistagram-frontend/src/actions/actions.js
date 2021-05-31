@@ -7,6 +7,10 @@ import {
   LOAD_IMAGE_ERROR,
   SAVE_POST,
   SAVE_POST_ERROR,
+  GET_LOCATIONS,
+  GET_LOCATIONS_ERROR,
+  GET_TAGGABLE_USERS,
+  GET_TAGGABLE_USERS_ERROR,
 } from "../types/types";
 import axios from "axios";
 
@@ -111,6 +115,47 @@ export const savePost = (post) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: SAVE_POST_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const getLocations = () => async (dispatch) => {
+  try {
+    debugger;
+    const response = await axios.get("https://localhost:44355/api/locations", {
+      headers: { "Access-Control-Allow-Origin": "*" },
+    });
+    debugger;
+    dispatch({
+      type: GET_LOCATIONS,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_LOCATIONS_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const getTaggableUsers = () => async (dispatch) => {
+  try {
+    debugger;
+    const response = await axios.get(
+      "https://localhost:44355/api/users/taggable",
+      {
+        headers: { "Access-Control-Allow-Origin": "*" },
+      }
+    );
+    debugger;
+    dispatch({
+      type: GET_TAGGABLE_USERS,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_TAGGABLE_USERS_ERROR,
       payload: console.log(e),
     });
   }

@@ -6,3 +6,7 @@ export const LOAD_IMAGE = "loadImage";
 export const LOAD_IMAGE_ERROR = "loadImageError";
 export const SAVE_POST = "savePost";
 export const SAVE_POST_ERROR = "savePostError";
+export const GET_LOCATIONS = "getLocations";
+export const GET_LOCATIONS_ERROR = "getLocationsError";
+export const GET_TAGGABLE_USERS = "getTaggableUsers";
+export const GET_TAGGABLE_USERS_ERROR = "getTaggableUsersError";

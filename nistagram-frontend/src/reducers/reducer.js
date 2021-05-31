@@ -3,12 +3,16 @@ import {
   GET_POST,
   LOAD_IMAGE,
   SAVE_POST,
+  GET_LOCATIONS,
+  GET_TAGGABLE_USERS,
 } from "../types/types";
 
 const initialState = {
   posts: [],
   post: {},
   loadedImage: "",
+  locations: [],
+  taggableUsers: [],
 };
 
 function reducer(state = initialState, action) {
@@ -32,6 +36,16 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         post: action.payload,
+      };
+    case GET_LOCATIONS:
+      return {
+        ...state,
+        locations: action.payload,
+      };
+    case GET_TAGGABLE_USERS:
+      return {
+        ...state,
+        taggableUsers: action.payload,
       };
     default:
       return state;

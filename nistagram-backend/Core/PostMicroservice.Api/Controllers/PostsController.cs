@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using PostMicroservice.Api.Factories;
 using PostMicroservice.Core.Interface.Service;
 using PostMicroservice.Core.Model;
+using PostMicroservice.Core.Model.File;
 using PostMicroservice.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -48,8 +49,17 @@ namespace PostMicroservice.Api.Controllers
         [HttpGet("contents/{fileName}")]
         public IActionResult GetImage(string fileName)
         {
-            FileContentResult fileContentResult = File(_postService.GetImage(_env.WebRootPath, fileName), "image/jpeg");
+            FileContentResult fileContentResult = File(_postService.GetImage(_env.WebRootPath, fileName),
+                "image/jpeg");
             return Ok(fileContentResult);
+        }
+
+        [HttpPost("contents")]
+        public IActionResult SaveImg([FromForm] FileModel file)
+        {
+            string fileName = _postService.ImageToSave(_env.WebRootPath, file);
+
+            return Ok(fileName);
         }
 
         [HttpPost]

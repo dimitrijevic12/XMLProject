@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text;
+using System.Linq;
 
 namespace PostMicroservice.DataAccess.Implementation
 {
@@ -55,6 +56,21 @@ namespace PostMicroservice.DataAccess.Implementation
         public RegisteredUser Delete(RegisteredUser obj)
         {
             throw new NotImplementedException();
+        }
+
+        public IEnumerable<RegisteredUser> GetTaggable()
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT * ");
+            queryBuilder.Append("FROM dbo.RegisteredUser ");
+            queryBuilder.Append("WHERE isAcceptingTags = 1;");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>();
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+            return (from DataRow dataRow in dataTable.Rows
+                    select (RegisteredUser)_registeredUserTarget.ConvertSql(dataRow)).ToList();
         }
     }
 }
