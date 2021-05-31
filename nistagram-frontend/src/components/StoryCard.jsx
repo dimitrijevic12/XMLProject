@@ -14,7 +14,7 @@ class StoryCard extends Component {
   render() {
     return (
       <Card>
-        <CardBody style={{ zIndex: "1" }}>
+        <CardBody style={{ zIndex: "0" }}>
           <StoryList items={this.state.items} onClick={this.handleClick} />
         </CardBody>
       </Card>

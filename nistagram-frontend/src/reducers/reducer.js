@@ -1,8 +1,14 @@
-import { GET_POSTS_BY_USER_ID, GET_POST } from "../types/types";
+import {
+  GET_POSTS_BY_USER_ID,
+  GET_POST,
+  GET_HASHTAGS_BY_TEXT,
+  GET_POSTS_BY_HASHTAG,
+} from "../types/types";
 
 const initialState = {
   posts: [],
   post: {},
+  hashtags: {},
 };
 
 function reducer(state = initialState, action) {
@@ -16,6 +22,16 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         post: action.payload,
+      };
+    case GET_HASHTAGS_BY_TEXT:
+      return {
+        ...state,
+        hashtags: action.payload,
+      };
+    case GET_POSTS_BY_HASHTAG:
+      return {
+        ...state,
+        posts: action.payload,
       };
     default:
       return state;

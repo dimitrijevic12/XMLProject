@@ -1,21 +1,21 @@
 import React, { Component } from "react";
 import NavigationBar from "./NavigationBar";
+import SearchBar from "./SearchBar";
 
 class Header extends Component {
   state = {};
   render() {
     debugger;
     return (
-      <header  className="pt-4">
+      <header className="pt-4">
         <b>Ništagram</b>
-        <span style={{ width: 400, display: "inline-block" }}></span>
-        <input
-          style={{ textAlign: "center" }}
-          type="text"
-          placeholder="Search"
-        />
-        <span style={{ width: 200, display: "inline-block" }}></span>
-        <NavigationBar />
+        <span style={{ width: 300, display: "inline-block" }}></span>
+        <span style={{ width: 300, display: "inline-block" }}>
+          <SearchBar></SearchBar>
+        </span>
+        <span style={{ display: "inline-block", float: "right", zIndex: "4" }}>
+          <NavigationBar />
+        </span>
         <hr />
       </header>
     );
