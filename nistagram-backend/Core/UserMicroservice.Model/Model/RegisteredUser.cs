@@ -26,9 +26,13 @@ namespace UserMicroservice.Core.Model
         public IEnumerable<RegisteredUser> MyCloseFriends { get; }
         public IEnumerable<RegisteredUser> CloseFriendTo { get; }
 
+        protected RegisteredUser() : base()
+        {
+        }
+
         protected RegisteredUser(Guid id, Username username, EmailAddress emailAddress, FirstName firstName,
             LastName lastName, DateTime dateOfBirth, PhoneNumber phoneNumber,
-            Gender gender, WebsiteAddress websiteAddress, Bio bio, bool isPrivate, bool isAcceptingMessages, bool isAcceptingTags,
+            Gender gender, WebsiteAddress websiteAddress, Bio bio, bool isPrivate, bool isAcceptingMessages, bool isAcceptingTags, Password password,
             IEnumerable<RegisteredUser> blockedUsers, IEnumerable<RegisteredUser> blockedByUsers,
             IEnumerable<RegisteredUser> mutedUsers, IEnumerable<RegisteredUser> mutedByUsers,
             IEnumerable<RegisteredUser> following, IEnumerable<RegisteredUser> followers,
@@ -45,6 +49,7 @@ namespace UserMicroservice.Core.Model
             IsPrivate = isPrivate;
             IsAcceptingMessages = isAcceptingMessages;
             IsAcceptingTags = isAcceptingTags;
+            Password = password;
             BlockedUsers = blockedUsers;
             BlockedByUsers = blockedByUsers;
             MutedUsers = mutedUsers;
@@ -57,7 +62,7 @@ namespace UserMicroservice.Core.Model
 
         public static Result<RegisteredUser> Create(Guid id, Username username, EmailAddress emailAddress, FirstName firstName,
             LastName lastName, DateTime dateOfBirth, PhoneNumber phoneNumber,
-            Gender gender, WebsiteAddress websiteAddress, Bio bio, bool isPrivate, bool isAcceptingMessages, bool isAcceptingTags,
+            Gender gender, WebsiteAddress websiteAddress, Bio bio, bool isPrivate, bool isAcceptingMessages, bool isAcceptingTags, Password password,
             IEnumerable<RegisteredUser> blockedUsers, IEnumerable<RegisteredUser> blockedByUsers,
             IEnumerable<RegisteredUser> mutedUsers, IEnumerable<RegisteredUser> mutedByUsers,
             IEnumerable<RegisteredUser> following, IEnumerable<RegisteredUser> followers,
@@ -65,7 +70,7 @@ namespace UserMicroservice.Core.Model
         {
             return Result.Success(new RegisteredUser(id, username, emailAddress, firstName,
             lastName, dateOfBirth, phoneNumber,
-            gender, websiteAddress, bio, isPrivate, isAcceptingMessages, isAcceptingTags,
+            gender, websiteAddress, bio, isPrivate, isAcceptingMessages, isAcceptingTags, password,
             blockedUsers, blockedByUsers,
             mutedUsers, mutedByUsers,
             following, followers,

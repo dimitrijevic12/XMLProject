@@ -24,6 +24,11 @@ namespace UserMicroservice.Core.Model
             yield return address;
         }
 
+        public override string ToString()
+        {
+            return this.address;
+        }
+
         public static implicit operator string(EmailAddress emailAddress) => emailAddress.address;
     }
 }

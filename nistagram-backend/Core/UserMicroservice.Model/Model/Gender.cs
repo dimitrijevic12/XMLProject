@@ -24,6 +24,11 @@ namespace UserMicroservice.Core.Model
             yield return gender;
         }
 
+        public override string ToString()
+        {
+            return this.gender;
+        }
+
         public static implicit operator string(Gender gender) => gender.gender;
     }
 }

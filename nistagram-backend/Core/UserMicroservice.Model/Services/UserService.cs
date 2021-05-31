@@ -14,13 +14,42 @@ namespace UserMicroservice.Core.Services
     {
         private readonly IUserRepository _userRepository;
 
-        //u controller samo dodaj guid.newguid() za id a sve ostalo dobijas sa postmena
+        public UserService(IUserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
+
         public Result Create(RegisteredUser registeredUser)
         {
-            //findbyID dodaj u IUserRepository i napraviti metodu da proverava i username
-            if ((_userRepository.FindById(registeredUser.Id).HasValue) || (_userRepository.FindByUsername(registeredUser.Username).HasValue)) return Result.Failure("Employee with that id or username already exist");
+            if (_userRepository.GetById(registeredUser.Id).HasValue) return Result.Failure("User with that id already exist");
+            if (_userRepository.GetByUsername(registeredUser.Username).HasValue) return Result.Failure("User with that username already exist");
             _userRepository.Save(registeredUser);
-            return Result.Success();
+            return Result.Success(registeredUser);
+        }
+
+        public RegisteredUser Delete(RegisteredUser obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public RegisteredUser Edit(RegisteredUser obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<RegisteredUser> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public RegisteredUser GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public RegisteredUser Save(RegisteredUser obj)
+        {
+            throw new NotImplementedException();
         }
     }
 }

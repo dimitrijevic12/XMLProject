@@ -23,6 +23,11 @@ namespace UserMicroservice.Core.Model
             yield return number;
         }
 
+        public override string ToString()
+        {
+            return this.number;
+        }
+
         public static implicit operator string(PhoneNumber phoneNumber) => phoneNumber.number;
     }
 }

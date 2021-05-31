@@ -1,7 +1,10 @@
-import { GET_POSTS_BY_USER_ID } from "../types/types";
+import { GET_POSTS_BY_USER_ID,
+         REGISTER_USER
+} from "../types/types";
 
 const initialState = {
   posts: [],
+  registeredUser: {}
 };
 
 function reducer(state = initialState, action) {
@@ -10,6 +13,11 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         posts: action.payload,
+      };
+    case REGISTER_USER:
+      return {
+        ...state,
+        registeredUser: action.payload,
       };
     default:
       return state;

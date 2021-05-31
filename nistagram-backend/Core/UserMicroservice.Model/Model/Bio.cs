@@ -23,6 +23,11 @@ namespace UserMicroservice.Core.Model
             yield return bio;
         }
 
+        public override string ToString()
+        {
+            return this.bio;
+        }
+
         public static implicit operator string(Bio bio) => bio.bio;
     }
 }

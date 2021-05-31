@@ -28,6 +28,11 @@ namespace UserMicroservice.Core.Model
             yield return password;
         }
 
+        public override string ToString()
+        {
+            return this.password;
+        }
+
         public static implicit operator string(Password password) => password.password;
     }
 }

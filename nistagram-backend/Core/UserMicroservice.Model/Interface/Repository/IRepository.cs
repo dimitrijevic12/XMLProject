@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CSharpFunctionalExtensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace UserMicroservice.Core.Interface.Repository
     {
         IEnumerable<T> GetAll();
 
-        T GetById(int id);
+        Maybe<T> GetById(Guid id);
 
         T Save(T obj);
 
