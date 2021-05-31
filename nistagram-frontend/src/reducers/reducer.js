@@ -1,10 +1,11 @@
+import { loadImage } from "../actions/actions";
 import {
   GET_POSTS_BY_USER_ID,
   GET_POST,
   GET_HASHTAGS_BY_TEXT,
   GET_POSTS_BY_HASHTAG,
-  LOAD_IMAGE,
   SAVE_POST,
+  LOAD_IMAGE,
 } from "../types/types";
 
 const initialState = {

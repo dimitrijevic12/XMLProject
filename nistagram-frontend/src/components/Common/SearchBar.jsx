@@ -4,6 +4,7 @@ import { getHashTagsByText } from "../../actions/actions";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { withRouter } from "react-router-dom";
+import { BallotRounded } from "@material-ui/icons";
 
 class SearchBar extends Component {
   state = { inputValue: "", type: "" };
@@ -15,7 +16,7 @@ class SearchBar extends Component {
         defaultOptions
         onInputChange={this.handleInputChange}
         onChange={this.test}
-        isClearable
+        defaultValue={""}
         placeholder="Search"
       />
     );
@@ -23,8 +24,9 @@ class SearchBar extends Component {
 
   test = (value) => {
     debugger;
-    this.props.history.push({
-      pathname: "/explore",
+    console.log();
+    this.props.history.replace({
+      pathname: "/explore" + value.value,
       state: {
         searchObject: value,
       },

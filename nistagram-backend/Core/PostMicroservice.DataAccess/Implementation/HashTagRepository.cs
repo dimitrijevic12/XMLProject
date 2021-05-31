@@ -25,7 +25,7 @@ namespace PostMicroservice.DataAccess.Implementation
 
         public IEnumerable<HashTag> GetByText(string text)
         {
-            StringBuilder queryBuilder = new StringBuilder("SELECT text ");
+            StringBuilder queryBuilder = new StringBuilder("SELECT distinct text ");
             queryBuilder.Append("FROM dbo.HashTags ");
             queryBuilder.Append("WHERE text LIKE @Text;");
 

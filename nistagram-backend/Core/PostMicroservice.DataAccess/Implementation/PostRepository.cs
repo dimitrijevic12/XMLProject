@@ -113,7 +113,7 @@ namespace PostMicroservice.DataAccess.Implementation
                 "r.last_name, r.profilePicturePath, r.isPrivate, r.isAcceptingTags, c.content_path ");
             queryBuilder.Append("FROM dbo.Post AS p, dbo.Location AS l, dbo.RegisteredUser AS r, " +
                 "dbo.Content AS c, dbo.HashTags AS h ");
-            queryBuilder.Append("WHERE p.location_id=l.id AND p.registered_user_id=r.id AND p.id=c.post_id ");
+            queryBuilder.Append("WHERE p.location_id=l.id AND p.registered_user_id=r.id AND p.id=c.post_id AND h.post_id = p.id ");
 
             List<SqlParameter> parameters = new List<SqlParameter>();
 

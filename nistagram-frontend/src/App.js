@@ -54,7 +54,7 @@ function App() {
           <Route exact path="/review-item">
             <ReviewItemPage />
           </Route>
-          <Route path="/explore">
+          <Route path="/explore:query">
             <Explore />
           </Route>
           <Route path="/:username">
