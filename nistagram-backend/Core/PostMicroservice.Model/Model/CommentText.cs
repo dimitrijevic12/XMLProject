@@ -25,6 +25,11 @@ namespace PostMicroservice.Core.Model
             yield return text;
         }
 
+        public override string ToString()
+        {
+            return this.text;
+        }
+
         public static implicit operator string(CommentText commentText) => commentText.text;
     }
 }

@@ -21,6 +21,28 @@
         }
       ],
       "UpstreamPathTemplate": "/api/posts/{id}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/posts/contents/{fileName}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44333
+        }
+      ],
+      "UpstreamPathTemplate": "/api/posts/contents/{fileName}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/posts/",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44333
+        }
+      ],
+      "UpstreamPathTemplate": "/api/posts/"
     }
   ],
   "GlobalConfiguration": {

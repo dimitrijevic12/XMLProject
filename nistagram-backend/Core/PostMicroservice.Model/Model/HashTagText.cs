@@ -24,6 +24,11 @@ namespace PostMicroservice.Core.Model
             yield return text;
         }
 
+        public override string ToString()
+        {
+            return this.text;
+        }
+
         public static implicit operator string(HashTagText hashTagText) => hashTagText.text;
     }
 }

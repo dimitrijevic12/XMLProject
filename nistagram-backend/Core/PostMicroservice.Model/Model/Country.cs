@@ -23,6 +23,11 @@ namespace PostMicroservice.Core.Model
             yield return name;
         }
 
+        public override string ToString()
+        {
+            return this.name;
+        }
+
         public static implicit operator string(Country country) => country.name;
     }
 }

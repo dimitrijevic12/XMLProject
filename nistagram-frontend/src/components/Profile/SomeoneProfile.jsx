@@ -16,6 +16,7 @@ class SomeoneProfile extends Component {
   state = {
     showPostModal: false,
     posts: [],
+    postId: "",
   };
 
   componentDidMount() {
@@ -35,7 +36,7 @@ class SomeoneProfile extends Component {
         <Photo
           src="images/nature.jpg"
           onClick={() => {
-            this.displayModalPost();
+            this.displayModalPost(post);
           }}
         />
       ));
@@ -44,7 +45,7 @@ class SomeoneProfile extends Component {
         {this.state.showPostModal ? (
           <PostModal
             show={this.state.showPostModal}
-            postId={posts[0].id}
+            postId={this.state.postId}
             personPhoto="images/download.jfif"
             person={user.username}
             onShowChange={this.displayModalPost.bind(this)}
@@ -69,8 +70,13 @@ class SomeoneProfile extends Component {
     );
   }
 
-  displayModalPost() {
+  displayModalPost(post) {
     debugger;
+    if (post != undefined) {
+      this.setState({
+        postId: post.id,
+      });
+    }
     this.setState({
       showPostModal: !this.state.showPostModal,
     });
