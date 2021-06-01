@@ -92,6 +92,8 @@ namespace PostMicroservice.DataAccess.Implementation
             ExecuteQuery(query, parameters);
 
             SaveContentPath(post);
+            SaveHashTags(post);
+            SaveTaggedUsers(post);
 
             return post;
         }
@@ -240,6 +242,158 @@ namespace PostMicroservice.DataAccess.Implementation
                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = Guid.NewGuid() },
                 new SqlParameter("@post_id", SqlDbType.UniqueIdentifier) { Value = post.Id },
                 new SqlParameter("@content_path", SqlDbType.NVarChar) { Value = post.ContentPath.ToString() }
+            };
+
+            ExecuteQuery(query, parameters);
+        }
+
+        private void SaveHashTags(PostSingle post)
+        {
+            foreach (HashTag hashTag in post.HashTags)
+            {
+                StringBuilder queryBuilder = new StringBuilder("INSERT INTO dbo.HashTags ");
+                queryBuilder.Append("(id, post_id, text) ");
+                queryBuilder.Append("VALUES (@id, @post_id, @text);");
+
+                string query = queryBuilder.ToString();
+
+                List<SqlParameter> parameters = new List<SqlParameter>
+            {
+                new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = Guid.NewGuid() },
+                new SqlParameter("@post_id", SqlDbType.UniqueIdentifier) { Value = post.Id },
+                new SqlParameter("@text", SqlDbType.NVarChar) { Value = hashTag.HashTagText.ToString() }
+            };
+
+                ExecuteQuery(query, parameters);
+            }
+        }
+
+        private void SaveTaggedUsers(PostSingle post)
+        {
+            foreach (RegisteredUser registeredUser in post.TaggedUsers)
+            {
+                StringBuilder queryBuilder = new StringBuilder("INSERT INTO dbo.PostProfileTags ");
+                queryBuilder.Append("(id, post_id, registered_user_id) ");
+                queryBuilder.Append("VALUES (@id, @post_id, @registered_user_id);");
+
+                string query = queryBuilder.ToString();
+
+                List<SqlParameter> parameters = new List<SqlParameter>
+            {
+                new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = Guid.NewGuid() },
+                new SqlParameter("@post_id", SqlDbType.UniqueIdentifier) { Value = post.Id },
+                new SqlParameter("@registered_user_id", SqlDbType.UniqueIdentifier) { Value = registeredUser.Id }
+            };
+
+                ExecuteQuery(query, parameters);
+            }
+        }
+
+        public void Like(Guid id, Guid userId)
+        {
+            if (AlreadyLiked(id, userId))
+            {
+                return;
+            }
+            StringBuilder queryBuilder = new StringBuilder("INSERT INTO dbo.Likes ");
+            queryBuilder.Append("(id, post_id, registered_user_id) ");
+            queryBuilder.Append("VALUES (@id, @post_id, @registered_user_id);");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+            {
+                new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = Guid.NewGuid() },
+                new SqlParameter("@post_id", SqlDbType.UniqueIdentifier) { Value = id },
+                new SqlParameter("@registered_user_id", SqlDbType.UniqueIdentifier) { Value = userId }
+            };
+
+            ExecuteQuery(query, parameters);
+        }
+
+        public void Dislike(Guid id, Guid userId)
+        {
+            if (AlreadyDisliked(id, userId))
+            {
+                return;
+            }
+            StringBuilder queryBuilder = new StringBuilder("INSERT INTO dbo.Dislikes ");
+            queryBuilder.Append("(id, post_id, registered_user_id) ");
+            queryBuilder.Append("VALUES (@id, @post_id, @registered_user_id);");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+            {
+                new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = Guid.NewGuid() },
+                new SqlParameter("@post_id", SqlDbType.UniqueIdentifier) { Value = id },
+                new SqlParameter("@registered_user_id", SqlDbType.UniqueIdentifier) { Value = userId }
+            };
+
+            ExecuteQuery(query, parameters);
+        }
+
+        private bool AlreadyLiked(Guid id, Guid userId)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT * ");
+            queryBuilder.Append("FROM dbo.Likes ");
+            queryBuilder.Append("WHERE post_id = @Id AND registered_user_id = @userId;");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+            {
+                new SqlParameter("@Id", SqlDbType.UniqueIdentifier) { Value = id },
+                new SqlParameter("@userId", SqlDbType.UniqueIdentifier) { Value = userId },
+            };
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            if (dataTable.Rows.Count > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private bool AlreadyDisliked(Guid id, Guid userId)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT * ");
+            queryBuilder.Append("FROM dbo.Dislikes ");
+            queryBuilder.Append("WHERE post_id = @Id AND registered_user_id = @userId;");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+            {
+                new SqlParameter("@Id", SqlDbType.UniqueIdentifier) { Value = id },
+                new SqlParameter("@userId", SqlDbType.UniqueIdentifier) { Value = userId },
+            };
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            if (dataTable.Rows.Count > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public void CommentPost(Guid postId, Comment comment)
+        {
+            StringBuilder queryBuilder = new StringBuilder("INSERT INTO dbo.Comment ");
+            queryBuilder.Append("(id, timestamp, comment_text, registered_user_id, post_id) ");
+            queryBuilder.Append("VALUES (@id, @timestamp, @comment_text, @registered_user_id, @post_id);");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+            {
+                new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = Guid.NewGuid() },
+                new SqlParameter("@timestamp", SqlDbType.NVarChar) { Value = comment.TimeStamp },
+                new SqlParameter("@comment_text", SqlDbType.NVarChar) { Value = comment.CommentText.ToString() },
+                new SqlParameter("@registered_user_id", SqlDbType.UniqueIdentifier) { Value = comment.RegisteredUser.Id },
+                new SqlParameter("@post_id", SqlDbType.UniqueIdentifier) { Value = postId },
             };
 
             ExecuteQuery(query, parameters);

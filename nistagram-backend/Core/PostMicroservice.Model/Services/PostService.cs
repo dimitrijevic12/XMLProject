@@ -73,5 +73,20 @@ namespace PostMicroservice.Core.Services
         {
             return _postRepository.SaveSinglePost(post);
         }
+
+        public void Like(Guid id, Guid userId)
+        {
+            _postRepository.Like(id, userId);
+        }
+
+        public void Dislike(Guid id, Guid userId)
+        {
+            _postRepository.Dislike(id, userId);
+        }
+
+        public void CommentPost(Guid postId, Comment comment)
+        {
+            _postRepository.CommentPost(postId, comment);
+        }
     }
 }

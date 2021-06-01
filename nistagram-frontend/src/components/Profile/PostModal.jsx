@@ -6,7 +6,13 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Favorite from "@material-ui/icons/Favorite";
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
 import moment from "moment";
-import { getPost, loadImage } from "../../actions/actions";
+import {
+  getPost,
+  loadImage,
+  likePost,
+  dislikePost,
+  commentPost,
+} from "../../actions/actions";
 import { connect } from "react-redux";
 import TaggedUsersModal from "./TaggedUsersModal";
 
@@ -14,11 +20,22 @@ class PostModal extends Component {
   state = {
     showPostModal: this.props.show,
     showTaggedModal: false,
+    likesCount: 0,
+    dislikesCount: 0,
+    liked: false,
+    disliked: false,
+    commentText: "",
+    comments: [],
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     debugger;
-    this.props.getPost(this.props.postId);
+    await this.props.getPost(this.props.postId);
+    this.setState({
+      likesCount: this.props.post.likes.length,
+      dislikesCount: this.props.post.dislikes.length,
+      comments: this.props.post.comments,
+    });
   }
 
   render() {
@@ -62,9 +79,9 @@ class PostModal extends Component {
               style={{ width: 800, height: 320 }}
               className="mb-3"
             />
-            {post.hashTags.map((hashTag) => (
-              <div>{hashTag.hashTagText}</div>
-            ))}
+            <div>
+              {post.hashTags.map((hashTag) => hashTag.hashTagText + " ")}
+            </div>
             {post.description}
             <br />
             {moment(post.timeStamp).format("DD/MM/YYYY HH:mm")}
@@ -85,12 +102,23 @@ class PostModal extends Component {
               style={{ width: 24, height: 24 }}
               control={
                 <Checkbox
+                  onClick={() => {
+                    this.likePost();
+                  }}
                   icon={<FavoriteBorder />}
                   checkedIcon={<Favorite />}
                   name="checkedH"
                 />
               }
             />
+            <img
+              style={{ width: 24, height: 24 }}
+              onClick={() => {
+                this.dislikePost();
+              }}
+              src="images/dislike.png"
+            />
+            <span style={{ width: 15, display: "inline-block" }}></span>
             <img src="images/chat.png" />
             <span style={{ width: 15, display: "inline-block" }}></span>
             <img src="images/send.png" />
@@ -98,11 +126,12 @@ class PostModal extends Component {
             <br />
             Likes:{" "}
             <a href="javascript:;" className="mr-2">
-              {post.likes.length}
+              {this.state.likesCount}
             </a>
-            Dislikes: <a href="javascript:;">{post.dislikes.length}</a> <br />
+            Dislikes: <a href="javascript:;">{this.state.dislikesCount}</a>{" "}
+            <br />
             <hr />
-            {post.comments.map((comment) => (
+            {this.state.comments.map((comment) => (
               <div>
                 <img src="images/user.png" /> {comment.commentText}
                 <br />
@@ -111,19 +140,93 @@ class PostModal extends Component {
             ))}
             <div style={{ float: "left" }}>
               <input
+                name="commentText"
+                value={this.state.commentText}
+                onChange={this.handleChange}
                 style={{ border: 0 }}
                 type="text"
                 placeholder="Add a comment..."
               />
             </div>
             <div style={{ float: "right" }}>
-              <a href="javascript:;"> Post </a>
+              <a
+                onClick={() => {
+                  this.commentPost();
+                }}
+                href=""
+              >
+                {" "}
+                Post{" "}
+              </a>
             </div>
           </div>
         </ModalBody>
         <ModalFooter></ModalFooter>
       </Modal>
     );
+  }
+
+  handleChange = (event) => {
+    debugger;
+    const { name, value, type, checked } = event.target;
+    type === "checkbox"
+      ? this.setState({
+          [name]: checked,
+        })
+      : this.setState({
+          [name]: value,
+        });
+  };
+
+  async likePost() {
+    debugger;
+    if (this.state.liked == false) {
+      this.setState((prevState) => {
+        return { likesCount: prevState.likesCount + 1 };
+      });
+    } else {
+      this.setState((prevState) => {
+        return { likesCount: prevState.likesCount - 1 };
+      });
+    }
+
+    await this.props.likePost({
+      id: this.props.post.id,
+      userId: "12345678-1234-1234-1234-123456789123",
+    });
+    this.setState({
+      liked: !this.state.liked,
+    });
+  }
+
+  async dislikePost() {
+    debugger;
+    if (this.state.disliked == false) {
+      this.setState((prevState) => {
+        return { dislikesCount: prevState.dislikesCount + 1 };
+      });
+    } else {
+      this.setState((prevState) => {
+        return { dislikesCount: prevState.dislikesCount - 1 };
+      });
+    }
+
+    await this.props.dislikePost({
+      id: this.props.post.id,
+      userId: "12345678-1234-1234-1234-123456789123",
+    });
+    this.setState({
+      disliked: !this.state.disliked,
+    });
+  }
+
+  async commentPost() {
+    const comment = {
+      CommentText: this.state.commentText,
+      RegisteredUser: { id: "12345678-1234-1234-1234-123456789123" },
+    };
+    debugger;
+    await this.props.commentPost({ id: this.props.post.id, comment: comment });
   }
 
   toggle() {
@@ -145,4 +248,10 @@ const mapStateToProps = (state) => ({
   loadedImage: state.loadedImage,
 });
 
-export default connect(mapStateToProps, { getPost, loadImage })(PostModal);
+export default connect(mapStateToProps, {
+  getPost,
+  loadImage,
+  likePost,
+  dislikePost,
+  commentPost,
+})(PostModal);

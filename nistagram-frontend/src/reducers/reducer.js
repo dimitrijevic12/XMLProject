@@ -1,10 +1,14 @@
 import {
   GET_POSTS_BY_USER_ID,
+  REGISTER_USER,
   GET_POST,
   LOAD_IMAGE,
   SAVE_POST,
   GET_LOCATIONS,
   GET_TAGGABLE_USERS,
+  LIKE_POST,
+  DISLIKE_POST,
+  COMMENT_POST,
 } from "../types/types";
 
 const initialState = {
@@ -52,6 +56,18 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         taggableUsers: action.payload,
+      };
+    case LIKE_POST:
+      return {
+        ...state,
+      };
+    case DISLIKE_POST:
+      return {
+        ...state,
+      };
+    case COMMENT_POST:
+      return {
+        ...state,
       };
     default:
       return state;

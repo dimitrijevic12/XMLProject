@@ -15,5 +15,11 @@ namespace PostMicroservice.Core.Interface.Service
         public Post SaveSinglePost(PostSingle post);
 
         string ImageToSave(string path, FileModel file);
+
+        public void Like(Guid id, Guid userId);
+
+        public void Dislike(Guid id, Guid userId);
+
+        public void CommentPost(Guid postId, Comment comment);
     }
 }

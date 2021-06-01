@@ -15,12 +15,13 @@ class CreatePost extends Component {
     description: "",
     location: {},
     locations: [],
-    tag: "",
+    hashTagText: "",
     contentPath: "",
     registeredUser: { id: "12345678-1234-1234-1234-123456789123" },
     taggableUsers: [],
     taggedUsers: [],
     taggableUser: {},
+    leftTaggableUsers: [],
   };
 
   async componentDidMount() {
@@ -41,6 +42,12 @@ class CreatePost extends Component {
       this.props.taggableUsers == undefined
     ) {
       return null;
+    }
+    debugger;
+    if (this.state.leftTaggableUsers.length == 0) {
+      this.setState({
+        leftTaggableUsers: this.props.taggableUsers,
+      });
     }
     return (
       <React.Fragment>
@@ -75,7 +82,7 @@ class CreatePost extends Component {
               <label for="tag">People in this photo:</label>
               <select className="form-control" onChange={this.handleChangeUser}>
                 <option>Select user</option>
-                {this.state.taggableUsers.map((option, index) => (
+                {this.state.leftTaggableUsers.map((option, index) => (
                   <option key={index} value={index}>
                     {option.firstName +
                       " " +
@@ -86,6 +93,14 @@ class CreatePost extends Component {
                   </option>
                 ))}
               </select>
+              <button
+                className="btn btn-primary "
+                onClick={() => {
+                  this.addTagged();
+                }}
+              >
+                Add
+              </button>
             </div>
           </div>
           <div className="d-inline-flex w-50">
@@ -109,6 +124,22 @@ class CreatePost extends Component {
             </div>
           </div>
         </div>
+        <div className="mt-5">
+          <div className="d-inline-flex w-50">
+            <div class="form-group w-100 pr-5">
+              <label className="label">Hash Tags:</label>
+              <textarea
+                name="hashTagText"
+                value={this.state.hashTagText}
+                onChange={this.handleChange}
+                cols="40"
+                rows="5"
+                class="form-control"
+                placeholder="Enter hash tags, seperated by space"
+              ></textarea>
+            </div>
+          </div>
+        </div>
         <div className="mt-5 pb-5">
           <button
             className="btn btn-primary btn-block"
@@ -123,17 +154,39 @@ class CreatePost extends Component {
     );
   }
 
+  addTagged() {
+    var listLeft = this.state.leftTaggableUsers;
+    var listTagged = this.state.taggedUsers;
+    const taggedUser = this.state.taggableUser;
+    listTagged.push(this.state.taggableUser);
+    debugger;
+    const listLeft2 = listLeft.filter(function (el) {
+      return el.id != taggedUser.id;
+    });
+    this.setState({
+      leftTaggableUsers: listLeft2,
+      taggedUsers: listTagged,
+    });
+  }
+
   async createPost() {
+    const res = this.state.hashTagText.split(" ");
+    var hashTagsObjects = [];
+    res.forEach((element) => hashTagsObjects.push({ HashTagText: element }));
     await this.props.savePost({
       Description: this.state.description,
       RegisteredUser: this.state.registeredUser,
       Location: this.state.location,
       ContentPath: this.state.contentPath,
+      HashTags: hashTagsObjects,
+      Taggedusers: this.state.taggedUsers,
     });
   }
 
   handleChangeUser = (e) => {
-    this.setState({ taggableUser: this.state.taggableUsers[e.target.value] });
+    this.setState({
+      taggableUser: this.state.leftTaggableUsers[e.target.value],
+    });
   };
 
   handleChangeLocation = (e) => {
