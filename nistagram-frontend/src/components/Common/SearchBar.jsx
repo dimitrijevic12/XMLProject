@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import AsyncSelect from "react-select/async";
-import { getHashTagsByText } from "../../actions/actions";
+import { getHashTagsByText, getLocationsByText } from "../../actions/actions";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { withRouter } from "react-router-dom";
-import { BallotRounded } from "@material-ui/icons";
 
 class SearchBar extends Component {
   state = { inputValue: "", type: "" };
@@ -15,18 +14,17 @@ class SearchBar extends Component {
         loadOptions={this.loadOptions}
         defaultOptions
         onInputChange={this.handleInputChange}
-        onChange={this.test}
+        onChange={this.search}
         defaultValue={""}
         placeholder="Search"
       />
     );
   }
 
-  test = (value) => {
+  search = (value) => {
     debugger;
-    console.log();
     this.props.history.replace({
-      pathname: "/explore" + value.value,
+      pathname: "/explore" + value.label,
       state: {
         searchObject: value,
       },
@@ -43,7 +41,6 @@ class SearchBar extends Component {
   loadOptions = async (inputValue, callback) => {
     debugger;
     await this.props.getHashTagsByText(inputValue);
-    debugger;
     var valueList = [];
     this.props.hashtags.forEach((element) => {
       valueList.push({
@@ -52,6 +49,16 @@ class SearchBar extends Component {
         type: "hashtag",
       });
     });
+    debugger;
+    await this.props.getLocationsByText(inputValue);
+    this.props.locations.forEach((element) => {
+      valueList.push({
+        value: element,
+        label: this.createLocationLabel(element),
+        type: "location",
+      });
+    });
+    debugger;
     callback(this.filterOptions(valueList));
   };
 
@@ -59,11 +66,22 @@ class SearchBar extends Component {
     debugger;
     return valueList;
   };
+
+  createLocationLabel(element) {
+    debugger;
+    if (element.street !== "") return element.street + ", " + element.cityName;
+    if (element.cityName !== "")
+      return element.cityName + ", " + element.country;
+    else return element.country;
+  }
 }
 
-const mapStateToProps = (state) => ({ hashtags: state.hashtags });
+const mapStateToProps = (state) => ({
+  hashtags: state.hashtags,
+  locations: state.locations,
+});
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, { getHashTagsByText })
+  connect(mapStateToProps, { getHashTagsByText, getLocationsByText })
 )(SearchBar);

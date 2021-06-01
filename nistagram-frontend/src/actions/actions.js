@@ -11,6 +11,10 @@ import {
   LOAD_IMAGE_ERROR,
   SAVE_POST,
   SAVE_POST_ERROR,
+  GET_LOCATIONS_BY_TEXT,
+  GET_LOCATIONS_BY_TEXT_ERROR,
+  GET_POSTS_BY_LOCATION,
+  GET_POSTS_BY_LOCATION_ERROR,
 } from "../types/types";
 import axios from "axios";
 
@@ -51,6 +55,31 @@ export const getPostsByHashTag = (hashtag) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: GET_POSTS_BY_HASHTAG_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const getPostsByLocation = (location) => async (dispatch) => {
+  try {
+    debugger;
+    const response = await axios.get("https://localhost:44355/api/posts?", {
+      params: {
+        country: location.country,
+        city: location.cityName,
+        street: location.street,
+        access: "public",
+      },
+      headers: { "Access-Control-Allow-Origin": "*" },
+    });
+    debugger;
+    dispatch({
+      type: GET_POSTS_BY_LOCATION,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_POSTS_BY_LOCATION_ERROR,
       payload: console.log(e),
     });
   }
@@ -156,6 +185,27 @@ export const getHashTagsByText = (text) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: GET_HASHTAGS_BY_TEXT_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const getLocationsByText = (text) => async (dispatch) => {
+  try {
+    debugger;
+    const response = await axios.get(
+      "https://localhost:44355/api/locations?text=" + text,
+      {
+        headers: { "Access-Control-Allow-Origin": "*" },
+      }
+    );
+    dispatch({
+      type: GET_LOCATIONS_BY_TEXT,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_LOCATIONS_BY_TEXT_ERROR,
       payload: console.log(e),
     });
   }

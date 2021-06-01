@@ -1,86 +1,69 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "../layouts/Layout";
 import { Grid, Photo } from "react-instagram-ui-kit";
-import { getPostsByHashTag } from "../actions/actions";
+import { getPostsByHashTag, getPostsByLocation } from "../actions/actions";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { withRouter } from "react-router-dom";
 import PostModal from "../components/Profile/PostModal";
 import _ from "lodash";
 
-class Explore extends Component {
-  state = {};
+function Explore(props) {
+  const [postId, setPostId] = useState("");
+  const [showPostModal, setShowPostModal] = useState(false);
+  const [username, setUsername] = useState("");
+  const posts = props.posts;
 
-  componentDidMount() {
+  useEffect(() => {
     debugger;
-    this.props.getPostsByHashTag(this.props.location.state.searchObject.value);
-  }
-
-  static getDerivedStateFromProps(props, state) {
-    debugger;
-    // Re-run the filter whenever the list array or filter text change.
-    // Note we need to store prevPropsList and prevFilterText to detect changes.
-    if (
-      state.location === undefined ||
-      props.location.pathname !== state.location.pathname ||
-      _.isEqual(props.posts, state.posts)
-    ) {
+    if (props.location.state.searchObject.type === "hashtag") {
       props.getPostsByHashTag(props.location.state.searchObject.value);
-      return {
-        posts: props.posts,
-        location: props.location,
-      };
+    } else if (props.location.state.searchObject.type === "location") {
+      props.getPostsByLocation(props.location.state.searchObject.value);
     }
+  }, [props.location.pathname]);
+  debugger;
+  if (props.posts === undefined) {
     return null;
   }
+  const Posts = () =>
+    posts.map((post) => (
+      <Photo
+        src={"images/" + post.contentPath}
+        onClick={() => displayModalPost(post)}
+      />
+    ));
 
-  render() {
-    if (this.props.posts == undefined) {
-      return null;
-    }
-    const posts = this.props.posts;
-    const Posts = () =>
-      posts.map((post) => (
-        <Photo
-          src={"images/" + post.contentPath}
-          onClick={() => {
-            this.displayModalPost(post);
-          }}
-        />
-      ));
-    return (
-      <Layout>
-        {this.state.showPostModal ? (
-          <PostModal
-            show={this.state.showPostModal}
-            postId={this.state.postId}
-            personPhoto="images/download.jfif"
-            onShowChange={this.displayModalPost.bind(this)}
-          />
-        ) : null}
-        <Grid>
-          <Posts />
-        </Grid>
-      </Layout>
-    );
-  }
-
-  displayModalPost(post) {
+  const displayModalPost = (post) => {
     debugger;
     if (post != undefined) {
-      this.setState({
-        postId: post.id,
-      });
+      setPostId(post.id);
+      setUsername(post.registeredUser.username);
     }
-    this.setState({
-      showPostModal: !this.state.showPostModal,
-    });
-  }
+    setShowPostModal(!showPostModal);
+  };
+
+  return (
+    <Layout>
+      {showPostModal ? (
+        <PostModal
+          show={showPostModal}
+          postId={postId}
+          personPhoto="images/download.jfif"
+          person={username}
+          onShowChange={() => displayModalPost()}
+        />
+      ) : null}
+      <Grid>
+        <Posts />
+      </Grid>
+    </Layout>
+  );
 }
 
 const mapStateToProps = (state) => ({ posts: state.posts });
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, { getPostsByHashTag })
+  connect(mapStateToProps, { getPostsByHashTag, getPostsByLocation })
 )(Explore);

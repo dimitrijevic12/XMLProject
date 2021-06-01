@@ -6,12 +6,15 @@ import {
   GET_POSTS_BY_HASHTAG,
   SAVE_POST,
   LOAD_IMAGE,
+  GET_LOCATIONS_BY_TEXT,
+  GET_POSTS_BY_LOCATION,
 } from "../types/types";
 
 const initialState = {
   posts: [],
   post: {},
   hashtags: {},
+  locations: [],
   loadedImage: "",
 };
 
@@ -37,6 +40,11 @@ function reducer(state = initialState, action) {
         ...state,
         posts: action.payload,
       };
+    case GET_POSTS_BY_LOCATION:
+      return {
+        ...state,
+        posts: action.payload,
+      };
     case LOAD_IMAGE:
       return {
         ...state,
@@ -46,6 +54,11 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         post: action.payload,
+      };
+    case GET_LOCATIONS_BY_TEXT:
+      return {
+        ...state,
+        locations: action.payload,
       };
     default:
       return state;
