@@ -11,5 +11,7 @@ namespace UserMicroservice.Core.Interface.Repository
     public interface IUserRepository : IRepository<RegisteredUser>
     {
         public Maybe<RegisteredUser> GetByUsername(String username);
+
+        public Maybe<UserModel> GetRoleByUsername(String username);
     }
 }

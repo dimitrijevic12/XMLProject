@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CSharpFunctionalExtensions;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,25 +24,40 @@ namespace UserMicroservice.Api.Controllers
             this.userService = userService;
         }
 
+        [Authorize(Roles = "default")]
         [HttpPost]
         public IActionResult RegisterUser(DTOs.RegisteredUser dto)
         {
             Guid id = Guid.NewGuid();
+
+            Result<Username> username = Username.Create(dto.Username);
+            Result<EmailAddress> emailAddress = EmailAddress.Create(dto.EmailAddress);
+            Result<FirstName> firstName = FirstName.Create(dto.FirstName);
+            Result<LastName> lastName = LastName.Create(dto.LastName);
+            Result<PhoneNumber> phoneNumber = PhoneNumber.Create(dto.PhoneNumber);
+            Result<Gender> gender = Gender.Create(dto.Gender);
+            Result<WebsiteAddress> websiteAddress = WebsiteAddress.Create(dto.WebsiteAddress);
+            Result<Bio> bio = Bio.Create(dto.Bio);
+            Result<Password> password = Password.Create(dto.Password);
+
+            Result result = Result.Combine(username, emailAddress, firstName, lastName, phoneNumber, gender, websiteAddress, bio, password);
+            if (result.IsFailure) return BadRequest();
+
             if (userService.Create(Core.Model.RegisteredUser
                                        .Create(id,
-                                          Username.Create(dto.Username).Value,
-                                          EmailAddress.Create(dto.EmailAddress).Value,
-                                          FirstName.Create(dto.FirstName).Value,
-                                          LastName.Create(dto.LastName).Value,
+                                          username.Value,
+                                          emailAddress.Value,
+                                          firstName.Value,
+                                          lastName.Value,
                                           dto.DateOfBirth,
-                                          PhoneNumber.Create(dto.PhoneNumber).Value,
-                                          Gender.Create(dto.Gender).Value,
-                                          WebsiteAddress.Create(dto.WebsiteAddress).Value,
-                                          Bio.Create(dto.Bio).Value,
+                                          phoneNumber.Value,
+                                          gender.Value,
+                                          websiteAddress.Value,
+                                          bio.Value,
                                           dto.IsPrivate,
                                           dto.IsAcceptingMessages,
                                           dto.IsAcceptingTags,
-                                          Password.Create(dto.Password).Value,
+                                          password.Value,
                                           new List<Core.Model.RegisteredUser>(),
                                           new List<Core.Model.RegisteredUser>(),
                                           new List<Core.Model.RegisteredUser>(),
@@ -50,6 +67,19 @@ namespace UserMicroservice.Api.Controllers
                                           new List<Core.Model.RegisteredUser>(),
                                           new List<Core.Model.RegisteredUser>()).Value).IsFailure) return BadRequest();
             return Created(this.Request.Path + id, "");
+        }
+
+        [HttpPost("login")]
+        public IActionResult Login(Core.Model.UserModel login)
+        {
+            IActionResult response = Unauthorized();
+            var user = userService.FindUser(login);
+            if (user != null)
+            {
+                var tokenString = userService.GenerateJSONWebToken(user);
+                response = Ok(new { token = tokenString });
+            }
+            return response;
         }
     }
 }

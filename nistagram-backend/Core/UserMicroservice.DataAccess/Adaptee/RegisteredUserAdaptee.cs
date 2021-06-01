@@ -8,7 +8,7 @@ using UserMicroservice.Core.Model;
 
 namespace UserMicroservice.DataAccess.Adaptee
 {
-    internal class RegisteredUserAdaptee
+    public class RegisteredUserAdaptee
     {
         public RegisteredUser ConvertSqlDataReaderToRegisteredUser(DataRow dataRow)
         {

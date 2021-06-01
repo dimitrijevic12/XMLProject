@@ -18,6 +18,7 @@ namespace UserMicroservice.DataAccess.Implementation
     public class UserRepository : Repository, IUserRepository
     {
         public ITarget _registeredUserTarget = new RegisteredUserAdapter(new RegisteredUserAdaptee());
+        public ITarget _userModelTarget = new UserModelAdapter(new UserModelAdaptee());
 
         public UserRepository(IConfiguration configuration) : base(configuration)
         {
@@ -82,6 +83,29 @@ namespace UserMicroservice.DataAccess.Implementation
                 );
             }
             return Maybe<RegisteredUser>.None;
+        }
+
+        public Maybe<UserModel> GetRoleByUsername(String username)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT * ");
+            queryBuilder.Append("FROM dbo.RegisteredUser ");
+            queryBuilder.Append("WHERE username = @Username;");
+
+            string query = queryBuilder.ToString();
+
+            SqlParameter parameterUsername = new SqlParameter("@Username", SqlDbType.NVarChar) { Value = username };
+
+            List<SqlParameter> parameters = new List<SqlParameter>() { parameterUsername };
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            if (dataTable.Rows.Count > 0)
+            {
+                return (UserModel)_userModelTarget.ConvertSql(
+                dataTable.Rows[0]
+                );
+            }
+            return Maybe<UserModel>.None;
         }
 
         public RegisteredUser Save(RegisteredUser registeredUser)
