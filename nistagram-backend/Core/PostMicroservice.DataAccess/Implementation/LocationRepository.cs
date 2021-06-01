@@ -68,5 +68,78 @@ namespace PostMicroservice.DataAccess.Implementation
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<Location> GetByText(string text)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT distinct id, street, city_name, country ");
+            queryBuilder.Append("FROM dbo.Location ");
+            queryBuilder.Append("WHERE LOWER(city_name) LIKE LOWER(@Text) OR LOWER(street)LIKE LOWER(@Text)" +
+                " OR LOWER(country) LIKE LOWER(@Text);");
+
+            string query = queryBuilder.ToString();
+
+            SqlParameter parameterText = new SqlParameter("@Text", SqlDbType.NVarChar) { Value = "%" + text + "%" };
+
+            List<SqlParameter> parameters = new List<SqlParameter>() { parameterText };
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            return (from DataRow dataRow in dataTable.Rows
+                    select (Location)_locationTarget.ConvertSql(dataRow));
+        }
+
+        public IEnumerable<Location> GetCountryByText(string text)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT distinct id, street, city_name, country ");
+            queryBuilder.Append("FROM dbo.Location ");
+            queryBuilder.Append("WHERE LOWER(country) LIKE LOWER(@Text);");
+
+            string query = queryBuilder.ToString();
+
+            SqlParameter parameterText = new SqlParameter("@Text", SqlDbType.NVarChar) { Value = "%" + text + "%" };
+
+            List<SqlParameter> parameters = new List<SqlParameter>() { parameterText };
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            return (from DataRow dataRow in dataTable.Rows
+                    select (Location)_locationTarget.ConvertSql(dataRow));
+        }
+
+        public IEnumerable<Location> GetCityByText(string text)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT distinct id, street, city_name, country ");
+            queryBuilder.Append("FROM dbo.Location ");
+            queryBuilder.Append("WHERE LOWER(city_name) LIKE LOWER(@Text);");
+
+            string query = queryBuilder.ToString();
+
+            SqlParameter parameterText = new SqlParameter("@Text", SqlDbType.NVarChar) { Value = "%" + text + "%" };
+
+            List<SqlParameter> parameters = new List<SqlParameter>() { parameterText };
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            return (from DataRow dataRow in dataTable.Rows
+                    select (Location)_locationTarget.ConvertSql(dataRow));
+        }
+
+        public IEnumerable<Location> GetStreetByText(string text)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT distinct id, street, city_name, country ");
+            queryBuilder.Append("FROM dbo.Location ");
+            queryBuilder.Append("WHERE LOWER(street) LIKE LOWER(@Text);");
+
+            string query = queryBuilder.ToString();
+
+            SqlParameter parameterText = new SqlParameter("@Text", SqlDbType.NVarChar) { Value = "%" + text + "%" };
+
+            List<SqlParameter> parameters = new List<SqlParameter>() { parameterText };
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            return (from DataRow dataRow in dataTable.Rows
+                    select (Location)_locationTarget.ConvertSql(dataRow));
+        }
     }
 }

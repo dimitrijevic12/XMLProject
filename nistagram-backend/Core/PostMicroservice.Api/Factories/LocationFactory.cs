@@ -1,4 +1,6 @@
 ﻿using PostMicroservice.Api.DTOs;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PostMicroservice.Api.Factories
 {
@@ -13,6 +15,11 @@ namespace PostMicroservice.Api.Factories
                 CityName = location.CityName,
                 Country = location.Country
             };
+        }
+
+        public IEnumerable<Location> CreateLocations(IEnumerable<Core.Model.Location> locations)
+        {
+            return locations.Select(location => Create(location)).ToList();
         }
     }
 }

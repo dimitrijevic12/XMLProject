@@ -41,11 +41,13 @@ namespace PostMicroservice.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult Search([FromQuery] Guid userId, [FromQuery] string hashTag, [FromQuery] string access)
+        public IActionResult Search([FromQuery] Guid userId, [FromQuery] string hashTag, [FromQuery] string country,
+            [FromQuery] string city, [FromQuery] string street, [FromQuery] string access)
         {
             if (Request.Query.Count == 0) return BadRequest();
             if (userId == Guid.Empty && String.IsNullOrWhiteSpace(hashTag) && String.IsNullOrEmpty(access)) return BadRequest();
-            return Ok(_postRepository.GetBy(userId, hashTag, access).Select(post => postSingleFactory.Create((PostSingle)post)));
+            return Ok(_postRepository.GetBy(userId, hashTag, country, city, street, access)
+                .Select(post => postSingleFactory.Create((PostSingle)post)));
         }
 
         [HttpGet("contents/{fileName}")]

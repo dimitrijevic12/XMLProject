@@ -27,7 +27,7 @@ namespace PostMicroservice.DataAccess.Implementation
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT distinct text ");
             queryBuilder.Append("FROM dbo.HashTags ");
-            queryBuilder.Append("WHERE text LIKE @Text;");
+            queryBuilder.Append("WHERE LOWER(text) LIKE LOWER(@Text);");
 
             string query = queryBuilder.ToString();
 

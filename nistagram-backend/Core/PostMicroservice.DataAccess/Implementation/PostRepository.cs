@@ -106,7 +106,7 @@ namespace PostMicroservice.DataAccess.Implementation
             throw new System.NotImplementedException();
         }
 
-        public IEnumerable<Post> GetBy(Guid id, string hashTag, string access)
+        public IEnumerable<Post> GetBy(Guid id, string hashTag, string country, string city, string street, string access)
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT p.id, p.timestamp, p.description, " +
                 "p.type, l.id, l.street, l.city_name, l.country, r.id, r.username, r.first_name, " +
@@ -117,7 +117,9 @@ namespace PostMicroservice.DataAccess.Implementation
 
             List<SqlParameter> parameters = new List<SqlParameter>();
 
-            if (id != Guid.Empty || !String.IsNullOrWhiteSpace(hashTag) || !String.IsNullOrWhiteSpace(access))
+            if (id != Guid.Empty || !String.IsNullOrWhiteSpace(hashTag)
+                || !String.IsNullOrWhiteSpace(country) || !String.IsNullOrWhiteSpace(access)
+                || !String.IsNullOrWhiteSpace(city) || !String.IsNullOrWhiteSpace(street))
             {
                 if (id != Guid.Empty)
                 {
@@ -132,6 +134,24 @@ namespace PostMicroservice.DataAccess.Implementation
 
                     SqlParameter parameterHashTag = new SqlParameter("@HashTag", SqlDbType.NVarChar) { Value = hashTag };
                     parameters.Add(parameterHashTag);
+                }
+                if (!String.IsNullOrWhiteSpace(country))
+                {
+                    queryBuilder.Append("AND LOWER(country) = LOWER(@Country) ");
+                    SqlParameter parameterCountry = new SqlParameter("@Country", SqlDbType.NVarChar) { Value = country };
+                    parameters.Add(parameterCountry);
+                }
+                if (!String.IsNullOrWhiteSpace(city))
+                {
+                    queryBuilder.Append("AND LOWER(city_name) = LOWER(@City) ");
+                    SqlParameter parameterCity = new SqlParameter("@City", SqlDbType.NVarChar) { Value = city };
+                    parameters.Add(parameterCity);
+                }
+                if (!String.IsNullOrWhiteSpace(street))
+                {
+                    queryBuilder.Append("AND LOWER(street) = LOWER(@Street) ");
+                    SqlParameter parameterStreet = new SqlParameter("@Street", SqlDbType.NVarChar) { Value = street };
+                    parameters.Add(parameterStreet);
                 }
                 if (!String.IsNullOrWhiteSpace(access) && access.Equals("private"))
                 {

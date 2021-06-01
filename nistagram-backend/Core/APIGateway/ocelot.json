@@ -34,6 +34,17 @@
       "UpstreamPathTemplate": "/api/hashtags?text={text}"
     },
     {
+      "DownstreamPathTemplate": "/api/locations?text={text}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44333
+        }
+      ],
+      "UpstreamPathTemplate": "/api/locations?text={text}"
+    },
+    {
       "DownstreamPathTemplate": "/api/posts/contents/{fileName}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [

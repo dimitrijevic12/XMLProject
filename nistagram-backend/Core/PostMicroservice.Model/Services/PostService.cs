@@ -43,7 +43,7 @@ namespace PostMicroservice.Core.Services
 
         public IEnumerable<Post> GetByUserId(Guid id)
         {
-            return _postRepository.GetBy(id, "", "");
+            return _postRepository.GetBy(id, "", "", "", "", "");
         }
 
         public byte[] GetImage(string path, string fileName)
