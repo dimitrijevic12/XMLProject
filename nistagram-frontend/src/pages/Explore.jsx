@@ -42,7 +42,7 @@ class Explore extends Component {
     const Posts = () =>
       posts.map((post) => (
         <Photo
-          src="images/nature.jpg"
+          src={"images/" + post.contentPath}
           onClick={() => {
             this.displayModalPost(post);
           }}

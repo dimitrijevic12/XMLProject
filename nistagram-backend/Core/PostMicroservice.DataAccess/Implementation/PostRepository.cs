@@ -106,7 +106,7 @@ namespace PostMicroservice.DataAccess.Implementation
             throw new System.NotImplementedException();
         }
 
-        public IEnumerable<Post> GetBy(Guid id, string hashTag)
+        public IEnumerable<Post> GetBy(Guid id, string hashTag, string access)
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT p.id, p.timestamp, p.description, " +
                 "p.type, l.id, l.street, l.city_name, l.country, r.id, r.username, r.first_name, " +
@@ -117,7 +117,7 @@ namespace PostMicroservice.DataAccess.Implementation
 
             List<SqlParameter> parameters = new List<SqlParameter>();
 
-            if (id != Guid.Empty || !String.IsNullOrWhiteSpace(hashTag))
+            if (id != Guid.Empty || !String.IsNullOrWhiteSpace(hashTag) || !String.IsNullOrWhiteSpace(access))
             {
                 if (id != Guid.Empty)
                 {
@@ -131,6 +131,20 @@ namespace PostMicroservice.DataAccess.Implementation
                     queryBuilder.Append("AND h.text = @HashTag ");
 
                     SqlParameter parameterHashTag = new SqlParameter("@HashTag", SqlDbType.NVarChar) { Value = hashTag };
+                    parameters.Add(parameterHashTag);
+                }
+                if (!String.IsNullOrWhiteSpace(access) && access.Equals("private"))
+                {
+                    queryBuilder.Append("AND r.isPrivate = @Access ");
+
+                    SqlParameter parameterHashTag = new SqlParameter("@Access", SqlDbType.Bit) { Value = 1 };
+                    parameters.Add(parameterHashTag);
+                }
+                else if (!String.IsNullOrWhiteSpace(access) && access.Equals("public"))
+                {
+                    queryBuilder.Append("AND r.isPrivate = @Access ");
+
+                    SqlParameter parameterHashTag = new SqlParameter("@Access", SqlDbType.Bit) { Value = 0 };
                     parameters.Add(parameterHashTag);
                 }
             }

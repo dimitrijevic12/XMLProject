@@ -40,7 +40,7 @@ export const getPostsByHashTag = (hashtag) => async (dispatch) => {
   try {
     debugger;
     const response = await axios.get("https://localhost:44355/api/posts?", {
-      params: { hashtag: hashtag },
+      params: { hashtag: hashtag, access: "public" },
       headers: { "Access-Control-Allow-Origin": "*" },
     });
     debugger;
