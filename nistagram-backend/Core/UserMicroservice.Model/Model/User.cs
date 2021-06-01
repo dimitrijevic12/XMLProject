@@ -8,6 +8,10 @@ namespace UserMicroservice.Core.Model
         public Username Username { get; }
         public EmailAddress EmailAddress { get; }
 
+        public User()
+        {
+        }
+
         public User(Guid id, Username username, EmailAddress emailAddress)
         {
             Id = id;

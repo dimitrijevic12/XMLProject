@@ -8,10 +8,13 @@ import {
   LOAD_IMAGE,
   GET_LOCATIONS_BY_TEXT,
   GET_POSTS_BY_LOCATION,
+  REGISTER_USER,
+  SAVE_POST,
 } from "../types/types";
 
 const initialState = {
   posts: [],
+  registeredUser: {},
   post: {},
   hashtags: {},
   locations: [],
@@ -24,6 +27,11 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         posts: action.payload,
+      };
+    case REGISTER_USER:
+      return {
+        ...state,
+        registeredUser: action.payload,
       };
     case GET_POST:
       return {
