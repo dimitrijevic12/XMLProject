@@ -35,9 +35,10 @@ namespace UserMicroservice.Core.Services
 
         public UserModel FindUser(UserModel login)
         {
+            //if provera getByusername u admin repository
             if (_userRepository.GetByUsername(login.Username).HasNoValue) return null;
             UserModel user = _userRepository.GetRoleByUsername(login.Username).Value;
-            if (user.Role == "agentapp") login.Role = "agent";
+            if (user.Role == "agentapp") login.Role = "agent"; //admin
             if (user.Role == "verified") login.Role = "verified";
             if (user.Role == "default" || user.Role == "agentuna" || user.Role == "agentden") login.Role = "default";
 
