@@ -7,6 +7,11 @@
   <ItemGroup>
     <PackageReference Include="CSharpFunctionalExtensions" Version="2.15.2" />
     <PackageReference Include="Ocelot" Version="17.0.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\UserMicroservice.Model\UserMicroservice.Core.csproj" />
   </ItemGroup>
 
 </Project>

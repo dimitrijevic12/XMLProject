@@ -9,4 +9,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\UserMicroservice.DataAccess\UserMicroservice.DataAccess.csproj" />
+    <ProjectReference Include="..\UserMicroservice.Model\UserMicroservice.Core.csproj" />
+  </ItemGroup>
+
 </Project>

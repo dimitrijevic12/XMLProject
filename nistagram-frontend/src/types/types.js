@@ -1,5 +1,7 @@
 export const GET_POSTS_BY_USER_ID = "getPostsByUserId";
 export const GET_POSTS_BY_USER_ID_ERROR = "getPostsByUserIdError";
+export const REGISTER_USER = "userRegistration";
+export const REGISTER_USER_ERROR = "userRegistrationError";
 export const GET_POST = "getPost";
 export const GET_POST_ERROR = "getPostError";
 export const LOAD_IMAGE = "loadImage";

@@ -9,6 +9,7 @@ import {
 
 const initialState = {
   posts: [],
+  registeredUser: {},
   post: {},
   loadedImage: "",
   locations: [],
@@ -21,6 +22,11 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         posts: action.payload,
+      };
+    case REGISTER_USER:
+      return {
+        ...state,
+        registeredUser: action.payload,
       };
     case GET_POST:
       return {
