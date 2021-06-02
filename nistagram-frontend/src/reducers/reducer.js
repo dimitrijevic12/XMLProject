@@ -14,6 +14,7 @@ import {
   LIKE_POST,
   DISLIKE_POST,
   COMMENT_POST,
+  GET_USERS_BY_NAME,
 } from "../types/types";
 
 const initialState = {
@@ -25,6 +26,7 @@ const initialState = {
   loadedImage: "",
   locations: [],
   taggableUsers: [],
+  users: [],
 };
 
 function reducer(state = initialState, action) {
@@ -95,6 +97,11 @@ function reducer(state = initialState, action) {
     case COMMENT_POST:
       return {
         ...state,
+      };
+    case GET_USERS_BY_NAME:
+      return {
+        ...state,
+        users: action.payload,
       };
     default:
       return state;

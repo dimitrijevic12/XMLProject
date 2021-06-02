@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import AsyncSelect from "react-select/async";
-import { getHashTagsByText, getLocationsByText } from "../../actions/actions";
+import {
+  getHashTagsByText,
+  getLocationsByText,
+  getUsersByName,
+} from "../../actions/actions";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { withRouter } from "react-router-dom";
@@ -23,12 +27,21 @@ class SearchBar extends Component {
 
   search = (value) => {
     debugger;
-    this.props.history.replace({
-      pathname: "/explore" + value.label,
-      state: {
-        searchObject: value,
-      },
-    });
+    if (value.type !== "user") {
+      this.props.history.replace({
+        pathname: "/explore" + value.label,
+        state: {
+          searchObject: value,
+        },
+      });
+    } else {
+      this.props.history.replace({
+        pathname: "/profile/" + value.label,
+        state: {
+          searchObject: value,
+        },
+      });
+    }
   };
 
   handleInputChange = (newValue) => {
@@ -49,7 +62,6 @@ class SearchBar extends Component {
         type: "hashtag",
       });
     });
-    debugger;
     await this.props.getLocationsByText(inputValue);
     this.props.locations.forEach((element) => {
       valueList.push({
@@ -59,6 +71,14 @@ class SearchBar extends Component {
       });
     });
     debugger;
+    await this.props.getUsersByName(inputValue);
+    this.props.users.forEach((element) => {
+      valueList.push({
+        value: element,
+        label: element.username,
+        type: "user",
+      });
+    });
     callback(this.filterOptions(valueList));
   };
 
@@ -79,9 +99,14 @@ class SearchBar extends Component {
 const mapStateToProps = (state) => ({
   hashtags: state.hashtags,
   locations: state.locations,
+  users: state.users,
 });
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, { getHashTagsByText, getLocationsByText })
+  connect(mapStateToProps, {
+    getHashTagsByText,
+    getLocationsByText,
+    getUsersByName,
+  })
 )(SearchBar);

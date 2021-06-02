@@ -25,18 +25,18 @@ import {
   GET_LOCATIONS_BY_TEXT_ERROR,
   GET_POSTS_BY_LOCATION,
   GET_POSTS_BY_LOCATION_ERROR,
+  GET_USERS_BY_NAME,
+  GET_USERS_BY_NAME_ERROR,
 } from "../types/types";
 import axios from "axios";
 
 export const getPostsByUserId = (id) => async (dispatch) => {
   try {
     debugger;
-    const response = await axios.get(
-      "https://localhost:44355/api/posts/users/" + id,
-      {
-        headers: { "Access-Control-Allow-Origin": "*" },
-      }
-    );
+    const response = await axios.get("https://localhost:44355/api/posts?", {
+      params: { userid: id },
+      headers: { "Access-Control-Allow-Origin": "*" },
+    });
     debugger;
     dispatch({
       type: GET_POSTS_BY_USER_ID,
@@ -341,6 +341,29 @@ export const commentPost = (dto) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: COMMENT_POST_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const getUsersByName = (name) => async (dispatch) => {
+  try {
+    debugger;
+    const response = await axios.get("https://localhost:44355/api/users?", {
+      params: {
+        name: name,
+        access: "public",
+      },
+      headers: { "Access-Control-Allow-Origin": "*" },
+    });
+    debugger;
+    dispatch({
+      type: GET_USERS_BY_NAME,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_USERS_BY_NAME_ERROR,
       payload: console.log(e),
     });
   }

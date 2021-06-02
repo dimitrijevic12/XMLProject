@@ -29,7 +29,7 @@ function Explore(props) {
   const Posts = () =>
     posts.map((post) => (
       <Photo
-        src={"images/" + post.contentPath}
+        src={"/images/" + post.contentPath}
         onClick={() => displayModalPost(post)}
       />
     ));
@@ -49,7 +49,7 @@ function Explore(props) {
         <PostModal
           show={showPostModal}
           postId={postId}
-          personPhoto="images/download.jfif"
+          personPhoto="/images/download.jfif"
           person={username}
           onShowChange={() => displayModalPost()}
         />
