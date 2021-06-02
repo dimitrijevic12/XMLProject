@@ -55,7 +55,7 @@ function App() {
           <Route exact path="/review-item">
             <ReviewItemPage />
           </Route>
-          <Route path="/explore:search">
+          <Route path="/explore/:search">
             <Explore />
           </Route>
           <Route path="/profile/:username" component={ProfilePage}></Route>

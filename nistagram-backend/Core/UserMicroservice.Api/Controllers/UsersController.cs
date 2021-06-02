@@ -22,13 +22,18 @@ namespace UserMicroservice.Api.Controllers
         private readonly UserService userService;
         private readonly IUserRepository _userRepository;
         private readonly UserSearchResultFactory userSearchResultFactory;
-        //private readonly PostSingleFactory postSingleFactory;
 
         public UsersController(UserService userService, IUserRepository userRepository, UserSearchResultFactory userSearchResultFactory)
         {
             this.userService = userService;
             _userRepository = userRepository;
             this.userSearchResultFactory = userSearchResultFactory;
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult GetById(Guid id)
+        {
+            return Ok(userSearchResultFactory.Create(_userRepository.GetById(id).Value));
         }
 
         [Authorize(Roles = "default")]

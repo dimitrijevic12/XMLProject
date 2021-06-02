@@ -1,10 +1,7 @@
 import React, { Component } from "react";
 import AsyncSelect from "react-select/async";
-import {
-  getHashTagsByText,
-  getLocationsByText,
-  getUsersByName,
-} from "../../actions/actions";
+import { getHashTagsByText, getLocationsByText } from "../../actions/actions";
+import { getUsersByName } from "../../actions/actionsUser";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { withRouter } from "react-router-dom";
@@ -27,9 +24,16 @@ class SearchBar extends Component {
 
   search = (value) => {
     debugger;
-    if (value.type !== "user") {
+    if (value.type === "hashtag") {
       this.props.history.replace({
-        pathname: "/explore" + value.label,
+        pathname: "/explore/tag/" + value.label,
+        state: {
+          searchObject: value,
+        },
+      });
+    } else if (value.type === "location") {
+      this.props.history.replace({
+        pathname: "/explore/location/" + value.value,
         state: {
           searchObject: value,
         },
@@ -65,7 +69,7 @@ class SearchBar extends Component {
     await this.props.getLocationsByText(inputValue);
     this.props.locations.forEach((element) => {
       valueList.push({
-        value: element,
+        value: this.createLocationValue(element),
         label: this.createLocationLabel(element),
         type: "location",
       });
@@ -86,6 +90,14 @@ class SearchBar extends Component {
     debugger;
     return valueList;
   };
+
+  createLocationValue(element) {
+    if (element.street !== "")
+      return element.street + "-" + element.cityName + "-" + element.country;
+    if (element.cityName !== "")
+      return element.cityName + "-" + element.country;
+    else return element.country;
+  }
 
   createLocationLabel(element) {
     debugger;

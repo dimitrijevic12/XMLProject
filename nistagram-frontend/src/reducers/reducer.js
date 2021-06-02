@@ -15,6 +15,7 @@ import {
   DISLIKE_POST,
   COMMENT_POST,
   GET_USERS_BY_NAME,
+  GET_USER_BY_ID,
 } from "../types/types";
 
 const initialState = {
@@ -102,6 +103,11 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         users: action.payload,
+      };
+    case GET_USER_BY_ID:
+      return {
+        ...state,
+        registeredUser: action.payload,
       };
     default:
       return state;

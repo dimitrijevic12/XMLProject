@@ -15,14 +15,26 @@ function Explore(props) {
   const posts = props.posts;
 
   useEffect(() => {
-    debugger;
+    var test = props.location.pathname.slice(18);
+    var testArray = test.split("-");
     if (props.location.state.searchObject.type === "hashtag") {
-      props.getPostsByHashTag(props.location.state.searchObject.value);
+      props.getPostsByHashTag(props.location.hash);
     } else if (props.location.state.searchObject.type === "location") {
-      props.getPostsByLocation(props.location.state.searchObject.value);
+      debugger;
+      var locationArray = props.location.pathname.slice(18).split("-");
+      if (locationArray.length === 1)
+        props.getPostsByLocation(locationArray[0], "", "");
+      else if (locationArray.length === 2)
+        props.getPostsByLocation(locationArray[1], locationArray[0], "");
+      else
+        props.getPostsByLocation(
+          locationArray[2],
+          locationArray[1],
+          locationArray[0]
+        );
     }
   }, [props.location.pathname]);
-  debugger;
+
   if (props.posts === undefined) {
     return null;
   }

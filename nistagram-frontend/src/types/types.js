@@ -28,3 +28,5 @@ export const GET_POSTS_BY_LOCATION = "getPostsByLocation";
 export const GET_POSTS_BY_LOCATION_ERROR = "getPostsByLocationError";
 export const GET_USERS_BY_NAME = "getUsersByName";
 export const GET_USERS_BY_NAME_ERROR = "getUsersByNameError";
+export const GET_USER_BY_ID = "getUserById";
+export const GET_USER_BY_ID_ERROR = "getUserById";

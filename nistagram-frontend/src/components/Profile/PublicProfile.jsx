@@ -41,7 +41,7 @@ function PublicProfile(props) {
     setShowPostModal(!showPostModal);
   };
 
-  if (props.posts === undefined) {
+  if (props.posts === undefined || user === undefined) {
     return null;
   }
 
@@ -57,7 +57,7 @@ function PublicProfile(props) {
         />
       ) : null}
       <OptionsButton />
-      <ProfileHeader user={user} postsCount={posts.length} />
+      <ProfileHeader userid={user.id} postsCount={posts.length} />
       <button
         style={{ float: "right" }}
         className="btn btn-block btn-primary btn-md mt-4 mb-4"
