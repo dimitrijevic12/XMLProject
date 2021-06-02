@@ -9,6 +9,11 @@ import {
   GET_POSTS_BY_LOCATION,
   REGISTER_USER,
   SAVE_POST,
+  GET_LOCATIONS,
+  GET_TAGGABLE_USERS,
+  LIKE_POST,
+  DISLIKE_POST,
+  COMMENT_POST,
 } from "../types/types";
 
 const initialState = {
@@ -18,6 +23,8 @@ const initialState = {
   hashtags: {},
   locations: [],
   loadedImage: "",
+  locations: [],
+  taggableUsers: [],
 };
 
 function reducer(state = initialState, action) {
@@ -66,6 +73,28 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         locations: action.payload,
+      };
+    case GET_LOCATIONS:
+      return {
+        ...state,
+        locations: action.payload,
+      };
+    case GET_TAGGABLE_USERS:
+      return {
+        ...state,
+        taggableUsers: action.payload,
+      };
+    case LIKE_POST:
+      return {
+        ...state,
+      };
+    case DISLIKE_POST:
+      return {
+        ...state,
+      };
+    case COMMENT_POST:
+      return {
+        ...state,
       };
     default:
       return state;

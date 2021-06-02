@@ -98,6 +98,72 @@
         }
       ],
       "UpstreamPathTemplate": "/api/users/login"
+    },
+    {
+      "DownstreamPathTemplate": "/api/posts/contents",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44333
+        }
+      ],
+      "UpstreamPathTemplate": "/api/posts/contents"
+    },
+    {
+      "DownstreamPathTemplate": "/api/locations",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44333
+        }
+      ],
+      "UpstreamPathTemplate": "/api/locations"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/taggable",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44333
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/taggable"
+    },
+    {
+      "DownstreamPathTemplate": "/api/posts/{id}/users/{userId}/likes",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44333
+        }
+      ],
+      "UpstreamPathTemplate": "/api/posts/{id}/users/{userId}/likes"
+    },
+    {
+      "DownstreamPathTemplate": "/api/posts/{id}/users/{userId}/dislikes",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44333
+        }
+      ],
+      "UpstreamPathTemplate": "/api/posts/{id}/users/{userId}/dislikes"
+    },
+    {
+      "DownstreamPathTemplate": "/api/posts/{id}/comments",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44333
+        }
+      ],
+      "UpstreamPathTemplate": "/api/posts/{id}/comments"
     }
   ],
   "GlobalConfiguration": {
