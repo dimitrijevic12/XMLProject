@@ -85,7 +85,7 @@ namespace UserMicroservice.DataAccess.Implementation
             return Maybe<RegisteredUser>.None;
         }
 
-        public Maybe<UserModel> GetRoleByUsername(String username)
+        public Maybe<User> GetRoleByUsername(String username)
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT * ");
             queryBuilder.Append("FROM dbo.RegisteredUser ");
@@ -101,11 +101,11 @@ namespace UserMicroservice.DataAccess.Implementation
 
             if (dataTable.Rows.Count > 0)
             {
-                return (UserModel)_userModelTarget.ConvertSql(
+                return (User)_userModelTarget.ConvertSql(
                 dataTable.Rows[0]
                 );
             }
-            return Maybe<UserModel>.None;
+            return Maybe<User>.None;
         }
 
         public RegisteredUser Save(RegisteredUser registeredUser)
@@ -115,8 +115,6 @@ namespace UserMicroservice.DataAccess.Implementation
             queryBuilder.Append("VALUES (@id, @username, @email, @first_name, @last_name, @date_of_birth, @phone_number, @gender, @website_address, @bio, @is_private, @is_accepting_messages, @is_accepting_tags, 'default', '', @password);");
 
             string query = queryBuilder.ToString();
-
-            string test = registeredUser.Username;
 
             List<SqlParameter> parameters = new List<SqlParameter>
              {

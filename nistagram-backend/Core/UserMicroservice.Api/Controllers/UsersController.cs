@@ -17,14 +17,13 @@ namespace UserMicroservice.Api.Controllers
     public class UsersController : ControllerBase
     {
         private readonly UserService userService;
-        //private readonly PostSingleFactory postSingleFactory;
 
         public UsersController(UserService userService)
         {
             this.userService = userService;
         }
 
-        [Authorize(Roles = "default")]
+        [Authorize(Roles = "ApprovedAgent")]
         [HttpPost]
         public IActionResult RegisterUser(DTOs.RegisteredUser dto)
         {
@@ -70,10 +69,10 @@ namespace UserMicroservice.Api.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult Login(Core.Model.UserModel login)
+        public IActionResult Login(UserModel login)
         {
             IActionResult response = Unauthorized();
-            var user = userService.FindUser(login);
+            var user = userService.FindUser(login.Username, login.Password);
             if (user != null)
             {
                 var tokenString = userService.GenerateJSONWebToken(user);

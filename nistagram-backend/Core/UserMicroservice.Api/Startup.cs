@@ -34,6 +34,7 @@ namespace UserMicroservice.Api
 
             services.AddScoped<UserService>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IAdminRepository, AdminRepository>();
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {

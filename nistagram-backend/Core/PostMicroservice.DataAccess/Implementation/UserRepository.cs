@@ -42,9 +42,27 @@ namespace PostMicroservice.DataAccess.Implementation
             );
         }
 
-        public RegisteredUser Save(RegisteredUser obj)
+        public RegisteredUser Save(RegisteredUser registeredUser)
         {
-            throw new NotImplementedException();
+            StringBuilder queryBuilder = new StringBuilder("INSERT INTO dbo.RegisteredUser ");
+            queryBuilder.Append("(id, username, first_name, last_name, is_private, is_accepting_tags) ");
+            queryBuilder.Append("VALUES (@id, @username, @first_name, @last_name, @is_private, @is_accepting_tags);");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = registeredUser.Id },
+                 new SqlParameter("@username", SqlDbType.NVarChar) { Value = registeredUser.Username.ToString() },
+                 new SqlParameter("@first_name", SqlDbType.NVarChar) { Value = registeredUser.FirstName.ToString() },
+                 new SqlParameter("@last_name", SqlDbType.NVarChar) { Value = registeredUser.LastName.ToString() },
+                 new SqlParameter("@is_private", SqlDbType.Bit) { Value = registeredUser.IsPrivate },
+                 new SqlParameter("@is_accepting_tags", SqlDbType.Bit) { Value = registeredUser.IsAcceptingTags }
+             };
+
+            ExecuteQuery(query, parameters);
+
+            return registeredUser;
         }
 
         public RegisteredUser Edit(RegisteredUser obj)
