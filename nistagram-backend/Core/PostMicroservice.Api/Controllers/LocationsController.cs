@@ -28,14 +28,14 @@ namespace PostMicroservice.Api.Controllers
             List<Location> locations = new List<Location>();
             IEnumerable<Core.Model.Location> queryResult;
             queryResult = _locationRepository.GetCountryByText(text);
-            if (queryResult.Any()) locations.Add(new Location()
-            { Country = queryResult.First().Country, CityName = "", Street = "" });
+            locationFactory.CreateLocationsFromCountryQuery(queryResult, locations);
+
             queryResult = _locationRepository.GetCityByText(text);
-            if (queryResult.Any()) locations.Add(new Location()
-            { Country = queryResult.First().Country, CityName = queryResult.First().CityName, Street = "" });
+            locationFactory.CreateLocationsFromCityQuery(queryResult, locations);
+
             queryResult = _locationRepository.GetStreetByText(text);
-            if (queryResult.Any()) locations.Add(new Location()
-            { Country = queryResult.First().Country, CityName = queryResult.First().CityName, Street = queryResult.First().Street });
+            locationFactory.CreateLocationsFromStreetQuery(queryResult, locations);
+
             return Ok(locations);
         }
     }
