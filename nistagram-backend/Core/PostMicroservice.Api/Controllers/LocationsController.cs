@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using PostMicroservice.Api.DTOs;
 using PostMicroservice.Api.Factories;
-using PostMicroservice.Core.Model;
-using PostMicroservice.Core.Services;
+using PostMicroservice.Core.Interface.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,22 +11,32 @@ namespace PostMicroservice.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LocationsController : ControllerBase
+    public class LocationsController : Controller
     {
-        private readonly LocationService locationService;
+        private readonly ILocationRepository _locationRepository;
         private readonly LocationFactory locationFactory;
 
-        public LocationsController(LocationService locationService, LocationFactory locationFactory)
+        public LocationsController(ILocationRepository locationRepository, LocationFactory locationFactory)
         {
-            this.locationService = locationService;
+            _locationRepository = locationRepository;
             this.locationFactory = locationFactory;
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetBy([FromQuery] string text)
         {
-            return Ok(locationService.GetAll().ToList().
-                Select(location => locationFactory.Create(location)));
+            List<Location> locations = new List<Location>();
+            IEnumerable<Core.Model.Location> queryResult;
+            queryResult = _locationRepository.GetCountryByText(text);
+            if (queryResult.Any()) locations.Add(new Location()
+            { Country = queryResult.First().Country, CityName = "", Street = "" });
+            queryResult = _locationRepository.GetCityByText(text);
+            if (queryResult.Any()) locations.Add(new Location()
+            { Country = queryResult.First().Country, CityName = queryResult.First().CityName, Street = "" });
+            queryResult = _locationRepository.GetStreetByText(text);
+            if (queryResult.Any()) locations.Add(new Location()
+            { Country = queryResult.First().Country, CityName = queryResult.First().CityName, Street = queryResult.First().Street });
+            return Ok(locations);
         }
     }
 }

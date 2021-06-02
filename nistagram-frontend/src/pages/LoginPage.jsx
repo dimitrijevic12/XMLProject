@@ -1,10 +1,14 @@
 import React, { Component } from "react";
 import '../css/app.css';
+import { userLoggedIn } from "../actions/actionsUser"
+import { connect } from "react-redux"
 import background from "../images/nistagrambg.jpg";
 
 class LoginPage extends Component {
-    state = {
-    };
+  state = {
+    username: "",
+    password: "",
+  };
     render() {
       return (
         <div style={{  width:1580,
@@ -12,12 +16,12 @@ class LoginPage extends Component {
         <div id="wrapper">
         <div class="main-content">
           <div class="l-part">
-            <input type="text" placeholder="Username" class="input-1" />
+            <input type="text" placeholder="Username" name="username" class="input-1" onChange={this.handleChange}/>
             <div class="overlap-text">
-              <input type="password" placeholder="Password" class="input-2" />
+              <input type="password" placeholder="Password" name="password" class="input-2" onChange={this.handleChange}/>
               <a href="#">Forgot?</a>
             </div>
-            <input type="button" value="Log in" class="btn" />
+            <input type="button" value="Log in" class="btn" onClick={this.login.bind(this)} />
           </div>
         </div>
         <div class="sub-content">
@@ -29,9 +33,31 @@ class LoginPage extends Component {
       </div>
       );
     }
+
+    handleChange = (event) => {
+      debugger;
+      const { name, value, type, checked } = event.target;
+      type === "checkbox"
+        ? this.setState({
+            [name]: checked,
+          })
+        : this.setState({
+            [name]: value,
+          });
+    };
+
+    async login() {
+      debugger;
+        this.props.userLoggedIn({ "Username" : this.state.username,
+                                  "Password" : this.state.password })      
+      }
   }
   
-  export default LoginPage;
+  const mapStateToProps = (state) =>
+
+    ({ userLoggedIn: state.userLoggedIn })
+
+  export default connect(mapStateToProps, { userLoggedIn })(LoginPage); 
 
 
 

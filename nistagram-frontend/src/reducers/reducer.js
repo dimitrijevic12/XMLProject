@@ -1,8 +1,13 @@
+import { loadImage } from "../actions/actions";
 import {
   GET_POSTS_BY_USER_ID,
-  REGISTER_USER,
   GET_POST,
+  GET_HASHTAGS_BY_TEXT,
+  GET_POSTS_BY_HASHTAG,
   LOAD_IMAGE,
+  GET_LOCATIONS_BY_TEXT,
+  GET_POSTS_BY_LOCATION,
+  REGISTER_USER,
   SAVE_POST,
   GET_LOCATIONS,
   GET_TAGGABLE_USERS,
@@ -15,6 +20,8 @@ const initialState = {
   posts: [],
   registeredUser: {},
   post: {},
+  hashtags: {},
+  locations: [],
   loadedImage: "",
   locations: [],
   taggableUsers: [],
@@ -37,6 +44,21 @@ function reducer(state = initialState, action) {
         ...state,
         post: action.payload,
       };
+    case GET_HASHTAGS_BY_TEXT:
+      return {
+        ...state,
+        hashtags: action.payload,
+      };
+    case GET_POSTS_BY_HASHTAG:
+      return {
+        ...state,
+        posts: action.payload,
+      };
+    case GET_POSTS_BY_LOCATION:
+      return {
+        ...state,
+        posts: action.payload,
+      };
     case LOAD_IMAGE:
       return {
         ...state,
@@ -46,6 +68,11 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         post: action.payload,
+      };
+    case GET_LOCATIONS_BY_TEXT:
+      return {
+        ...state,
+        locations: action.payload,
       };
     case GET_LOCATIONS:
       return {

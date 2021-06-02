@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PostMicroservice.Api.Factories;
+using PostMicroservice.Core.Interface.Repository;
 using PostMicroservice.Core.Interface.Service;
 using PostMicroservice.Core.Model;
 using PostMicroservice.Core.Model.File;
@@ -17,34 +18,38 @@ namespace PostMicroservice.Api.Controllers
     [ApiController]
     public class PostsController : ControllerBase
     {
-        private readonly IPostService _postService;
+        private readonly PostService _postService;
+        private readonly IPostRepository _postRepository;
         private readonly UserService userService;
         private readonly LocationService locationService;
         private readonly PostSingleFactory postSingleFactory;
         private readonly IWebHostEnvironment _env;
 
-        public PostsController(IPostService postService, PostSingleFactory postSingleFactory,
+        public PostsController(PostService postService, IPostRepository postRepository, PostSingleFactory postSingleFactory,
             IWebHostEnvironment env, UserService userService, LocationService locationService)
         {
             _postService = postService;
+            _postRepository = postRepository;
             this.postSingleFactory = postSingleFactory;
             _env = env;
             this.userService = userService;
             this.locationService = locationService;
         }
 
-        [HttpGet("users/{id}")]
-        public IActionResult GetByUserId(Guid id)
-        {
-            return Ok(_postService.GetByUserId(id).ToList().
-                Select(post => postSingleFactory.Create((PostSingle)post)));
-        }
-
         [HttpGet("{id}")]
         public IActionResult GetById(Guid id)
         {
-            Post post = _postService.GetById(id);
-            return Ok(postSingleFactory.Create((PostSingle)_postService.GetById(id)));
+            return Ok(postSingleFactory.Create((PostSingle)_postRepository.GetById(id)));
+        }
+
+        [HttpGet]
+        public IActionResult Search([FromQuery] Guid userId, [FromQuery] string hashTag, [FromQuery] string country,
+            [FromQuery] string city, [FromQuery] string street, [FromQuery] string access)
+        {
+            if (Request.Query.Count == 0) return BadRequest();
+            if (userId == Guid.Empty && String.IsNullOrWhiteSpace(hashTag) && String.IsNullOrEmpty(access)) return BadRequest();
+            return Ok(_postRepository.GetBy(userId, hashTag, country, city, street, access)
+                .Select(post => postSingleFactory.Create((PostSingle)post)));
         }
 
         [HttpGet("contents/{fileName}")]

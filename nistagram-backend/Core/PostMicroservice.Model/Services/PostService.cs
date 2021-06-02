@@ -8,7 +8,7 @@ using System.IO;
 
 namespace PostMicroservice.Core.Services
 {
-    public class PostService : IPostService
+    public class PostService
     {
         private readonly IPostRepository _postRepository;
 
@@ -44,7 +44,7 @@ namespace PostMicroservice.Core.Services
 
         public IEnumerable<Post> GetByUserId(Guid id)
         {
-            return _postRepository.GetByUserId(id);
+            return _postRepository.GetBy(id, "", "", "", "", "");
         }
 
         public byte[] GetImage(string path, string fileName)

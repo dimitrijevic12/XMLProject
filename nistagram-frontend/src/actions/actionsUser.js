@@ -8,11 +8,11 @@ import {
     try {
       debugger;
       const response = await axios.post(
-        "https://localhost:44355/api/users/", user,
+        "https://localhost:44355/api/users", user,
         {
-          headers: { "Access-Control-Allow-Origin": "*" },
-        }
-      );
+          headers: { "Access-Control-Allow-Origin": "*",
+                     "Authorization" :  "Bearer " + sessionStorage.getItem("token")}
+        });
       debugger;
       dispatch({
         type: REGISTER_USER,
@@ -25,4 +25,24 @@ import {
       });
     }
   };
+
+  export const userLoggedIn = (user) => async (dispatch) => {
+    try {
+        debugger;
+        const response = await axios.post("https://localhost:44355/api/users/login", user,
+        {
+            headers: { "Access-Control-Allow-Origin": "*",
+                       "Authorization" :  "Bearer " + sessionStorage.getItem("token")}
+          });
+        debugger;
+        var parts = response.data.token.split('.'); // header, payload, signature
+        var userInfo = JSON.parse(atob(parts[1]));
+        sessionStorage.setItem("token", response.data.token)
+        sessionStorage.setItem("userId", userInfo.user_id);
+        sessionStorage.setItem("role", userInfo.role);
+        sessionStorage.setItem("username", userInfo.username);
+    } catch (e) {
+        console.log(e);
+    }
+};
   

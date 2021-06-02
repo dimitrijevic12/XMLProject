@@ -1,12 +1,15 @@
 ﻿using CSharpFunctionalExtensions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace UserMicroservice.Core.Model
 {
-    public class Agent : RegisteredUser
+    public class DeniedAgent : Agent
     {
-        protected Agent(Guid id, Username username, EmailAddress emailAddress, FirstName firstName,
+        private DeniedAgent(Guid id, Username username, EmailAddress emailAddress, FirstName firstName,
             LastName lastName, DateTime dateOfBirth, PhoneNumber phoneNumber,
             Gender gender, WebsiteAddress websiteAddress, Bio bio, bool isPrivate, bool isAcceptingMessages, bool isAcceptingTags, Password password,
             IEnumerable<RegisteredUser> blockedUsers, IEnumerable<RegisteredUser> blockedByUsers,
@@ -23,7 +26,7 @@ namespace UserMicroservice.Core.Model
         {
         }
 
-        public static new Result<Agent> Create(Guid id, Username username, EmailAddress emailAddress, FirstName firstName,
+        public static new Result<DeniedAgent> Create(Guid id, Username username, EmailAddress emailAddress, FirstName firstName,
             LastName lastName, DateTime dateOfBirth, PhoneNumber phoneNumber,
             Gender gender, WebsiteAddress websiteAddress, Bio bio, bool isPrivate, bool isAcceptingMessages, bool isAcceptingTags, Password password,
             IEnumerable<RegisteredUser> blockedUsers, IEnumerable<RegisteredUser> blockedByUsers,
@@ -31,7 +34,7 @@ namespace UserMicroservice.Core.Model
             IEnumerable<RegisteredUser> following, IEnumerable<RegisteredUser> followers,
             IEnumerable<RegisteredUser> myCloseFriends, IEnumerable<RegisteredUser> closeFriendTo)
         {
-            return Result.Success(new Agent(id, username, emailAddress, firstName,
+            return Result.Success(new DeniedAgent(id, username, emailAddress, firstName,
             lastName, dateOfBirth, phoneNumber,
             gender, websiteAddress, bio, isPrivate, isAcceptingMessages, isAcceptingTags, password,
             blockedUsers, blockedByUsers,
