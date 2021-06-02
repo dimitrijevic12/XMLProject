@@ -216,7 +216,10 @@ export const savePost = (post) => async (dispatch) => {
       "https://localhost:44355/api/posts/",
       post,
       {
-        headers: { "Access-Control-Allow-Origin": "*" },
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
       }
     );
     debugger;
@@ -297,7 +300,7 @@ export const getTaggableUsers = () => async (dispatch) => {
   try {
     debugger;
     const response = await axios.get(
-      "https://localhost:44355/api/users/taggable",
+      "https://localhost:44355/api/users?isTaggable=" + true,
       {
         headers: { "Access-Control-Allow-Origin": "*" },
       }
@@ -328,6 +331,7 @@ export const likePost = (dto) => async (dispatch) => {
       {
         headers: {
           "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
         },
       }
     );
@@ -356,7 +360,10 @@ export const dislikePost = (dto) => async (dispatch) => {
         "/dislikes",
       {},
       {
-        headers: { "Access-Control-Allow-Origin": "*" },
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
       }
     );
     debugger;
@@ -383,6 +390,7 @@ export const commentPost = (dto) => async (dispatch) => {
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Content-Type": "application/json",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
         },
       }
     );

@@ -25,8 +25,8 @@ namespace PostMicroservice.Api.Controllers
             this.registeredUserFactory = registeredUserFactory;
         }
 
-        [HttpGet("taggable")]
-        public IActionResult GetTaggable()
+        [HttpGet]
+        public IActionResult GetTaggable([FromQuery] bool isTaggable)
         {
             return Ok(userService.GetTaggable().ToList().
                 Select(user => registeredUserFactory.Create(user)));

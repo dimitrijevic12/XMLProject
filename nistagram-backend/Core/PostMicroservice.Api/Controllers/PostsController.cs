@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -87,6 +88,7 @@ namespace PostMicroservice.Api.Controllers
             return Ok(fileName);
         }
 
+        [Authorize(Roles = "RegisteredUser")]
         [HttpPost]
         public IActionResult Save(DTOs.PostAlbum post)
         {
@@ -126,6 +128,7 @@ namespace PostMicroservice.Api.Controllers
             return Created(this.Request.Path + "/" + id, "");
         }
 
+        [Authorize(Roles = "RegisteredUser")]
         [HttpPut("{id}/users/{userId}/likes"), ProducesResponseType(StatusCodes.Status204NoContent)]
         public IActionResult Like([FromRoute] Guid id, [FromRoute] Guid userId)
         {
@@ -133,6 +136,7 @@ namespace PostMicroservice.Api.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "RegisteredUser")]
         [HttpPut("{id}/users/{userId}/dislikes"), ProducesResponseType(StatusCodes.Status204NoContent)]
         public IActionResult Dislike([FromRoute] Guid id, [FromRoute] Guid userId)
         {
@@ -140,6 +144,7 @@ namespace PostMicroservice.Api.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "RegisteredUser")]
         [HttpPost("{id}/comments"), ProducesResponseType(StatusCodes.Status204NoContent)]
         public IActionResult CommentPost([FromRoute] Guid id, [FromBody] DTOs.Comment comment)
         {

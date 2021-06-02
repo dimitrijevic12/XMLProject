@@ -6,6 +6,8 @@ import {
 } from "../../actions/actions";
 import { connect } from "react-redux";
 import axios from "axios";
+import { withRouter } from "react-router-dom";
+import { compose } from "redux";
 
 class CreatePost extends Component {
   state = {
@@ -39,6 +41,7 @@ class CreatePost extends Component {
   }
 
   render() {
+    debugger;
     if (
       this.props.locations == undefined ||
       this.props.taggableUsers == undefined
@@ -144,6 +147,7 @@ class CreatePost extends Component {
         </div>
         <div className="mt-5 pb-5">
           <button
+            disabled={this.state.contentPaths.length === 0}
             className="btn btn-primary btn-block"
             onClick={() => {
               this.createPost();
@@ -182,6 +186,9 @@ class CreatePost extends Component {
       ContentPaths: this.state.contentPaths,
       HashTags: hashTagsObjects,
       Taggedusers: this.state.taggedUsers,
+    });
+    this.props.history.replace({
+      pathname: "/profile/" + sessionStorage.getItem("userId"),
     });
   }
 
@@ -260,8 +267,11 @@ const mapStateToProps = (state) => ({
   taggableUsers: state.taggableUsers,
 });
 
-export default connect(mapStateToProps, {
-  savePost,
-  getLocationsByText,
-  getTaggableUsers,
-})(CreatePost);
+export default compose(
+  withRouter,
+  connect(mapStateToProps, {
+    savePost,
+    getLocationsByText,
+    getTaggableUsers,
+  })
+)(CreatePost);
