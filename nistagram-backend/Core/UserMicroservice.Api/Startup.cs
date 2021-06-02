@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using UserMicroservice.Api.Factories;
 using UserMicroservice.Core.Interface.Repository;
 using UserMicroservice.Core.Interface.Service;
 using UserMicroservice.Core.Services;
@@ -34,6 +35,7 @@ namespace UserMicroservice.Api
 
             services.AddScoped<UserService>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<UserSearchResultFactory>();
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {

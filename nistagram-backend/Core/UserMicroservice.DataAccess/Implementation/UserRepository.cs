@@ -108,6 +108,50 @@ namespace UserMicroservice.DataAccess.Implementation
             return Maybe<UserModel>.None;
         }
 
+        public IEnumerable<RegisteredUser> GetBy(string name, string access)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT * ");
+            queryBuilder.Append("FROM dbo.RegisteredUser ");
+
+            List<SqlParameter> parameters = new List<SqlParameter>();
+
+            if (!String.IsNullOrWhiteSpace(name) || !String.IsNullOrWhiteSpace(access))
+            {
+                queryBuilder.Append("WHERE ");
+                bool needsAnd = false;
+                if (!String.IsNullOrWhiteSpace(name))
+                {
+                    if (needsAnd)
+                        queryBuilder.Append("AND ");
+
+                    queryBuilder.Append("LOWER(username) like LOWER(@Name) OR LOWER(first_name) like LOWER(@Name) OR LOWER(last_name) like LOWER(@Name)");
+                    SqlParameter parameterName = new SqlParameter("@Name", SqlDbType.NVarChar) { Value = "%" + name + "%" };
+                    parameters.Add(parameterName);
+                    needsAnd = true;
+                }
+                if (!String.IsNullOrWhiteSpace(access))
+                {
+                    if (needsAnd)
+                        queryBuilder.Append("AND ");
+
+                    queryBuilder.Append("is_private = @Access ");
+
+                    SqlParameter parameterHashTag = new SqlParameter("@Access", SqlDbType.Bit)
+                    { Value = access.Equals("private") ? 1 : 0 };
+                    parameters.Add(parameterHashTag);
+                    needsAnd = true;
+                }
+            }
+
+            string query = queryBuilder.ToString();
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            return (from DataRow dataRow in dataTable.Rows
+
+                    select (RegisteredUser)_registeredUserTarget.ConvertSql(dataRow)).ToList();
+        }
+
         public RegisteredUser Save(RegisteredUser registeredUser)
         {
             StringBuilder queryBuilder = new StringBuilder("INSERT INTO dbo.RegisteredUser ");
