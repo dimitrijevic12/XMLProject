@@ -18,7 +18,10 @@ function Explore(props) {
     var test = props.location.pathname.slice(18);
     var testArray = test.split("-");
     if (props.location.state.searchObject.type === "hashtag") {
-      props.getPostsByHashTag(props.location.hash);
+      debugger;
+      if (props.location.hash !== "")
+        props.getPostsByHashTag(props.location.hash);
+      else props.getPostsByHashTag(props.location.pathname.slice(13));
     } else if (props.location.state.searchObject.type === "location") {
       debugger;
       var locationArray = props.location.pathname.slice(18).split("-");

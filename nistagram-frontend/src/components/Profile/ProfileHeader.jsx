@@ -5,16 +5,12 @@ import { connect } from "react-redux";
 
 class ProfileHeader extends Component {
   state = {
-    userid: this.props.userid,
+    user: this.props.user,
     postsCount: this.props.postsCount,
   };
 
-  componentDidMount() {
-    debugger;
-    this.props.getUserById(this.state.userid);
-  }
-
   render() {
+    debugger;
     if (this.props.user === undefined) return null;
     return (
       <Profile
@@ -22,7 +18,7 @@ class ProfileHeader extends Component {
         pictureSrc="/images/download.jfif"
         username={this.props.user.username}
         followersData={[
-          this.state.postsCount,
+          this.props.user.postsCount,
           this.props.user.followers === undefined
             ? 0
             : this.props.user.followers.length,
@@ -36,6 +32,4 @@ class ProfileHeader extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({ user: state.registeredUser });
-
-export default connect(mapStateToProps, { getUserById })(ProfileHeader);
+export default ProfileHeader;

@@ -40,7 +40,7 @@ class SearchBar extends Component {
       });
     } else {
       this.props.history.replace({
-        pathname: "/profile/" + value.label,
+        pathname: "/profile/" + value.value.id,
         state: {
           searchObject: value,
         },

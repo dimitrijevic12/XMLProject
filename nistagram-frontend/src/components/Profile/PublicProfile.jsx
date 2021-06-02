@@ -12,17 +12,20 @@ import {
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { withRouter } from "react-router-dom";
+import { getUserById } from "../../actions/actionsUser";
 
 function PublicProfile(props) {
-  debugger;
   const [postId, setPostId] = useState("");
   const [showPostModal, setShowPostModal] = useState(false);
   const [username, setUsername] = useState("");
-  const user = props.location.state.searchObject.value;
+  const user = props.user;
+  const initialUser = {};
   const posts = props.posts;
 
-  debugger;
-  useEffect(() => props.getPostsByUserId(user.id), []);
+  useEffect(() => {
+    props.getUserById(props.location.pathname.slice(9));
+    props.getPostsByUserId(props.location.pathname.slice(9));
+  }, [props.location.pathname]);
 
   const Posts = () =>
     posts.map((post) => (
@@ -33,7 +36,6 @@ function PublicProfile(props) {
     ));
 
   const displayModalPost = (post) => {
-    debugger;
     if (post != undefined) {
       setPostId(post.id);
       setUsername(post.registeredUser.username);
@@ -57,7 +59,7 @@ function PublicProfile(props) {
         />
       ) : null}
       <OptionsButton />
-      <ProfileHeader userid={user.id} postsCount={posts.length} />
+      <ProfileHeader user={user} userid={user.id} postsCount={posts.length} />
       <button
         style={{ float: "right" }}
         className="btn btn-block btn-primary btn-md mt-4 mb-4"
@@ -75,9 +77,12 @@ function PublicProfile(props) {
   );
 }
 
-const mapStateToProps = (state) => ({ posts: state.posts });
+const mapStateToProps = (state) => ({
+  posts: state.posts,
+  user: state.registeredUser,
+});
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, { getPostsByUserId })
+  connect(mapStateToProps, { getPostsByUserId, getUserById })
 )(PublicProfile);
