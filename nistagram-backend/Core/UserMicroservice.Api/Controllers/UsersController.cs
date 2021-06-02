@@ -7,9 +7,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using UserMicroservice.Api.DTOs;
 using UserMicroservice.Api.Factories;
+using UserMicroservice.Core.Interface.Repository;
 using UserMicroservice.Core.Interface.Service;
 using UserMicroservice.Core.Model;
 using UserMicroservice.Core.Services;
+using UserMicroservice.DataAccess.Implementation;
 
 namespace UserMicroservice.Api.Controllers
 {
@@ -19,10 +21,12 @@ namespace UserMicroservice.Api.Controllers
     {
         private readonly UserService userService;
         private readonly RegisterUserFactory registerUserFactory;
+        private readonly IUserRepository _userRepository;
 
-        public UsersController(UserService userService, RegisterUserFactory registerUserFactory)
+        public UsersController(UserService userService, IUserRepository userRepository, RegisterUserFactory registerUserFactory)
         {
             this.userService = userService;
+            _userRepository = userRepository;
             this.registerUserFactory = registerUserFactory;
         }
 
@@ -130,6 +134,15 @@ namespace UserMicroservice.Api.Controllers
                                           new List<Core.Model.RegisteredUser>(),
                                           new List<Core.Model.RegisteredUser>(),
                                           new List<Core.Model.RegisteredUser>()).Value)));
+        }
+
+        [HttpGet]
+        public IActionResult Search([FromQuery] Guid id, [FromQuery] string name, [FromQuery] string access)
+        {
+            if (Request.Query.Count == 0) return BadRequest();
+            if (id == Guid.Empty && String.IsNullOrWhiteSpace(name) && String.IsNullOrEmpty(access)) return BadRequest();
+            return Ok(_userRepository.GetBy(name, access)
+                .Select(user => registerUserFactory.Create(user)));
         }
     }
 }

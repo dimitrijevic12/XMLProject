@@ -13,5 +13,7 @@ namespace UserMicroservice.Core.Interface.Repository
         public Maybe<RegisteredUser> GetByUsername(String username);
 
         public Maybe<User> GetRoleByUsername(String username);
+
+        public IEnumerable<RegisteredUser> GetBy(string name, string access);
     }
 }

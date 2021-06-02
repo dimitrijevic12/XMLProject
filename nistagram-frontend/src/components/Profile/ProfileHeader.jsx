@@ -1,25 +1,32 @@
 import React, { Component } from "react";
 import { Profile } from "react-instagram-ui-kit";
+import { getUserById } from "../../actions/actionsUser";
+import { connect } from "react-redux";
 
 class ProfileHeader extends Component {
   state = {
     user: this.props.user,
     postsCount: this.props.postsCount,
   };
+
   render() {
+    debugger;
+    if (this.props.user === undefined) return null;
     return (
       <Profile
-        bio={`
-        Lead guitarist of AC⚡DC
-      `}
-        pictureSrc="images/download.jfif"
-        username={this.state.user.username}
+        bio={this.props.user.bio}
+        pictureSrc="/images/download.jfif"
+        username={this.props.user.username}
         followersData={[
-          this.state.postsCount,
-          this.state.user.followers.length,
-          this.state.user.following.length,
+          this.props.user.postsCount,
+          this.props.user.followers === undefined
+            ? 0
+            : this.props.user.followers.length,
+          this.props.user.following === undefined
+            ? 0
+            : this.props.user.following.length,
         ]}
-        fullname={this.state.user.firstName + " " + this.state.user.lastName}
+        fullname={this.props.user.firstName + " " + this.props.user.lastName}
       />
     );
   }

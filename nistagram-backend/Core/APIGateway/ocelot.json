@@ -23,7 +23,7 @@
       "UpstreamPathTemplate": "/api/users"
     },
     {
-      "DownstreamPathTemplate": "/api/users/{idUser}",
+      "DownstreamPathTemplate": "/api/users/{id}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -31,7 +31,7 @@
           "Port": 44313
         }
       ],
-      "UpstreamPathTemplate": "/api/users/{idUser}"
+      "UpstreamPathTemplate": "/api/users/{id}"
     },
     {
       "DownstreamPathTemplate": "/api/users/edit",
@@ -153,6 +153,17 @@
         }
       ],
       "UpstreamPathTemplate": "/api/locations"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users?{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44333
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users?{everything}"
     },
     {
       "DownstreamPathTemplate": "/api/users/taggable",

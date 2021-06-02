@@ -116,12 +116,12 @@ class PostModal extends Component {
               onClick={() => {
                 this.dislikePost();
               }}
-              src="images/dislike.png"
+              src="/images/dislike.png"
             />
             <span style={{ width: 15, display: "inline-block" }}></span>
-            <img src="images/chat.png" />
+            <img src="/images/chat.png" />
             <span style={{ width: 15, display: "inline-block" }}></span>
-            <img src="images/send.png" />
+            <img src="/images/send.png" />
             <br />
             <br />
             Likes:{" "}
@@ -133,7 +133,7 @@ class PostModal extends Component {
             <hr />
             {this.state.comments.map((comment) => (
               <div>
-                <img src="images/user.png" /> {comment.commentText}
+                <img src="/images/user.png" /> {comment.commentText}
                 <br />
                 <hr />
               </div>

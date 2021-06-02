@@ -19,6 +19,8 @@ import {
   EDIT_USER_ERROR,
   GET_LOGGED_USER,
   GET_LOGGED_USER_ERROR,
+  GET_USERS_BY_NAME,
+  GET_USER_BY_ID,
 } from "../types/types";
 
 const initialState = {
@@ -30,7 +32,8 @@ const initialState = {
   loadedImage: "",
   locations: [],
   taggableUsers: [],
-  loggedUser : {}
+  loggedUser : {},
+  users: [],
 };
 
 function reducer(state = initialState, action) {
@@ -106,6 +109,16 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         loggedUser : action.payload,
+      };
+    case GET_USERS_BY_NAME:
+      return {
+        ...state,
+        users: action.payload,
+      };
+    case GET_USER_BY_ID:
+      return {
+        ...state,
+        registeredUser: action.payload,
       };
     default:
       return state;

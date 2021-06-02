@@ -30,4 +30,7 @@ export const GET_LOGGED_USER = "getLoggedUser";
 export const GET_LOGGED_USER_ERROR = "getLoggedUserError";
 export const EDIT_USER = "editUser";
 export const EDIT_USER_ERROR = "editUserError";
-
+export const GET_USERS_BY_NAME = "getUsersByName";
+export const GET_USERS_BY_NAME_ERROR = "getUsersByNameError";
+export const GET_USER_BY_ID = "getUserById";
+export const GET_USER_BY_ID_ERROR = "getUserById";

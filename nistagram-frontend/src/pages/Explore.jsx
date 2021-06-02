@@ -15,21 +15,36 @@ function Explore(props) {
   const posts = props.posts;
 
   useEffect(() => {
-    debugger;
+    var test = props.location.pathname.slice(18);
+    var testArray = test.split("-");
     if (props.location.state.searchObject.type === "hashtag") {
-      props.getPostsByHashTag(props.location.state.searchObject.value);
+      debugger;
+      if (props.location.hash !== "")
+        props.getPostsByHashTag(props.location.hash);
+      else props.getPostsByHashTag(props.location.pathname.slice(13));
     } else if (props.location.state.searchObject.type === "location") {
-      props.getPostsByLocation(props.location.state.searchObject.value);
+      debugger;
+      var locationArray = props.location.pathname.slice(18).split("-");
+      if (locationArray.length === 1)
+        props.getPostsByLocation(locationArray[0], "", "");
+      else if (locationArray.length === 2)
+        props.getPostsByLocation(locationArray[1], locationArray[0], "");
+      else
+        props.getPostsByLocation(
+          locationArray[2],
+          locationArray[1],
+          locationArray[0]
+        );
     }
   }, [props.location.pathname]);
-  debugger;
+
   if (props.posts === undefined) {
     return null;
   }
   const Posts = () =>
     posts.map((post) => (
       <Photo
-        src={"images/" + post.contentPath}
+        src={"/images/" + post.contentPath}
         onClick={() => displayModalPost(post)}
       />
     ));
@@ -49,7 +64,7 @@ function Explore(props) {
         <PostModal
           show={showPostModal}
           postId={postId}
-          personPhoto="images/download.jfif"
+          personPhoto="/images/download.jfif"
           person={username}
           onShowChange={() => displayModalPost()}
         />
