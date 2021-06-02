@@ -1,10 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PostMicroservice.Api.Factories;
 using PostMicroservice.Core.Interface.Repository;
-using PostMicroservice.Core.Interface.Service;
 using PostMicroservice.Core.Model;
+using PostMicroservice.Core.Model.File;
 using PostMicroservice.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -53,8 +54,17 @@ namespace PostMicroservice.Api.Controllers
         [HttpGet("contents/{fileName}")]
         public IActionResult GetImage(string fileName)
         {
-            FileContentResult fileContentResult = File(_postService.GetImage(_env.WebRootPath, fileName), "image/jpeg");
+            FileContentResult fileContentResult = File(_postService.GetImage(_env.WebRootPath, fileName),
+                "image/jpeg");
             return Ok(fileContentResult);
+        }
+
+        [HttpPost("contents")]
+        public IActionResult SaveImg([FromForm] FileModel file)
+        {
+            string fileName = _postService.ImageToSave(_env.WebRootPath, file);
+
+            return Ok(fileName);
         }
 
         [HttpPost]
@@ -67,12 +77,48 @@ namespace PostMicroservice.Api.Controllers
             if (result.IsFailure) return BadRequest();
             RegisteredUser registeredUser = userService.GetById(post.RegisteredUser.Id);
             Location location = locationService.GetById(post.Location.Id);
+            List<HashTag> hashTags = (from DTOs.HashTag hashTag in post.HashTags
+                                      select HashTag.Create(HashTagText.Create(hashTag.HashTagText).Value).Value).ToList();
+            List<RegisteredUser> taggedUsers = (from DTOs.RegisteredUser registered in post.TaggedUsers
+                                                select RegisteredUser.Create(registered.Id, Username.Create(registered.Username).Value,
+                                                FirstName.Create(registered.FirstName).Value, LastName.Create(registered.LastName).Value,
+                                                ProfileImagePath.Create(registered.ProfileImagePath).Value, false, true,
+                                                new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>(),
+                                                new List<RegisteredUser>()).Value).ToList();
             Guid id = Guid.NewGuid();
             if (_postService.SaveSinglePost(PostSingle.Create(id, timeStamp.Value, description.Value,
                 registeredUser, new List<RegisteredUser>(), new List<RegisteredUser>(),
-                new List<Comment>(), location, new List<RegisteredUser>(), new List<HashTag>(),
+                new List<Comment>(), location, taggedUsers, hashTags,
                 contentPath.Value).Value) == null) return BadRequest();
             return Created(this.Request.Path + "/" + id, "");
+        }
+
+        [HttpPut("{id}/users/{userId}/likes"), ProducesResponseType(StatusCodes.Status204NoContent)]
+        public IActionResult Like([FromRoute] Guid id, [FromRoute] Guid userId)
+        {
+            _postService.Like(id, userId);
+            return NoContent();
+        }
+
+        [HttpPut("{id}/users/{userId}/dislikes"), ProducesResponseType(StatusCodes.Status204NoContent)]
+        public IActionResult Dislike([FromRoute] Guid id, [FromRoute] Guid userId)
+        {
+            _postService.Dislike(id, userId);
+            return NoContent();
+        }
+
+        [HttpPost("{id}/comments"), ProducesResponseType(StatusCodes.Status204NoContent)]
+        public IActionResult CommentPost([FromRoute] Guid id, [FromBody] DTOs.Comment comment)
+        {
+            Result<DateTime> timeStamp = DateTime.Now;
+            Result<CommentText> commentText = CommentText.Create(comment.CommentText);
+            Result result = Result.Combine(timeStamp, commentText);
+            if (result.IsFailure) return BadRequest();
+            RegisteredUser registeredUser = userService.GetById(comment.RegisteredUser.Id);
+            Guid commentId = Guid.NewGuid();
+            _postService.CommentPost(id, Comment.Create(commentId, timeStamp.Value, commentText.Value, registeredUser,
+                new List<RegisteredUser>()).Value);
+            return NoContent();
         }
     }
 }

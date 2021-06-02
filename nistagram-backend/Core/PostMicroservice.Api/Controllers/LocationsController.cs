@@ -25,6 +25,11 @@ namespace PostMicroservice.Api.Controllers
         [HttpGet]
         public IActionResult GetBy([FromQuery] string text)
         {
+            if (String.IsNullOrEmpty(text))
+            {
+                return Ok(_locationRepository.GetAll().ToList().
+                Select(location => locationFactory.Create(location)));
+            }
             List<Location> locations = new List<Location>();
             IEnumerable<Core.Model.Location> queryResult;
             queryResult = _locationRepository.GetCountryByText(text);

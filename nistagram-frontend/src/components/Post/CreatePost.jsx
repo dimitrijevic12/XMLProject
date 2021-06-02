@@ -1,6 +1,11 @@
 import React, { Component } from "react";
-import { savePost } from "../../actions/actions";
+import {
+  savePost,
+  getLocationsByText,
+  getTaggableUsers,
+} from "../../actions/actions";
 import { connect } from "react-redux";
+import axios from "axios";
 
 class CreatePost extends Component {
   state = {
@@ -8,11 +13,42 @@ class CreatePost extends Component {
     fileName: "",
     fileUrl: null,
     description: "",
-    location: "",
-    tag: "",
+    location: {},
+    locations: [],
+    hashTagText: "",
+    contentPath: "",
+    registeredUser: { id: "12345678-1234-1234-1234-123456789123" },
+    taggableUsers: [],
+    taggedUsers: [],
+    taggableUser: {},
+    leftTaggableUsers: [],
   };
 
+  async componentDidMount() {
+    await this.props.getLocationsByText("");
+    this.setState({
+      locations: this.props.locations,
+    });
+
+    await this.props.getTaggableUsers();
+    this.setState({
+      taggableUsers: this.props.taggableUsers,
+    });
+  }
+
   render() {
+    if (
+      this.props.locations == undefined ||
+      this.props.taggableUsers == undefined
+    ) {
+      return null;
+    }
+    debugger;
+    if (this.state.leftTaggableUsers.length == 0) {
+      this.setState({
+        leftTaggableUsers: this.props.taggableUsers,
+      });
+    }
     return (
       <React.Fragment>
         <div className="mt-5">
@@ -44,39 +80,72 @@ class CreatePost extends Component {
           <div className="d-inline-flex w-50">
             <div class="form-group w-100 pr-5">
               <label for="tag">People in this photo:</label>
-              <input
-                type="text"
-                name="tag"
-                value={this.state.tag}
-                onChange={this.handleChange}
-                class="form-control"
-                id="tag"
-                placeholder="Tag people"
-              />
+              <select className="form-control" onChange={this.handleChangeUser}>
+                <option>Select user</option>
+                {this.state.leftTaggableUsers.map((option, index) => (
+                  <option key={index} value={index}>
+                    {option.firstName +
+                      " " +
+                      option.lastName +
+                      "(" +
+                      option.username +
+                      ")"}
+                  </option>
+                ))}
+              </select>
+              <button
+                className="btn btn-primary "
+                onClick={() => {
+                  this.addTagged();
+                }}
+              >
+                Add
+              </button>
             </div>
           </div>
           <div className="d-inline-flex w-50">
             <div class="form-group w-100 pr-5">
               <label for="location">Location:</label>
               <select
-                value={this.state.location}
-                class="form-control"
-                onChange={this.handleChange}
-                name="location"
+                className="form-control"
+                onChange={this.handleChangeLocation}
               >
-                <option value=""> </option>
-                <option value="Novi Sad, Serbia">Novi Sad, Serbia </option>
-                <option value="Belgrade, Serbia">Belgrade, Serbia </option>
-                <option value="Paris, France">Paris, France </option>
-                <option value="London, UK">London, UK </option>
+                <option>Select location</option>
+                {this.state.locations.map((option, index) => (
+                  <option key={index} value={index}>
+                    {option.street +
+                      ", " +
+                      option.cityName +
+                      ", " +
+                      option.country}
+                  </option>
+                ))}
               </select>
+            </div>
+          </div>
+        </div>
+        <div className="mt-5">
+          <div className="d-inline-flex w-50">
+            <div class="form-group w-100 pr-5">
+              <label className="label">Hash Tags:</label>
+              <textarea
+                name="hashTagText"
+                value={this.state.hashTagText}
+                onChange={this.handleChange}
+                cols="40"
+                rows="5"
+                class="form-control"
+                placeholder="Enter hash tags, seperated by space"
+              ></textarea>
             </div>
           </div>
         </div>
         <div className="mt-5 pb-5">
           <button
-            onClick={this.createPost.bind(this)}
             className="btn btn-primary btn-block"
+            onClick={() => {
+              this.createPost();
+            }}
           >
             Post
           </button>
@@ -85,14 +154,77 @@ class CreatePost extends Component {
     );
   }
 
-  async createRegistration() {
-    this.props.savePost(this.state.post);
+  addTagged() {
+    var listLeft = this.state.leftTaggableUsers;
+    var listTagged = this.state.taggedUsers;
+    const taggedUser = this.state.taggableUser;
+    listTagged.push(this.state.taggableUser);
+    debugger;
+    const listLeft2 = listLeft.filter(function (el) {
+      return el.id != taggedUser.id;
+    });
+    this.setState({
+      leftTaggableUsers: listLeft2,
+      taggedUsers: listTagged,
+    });
   }
+
+  async createPost() {
+    const res = this.state.hashTagText.split(" ");
+    var hashTagsObjects = [];
+    res.forEach((element) => hashTagsObjects.push({ HashTagText: element }));
+    await this.props.savePost({
+      Description: this.state.description,
+      RegisteredUser: this.state.registeredUser,
+      Location: this.state.location,
+      ContentPath: this.state.contentPath,
+      HashTags: hashTagsObjects,
+      Taggedusers: this.state.taggedUsers,
+    });
+  }
+
+  handleChangeUser = (e) => {
+    this.setState({
+      taggableUser: this.state.leftTaggableUsers[e.target.value],
+    });
+  };
+
+  handleChangeLocation = (e) => {
+    this.setState({ location: this.state.locations[e.target.value] });
+  };
 
   choosePost = async (event) => {
     this.setState({
       fileUrl: URL.createObjectURL(event.target.files[0]),
     });
+
+    const formData = new FormData();
+
+    formData.append("formFile", event.target.files[0]);
+    formData.append("fileName", event.target.files[0].name);
+
+    var dummyThis = this;
+    try {
+      const res = await axios({
+        method: "post",
+        url: "https://localhost:44355/api/posts/contents",
+        data: formData,
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "Access-Control-Allow-Origin": "*",
+        },
+      })
+        .then(function (response) {
+          var contentPath = { ...dummyThis.state.contentPath };
+          contentPath = response.data;
+          dummyThis.setState({ contentPath });
+        })
+        .catch(function (response) {
+          console.log(response);
+        });
+    } catch (ex) {
+      console.log(ex);
+    }
   };
 
   handleChange = (event) => {
@@ -104,6 +236,13 @@ class CreatePost extends Component {
   };
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  locations: state.locations,
+  taggableUsers: state.taggableUsers,
+});
 
-export default connect(mapStateToProps, { savePost })(CreatePost);
+export default connect(mapStateToProps, {
+  savePost,
+  getLocationsByText,
+  getTaggableUsers,
+})(CreatePost);

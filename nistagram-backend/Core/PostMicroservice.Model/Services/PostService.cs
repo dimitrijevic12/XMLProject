@@ -1,6 +1,6 @@
 ﻿using PostMicroservice.Core.Interface.Repository;
-using PostMicroservice.Core.Interface.Service;
 using PostMicroservice.Core.Model;
+using PostMicroservice.Core.Model.File;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -52,9 +52,40 @@ namespace PostMicroservice.Core.Services
             return File.ReadAllBytes(path);
         }
 
+        public string ImageToSave(string path, FileModel file)
+        {
+            try
+            {
+                using (Stream stream = new FileStream(path + "\\images\\" + file.FileName, FileMode.Create))
+                {
+                    file.FormFile.CopyTo(stream);
+                }
+                return file.FileName;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
         public Post SaveSinglePost(PostSingle post)
         {
             return _postRepository.SaveSinglePost(post);
+        }
+
+        public void Like(Guid id, Guid userId)
+        {
+            _postRepository.Like(id, userId);
+        }
+
+        public void Dislike(Guid id, Guid userId)
+        {
+            _postRepository.Dislike(id, userId);
+        }
+
+        public void CommentPost(Guid postId, Comment comment)
+        {
+            _postRepository.CommentPost(postId, comment);
         }
     }
 }
