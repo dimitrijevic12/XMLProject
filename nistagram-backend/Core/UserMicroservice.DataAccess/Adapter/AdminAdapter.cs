@@ -9,18 +9,18 @@ using UserMicroservice.DataAccess.Target;
 
 namespace UserMicroservice.DataAccess.Adapter
 {
-    public class RegisteredUserAdapter : ITarget
+    public class AdminAdapter : ITarget
     {
-        private readonly RegisteredUserAdaptee registeredUserAdaptee;
+        private readonly AdminAdaptee adminAdaptee;
 
-        public RegisteredUserAdapter(RegisteredUserAdaptee registeredUserAdaptee)
+        public AdminAdapter(AdminAdaptee adminAdaptee)
         {
-            this.registeredUserAdaptee = registeredUserAdaptee;
+            this.adminAdaptee = adminAdaptee;
         }
 
         public object ConvertSql(DataRow dataRow)
         {
-            return registeredUserAdaptee.ConvertSqlDataReaderToRegisteredUser(dataRow);
+            return adminAdaptee.ConvertSqlDataReaderToAdmin(dataRow);
         }
     }
 }

@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CSharpFunctionalExtensions;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PostMicroservice.Api.Factories;
+using PostMicroservice.Core.Model;
 using PostMicroservice.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -27,6 +30,33 @@ namespace PostMicroservice.Api.Controllers
         {
             return Ok(userService.GetTaggable().ToList().
                 Select(user => registeredUserFactory.Create(user)));
+        }
+
+        [HttpPost]
+        public IActionResult RegisterUser(DTOs.RegisteredUser dto)
+        {
+            Guid id = Guid.NewGuid();
+
+            Result<Username> username = Username.Create(dto.Username);
+            Result<FirstName> firstName = FirstName.Create(dto.FirstName);
+            Result<LastName> lastName = LastName.Create(dto.LastName);
+            Result<ProfileImagePath> profileImagePath = ProfileImagePath.Create("");// ovde treba profilna slika
+            Result result = Result.Combine(username, firstName, lastName, profileImagePath);
+            if (result.IsFailure) return BadRequest();
+
+            if (userService.Create(Core.Model.RegisteredUser
+                                       .Create(id,
+                                          username.Value,
+                                          firstName.Value,
+                                          lastName.Value,
+                                          profileImagePath.Value,
+                                          dto.isPrivate,
+                                          dto.isAcceptingTags,
+                                          new List<Core.Model.RegisteredUser>(),
+                                          new List<Core.Model.RegisteredUser>(),
+                                          new List<Core.Model.RegisteredUser>(),
+                                          new List<Core.Model.RegisteredUser>()).Value).IsFailure) return BadRequest();
+            return Created(this.Request.Path + id, "");
         }
     }
 }

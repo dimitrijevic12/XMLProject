@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace UserMicroservice.Api.DTOs
 {
-    public class RegisteredUser
+    public class UserSearchResult
     {
         public Guid Id { get; set; }
         public string Username { get; set; }

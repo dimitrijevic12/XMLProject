@@ -5,28 +5,28 @@ namespace StoryMicroservice.Core.Model
 {
     public class RegisteredUser
     {
-        private Guid id;
-        private Username username;
-        private readonly FirstName firstName;
-        private readonly LastName lastName;
-        private readonly bool isPrivate;
-        private readonly bool isAcceptingTags;
+        public Guid Id { get; }
+        public Username Username { get; }
+        public FirstName FirstName { get; }
+        public LastName LastName { get; }
+        public bool IsPrivate { get; }
+        public bool IsAcceptingTags { get; }
 
-        public RegisteredUser(Guid id, Username username, FirstName firstName, LastName lastName, bool isPrivate, bool isAcceptingTags)
+        public RegisteredUser(Guid id, Username username, FirstName firstname, LastName lastname, bool isPrivate, bool isAcceptingTags)
         {
-            this.id = id;
-            this.username = username;
-            this.firstName = firstName;
-            this.lastName = lastName;
-            this.isPrivate = isPrivate;
-            this.isAcceptingTags = isAcceptingTags;
+            Id = id;
+            Username = username;
+            FirstName = firstname;
+            LastName = lastname;
+            IsPrivate = isPrivate;
+            IsAcceptingTags = isAcceptingTags;
         }
 
-        public static Result<RegisteredUser> Create(Guid id, Username username, FirstName firstName,
-           LastName lastName, bool isPrivate, bool isAcceptingTags)
+        public static Result<RegisteredUser> Create(Guid id, Username username, FirstName firstname,
+            LastName lastname, bool isPrivate, bool isAcceptingTags)
         {
-            return Result.Success(new RegisteredUser(id, username, firstName,
-            lastName, isPrivate, isAcceptingTags));
+            return Result.Success(new RegisteredUser(id, username, firstname,
+            lastname, isPrivate, isAcceptingTags));
         }
     }
 }

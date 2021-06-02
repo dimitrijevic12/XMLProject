@@ -17,11 +17,13 @@ namespace UserMicroservice.Core.Services
     public class UserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IAdminRepository _adminRepository;
         private IConfiguration _config;
 
-        public UserService(IUserRepository userRepository, IConfiguration config)
+        public UserService(IUserRepository userRepository, IAdminRepository adminRepository, IConfiguration config)
         {
             _userRepository = userRepository;
+            _adminRepository = adminRepository;
             _config = config;
         }
 
@@ -33,28 +35,38 @@ namespace UserMicroservice.Core.Services
             return Result.Success(registeredUser);
         }
 
-        public UserModel FindUser(UserModel login)
+        public Result Edit(RegisteredUser registeredUser)
         {
-            //if provera getByusername u admin repository
-            if (_userRepository.GetByUsername(login.Username).HasNoValue) return null;
-            UserModel user = _userRepository.GetRoleByUsername(login.Username).Value;
-            if (user.Role == "agentapp") login.Role = "agent"; //admin
-            if (user.Role == "verified") login.Role = "verified";
-            if (user.Role == "default" || user.Role == "agentuna" || user.Role == "agentden") login.Role = "default";
-
-            login.Id = user.Id;
-            return login;
+            _userRepository.Edit(registeredUser);
+            return Result.Success(registeredUser);
         }
 
-        public string GenerateJSONWebToken(UserModel userInfo)
+        public RegisteredUser GetUserById(Guid id)
+        {
+            if (_userRepository.GetById(id).HasNoValue) return null;
+            return _userRepository.GetById(id).Value;
+        }
+
+        public User FindUser(String username, String password)
+        {
+            if (_adminRepository.GetByUsername(username).HasValue)
+            {
+                return _adminRepository.GetByUsername(username).Value;
+            }
+            if (_userRepository.GetByUsername(username).HasNoValue) return null;
+            return _userRepository.GetRoleByUsername(username).Value;
+        }
+
+        public string GenerateJSONWebToken(User userInfo)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
             var claims = new[] {
                 new Claim("user_id", userInfo.Id.ToString()),
                 new Claim("username", userInfo.Username),
-                new Claim("role", userInfo.Role),
-                new Claim (ClaimTypes.Role, userInfo.Role)
+                new Claim("role", userInfo.GetType().Name),
+                new Claim (ClaimTypes.Role, userInfo.GetType().Name)
             };
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
                 _config["Jwt:Issuer"],
@@ -65,11 +77,6 @@ namespace UserMicroservice.Core.Services
         }
 
         public RegisteredUser Delete(RegisteredUser obj)
-        {
-            throw new NotImplementedException();
-        }
-
-        public RegisteredUser Edit(RegisteredUser obj)
         {
             throw new NotImplementedException();
         }

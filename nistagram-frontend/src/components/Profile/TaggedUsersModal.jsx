@@ -41,7 +41,7 @@ class TaggedUsersModal extends Component {
                 {post.taggedUsers.map((f) => (
                   <tr>
                     <td style={{ textAlign: "left" }}>
-                      <img src="images/user.png" />
+                      <img src="/images/user.png" />
                       <label className="ml-3">
                         {f.firstName + " " + f.lastName}
                       </label>

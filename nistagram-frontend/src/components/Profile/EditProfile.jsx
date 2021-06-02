@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import DatePicker from "react-datepicker";
+import { editUser, getLoggedUser } from "../../actions/actionsUser"
+import { connect } from "react-redux"
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
 
 class EditProfile extends Component {
   state = {
     id: 1,
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
     phoneNumber: "",
     dateOfBirth: "",
@@ -15,7 +18,35 @@ class EditProfile extends Component {
     webSite: "",
   };
 
+  componentDidMount() {
+    this.props.getLoggedUser();
+  }
+
+  changeState = (loggedUser) => {
+    this.setState({
+        id: loggedUser.id,
+        firstName: loggedUser.firstName,
+        lastName: loggedUser.lastName,
+        email: loggedUser.emailAddress,
+        phoneNumber: loggedUser.phoneNumber,
+        dateOfBirth: new Date(loggedUser.dateOfBirth),
+        gender: loggedUser.gender,
+        username: loggedUser.username,
+        bio: loggedUser.bio,
+        webSite: loggedUser.websiteAddress
+    })
+  }
+
   render() {
+     debugger;
+       if (this.props.loggedUser === undefined) {
+         return null;
+        }
+
+     const loggedUser = this.props.loggedUser;
+     if (this.state.firstName === "") {
+         this.changeState(loggedUser)
+     }
     return (
       <React.Fragment>
         <main className="main pt-0 pb-0" style={{ backgroundColor: "#4da3ff" }}>
@@ -31,15 +62,45 @@ class EditProfile extends Component {
             <div className="mt-5">
               <div className="d-inline-flex w-50">
                 <div class="form-group w-100 pr-5">
-                  <label for="firstName">Name:</label>
+                  <label for="firstName">First Name:</label>
                   <input
                     type="text"
-                    name="name"
-                    value={this.state.name}
+                    name="firstName"
+                    value={this.state.firstName}
                     onChange={this.handleChange}
                     class="form-control"
-                    id="name"
-                    placeholder="Enter name"
+                    id="firstName"
+                    placeholder="Enter first name"
+                  />
+                </div>
+              </div>
+              <div className="d-inline-flex w-50">
+                <div class="form-group w-100 pr-5">
+                  <label for="lastName">Last Name:</label>
+                  <input
+                    type="text"
+                    name="lastName"
+                    value={this.state.lastName}
+                    onChange={this.handleChange}
+                    class="form-control"
+                    id="lastName"
+                    placeholder="Enter last name"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="mt-5">
+            <div className="d-inline-flex w-50">
+                <div class="form-group w-100 pr-5">
+                  <label for="firstName">Username:</label>
+                  <input
+                    type="text"
+                    name="username"
+                    value={this.state.username}
+                    onChange={this.handleChange}
+                    class="form-control"
+                    id="username"
+                    placeholder="Enter username"
                   />
                 </div>
               </div>
@@ -91,17 +152,17 @@ class EditProfile extends Component {
               </div>
             </div>
             <div className="mt-5">
-              <div className="d-inline-flex w-50">
+            <div className="d-inline-flex w-50">
                 <div class="form-group w-100 pr-5">
-                  <label for="firstName">Username:</label>
+                  <label for="lastName">Web site:</label>
                   <input
                     type="text"
-                    name="username"
-                    value={this.state.username}
+                    name="webSite"
+                    value={this.state.webSite}
                     onChange={this.handleChange}
                     class="form-control"
-                    id="username"
-                    placeholder="Enter username"
+                    id="webSite"
+                    placeholder="Enter webSite"
                   />
                 </div>
               </div>
@@ -115,12 +176,13 @@ class EditProfile extends Component {
                     name="gender"
                   >
                     <option value=""> </option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
                   </select>
                 </div>
               </div>
             </div>
+            
             <div className="mt-5">
               <div className="d-inline-flex w-50">
                 <div class="form-group w-100 pr-5">
@@ -135,24 +197,10 @@ class EditProfile extends Component {
                     placeholder="Enter biography"
                   ></textarea>
                 </div>
-              </div>
-              <div className="d-inline-flex w-50">
-                <div class="form-group w-100 pr-5">
-                  <label for="lastName">Web site:</label>
-                  <input
-                    type="text"
-                    name="webSite"
-                    value={this.state.webSite}
-                    onChange={this.handleChange}
-                    class="form-control"
-                    id="webSite"
-                    placeholder="Enter webSite"
-                  />
-                </div>
-              </div>
+              </div>           
             </div>
             <div className="mt-5 pb-5">
-              <button className="btn btn-lg btn-primary btn-block">
+              <button onClick={this.edit.bind(this)} className="btn btn-lg btn-primary btn-block">
                 Save changes
               </button>
             </div>
@@ -179,6 +227,28 @@ class EditProfile extends Component {
       dateOfBirth: e,
     });
   };
+
+  async edit() {
+    debugger;
+      this.props.editUser({ 
+      "Id" : this.state.id,  
+      "Username" : this.state.username,
+      "EmailAddress" : this.state.email,
+      "FirstName" : this.state.firstName,
+      "LastName" : this.state.lastName,
+      "DateOfBirth" : this.state.dateOfBirth,
+      "PhoneNumber" : this.state.phoneNumber,
+      "Gender" : this.state.gender,
+      "WebsiteAddress" : this.state.webSite,
+      "Bio" : this.state.bio
+})      
+  }
+
 }
 
-export default EditProfile;
+
+const mapStateToProps = (state) =>
+
+    ({ loggedUser: state.loggedUser })
+
+export default connect(mapStateToProps, { editUser, getLoggedUser })(EditProfile);

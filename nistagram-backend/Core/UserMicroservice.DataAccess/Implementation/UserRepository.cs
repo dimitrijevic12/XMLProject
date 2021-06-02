@@ -29,9 +29,32 @@ namespace UserMicroservice.DataAccess.Implementation
             throw new NotImplementedException();
         }
 
-        public RegisteredUser Edit(RegisteredUser obj)
+        public RegisteredUser Edit(RegisteredUser registeredUser)
         {
-            throw new NotImplementedException();
+            StringBuilder queryBuilder = new StringBuilder("UPDATE dbo.RegisteredUser ");
+            queryBuilder.Append("SET username = @username, email = @email, first_name = @first_name, last_name = @last_name, date_of_birth = @date_of_birth, phone_number = @phone_number, gender = @gender, website_address = @website_address, bio = @bio ");
+            queryBuilder.Append("WHERE id = @id;");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+            {
+                new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = registeredUser.Id },
+                 new SqlParameter("@username", SqlDbType.NVarChar) { Value = registeredUser.Username.ToString() },
+                 new SqlParameter("@email", SqlDbType.NVarChar) { Value = registeredUser.EmailAddress.ToString() },
+                 new SqlParameter("@first_name", SqlDbType.NVarChar) { Value = registeredUser.FirstName.ToString() },
+                 new SqlParameter("@last_name", SqlDbType.NVarChar) { Value = registeredUser.LastName.ToString() },
+                 new SqlParameter("@date_of_birth", SqlDbType.NVarChar) { Value = registeredUser.DateOfBirth.ToString() },
+                 new SqlParameter("@phone_number", SqlDbType.NVarChar) { Value = registeredUser.PhoneNumber.ToString() },
+                 new SqlParameter("@gender", SqlDbType.NVarChar) { Value = registeredUser.Gender.ToString() },
+                 new SqlParameter("@website_address", SqlDbType.NVarChar) { Value = registeredUser.WebsiteAddress.ToString() },
+                 new SqlParameter("@bio", SqlDbType.NVarChar) { Value = registeredUser.Bio.ToString() },
+                 new SqlParameter("@password", SqlDbType.NVarChar) { Value = registeredUser.Password.ToString() },
+            };
+
+            ExecuteQuery(query, parameters);
+
+            return registeredUser;
         }
 
         public IEnumerable<RegisteredUser> GetAll()
@@ -85,7 +108,7 @@ namespace UserMicroservice.DataAccess.Implementation
             return Maybe<RegisteredUser>.None;
         }
 
-        public Maybe<UserModel> GetRoleByUsername(String username)
+        public Maybe<User> GetRoleByUsername(String username)
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT * ");
             queryBuilder.Append("FROM dbo.RegisteredUser ");
@@ -101,11 +124,55 @@ namespace UserMicroservice.DataAccess.Implementation
 
             if (dataTable.Rows.Count > 0)
             {
-                return (UserModel)_userModelTarget.ConvertSql(
+                return (User)_userModelTarget.ConvertSql(
                 dataTable.Rows[0]
                 );
             }
-            return Maybe<UserModel>.None;
+            return Maybe<User>.None;
+        }
+
+        public IEnumerable<RegisteredUser> GetBy(string name, string access)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT * ");
+            queryBuilder.Append("FROM dbo.RegisteredUser ");
+
+            List<SqlParameter> parameters = new List<SqlParameter>();
+
+            if (!String.IsNullOrWhiteSpace(name) || !String.IsNullOrWhiteSpace(access))
+            {
+                queryBuilder.Append("WHERE ");
+                bool needsAnd = false;
+                if (!String.IsNullOrWhiteSpace(name))
+                {
+                    if (needsAnd)
+                        queryBuilder.Append("AND ");
+
+                    queryBuilder.Append("LOWER(username) like LOWER(@Name) OR LOWER(first_name) like LOWER(@Name) OR LOWER(last_name) like LOWER(@Name)");
+                    SqlParameter parameterName = new SqlParameter("@Name", SqlDbType.NVarChar) { Value = "%" + name + "%" };
+                    parameters.Add(parameterName);
+                    needsAnd = true;
+                }
+                if (!String.IsNullOrWhiteSpace(access))
+                {
+                    if (needsAnd)
+                        queryBuilder.Append("AND ");
+
+                    queryBuilder.Append("is_private = @Access ");
+
+                    SqlParameter parameterHashTag = new SqlParameter("@Access", SqlDbType.Bit)
+                    { Value = access.Equals("private") ? 1 : 0 };
+                    parameters.Add(parameterHashTag);
+                    needsAnd = true;
+                }
+            }
+
+            string query = queryBuilder.ToString();
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            return (from DataRow dataRow in dataTable.Rows
+
+                    select (RegisteredUser)_registeredUserTarget.ConvertSql(dataRow)).ToList();
         }
 
         public RegisteredUser Save(RegisteredUser registeredUser)
@@ -115,8 +182,6 @@ namespace UserMicroservice.DataAccess.Implementation
             queryBuilder.Append("VALUES (@id, @username, @email, @first_name, @last_name, @date_of_birth, @phone_number, @gender, @website_address, @bio, @is_private, @is_accepting_messages, @is_accepting_tags, 'default', '', @password);");
 
             string query = queryBuilder.ToString();
-
-            string test = registeredUser.Username;
 
             List<SqlParameter> parameters = new List<SqlParameter>
              {

@@ -15,6 +15,7 @@ import ApprovalAgentPage from "./pages/ApprovalAgentPage";
 import CreateItemPage from "./pages/CreateItemPage";
 import ReviewItemPage from "./pages/ReviewItemPage";
 import Explore from "./pages/Explore";
+import PublicProfile from "./components/Profile/PublicProfile";
 
 function App() {
   return (
@@ -54,12 +55,10 @@ function App() {
           <Route exact path="/review-item">
             <ReviewItemPage />
           </Route>
-          <Route path="/explore:query">
+          <Route path="/explore/:search">
             <Explore />
           </Route>
-          <Route path="/:username">
-            <ProfilePage />
-          </Route>
+          <Route path="/profile/:username" component={ProfilePage}></Route>
           <Route path="/">
             <HomePage />
           </Route>

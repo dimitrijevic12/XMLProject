@@ -1,3 +1,4 @@
+import { act } from "react-dom/test-utils";
 import { loadImage } from "../actions/actions";
 import {
   GET_POSTS_BY_USER_ID,
@@ -16,6 +17,12 @@ import {
   COMMENT_POST,
   LOAD_IMAGES,
   CLEAR_IMAGES,
+  EDIT_USER,
+  EDIT_USER_ERROR,
+  GET_LOGGED_USER,
+  GET_LOGGED_USER_ERROR,
+  GET_USERS_BY_NAME,
+  GET_USER_BY_ID,
 } from "../types/types";
 
 const initialState = {
@@ -28,6 +35,8 @@ const initialState = {
   locations: [],
   taggableUsers: [],
   loadedImages: [],
+  loggedUser: {},
+  users: [],
 };
 
 function reducer(state = initialState, action) {
@@ -68,7 +77,6 @@ function reducer(state = initialState, action) {
         loadedImage: action.payload,
       };
     case LOAD_IMAGES:
-      debugger;
       return {
         ...state,
         loadedImages: state.loadedImages.concat(action.payload),
@@ -106,10 +114,24 @@ function reducer(state = initialState, action) {
         ...state,
       };
     case CLEAR_IMAGES:
-      debugger;
       return {
         ...state,
         loadedImages: [],
+      };
+    case GET_LOGGED_USER:
+      return {
+        ...state,
+        loggedUser: action.payload,
+      };
+    case GET_USERS_BY_NAME:
+      return {
+        ...state,
+        users: action.payload,
+      };
+    case GET_USER_BY_ID:
+      return {
+        ...state,
+        registeredUser: action.payload,
       };
     default:
       return state;

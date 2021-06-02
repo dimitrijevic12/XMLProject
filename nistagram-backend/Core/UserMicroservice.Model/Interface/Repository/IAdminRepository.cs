@@ -8,12 +8,10 @@ using UserMicroservice.Core.Model;
 
 namespace UserMicroservice.Core.Interface.Repository
 {
-    public interface IUserRepository : IRepository<RegisteredUser>
+    public interface IAdminRepository : IRepository<Admin>
     {
-        public Maybe<RegisteredUser> GetByUsername(String username);
+        public Maybe<Admin> GetByUsername(String username);
 
         public Maybe<User> GetRoleByUsername(String username);
-
-        public IEnumerable<RegisteredUser> GetBy(string name, string access);
     }
 }

@@ -28,18 +28,20 @@ import {
   LOAD_IMAGES,
   LOAD_IMAGES_ERROR,
   CLEAR_IMAGES,
+  GET_USERS_BY_NAME,
+  GET_USERS_BY_NAME_ERROR,
+  GET_USER_BY_ID,
+  GET_USER_BY_ID_ERROR,
 } from "../types/types";
 import axios from "axios";
 
 export const getPostsByUserId = (id) => async (dispatch) => {
   try {
     debugger;
-    const response = await axios.get(
-      "https://localhost:44355/api/posts/users/" + id,
-      {
-        headers: { "Access-Control-Allow-Origin": "*" },
-      }
-    );
+    const response = await axios.get("https://localhost:44355/api/posts?", {
+      params: { userid: id },
+      headers: { "Access-Control-Allow-Origin": "*" },
+    });
     debugger;
     dispatch({
       type: GET_POSTS_BY_USER_ID,
@@ -73,30 +75,31 @@ export const getPostsByHashTag = (hashtag) => async (dispatch) => {
   }
 };
 
-export const getPostsByLocation = (location) => async (dispatch) => {
-  try {
-    debugger;
-    const response = await axios.get("https://localhost:44355/api/posts?", {
-      params: {
-        country: location.country,
-        city: location.cityName,
-        street: location.street,
-        access: "public",
-      },
-      headers: { "Access-Control-Allow-Origin": "*" },
-    });
-    debugger;
-    dispatch({
-      type: GET_POSTS_BY_LOCATION,
-      payload: response.data,
-    });
-  } catch (e) {
-    dispatch({
-      type: GET_POSTS_BY_LOCATION_ERROR,
-      payload: console.log(e),
-    });
-  }
-};
+export const getPostsByLocation =
+  (country, city, street) => async (dispatch) => {
+    try {
+      debugger;
+      const response = await axios.get("https://localhost:44355/api/posts?", {
+        params: {
+          country: country,
+          city: city,
+          street: street,
+          access: "public",
+        },
+        headers: { "Access-Control-Allow-Origin": "*" },
+      });
+      debugger;
+      dispatch({
+        type: GET_POSTS_BY_LOCATION,
+        payload: response.data,
+      });
+    } catch (e) {
+      dispatch({
+        type: GET_POSTS_BY_LOCATION_ERROR,
+        payload: console.log(e),
+      });
+    }
+  };
 
 export const getPost = (id) => async (dispatch) => {
   try {

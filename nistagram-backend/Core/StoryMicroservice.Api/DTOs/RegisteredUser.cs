@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace PostMicroservice.Api.DTOs
+namespace StoryMicroservice.Api.DTOs
 {
     public class RegisteredUser
     {
@@ -9,10 +11,7 @@ namespace PostMicroservice.Api.DTOs
         public string Username { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string ProfileImagePath { get; set; }
         public Boolean isPrivate { get; set; }
         public Boolean isAcceptingTags { get; set; }
-        public IEnumerable<RegisteredUser> Following { get; set; }
-        public IEnumerable<RegisteredUser> Followers { get; set; }
     }
 }
