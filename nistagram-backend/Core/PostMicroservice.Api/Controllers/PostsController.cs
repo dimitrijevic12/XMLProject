@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PostMicroservice.Api.Factories;
 using PostMicroservice.Core.Interface.Repository;
-using PostMicroservice.Core.Interface.Service;
 using PostMicroservice.Core.Model;
 using PostMicroservice.Core.Model.File;
 using PostMicroservice.Core.Services;

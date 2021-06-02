@@ -8,7 +8,6 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PostMicroservice.Api.Factories;
 using PostMicroservice.Core.Interface.Repository;
-using PostMicroservice.Core.Interface.Service;
 using PostMicroservice.Core.Services;
 using PostMicroservice.DataAccess.Implementation;
 using System.Text;

@@ -1,5 +1,4 @@
 ﻿using PostMicroservice.Core.Interface.Repository;
-using PostMicroservice.Core.Interface.Service;
 using PostMicroservice.Core.Model;
 using PostMicroservice.Core.Model.File;
 using System;

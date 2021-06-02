@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import {
   savePost,
-  getLocations,
+  getLocationsByText,
   getTaggableUsers,
 } from "../../actions/actions";
 import { connect } from "react-redux";
@@ -25,7 +25,7 @@ class CreatePost extends Component {
   };
 
   async componentDidMount() {
-    await this.props.getLocations();
+    await this.props.getLocationsByText("");
     this.setState({
       locations: this.props.locations,
     });
@@ -243,6 +243,6 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
   savePost,
-  getLocations,
+  getLocationsByText,
   getTaggableUsers,
 })(CreatePost);
