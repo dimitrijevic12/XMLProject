@@ -17,7 +17,7 @@ class CreatePost extends Component {
     locations: [],
     hashTagText: "",
     contentPath: "",
-    registeredUser: { id: "12345678-1234-1234-1234-123456789123" },
+    registeredUser: { id: sessionStorage.getItem("userId") },
     taggableUsers: [],
     taggedUsers: [],
     taggableUser: {},

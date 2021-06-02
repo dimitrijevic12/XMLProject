@@ -21,7 +21,7 @@ class SomeoneProfile extends Component {
 
   componentDidMount() {
     debugger;
-    this.props.getPostsByUserId("12345678-1234-1234-1234-123456789123");
+    this.props.getPostsByUserId(sessionStorage.getItem("userId"));
   }
 
   render() {

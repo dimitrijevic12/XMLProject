@@ -200,6 +200,8 @@ namespace PostMicroservice.DataAccess.Implementation
                 }
             }
 
+            queryBuilder.Append("ORDER BY p.timestamp DESC");
+
             string query = queryBuilder.ToString();
 
             DataTable dataTable = ExecuteQuery(query, parameters);

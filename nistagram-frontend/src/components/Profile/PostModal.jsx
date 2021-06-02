@@ -226,7 +226,7 @@ class PostModal extends Component {
 
     await this.props.likePost({
       id: this.props.post.id,
-      userId: "12345678-1234-1234-1234-123456789123",
+      userId: sessionStorage.getItem("userId"),
     });
     this.setState({
       liked: !this.state.liked,
@@ -247,7 +247,7 @@ class PostModal extends Component {
 
     await this.props.dislikePost({
       id: this.props.post.id,
-      userId: "12345678-1234-1234-1234-123456789123",
+      userId: sessionStorage.getItem("userId"),
     });
     this.setState({
       disliked: !this.state.disliked,
@@ -257,7 +257,7 @@ class PostModal extends Component {
   async commentPost() {
     const comment = {
       CommentText: this.state.commentText,
-      RegisteredUser: { id: "12345678-1234-1234-1234-123456789123" },
+      RegisteredUser: { id: sessionStorage.getItem("userId") },
     };
     debugger;
     await this.props.commentPost({ id: this.props.post.id, comment: comment });

@@ -55,8 +55,20 @@ namespace PostMicroservice.Api.Controllers
         {
             if (Request.Query.Count == 0) return BadRequest();
             if (userId == Guid.Empty && String.IsNullOrWhiteSpace(hashTag) && String.IsNullOrEmpty(access)) return BadRequest();
-            return Ok(_postRepository.GetBy(userId, hashTag, country, city, street, access)
-                .Select(post => postSingleFactory.Create((PostSingle)post)));
+            List<DTOs.Post> posts = new List<DTOs.Post>();
+            List<Post> allPosts = _postRepository.GetBy(userId, hashTag, country, city, street, access).ToList();
+            foreach (Post post in allPosts)
+            {
+                if (post.GetType().Name.Equals("PostSingle"))
+                {
+                    posts.Add(postSingleFactory.Create((PostSingle)post));
+                }
+                else
+                {
+                    posts.Add(postAlbumFactory.Create((PostAlbum)post));
+                }
+            }
+            return Ok(posts);
         }
 
         [HttpGet("contents/{fileName}")]

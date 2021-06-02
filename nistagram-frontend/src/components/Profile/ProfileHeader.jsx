@@ -18,7 +18,7 @@ class ProfileHeader extends Component {
         pictureSrc="/images/download.jfif"
         username={this.props.user.username}
         followersData={[
-          this.props.user.postsCount,
+          this.state.postsCount,
           this.props.user.followers === undefined
             ? 0
             : this.props.user.followers.length,
