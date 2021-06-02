@@ -19,6 +19,7 @@ namespace PostMicroservice.DataAccess.Implementation
         public ITarget _commentTarget = new CommentAdapter(new CommentAdaptee());
         public ITarget _hashTagTarget = new HashTagAdapter(new HashTagAdaptee());
         public ITarget _registeredUserTarget = new RegisteredUserAdapter(new RegisteredUserAdaptee());
+        public ITarget _contentPathTarget = new ContentPathAdapter(new ContentPathAdaptee());
 
         public PostRepository(IConfiguration configuration) : base(configuration)
         {
@@ -42,7 +43,8 @@ namespace PostMicroservice.DataAccess.Implementation
             return (from DataRow dataRow in dataTable.Rows
                     select (Post)_target.ConvertSqlWithAttributes(dataRow, GetLikesForPost((Guid)dataRow[0]),
                     GetDislikesForPost((Guid)dataRow[0]), GetHashTagsForPost((Guid)dataRow[0]),
-                    GetCommentsForPost((Guid)dataRow[0]), GetTaggedPeopleForPost((Guid)dataRow[0]))).ToList();
+                    GetCommentsForPost((Guid)dataRow[0]), GetTaggedPeopleForPost((Guid)dataRow[0]),
+                    GetContentsPathForPost((Guid)dataRow[0]))).ToList();
         }
 
         public Post GetById(Guid id)
@@ -63,7 +65,7 @@ namespace PostMicroservice.DataAccess.Implementation
 
             return (Post)_target.ConvertSqlWithAttributes(ExecuteQuery(query, parameters).Rows[0],
                  GetLikesForPost(id), GetDislikesForPost(id), GetHashTagsForPost(id), GetCommentsForPost(id),
-                 GetTaggedPeopleForPost(id));
+                 GetTaggedPeopleForPost(id), GetContentsPathForPost(id));
         }
 
         public Post Save(Post obj)
@@ -92,6 +94,33 @@ namespace PostMicroservice.DataAccess.Implementation
             ExecuteQuery(query, parameters);
 
             SaveContentPath(post);
+            SaveHashTags(post);
+            SaveTaggedUsers(post);
+
+            return post;
+        }
+
+        public Post SaveAlbumPost(PostAlbum post)
+        {
+            StringBuilder queryBuilder = new StringBuilder("INSERT INTO dbo.Post ");
+            queryBuilder.Append("(id, timestamp, description, registered_user_id, type, location_id) ");
+            queryBuilder.Append("VALUES (@id, @timestamp, @description, @registered_user_id, @type, @location_id);");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+            {
+                new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = post.Id },
+                new SqlParameter("@timestamp", SqlDbType.NVarChar) { Value = post.TimeStamp },
+                new SqlParameter("@description", SqlDbType.NVarChar) { Value = post.Description.ToString() },
+                new SqlParameter("@registered_user_id", SqlDbType.UniqueIdentifier) { Value = post.RegisteredUser.Id },
+                new SqlParameter("@type", SqlDbType.NVarChar) { Value = "album" },
+                new SqlParameter("@location_id", SqlDbType.UniqueIdentifier) { Value = post.Location.Id }
+            };
+
+            ExecuteQuery(query, parameters);
+
+            SaveContentPaths(post);
             SaveHashTags(post);
             SaveTaggedUsers(post);
 
@@ -178,7 +207,8 @@ namespace PostMicroservice.DataAccess.Implementation
             return (from DataRow dataRow in dataTable.Rows
                     select (Post)_target.ConvertSqlWithAttributes(dataRow, GetLikesForPost((Guid)dataRow[0]),
                     GetDislikesForPost((Guid)dataRow[0]), GetHashTagsForPost((Guid)dataRow[0]),
-                    GetCommentsForPost((Guid)dataRow[0]), GetTaggedPeopleForPost((Guid)dataRow[0]))).ToList();
+                    GetCommentsForPost((Guid)dataRow[0]), GetTaggedPeopleForPost((Guid)dataRow[0]),
+                    GetContentsPathForPost((Guid)dataRow[0]))).ToList();
         }
 
         public IEnumerable<Post> GetByHashTag(string hashTag)
@@ -204,7 +234,8 @@ namespace PostMicroservice.DataAccess.Implementation
             return (from DataRow dataRow in dataTable.Rows
                     select (Post)_target.ConvertSqlWithAttributes(dataRow, GetLikesForPost((Guid)dataRow[0]),
                     GetDislikesForPost((Guid)dataRow[0]), GetHashTagsForPost((Guid)dataRow[0]),
-                    GetCommentsForPost((Guid)dataRow[0]), GetTaggedPeopleForPost((Guid)dataRow[0]))).ToList();
+                    GetCommentsForPost((Guid)dataRow[0]), GetTaggedPeopleForPost((Guid)dataRow[0]),
+                    GetContentsPathForPost((Guid)dataRow[0]))).ToList();
         }
 
         private List<Comment> GetCommentsForPost(Guid id)
@@ -225,6 +256,24 @@ namespace PostMicroservice.DataAccess.Implementation
 
             return (from DataRow dataRow in dataTable.Rows
                     select (Comment)_commentTarget.ConvertSql(dataRow)).ToList();
+        }
+
+        private List<ContentPath> GetContentsPathForPost(Guid id)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT content_path ");
+            queryBuilder.Append("FROM dbo.Content ");
+            queryBuilder.Append("WHERE post_id = @Id;");
+
+            string query = queryBuilder.ToString();
+
+            SqlParameter parameterId = new SqlParameter("@Id", SqlDbType.UniqueIdentifier) { Value = id };
+
+            List<SqlParameter> parameters = new List<SqlParameter>() { parameterId };
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            return (from DataRow dataRow in dataTable.Rows
+                    select (ContentPath)_contentPathTarget.ConvertSql(dataRow)).ToList();
         }
 
         private List<HashTag> GetHashTagsForPost(Guid id)
@@ -320,7 +369,28 @@ namespace PostMicroservice.DataAccess.Implementation
             ExecuteQuery(query, parameters);
         }
 
-        private void SaveHashTags(PostSingle post)
+        private void SaveContentPaths(PostAlbum post)
+        {
+            foreach (ContentPath contentPath in post.ContentPaths)
+            {
+                StringBuilder queryBuilder = new StringBuilder("INSERT INTO dbo.Content ");
+                queryBuilder.Append("(id, post_id, content_path) ");
+                queryBuilder.Append("VALUES (@id, @post_id, @content_path);");
+
+                string query = queryBuilder.ToString();
+
+                List<SqlParameter> parameters = new List<SqlParameter>
+            {
+                new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = Guid.NewGuid() },
+                new SqlParameter("@post_id", SqlDbType.UniqueIdentifier) { Value = post.Id },
+                new SqlParameter("@content_path", SqlDbType.NVarChar) { Value = contentPath.ToString() }
+            };
+
+                ExecuteQuery(query, parameters);
+            }
+        }
+
+        private void SaveHashTags(Post post)
         {
             foreach (HashTag hashTag in post.HashTags)
             {
@@ -341,7 +411,7 @@ namespace PostMicroservice.DataAccess.Implementation
             }
         }
 
-        private void SaveTaggedUsers(PostSingle post)
+        private void SaveTaggedUsers(Post post)
         {
             foreach (RegisteredUser registeredUser in post.TaggedUsers)
             {
@@ -470,6 +540,31 @@ namespace PostMicroservice.DataAccess.Implementation
             };
 
             ExecuteQuery(query, parameters);
+        }
+
+        public IEnumerable<Post> GetByUserId(Guid id)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT p.id, p.timestamp, p.description, " +
+                "p.type, l.id, l.city_name, l.street, l.country, r.id, r.username, r.first_name, " +
+                "r.last_name, r.profilePicturePath, r.isPrivate, r.isAcceptingTags, c.content_path ");
+            queryBuilder.Append("FROM dbo.Post AS p, dbo.Location AS l, dbo.RegisteredUser AS r, " +
+                "dbo.Content AS c ");
+            queryBuilder.Append("WHERE p.location_id=l.id AND p.registered_user_id=r.id AND p.id=c.post_id " +
+                "AND p.registered_user_id = @Id;");
+
+            string query = queryBuilder.ToString();
+
+            SqlParameter parameterId = new SqlParameter("@Id", SqlDbType.UniqueIdentifier) { Value = id };
+
+            List<SqlParameter> parameters = new List<SqlParameter>() { parameterId };
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            return (from DataRow dataRow in dataTable.Rows
+                    select (Post)_target.ConvertSqlWithAttributes(dataRow, GetLikesForPost((Guid)dataRow[0]),
+                    GetDislikesForPost((Guid)dataRow[0]), GetHashTagsForPost((Guid)dataRow[0]),
+                    GetCommentsForPost((Guid)dataRow[0]), GetTaggedPeopleForPost((Guid)dataRow[0]),
+                    GetContentsPathForPost((Guid)dataRow[0]))).ToList();
         }
     }
 }

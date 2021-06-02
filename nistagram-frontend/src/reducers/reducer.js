@@ -14,6 +14,8 @@ import {
   LIKE_POST,
   DISLIKE_POST,
   COMMENT_POST,
+  LOAD_IMAGES,
+  CLEAR_IMAGES,
 } from "../types/types";
 
 const initialState = {
@@ -25,6 +27,7 @@ const initialState = {
   loadedImage: "",
   locations: [],
   taggableUsers: [],
+  loadedImages: [],
 };
 
 function reducer(state = initialState, action) {
@@ -64,6 +67,12 @@ function reducer(state = initialState, action) {
         ...state,
         loadedImage: action.payload,
       };
+    case LOAD_IMAGES:
+      debugger;
+      return {
+        ...state,
+        loadedImages: state.loadedImages.concat(action.payload),
+      };
     case SAVE_POST:
       return {
         ...state,
@@ -95,6 +104,12 @@ function reducer(state = initialState, action) {
     case COMMENT_POST:
       return {
         ...state,
+      };
+    case CLEAR_IMAGES:
+      debugger;
+      return {
+        ...state,
+        loadedImages: [],
       };
     default:
       return state;

@@ -10,10 +10,14 @@ namespace PostMicroservice.Core.Interface.Repository
 
         public Post SaveSinglePost(PostSingle post);
 
+        public Post SaveAlbumPost(PostAlbum post);
+
         public void Like(Guid id, Guid userId);
 
         public void Dislike(Guid id, Guid userId);
 
         public void CommentPost(Guid postId, Comment comment);
+
+        public IEnumerable<Post> GetByUserId(Guid id);
     }
 }

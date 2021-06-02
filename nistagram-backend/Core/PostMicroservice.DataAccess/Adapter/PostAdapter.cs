@@ -16,10 +16,11 @@ namespace PostMicroservice.DataAccess.Adapter
 
         public object ConvertSqlWithAttributes(DataRow dataRow, IEnumerable<RegisteredUser> likes,
             IEnumerable<RegisteredUser> dislikes, IEnumerable<HashTag> hashTags,
-            IEnumerable<Comment> comments, IEnumerable<RegisteredUser> taggedUsers)
+            IEnumerable<Comment> comments, IEnumerable<RegisteredUser> taggedUsers,
+            IEnumerable<ContentPath> contentPaths)
         {
             return postAdaptee.ConvertSqlDataReaderToPostWithAttributes(dataRow, likes, dislikes,
-                hashTags, comments, taggedUsers);
+                hashTags, comments, taggedUsers, contentPaths);
         }
     }
 }

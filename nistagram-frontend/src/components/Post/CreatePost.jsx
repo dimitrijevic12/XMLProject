@@ -22,6 +22,8 @@ class CreatePost extends Component {
     taggedUsers: [],
     taggableUser: {},
     leftTaggableUsers: [],
+    fileUrls: [],
+    contentPaths: [],
   };
 
   async componentDidMount() {
@@ -54,7 +56,7 @@ class CreatePost extends Component {
         <div className="mt-5">
           <div className="d-inline-flex w-50">
             <div class="form-group w-100 pr-5">
-              <input type="file" onChange={this.choosePost} />
+              <input type="file" onChange={this.choosePost} multiple />
               <img
                 src={this.state.fileUrl}
                 style={{ width: 500, height: 300 }}
@@ -177,7 +179,7 @@ class CreatePost extends Component {
       Description: this.state.description,
       RegisteredUser: this.state.registeredUser,
       Location: this.state.location,
-      ContentPath: this.state.contentPath,
+      ContentPaths: this.state.contentPaths,
       HashTags: hashTagsObjects,
       Taggedusers: this.state.taggedUsers,
     });
@@ -194,36 +196,53 @@ class CreatePost extends Component {
   };
 
   choosePost = async (event) => {
+    var result = [];
+    var files = event.target.files;
+    debugger;
+    Array.prototype.forEach.call(files, (file) => {
+      result.push(URL.createObjectURL(file));
+    });
     this.setState({
       fileUrl: URL.createObjectURL(event.target.files[0]),
+      fileUrls: result,
     });
 
-    const formData = new FormData();
+    var contentPaths = [];
+    var i;
 
-    formData.append("formFile", event.target.files[0]);
-    formData.append("fileName", event.target.files[0].name);
+    for (i = 0; i < files.length; i++) {
+      debugger;
+      const formData = new FormData();
 
-    var dummyThis = this;
-    try {
-      const res = await axios({
-        method: "post",
-        url: "https://localhost:44355/api/posts/contents",
-        data: formData,
-        headers: {
-          "Content-Type": "multipart/form-data",
-          "Access-Control-Allow-Origin": "*",
-        },
-      })
-        .then(function (response) {
-          var contentPath = { ...dummyThis.state.contentPath };
-          contentPath = response.data;
-          dummyThis.setState({ contentPath });
+      formData.append("formFile", files[i]);
+      formData.append("fileName", files[i].name);
+
+      var dummyThis = this;
+      try {
+        const res = await axios({
+          method: "post",
+          url: "https://localhost:44355/api/posts/contents",
+          data: formData,
+          headers: {
+            "Content-Type": "multipart/form-data",
+            "Access-Control-Allow-Origin": "*",
+          },
         })
-        .catch(function (response) {
-          console.log(response);
-        });
-    } catch (ex) {
-      console.log(ex);
+          .then(function (response) {
+            var contentPath = { ...dummyThis.state.contentPath };
+            contentPath = response.data;
+            dummyThis.setState({ contentPath });
+          })
+          .catch(function (response) {
+            console.log(response);
+          });
+      } catch (ex) {
+        console.log(ex);
+      }
+      contentPaths.push(this.state.contentPath);
+      this.setState({
+        contentPaths: contentPaths,
+      });
     }
   };
 

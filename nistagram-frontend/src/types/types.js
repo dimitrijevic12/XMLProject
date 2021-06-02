@@ -26,3 +26,6 @@ export const GET_LOCATIONS_BY_TEXT = "getLocationsByText";
 export const GET_LOCATIONS_BY_TEXT_ERROR = "getLocationsByTextError";
 export const GET_POSTS_BY_LOCATION = "getPostsByLocation";
 export const GET_POSTS_BY_LOCATION_ERROR = "getPostsByLocationError";
+export const LOAD_IMAGES = "loadImages";
+export const LOAD_IMAGES_ERROR = "loadImagesError";
+export const CLEAR_IMAGES = "clearImages";

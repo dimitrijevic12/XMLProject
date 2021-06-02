@@ -9,12 +9,13 @@ namespace PostMicroservice.DataAccess.Adaptee
     {
         public Post ConvertSqlDataReaderToPostWithAttributes(DataRow dataRow, IEnumerable<RegisteredUser> likes,
             IEnumerable<RegisteredUser> dislikes, IEnumerable<HashTag> hashTags,
-            IEnumerable<Comment> comments, IEnumerable<RegisteredUser> taggedUsers)
+            IEnumerable<Comment> comments, IEnumerable<RegisteredUser> taggedUsers,
+            IEnumerable<ContentPath> contentPaths)
         {
             if (dataRow[3].ToString().Trim().Equals("album", StringComparison.InvariantCultureIgnoreCase))
             {
                 return ConvertSqlDataReaderToPostAlbumWithAttributes(dataRow, likes, dislikes,
-                hashTags, comments, taggedUsers);
+                hashTags, comments, taggedUsers, contentPaths);
             }
             else
             {
@@ -26,7 +27,7 @@ namespace PostMicroservice.DataAccess.Adaptee
         private PostAlbum ConvertSqlDataReaderToPostAlbumWithAttributes(DataRow dataRow,
             IEnumerable<RegisteredUser> likes, IEnumerable<RegisteredUser> dislikes,
             IEnumerable<HashTag> hashTags, IEnumerable<Comment> comments,
-            IEnumerable<RegisteredUser> taggedUsers)
+            IEnumerable<RegisteredUser> taggedUsers, IEnumerable<ContentPath> contentPaths)
         {
             return PostAlbum.Create(
                 id: Guid.Parse(dataRow[0].ToString().Trim()),
@@ -53,7 +54,7 @@ namespace PostMicroservice.DataAccess.Adaptee
                                           country: Country.Create(dataRow[7].ToString().Trim()).Value).Value,
                 taggedUsers: taggedUsers,
                 hashTags: hashTags,
-                contentPaths: new List<ContentPath>()).Value;
+                contentPaths: contentPaths).Value;
         }
 
         private PostSingle ConvertSqlDataReaderToPostSingleWithAttributes(DataRow dataRow,

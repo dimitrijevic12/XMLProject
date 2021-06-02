@@ -15,7 +15,7 @@ namespace PostMicroservice.Core.Model
         public static Result<HashTagText> Create(string text)
         {
             if (text.Length > 50) return Result.Failure<HashTagText>("Hash tag text cannot contain more than 50 characters");
-            if (!text.Contains("#")) return Result.Failure<HashTagText>("Hash tag text have to contains #");
+            if (!string.IsNullOrEmpty(text) && !text.Contains("#")) return Result.Failure<HashTagText>("Hash tag text have to contains #");
             return Result.Success(new HashTagText(text));
         }
 

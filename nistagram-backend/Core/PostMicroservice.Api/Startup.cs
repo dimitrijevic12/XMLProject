@@ -40,6 +40,7 @@ namespace PostMicroservice.Api
             services.AddScoped<HashTagFactory>();
             services.AddScoped<LocationFactory>();
             services.AddScoped<PostSingleFactory>();
+            services.AddScoped<PostAlbumFactory>();
             services.AddScoped<RegisteredUserFactory>();
             services.AddScoped<CommentFactory>();
             services.AddScoped<HashTagFactory>();

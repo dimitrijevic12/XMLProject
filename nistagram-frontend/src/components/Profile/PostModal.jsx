@@ -6,12 +6,15 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Favorite from "@material-ui/icons/Favorite";
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
 import moment from "moment";
+import { Slide } from "react-slideshow-image";
+import "react-slideshow-image/dist/styles.css";
 import {
   getPost,
   loadImage,
   likePost,
   dislikePost,
   commentPost,
+  loadImages,
 } from "../../actions/actions";
 import { connect } from "react-redux";
 import TaggedUsersModal from "./TaggedUsersModal";
@@ -39,11 +42,25 @@ class PostModal extends Component {
   }
 
   render() {
-    if (this.props.post == undefined || this.props.loadImage == undefined) {
+    if (this.props.post == undefined) {
+      return null;
+    }
+    if (
+      this.props.post.contentPath == undefined &&
+      this.props.loadedImages == undefined
+    ) {
+      return null;
+    }
+    if (
+      this.props.post.contentPaths == undefined &&
+      this.props.loadedImage == undefined
+    ) {
       return null;
     }
     const post = this.props.post;
     const loadedImage = this.props.loadedImage;
+    const loadedImages = this.props.loadedImages;
+    console.log(loadedImages[0]);
     debugger;
     return (
       <Modal
@@ -71,14 +88,31 @@ class PostModal extends Component {
         </ModalHeader>
         <ModalBody>
           <div>
-            <img
-              onClick={() => {
-                this.displayModalPost();
-              }}
-              src={"data:image/jpg;base64," + loadedImage}
-              style={{ width: 800, height: 320 }}
-              className="mb-3"
-            />
+            {post.contentPath == undefined ? (
+              <Slide easing="ease">
+                {loadedImages.map((f, i) => (
+                  <div className="each-slide">
+                    <img
+                      onClick={() => {
+                        this.displayModalPost();
+                      }}
+                      src={"data:image/jpg;base64," + loadedImages[i]}
+                      style={{ width: 800, height: 320 }}
+                      className="mb-3"
+                    />
+                  </div>
+                ))}
+              </Slide>
+            ) : (
+              <img
+                onClick={() => {
+                  this.displayModalPost();
+                }}
+                src={"data:image/jpg;base64," + loadedImage}
+                style={{ width: 800, height: 320 }}
+                className="mb-3"
+              />
+            )}
             <div>
               {post.hashTags.map((hashTag) => hashTag.hashTagText + " ")}
             </div>
@@ -246,6 +280,7 @@ class PostModal extends Component {
 const mapStateToProps = (state) => ({
   post: state.post,
   loadedImage: state.loadedImage,
+  loadedImages: state.loadedImages,
 });
 
 export default connect(mapStateToProps, {
@@ -254,4 +289,5 @@ export default connect(mapStateToProps, {
   likePost,
   dislikePost,
   commentPost,
+  loadImages,
 })(PostModal);

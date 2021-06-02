@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PostMicroservice.Api.DTOs
 {
-    public class PostSingle
+    public class PostSingle : Post
     {
         public Guid Id { get; set; }
         public DateTime TimeStamp { get; set; }

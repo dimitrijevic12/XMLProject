@@ -73,6 +73,11 @@ namespace PostMicroservice.Core.Services
             return _postRepository.SaveSinglePost(post);
         }
 
+        public Post SaveAlbumPost(PostAlbum post)
+        {
+            return _postRepository.SaveAlbumPost(post);
+        }
+
         public void Like(Guid id, Guid userId)
         {
             _postRepository.Like(id, userId);

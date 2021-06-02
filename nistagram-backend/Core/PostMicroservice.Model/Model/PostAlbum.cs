@@ -6,21 +6,24 @@ namespace PostMicroservice.Core.Model
 {
     public class PostAlbum : Post
     {
-        public IEnumerable<ContentPath> ContentPaths { get; }
+        private readonly List<ContentPath> contentPaths;
+        public IEnumerable<ContentPath> ContentPaths => this.contentPaths;
 
         private PostAlbum(Guid id, DateTime timeStamp, Description description,
             RegisteredUser registeredUser, IEnumerable<RegisteredUser> likes,
             IEnumerable<RegisteredUser> dislikes, IEnumerable<Comment> comments,
-            Location location, IEnumerable<RegisteredUser> taggedUsers, IEnumerable<HashTag> hashTags, IEnumerable<ContentPath> contentPaths)
-            : base(id, timeStamp, description, registeredUser, likes, dislikes, comments, location, taggedUsers, hashTags)
+            Location location, IEnumerable<RegisteredUser> taggedUsers, IEnumerable<HashTag> hashTags,
+            IEnumerable<ContentPath> contentPaths)
+            : base(id, timeStamp, description, registeredUser, likes, dislikes, comments, location,
+                  taggedUsers, hashTags)
         {
-            ContentPaths = contentPaths;
+            this.contentPaths = new List<ContentPath>(contentPaths);
         }
 
         public static Result<PostAlbum> Create(Guid id, DateTime timeStamp, Description description,
             RegisteredUser registeredUser, IEnumerable<RegisteredUser> likes,
             IEnumerable<RegisteredUser> dislikes, IEnumerable<Comment> comments,
-            Location location, IEnumerable<RegisteredUser> taggedUsers, IEnumerable<HashTag> hashTags, List<ContentPath> contentPaths)
+            Location location, IEnumerable<RegisteredUser> taggedUsers, IEnumerable<HashTag> hashTags, IEnumerable<ContentPath> contentPaths)
         {
             return Result.Success(new PostAlbum(id, timeStamp, description,
                                 registeredUser, likes, dislikes, comments, location, taggedUsers, hashTags, contentPaths));

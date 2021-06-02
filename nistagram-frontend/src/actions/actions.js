@@ -25,6 +25,9 @@ import {
   GET_LOCATIONS_BY_TEXT_ERROR,
   GET_POSTS_BY_LOCATION,
   GET_POSTS_BY_LOCATION_ERROR,
+  LOAD_IMAGES,
+  LOAD_IMAGES_ERROR,
+  CLEAR_IMAGES,
 } from "../types/types";
 import axios from "axios";
 
@@ -102,29 +105,54 @@ export const getPost = (id) => async (dispatch) => {
       .get("https://localhost:44355/api/posts/" + id, {
         headers: { "Access-Control-Allow-Origin": "*" },
       })
-      .then(function (response) {
+      .then(async function (response) {
         debugger;
+        dispatch({ type: CLEAR_IMAGES });
         dispatch({
           type: GET_POST,
           payload: response.data,
         });
-        const response2 = axios
-          .get(
-            "https://localhost:44355/api/posts/contents/" +
-              response.data.contentPath,
-            {
-              headers: {
-                "Access-Control-Allow-Origin": "*",
-              },
-            }
-          )
-          .then(function (response2) {
-            debugger;
-            dispatch({
-              type: LOAD_IMAGE,
-              payload: response2.data.fileContents,
+        if (response.data.contentPath == undefined) {
+          var i;
+          debugger;
+          for (i = 0; i < response.data.contentPaths.length; i++) {
+            const response2 = await axios
+              .get(
+                "https://localhost:44355/api/posts/contents/" +
+                  response.data.contentPaths[i],
+                {
+                  headers: {
+                    "Access-Control-Allow-Origin": "*",
+                  },
+                }
+              )
+              .then(function (response2) {
+                debugger;
+                dispatch({
+                  type: LOAD_IMAGES,
+                  payload: response2.data.fileContents,
+                });
+              });
+          }
+        } else {
+          const response2 = axios
+            .get(
+              "https://localhost:44355/api/posts/contents/" +
+                response.data.contentPath,
+              {
+                headers: {
+                  "Access-Control-Allow-Origin": "*",
+                },
+              }
+            )
+            .then(function (response2) {
+              debugger;
+              dispatch({
+                type: LOAD_IMAGE,
+                payload: response2.data.fileContents,
+              });
             });
-          });
+        }
       });
   } catch (e) {
     dispatch({
@@ -151,6 +179,28 @@ export const loadImage = (path) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: LOAD_IMAGE_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const loadImages = (path) => async (dispatch) => {
+  try {
+    debugger;
+    const response = await axios.get(
+      "https://localhost:44355/api/posts/contents/" + path,
+      {
+        headers: { "Access-Control-Allow-Origin": "*" },
+      }
+    );
+    debugger;
+    dispatch({
+      type: LOAD_IMAGES,
+      payload: response.data.fileContents,
+    });
+  } catch (e) {
+    dispatch({
+      type: LOAD_IMAGES_ERROR,
       payload: console.log(e),
     });
   }

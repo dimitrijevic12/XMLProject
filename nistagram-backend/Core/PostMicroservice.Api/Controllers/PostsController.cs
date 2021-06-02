@@ -22,10 +22,12 @@ namespace PostMicroservice.Api.Controllers
         private readonly UserService userService;
         private readonly LocationService locationService;
         private readonly PostSingleFactory postSingleFactory;
+        private readonly PostAlbumFactory postAlbumFactory;
         private readonly IWebHostEnvironment _env;
 
-        public PostsController(PostService postService, IPostRepository postRepository, PostSingleFactory postSingleFactory,
-            IWebHostEnvironment env, UserService userService, LocationService locationService)
+        public PostsController(PostService postService, IPostRepository postRepository,
+            PostSingleFactory postSingleFactory, IWebHostEnvironment env, UserService userService,
+            LocationService locationService, PostAlbumFactory postAlbumFactory)
         {
             _postService = postService;
             _postRepository = postRepository;
@@ -33,12 +35,18 @@ namespace PostMicroservice.Api.Controllers
             _env = env;
             this.userService = userService;
             this.locationService = locationService;
+            this.postAlbumFactory = postAlbumFactory;
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(Guid id)
         {
-            return Ok(postSingleFactory.Create((PostSingle)_postRepository.GetById(id)));
+            Post post = _postRepository.GetById(id);
+            if (post.GetType().Name.Equals("PostSingle"))
+            {
+                return Ok(postSingleFactory.Create((PostSingle)post));
+            }
+            return Ok(postAlbumFactory.Create((PostAlbum)post));
         }
 
         [HttpGet]
@@ -68,13 +76,10 @@ namespace PostMicroservice.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Save(DTOs.PostSingle post)
+        public IActionResult Save(DTOs.PostAlbum post)
         {
             Result<DateTime> timeStamp = DateTime.Now;
             Result<Description> description = Description.Create(post.Description);
-            Result<ContentPath> contentPath = ContentPath.Create(post.ContentPath);
-            Result result = Result.Combine(timeStamp, description, contentPath);
-            if (result.IsFailure) return BadRequest();
             RegisteredUser registeredUser = userService.GetById(post.RegisteredUser.Id);
             Location location = locationService.GetById(post.Location.Id);
             List<HashTag> hashTags = (from DTOs.HashTag hashTag in post.HashTags
@@ -86,10 +91,26 @@ namespace PostMicroservice.Api.Controllers
                                                 new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>(),
                                                 new List<RegisteredUser>()).Value).ToList();
             Guid id = Guid.NewGuid();
-            if (_postService.SaveSinglePost(PostSingle.Create(id, timeStamp.Value, description.Value,
+            if (post.ContentPaths.Count() == 1)
+            {
+                Result<ContentPath> contentPath = ContentPath.Create(post.ContentPaths.FirstOrDefault());
+                Result result = Result.Combine(timeStamp, description, contentPath);
+                if (result.IsFailure) return BadRequest();
+                if (_postService.SaveSinglePost(PostSingle.Create(id, timeStamp.Value, description.Value,
+                    registeredUser, new List<RegisteredUser>(), new List<RegisteredUser>(),
+                    new List<Comment>(), location, taggedUsers, hashTags,
+                    contentPath.Value).Value) == null) return BadRequest();
+            }
+            else
+            {
+                List<ContentPath> contentPaths = (from string path in post.ContentPaths
+                                                  select ContentPath.Create(path).Value).ToList();
+                Result result = Result.Combine(timeStamp, description);
+                if (_postService.SaveAlbumPost(PostAlbum.Create(id, timeStamp.Value, description.Value,
                 registeredUser, new List<RegisteredUser>(), new List<RegisteredUser>(),
                 new List<Comment>(), location, taggedUsers, hashTags,
-                contentPath.Value).Value) == null) return BadRequest();
+                contentPaths).Value) == null) return BadRequest();
+            }
             return Created(this.Request.Path + "/" + id, "");
         }
 
@@ -119,6 +140,25 @@ namespace PostMicroservice.Api.Controllers
             _postService.CommentPost(id, Comment.Create(commentId, timeStamp.Value, commentText.Value, registeredUser,
                 new List<RegisteredUser>()).Value);
             return NoContent();
+        }
+
+        [HttpGet("users/{id}")]
+        public IActionResult GetByUserId(Guid id)
+        {
+            List<Post> posts = _postRepository.GetByUserId(id).ToList();
+            List<DTOs.Post> toReturn = new List<DTOs.Post>();
+            foreach (Post post in posts)
+            {
+                if (post.GetType().Name.Equals("PostSingle"))
+                {
+                    toReturn.Add(postSingleFactory.Create((PostSingle)post));
+                }
+                else
+                {
+                    toReturn.Add(postAlbumFactory.Create((PostAlbum)post));
+                }
+            }
+            return Ok(toReturn);
         }
     }
 }
