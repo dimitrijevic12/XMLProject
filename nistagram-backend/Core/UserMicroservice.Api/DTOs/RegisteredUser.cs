@@ -7,6 +7,7 @@ namespace UserMicroservice.Api.DTOs
 {
     public class RegisteredUser
     {
+        public Guid Id { get; set; }
         public string Username { get; set; }
         public string EmailAddress { get; set; }
         public string FirstName { get; set; }

@@ -1,3 +1,4 @@
+import { act } from "react-dom/test-utils";
 import { loadImage } from "../actions/actions";
 import {
   GET_POSTS_BY_USER_ID,
@@ -14,6 +15,10 @@ import {
   LIKE_POST,
   DISLIKE_POST,
   COMMENT_POST,
+  EDIT_USER,
+  EDIT_USER_ERROR,
+  GET_LOGGED_USER,
+  GET_LOGGED_USER_ERROR,
 } from "../types/types";
 
 const initialState = {
@@ -25,6 +30,7 @@ const initialState = {
   loadedImage: "",
   locations: [],
   taggableUsers: [],
+  loggedUser : {}
 };
 
 function reducer(state = initialState, action) {
@@ -95,6 +101,11 @@ function reducer(state = initialState, action) {
     case COMMENT_POST:
       return {
         ...state,
+      };
+    case GET_LOGGED_USER:
+      return {
+        ...state,
+        loggedUser : action.payload,
       };
     default:
       return state;

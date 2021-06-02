@@ -6,6 +6,11 @@
 
   <ItemGroup>
     <PackageReference Include="Ocelot" Version="17.0.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\StoryMicroservice.Model\StoryMicroservice.Core.csproj" />
   </ItemGroup>
 
 </Project>

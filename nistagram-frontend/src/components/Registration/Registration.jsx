@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { userRegistration } from "../../actions/actionsUser"
+import { userRegistration, userRegistrationForPost, userRegistrationForStory } from "../../actions/actionsUser"
 import DatePicker from "react-datepicker";
 import { connect } from "react-redux"
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
@@ -283,8 +283,39 @@ class Registration extends Component {
       "IsAcceptingMessages" : this.state.isAcceptingMessages,
       "IsAcceptingTags" : this.state.isAcceptingTags,
       "Password" : this.state.password })      
-    }
+    
+    this.props.userRegistrationForPost({ "Username" : this.state.username,
+      "EmailAddress" : this.state.email,
+      "FirstName" : this.state.firstName,
+      "LastName" : this.state.lastName,
+      "DateOfBirth" : this.state.dateOfBirth,
+      "PhoneNumber" : this.state.phoneNumber,
+      "Gender" : this.state.gender,
+      "WebsiteAddress" : this.state.webSite,
+      "Bio" : this.state.bio,
+      "IsPrivate" : this.state.isPrivate,
+      "IsAcceptingMessages" : this.state.isAcceptingMessages,
+      "IsAcceptingTags" : this.state.isAcceptingTags,
+      "Password" : this.state.password 
+    })
 
+    //ZA STORY KOJI JE NO SQL
+    // this.props.userRegistrationForStory({ "Username" : this.state.username,
+    //   "EmailAddress" : this.state.email,
+    //   "FirstName" : this.state.firstName,
+    //   "LastName" : this.state.lastName,
+    //   "DateOfBirth" : this.state.dateOfBirth,
+    //   "PhoneNumber" : this.state.phoneNumber,
+    //   "Gender" : this.state.gender,
+    //   "WebsiteAddress" : this.state.webSite,
+    //   "Bio" : this.state.bio,
+    //   "IsPrivate" : this.state.isPrivate,
+    //   "IsAcceptingMessages" : this.state.isAcceptingMessages,
+    //   "IsAcceptingTags" : this.state.isAcceptingTags,
+    //   "Password" : this.state.password 
+    // })
+    
+  }
 }
 
 
@@ -292,6 +323,6 @@ class Registration extends Component {
 
 const mapStateToProps = (state) =>
 
-    ({ userRegistration: state.userRegistration })
+    ({ userRegistration: state.userRegistration, userRegistrationForPost: state.userRegistrationForPost, userRegistrationForStory: state.userRegistrationForStory })
 
-export default connect(mapStateToProps, { userRegistration })(Registration);
+export default connect(mapStateToProps, { userRegistration, userRegistrationForPost, userRegistrationForStory })(Registration);

@@ -46,8 +46,8 @@ namespace PostMicroservice.DataAccess.Implementation
         public RegisteredUser Save(RegisteredUser registeredUser)
         {
             StringBuilder queryBuilder = new StringBuilder("INSERT INTO dbo.RegisteredUser ");
-            queryBuilder.Append("(id, username, first_name, last_name, is_private, is_accepting_tags) ");
-            queryBuilder.Append("VALUES (@id, @username, @first_name, @last_name, @is_private, @is_accepting_tags);");
+            queryBuilder.Append("(id, username, first_name, last_name, isPrivate, isAcceptingTags,profilePicturePath) ");
+            queryBuilder.Append("VALUES (@id, @username, @first_name, @last_name, @isPrivate, @isAcceptingTags, @profilePicturePath);");
 
             string query = queryBuilder.ToString();
 
@@ -57,8 +57,9 @@ namespace PostMicroservice.DataAccess.Implementation
                  new SqlParameter("@username", SqlDbType.NVarChar) { Value = registeredUser.Username.ToString() },
                  new SqlParameter("@first_name", SqlDbType.NVarChar) { Value = registeredUser.FirstName.ToString() },
                  new SqlParameter("@last_name", SqlDbType.NVarChar) { Value = registeredUser.LastName.ToString() },
-                 new SqlParameter("@is_private", SqlDbType.Bit) { Value = registeredUser.IsPrivate },
-                 new SqlParameter("@is_accepting_tags", SqlDbType.Bit) { Value = registeredUser.IsAcceptingTags }
+                 new SqlParameter("@isPrivate", SqlDbType.Bit) { Value = registeredUser.IsPrivate },
+                 new SqlParameter("@isAcceptingTags", SqlDbType.Bit) { Value = registeredUser.IsAcceptingTags },
+                 new SqlParameter("@profilePicturePath", SqlDbType.NVarChar) { Value = registeredUser.ProfileImagePath.ToString() }
              };
 
             ExecuteQuery(query, parameters);

@@ -29,9 +29,32 @@ namespace UserMicroservice.DataAccess.Implementation
             throw new NotImplementedException();
         }
 
-        public RegisteredUser Edit(RegisteredUser obj)
+        public RegisteredUser Edit(RegisteredUser registeredUser)
         {
-            throw new NotImplementedException();
+            StringBuilder queryBuilder = new StringBuilder("UPDATE dbo.RegisteredUser ");
+            queryBuilder.Append("SET username = @username, email = @email, first_name = @first_name, last_name = @last_name, date_of_birth = @date_of_birth, phone_number = @phone_number, gender = @gender, website_address = @website_address, bio = @bio ");
+            queryBuilder.Append("WHERE id = @id;");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+            {
+                new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = registeredUser.Id },
+                 new SqlParameter("@username", SqlDbType.NVarChar) { Value = registeredUser.Username.ToString() },
+                 new SqlParameter("@email", SqlDbType.NVarChar) { Value = registeredUser.EmailAddress.ToString() },
+                 new SqlParameter("@first_name", SqlDbType.NVarChar) { Value = registeredUser.FirstName.ToString() },
+                 new SqlParameter("@last_name", SqlDbType.NVarChar) { Value = registeredUser.LastName.ToString() },
+                 new SqlParameter("@date_of_birth", SqlDbType.NVarChar) { Value = registeredUser.DateOfBirth.ToString() },
+                 new SqlParameter("@phone_number", SqlDbType.NVarChar) { Value = registeredUser.PhoneNumber.ToString() },
+                 new SqlParameter("@gender", SqlDbType.NVarChar) { Value = registeredUser.Gender.ToString() },
+                 new SqlParameter("@website_address", SqlDbType.NVarChar) { Value = registeredUser.WebsiteAddress.ToString() },
+                 new SqlParameter("@bio", SqlDbType.NVarChar) { Value = registeredUser.Bio.ToString() },
+                 new SqlParameter("@password", SqlDbType.NVarChar) { Value = registeredUser.Password.ToString() },
+            };
+
+            ExecuteQuery(query, parameters);
+
+            return registeredUser;
         }
 
         public IEnumerable<RegisteredUser> GetAll()

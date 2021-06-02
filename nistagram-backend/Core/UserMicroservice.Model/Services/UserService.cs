@@ -35,6 +35,18 @@ namespace UserMicroservice.Core.Services
             return Result.Success(registeredUser);
         }
 
+        public Result Edit(RegisteredUser registeredUser)
+        {
+            _userRepository.Edit(registeredUser);
+            return Result.Success(registeredUser);
+        }
+
+        public RegisteredUser GetUserById(Guid id)
+        {
+            if (_userRepository.GetById(id).HasNoValue) return null;
+            return _userRepository.GetById(id).Value;
+        }
+
         public User FindUser(String username, String password)
         {
             if (_adminRepository.GetByUsername(username).HasValue)
@@ -65,11 +77,6 @@ namespace UserMicroservice.Core.Services
         }
 
         public RegisteredUser Delete(RegisteredUser obj)
-        {
-            throw new NotImplementedException();
-        }
-
-        public RegisteredUser Edit(RegisteredUser obj)
         {
             throw new NotImplementedException();
         }

@@ -1,10 +1,13 @@
 ﻿using CSharpFunctionalExtensions;
-using PostMicroservice.Core.Interface.Repository;
-using PostMicroservice.Core.Model;
+using StoryMicroservice.Core.Interface.Repository;
+using StoryMicroservice.Core.Model;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace PostMicroservice.Core.Services
+namespace StoryMicroservice.Core.Services
 {
     public class UserService
     {
@@ -13,16 +16,6 @@ namespace PostMicroservice.Core.Services
         public UserService(IUserRepository userRepository)
         {
             _userRepository = userRepository;
-        }
-
-        public RegisteredUser GetById(Guid id)
-        {
-            return _userRepository.GetById(id);
-        }
-
-        public IEnumerable<RegisteredUser> GetTaggable()
-        {
-            return _userRepository.GetTaggable();
         }
 
         public Result Create(RegisteredUser registeredUser)

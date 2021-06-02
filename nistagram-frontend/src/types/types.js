@@ -26,3 +26,8 @@ export const GET_LOCATIONS_BY_TEXT = "getLocationsByText";
 export const GET_LOCATIONS_BY_TEXT_ERROR = "getLocationsByTextError";
 export const GET_POSTS_BY_LOCATION = "getPostsByLocation";
 export const GET_POSTS_BY_LOCATION_ERROR = "getPostsByLocationError";
+export const GET_LOGGED_USER = "getLoggedUser";
+export const GET_LOGGED_USER_ERROR = "getLoggedUserError";
+export const EDIT_USER = "editUser";
+export const EDIT_USER_ERROR = "editUserError";
+
