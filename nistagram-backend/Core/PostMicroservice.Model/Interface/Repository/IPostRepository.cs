@@ -19,5 +19,7 @@ namespace PostMicroservice.Core.Interface.Repository
         public void CommentPost(Guid postId, Comment comment);
 
         public IEnumerable<Post> GetByUserId(Guid id);
+
+        public IEnumerable<Post> GetByCollectionAndUser(Guid collectionId, Guid userId);
     }
 }

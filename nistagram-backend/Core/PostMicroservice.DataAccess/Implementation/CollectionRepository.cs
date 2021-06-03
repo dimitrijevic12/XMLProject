@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using CSharpFunctionalExtensions;
+using Microsoft.Extensions.Configuration;
 using PostMicroservice.Core.Interface.Repository;
 using PostMicroservice.Core.Model;
 using PostMicroservice.DataAccess.Adaptee;
@@ -78,6 +79,25 @@ namespace PostMicroservice.DataAccess.Implementation
         public Collection Edit(Collection collection)
         {
             throw new NotImplementedException();
+        }
+
+        public Result AddPostToCollection(Guid id, Guid postId)
+        {
+            StringBuilder queryBuilder = new StringBuilder("INSERT INTO dbo.CollectionContent ");
+            queryBuilder.Append("(id, collection_id, post_id) ");
+            queryBuilder.Append("VALUES (@id, @collection_id, @post_id);");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+            {
+                new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = Guid.NewGuid() },
+                new SqlParameter("@collection_id", SqlDbType.UniqueIdentifier) { Value = id },
+                new SqlParameter("@post_id", SqlDbType.UniqueIdentifier) { Value = postId }
+            };
+
+            ExecuteQuery(query, parameters);
+            return Result.Success();
         }
     }
 }

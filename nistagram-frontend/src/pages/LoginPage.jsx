@@ -1,63 +1,103 @@
 import React, { Component } from "react";
-import '../css/app.css';
-import { userLoggedIn } from "../actions/actionsUser"
-import { connect } from "react-redux"
+import "../css/app.css";
+import { userLoggedIn } from "../actions/actionsUser";
+import { connect } from "react-redux";
 import background from "../images/nistagrambg.jpg";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { withRouter } from "react-router-dom";
+import { compose } from "redux";
 
 class LoginPage extends Component {
   state = {
     username: "",
     password: "",
   };
-    render() {
-      return (
-        <div style={{  width:1580,
-            height:1080, backgroundImage: `url(${background})` }} >
+  render() {
+    return (
+      <div
+        style={{
+          width: 1580,
+          height: 1080,
+          backgroundImage: `url(${background})`,
+        }}
+      >
         <div id="wrapper">
-        <div class="main-content">
-          <div class="l-part">
-            <input type="text" placeholder="Username" name="username" class="input-1" onChange={this.handleChange}/>
-            <div class="overlap-text">
-              <input type="password" placeholder="Password" name="password" class="input-2" onChange={this.handleChange}/>
-              <a href="#">Forgot?</a>
+          <div class="main-content">
+            <div class="l-part">
+              <input
+                type="text"
+                placeholder="Username"
+                name="username"
+                class="input-1"
+                onChange={this.handleChange}
+              />
+              <div class="overlap-text">
+                <input
+                  type="password"
+                  placeholder="Password"
+                  name="password"
+                  class="input-2"
+                  onChange={this.handleChange}
+                />
+                <a href="#">Forgot?</a>
+              </div>
+              <input
+                type="button"
+                value="Log in"
+                class="btn"
+                onClick={this.login.bind(this)}
+              />
             </div>
-            <input type="button" value="Log in" class="btn" onClick={this.login.bind(this)} />
           </div>
-        </div>
-        <div class="sub-content">
-          <div class="s-part">
-            Don't have an account?<a href="#">Sign up</a>
+          <div class="sub-content">
+            <div class="s-part">
+              Don't have an account?<a href="#">Sign up</a>
+            </div>
           </div>
         </div>
       </div>
-      </div>
-      );
-    }
-
-    handleChange = (event) => {
-      debugger;
-      const { name, value, type, checked } = event.target;
-      type === "checkbox"
-        ? this.setState({
-            [name]: checked,
-          })
-        : this.setState({
-            [name]: value,
-          });
-    };
-
-    async login() {
-      debugger;
-        this.props.userLoggedIn({ "Username" : this.state.username,
-                                  "Password" : this.state.password })      
-      }
+    );
   }
-  
-  const mapStateToProps = (state) =>
 
-    ({ userLoggedIn: state.userLoggedIn })
+  handleChange = (event) => {
+    debugger;
+    const { name, value, type, checked } = event.target;
+    type === "checkbox"
+      ? this.setState({
+          [name]: checked,
+        })
+      : this.setState({
+          [name]: value,
+        });
+  };
 
-  export default connect(mapStateToProps, { userLoggedIn })(LoginPage); 
+  async login() {
+    debugger;
+    var successful = false;
+    successful = await this.props.userLoggedIn({
+      Username: this.state.username,
+      Password: this.state.password,
+    });
 
+    if (successful === true) {
+      this.props.history.replace({
+        pathname: "/",
+      });
+    } else {
+      toast.configure();
+      toast.error("Unsuccessful login!", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
+  }
+}
 
+const mapStateToProps = (state) => ({ userLoggedIn: state.userLoggedIn });
 
+export default compose(
+  withRouter,
+  connect(mapStateToProps, {
+    userLoggedIn,
+  })
+)(LoginPage);

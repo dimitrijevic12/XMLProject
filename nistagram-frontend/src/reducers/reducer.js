@@ -23,6 +23,9 @@ import {
   GET_LOGGED_USER_ERROR,
   GET_USERS_BY_NAME,
   GET_USER_BY_ID,
+  GET_COLLECTIONS_BY_USER,
+  ADD_POST_TO_COLLECTION,
+  GET_POSTS_BY_COLLECTION_AND_USER,
 } from "../types/types";
 
 const initialState = {
@@ -37,6 +40,7 @@ const initialState = {
   loadedImages: [],
   loggedUser: {},
   users: [],
+  collections: [],
 };
 
 function reducer(state = initialState, action) {
@@ -132,6 +136,21 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         registeredUser: action.payload,
+      };
+    case GET_COLLECTIONS_BY_USER:
+      return {
+        ...state,
+        collections: action.payload,
+      };
+    case ADD_POST_TO_COLLECTION:
+      return {
+        ...state,
+      };
+    case GET_POSTS_BY_COLLECTION_AND_USER:
+      debugger;
+      return {
+        ...state,
+        posts: action.payload,
       };
     default:
       return state;

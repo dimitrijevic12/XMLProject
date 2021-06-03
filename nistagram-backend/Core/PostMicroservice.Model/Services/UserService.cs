@@ -9,10 +9,12 @@ namespace PostMicroservice.Core.Services
     public class UserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly ICollectionRepository _collectionRepository;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, ICollectionRepository collectionRepository)
         {
             _userRepository = userRepository;
+            _collectionRepository = collectionRepository;
         }
 
         public RegisteredUser GetById(Guid id)
@@ -28,6 +30,8 @@ namespace PostMicroservice.Core.Services
         public Result Create(RegisteredUser registeredUser)
         {
             _userRepository.Save(registeredUser);
+            _collectionRepository.Save(Collection.Create(Guid.NewGuid(), CollectionName.Create("favourites").Value,
+                new List<Post>(), registeredUser).Value);
             return Result.Success(registeredUser);
         }
 

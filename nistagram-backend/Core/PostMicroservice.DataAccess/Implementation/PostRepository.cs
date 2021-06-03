@@ -494,11 +494,7 @@ namespace PostMicroservice.DataAccess.Implementation
 
             DataTable dataTable = ExecuteQuery(query, parameters);
 
-            if (dataTable.Rows.Count > 0)
-            {
-                return true;
-            }
-            return false;
+            return dataTable.Rows.Count > 0;
         }
 
         private bool AlreadyDisliked(Guid id, Guid userId)
@@ -517,11 +513,7 @@ namespace PostMicroservice.DataAccess.Implementation
 
             DataTable dataTable = ExecuteQuery(query, parameters);
 
-            if (dataTable.Rows.Count > 0)
-            {
-                return true;
-            }
-            return false;
+            return dataTable.Rows.Count > 0;
         }
 
         public void CommentPost(Guid postId, Comment comment)
@@ -559,6 +551,34 @@ namespace PostMicroservice.DataAccess.Implementation
             SqlParameter parameterId = new SqlParameter("@Id", SqlDbType.UniqueIdentifier) { Value = id };
 
             List<SqlParameter> parameters = new List<SqlParameter>() { parameterId };
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            return (from DataRow dataRow in dataTable.Rows
+                    select (Post)_target.ConvertSqlWithAttributes(dataRow, GetLikesForPost((Guid)dataRow[0]),
+                    GetDislikesForPost((Guid)dataRow[0]), GetHashTagsForPost((Guid)dataRow[0]),
+                    GetCommentsForPost((Guid)dataRow[0]), GetTaggedPeopleForPost((Guid)dataRow[0]),
+                    GetContentsPathForPost((Guid)dataRow[0]))).ToList();
+        }
+
+        public IEnumerable<Post> GetByCollectionAndUser(Guid collectionId, Guid userId)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT p.id, p.timestamp," +
+                " p.description, p.type, l.id, l.street, l.city_name, l.country, r.id, r.username, " +
+                "r.first_name, r.last_name, r.profilePicturePath, r.isPrivate, r.isAcceptingTags, " +
+                "con.content_path  ");
+            queryBuilder.Append("FROM dbo.Collection as c, dbo.CollectionContent as cc, dbo.Post as p, " +
+                "dbo.Location AS l, dbo.RegisteredUser AS r, dbo.Content AS con ");
+            queryBuilder.Append("WHERE c.id = cc.collection_id and cc.post_id = p.id and " +
+                "p.location_id = l.id AND p.registered_user_id = r.id AND p.id = con.post_id " +
+                "AND c.id = @Id AND c.registered_user_id = @UserId;");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>() {
+            new SqlParameter("@Id", SqlDbType.UniqueIdentifier) { Value = collectionId },
+            new SqlParameter("@UserId", SqlDbType.UniqueIdentifier) { Value = userId }
+            };
 
             DataTable dataTable = ExecuteQuery(query, parameters);
 

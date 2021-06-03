@@ -18,11 +18,15 @@ import {
 } from "../../actions/actions";
 import { connect } from "react-redux";
 import TaggedUsersModal from "./TaggedUsersModal";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import ChooseCollectionModal from "../Collection/ChooseCollectionModal";
 
 class PostModal extends Component {
   state = {
     showPostModal: this.props.show,
     showTaggedModal: false,
+    showChooseCollectionModal: false,
     likesCount: 0,
     dislikesCount: 0,
     liked: false,
@@ -60,8 +64,6 @@ class PostModal extends Component {
     const post = this.props.post;
     const loadedImage = this.props.loadedImage;
     const loadedImages = this.props.loadedImages;
-    console.log(loadedImages[0]);
-    debugger;
     return (
       <Modal
         style={{
@@ -77,6 +79,13 @@ class PostModal extends Component {
               show={this.state.showTaggedModal}
               postId={post.id}
               onShowChange={this.displayModalPost.bind(this)}
+            />
+          ) : null}
+          {this.state.showChooseCollectionModal ? (
+            <ChooseCollectionModal
+              show={this.state.showChooseCollectionModal}
+              postId={post.id}
+              onShowChange={this.displayModalCollection.bind(this)}
             />
           ) : null}
           <img
@@ -156,6 +165,14 @@ class PostModal extends Component {
             <img src="/images/chat.png" />
             <span style={{ width: 15, display: "inline-block" }}></span>
             <img src="/images/send.png" />
+            <span style={{ width: 15, display: "inline-block" }}></span>
+            <img
+              style={{ width: 24, height: 24 }}
+              src="/images/collection.png"
+              onClick={() => {
+                this.displayModalCollection();
+              }}
+            />
             <br />
             <br />
             Likes:{" "}
@@ -261,6 +278,10 @@ class PostModal extends Component {
     };
     debugger;
     await this.props.commentPost({ id: this.props.post.id, comment: comment });
+    toast.configure();
+    toast.success("Commented successfully!", {
+      position: toast.POSITION.TOP_RIGHT,
+    });
   }
 
   toggle() {
@@ -273,6 +294,13 @@ class PostModal extends Component {
     debugger;
     this.setState({
       showTaggedModal: !this.state.showTaggedModal,
+    });
+  }
+
+  displayModalCollection() {
+    debugger;
+    this.setState({
+      showChooseCollectionModal: !this.state.showChooseCollectionModal,
     });
   }
 }

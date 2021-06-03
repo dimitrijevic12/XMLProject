@@ -32,6 +32,12 @@ import {
   GET_USERS_BY_NAME_ERROR,
   GET_USER_BY_ID,
   GET_USER_BY_ID_ERROR,
+  GET_COLLECTIONS_BY_USER,
+  GET_COLLECTIONS_BY_USER_ERROR,
+  ADD_POST_TO_COLLECTION,
+  ADD_POST_TO_COLLECTION_ERROR,
+  GET_POSTS_BY_COLLECTION_AND_USER,
+  GET_POSTS_BY_COLLECTION_AND_USER_ERROR,
 } from "../types/types";
 import axios from "axios";
 
@@ -406,3 +412,87 @@ export const commentPost = (dto) => async (dispatch) => {
     });
   }
 };
+
+export const getCollectionsByUser = () => async (dispatch) => {
+  debugger;
+  try {
+    const response = await axios.get(
+      "https://localhost:44355/api/collections?userId=" +
+        sessionStorage.getItem("userId"),
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      }
+    );
+    debugger;
+    dispatch({
+      type: GET_COLLECTIONS_BY_USER,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_COLLECTIONS_BY_USER_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const addPostToCollection = (dto) => async (dispatch) => {
+  try {
+    debugger;
+    const response = await axios.put(
+      "https://localhost:44355/api/collections/" +
+        dto.id +
+        "/posts/" +
+        dto.post.id,
+      {},
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      }
+    );
+    debugger;
+    dispatch({
+      type: ADD_POST_TO_COLLECTION,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: ADD_POST_TO_COLLECTION_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const getPostsByCollectionAndUser =
+  (collectionId) => async (dispatch) => {
+    try {
+      debugger;
+      const response = await axios.get(
+        "https://localhost:44355/api/posts/collections/" +
+          collectionId +
+          "/users/" +
+          sessionStorage.getItem("userId"),
+        {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            Authorization: "Bearer " + sessionStorage.getItem("token"),
+          },
+        }
+      );
+      dispatch({
+        type: GET_POSTS_BY_COLLECTION_AND_USER,
+        payload: response.data,
+      });
+    } catch (e) {
+      dispatch({
+        type: GET_POSTS_BY_COLLECTION_AND_USER_ERROR,
+        payload: console.log(e),
+      });
+    }
+  };

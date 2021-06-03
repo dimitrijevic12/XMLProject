@@ -177,5 +177,25 @@ namespace PostMicroservice.Api.Controllers
             }
             return Ok(toReturn);
         }
+
+        [Authorize(Roles = "RegisteredUser")]
+        [HttpGet("collections/{collectionId}/users/{userId}")]
+        public IActionResult GetByCollectionAndUser(Guid collectionId, Guid userId)
+        {
+            List<Post> posts = _postRepository.GetByCollectionAndUser(collectionId, userId).ToList();
+            List<DTOs.Post> toReturn = new List<DTOs.Post>();
+            foreach (Post post in posts)
+            {
+                if (post.GetType().Name.Equals("PostSingle"))
+                {
+                    toReturn.Add(postSingleFactory.Create((PostSingle)post));
+                }
+                else
+                {
+                    toReturn.Add(postAlbumFactory.Create((PostAlbum)post));
+                }
+            }
+            return Ok(toReturn);
+        }
     }
 }

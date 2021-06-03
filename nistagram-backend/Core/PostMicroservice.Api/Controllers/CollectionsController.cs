@@ -1,13 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PostMicroservice.Api.Factories;
 using PostMicroservice.Core.Interface.Repository;
 using PostMicroservice.Core.Model;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PostMicroservice.Api.Controllers
 {
@@ -27,12 +25,14 @@ namespace PostMicroservice.Api.Controllers
             _userRepository = userRepository;
         }
 
+        [Authorize(Roles = "RegisteredUser")]
         [HttpGet]
         public IActionResult GetBy([FromQuery] Guid userId)
         {
             return Ok(collectionFactory.CreateCollections(_collectionRepository.GetByUserId(userId)));
         }
 
+        [Authorize(Roles = "RegisteredUser")]
         [HttpPost]
         public IActionResult Save(DTOs.Collection collection)
         {
@@ -43,6 +43,13 @@ namespace PostMicroservice.Api.Controllers
             if (_collectionRepository.Save(Collection.Create(id, collectionName.Value,
                    new List<Post>(), registeredUser).Value) == null) return BadRequest();
             return Created(this.Request.Path + "/" + id, "");
+        }
+
+        [Authorize(Roles = "RegisteredUser")]
+        [HttpPut("{id}/posts/{postId}")]
+        public IActionResult AddPostToCollection([FromRoute] Guid id, [FromRoute] Guid postId)
+        {
+            return Ok(_collectionRepository.AddPostToCollection(id, postId));
         }
     }
 }

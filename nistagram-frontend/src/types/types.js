@@ -41,3 +41,10 @@ export const EDIT_USER_POST = "editUserForPost";
 export const EDIT_USER_POST_ERROR = "editUserForPostError";
 export const EDIT_USER_STORY = "editUserForStory";
 export const EDIT_USER_STORY_ERROR = "editUserForStoryError";
+export const GET_COLLECTIONS_BY_USER = "getCollectionsByUser";
+export const GET_COLLECTIONS_BY_USER_ERROR = "getCollectionsByUserError";
+export const ADD_POST_TO_COLLECTION = "addPostToCollection";
+export const ADD_POST_TO_COLLECTION_ERROR = "addPostToCollectionError";
+export const GET_POSTS_BY_COLLECTION_AND_USER = "getPostsByCollectionAndUser";
+export const GET_POSTS_BY_COLLECTION_AND_USER_ERROR =
+  "getPostsByCollectionAndUserError";
