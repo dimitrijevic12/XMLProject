@@ -12,12 +12,14 @@ import {
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { withRouter } from "react-router-dom";
-import { getUserById } from "../../actions/actionsUser";
+import { getUserById, followProfile } from "../../actions/actionsUser";
 
 function PublicProfile(props) {
   const [postId, setPostId] = useState("");
   const [showPostModal, setShowPostModal] = useState(false);
   const [username, setUsername] = useState("");
+  const [followedById, setFollowedById] = useState(0);
+  const [followingId, setFollowingId] = useState(0);
   const user = props.user;
   const initialUser = {};
   const posts = props.posts;
@@ -26,6 +28,13 @@ function PublicProfile(props) {
     props.getUserById(props.location.pathname.slice(9));
     props.getPostsByUserId(props.location.pathname.slice(9));
   }, [props.location.pathname]);
+
+  const follow = () => {
+    props.followProfile({
+      "FollowedById" : sessionStorage.getItem("userId"),
+      "FollowingId" : props.location.pathname.slice(9)
+    })          
+    }
 
   const Posts = () =>
     posts.map((post) => (
@@ -61,6 +70,7 @@ function PublicProfile(props) {
       <OptionsButton />
       <ProfileHeader user={user} userid={user.id} postsCount={posts.length} />
       <button
+        onClick={follow} 
         style={{ float: "right" }}
         className="btn btn-block btn-primary btn-md mt-4 mb-4"
       >
@@ -84,5 +94,5 @@ const mapStateToProps = (state) => ({
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, { getPostsByUserId, getUserById })
+  connect(mapStateToProps, { getPostsByUserId, getUserById , followProfile})
 )(PublicProfile);

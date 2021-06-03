@@ -12,7 +12,9 @@ import {
     EDIT_USER_POST,
     EDIT_USER_POST_ERROR,
     EDIT_USER_STORY,
-    EDIT_USER_STORY_ERROR
+    EDIT_USER_STORY_ERROR,
+    FOLLOW_PROFILE,
+    FOLLOW_PROFILE_ERROR,
   } from "../types/types";
   import axios from "axios";
   
@@ -230,6 +232,28 @@ export const getUserById = (id) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: GET_USER_BY_ID_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const followProfile = (follow) => async (dispatch) => {
+  try {
+    debugger;
+    const response = await axios.post(
+      "https://localhost:44355/api/users/follow", follow,
+      {
+        headers: { "Access-Control-Allow-Origin": "*",
+                   "Authorization" :  "Bearer " + sessionStorage.getItem("token")}
+      });
+    debugger;
+    dispatch({
+      type: FOLLOW_PROFILE,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: FOLLOW_PROFILE_ERROR,
       payload: console.log(e),
     });
   }

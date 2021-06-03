@@ -299,5 +299,28 @@ namespace UserMicroservice.DataAccess.Implementation
 
             ExecuteQuery(query, parameters);
         }
+
+        public IEnumerable<RegisteredUser> GetAllFollowingRequests(Guid id)
+        {
+            StringBuilder queryBuilder = new StringBuilder("f.id, f.timestamp, r.id, r.username, r.email, r.first_name, r.last_name, r.date_of_birth, " +
+                "r.phone_number, r.gender, r.website_address, r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.password, r2.id," +
+                " r2.username, r2.email, r2.first_name, r2.last_name, r2.date_of_birth, r2.phone_number, r2.gender, r2.website_address, r2.bio," +
+                " r2.is_private, r2.is_accepting_messages, r2.is_accepting_tags, r2.password ");
+            queryBuilder.Append("FROM dbo.RegisteredUser As r, dbo.FollowRequest As f, dbo.RegisteredUser As r2");
+            queryBuilder.Append("WHERE r.id = f.requests_follow_id And f.recieves_follow_id = @id  And f.recieves_follow_id = r2.id ;");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = id }
+             };
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            return (from DataRow dataRow in dataTable.Rows
+
+                    select (RegisteredUser)_registeredUserTarget.ConvertSql(dataRow)).ToList();
+        }
     }
 }

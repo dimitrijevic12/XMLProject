@@ -41,3 +41,5 @@ export const EDIT_USER_POST = "editUserForPost";
 export const EDIT_USER_POST_ERROR = "editUserForPostError";
 export const EDIT_USER_STORY = "editUserForStory";
 export const EDIT_USER_STORY_ERROR = "editUserForStoryError";
+export const FOLLOW_PROFILE = "followProfile";
+export const FOLLOW_PROFILE_ERROR = "followProfileError";
