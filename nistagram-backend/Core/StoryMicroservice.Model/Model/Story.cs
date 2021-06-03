@@ -5,20 +5,22 @@ namespace StoryMicroservice.Core.Model
 {
     public class Story
     {
-        private Guid id;
-        private readonly ContentPath contentPath;
-        private readonly DateTime timeStamp;
+        public Guid Id { get; }
+        public ContentPath ContentPath { get; }
+        public DateTime TimeStamp { get; }
+        public Duration Duration { get; }
 
-        public Story(Guid id, ContentPath contentPath, DateTime timeStamp)
+        public Story(Guid id, ContentPath contentPath, DateTime timeStamp, Duration duration)
         {
-            this.id = id;
-            this.contentPath = contentPath;
-            this.timeStamp = timeStamp;
+            Id = id;
+            ContentPath = contentPath;
+            TimeStamp = timeStamp;
+            Duration = duration;
         }
 
-        public static Result<Story> Create(Guid id, ContentPath contentPath, DateTime timeStamp)
+        public static Result<Story> Create(Guid id, ContentPath contentPath, DateTime timeStamp, Duration duration)
         {
-            return Result.Success(new Story(id, contentPath, timeStamp));
+            return Result.Success(new Story(id, contentPath, timeStamp, duration));
         }
     }
 }
