@@ -15,8 +15,8 @@ namespace StoryMicroservice.Core.Interface.Repository
 
         T Save(T obj);
 
-        T Edit(T obj);
+        public T Edit(string id, T obj);
 
-        T Delete(T obj);
+        void Delete(T obj);
     }
 }

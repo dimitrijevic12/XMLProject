@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using StoryMicroservice.DataAccess.Implementation;
 using StoryMicroservice.Core.Interface.Repository;
 using StoryMicroservice.Core.Services;
-using StoryMicroservice.DataAccess.Implementation;
+using StoryMicroservice.DataAccess.Factories;
 
 namespace StoryMicroservice.Api
 {
@@ -29,6 +31,16 @@ namespace StoryMicroservice.Api
             });
             services.AddScoped<UserService>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IStoryRepository, StoryRepository>();
+            services.AddScoped<RegisteredUserFactory>();
+            services.AddScoped<LocationFactory>();
+            services.AddScoped<HashTagFactory>();
+            services.AddScoped<StoryFactory>();
+            services.Configure<StoryDatabaseSettings>(
+            Configuration.GetSection(nameof(StoryDatabaseSettings)));
+
+            services.AddSingleton<IStoryDatabaseSettings>(sp =>
+                sp.GetRequiredService<IOptions<StoryDatabaseSettings>>().Value);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

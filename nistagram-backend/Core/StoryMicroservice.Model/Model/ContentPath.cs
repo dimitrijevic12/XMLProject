@@ -25,5 +25,10 @@ namespace StoryMicroservice.Core.Model
         }
 
         public static implicit operator string(ContentPath contentPath) => contentPath.path;
+
+        public override string ToString()
+        {
+            return path.ToString();
+        }
     }
 }

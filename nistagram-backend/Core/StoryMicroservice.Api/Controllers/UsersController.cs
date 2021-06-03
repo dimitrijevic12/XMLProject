@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using StoryMicroservice.Core.Model;
 using StoryMicroservice.Core.Services;
 using System;
@@ -21,9 +22,10 @@ namespace StoryMicroservice.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult RegisterUser(DTOs.RegisteredUser dto)
+        public IActionResult RegisterUser(RegisteredUser dto)
         {
-            Guid id = Guid.NewGuid();
+            return Ok();
+            /*Guid id = Guid.NewGuid();
 
             Result<Username> username = Username.Create(dto.Username);
             Result<FirstName> firstName = FirstName.Create(dto.FirstName);
@@ -38,7 +40,7 @@ namespace StoryMicroservice.Api.Controllers
                                           lastName.Value,
                                           dto.isPrivate,
                                           dto.isAcceptingTags).Value).IsFailure) return BadRequest();
-            return Created(this.Request.Path + id, "");
+            return Created(this.Request.Path + id, "");*/
         }
     }
 }
