@@ -15,6 +15,10 @@ import {
   EDIT_USER_STORY_ERROR,
   FOLLOW_PROFILE,
   FOLLOW_PROFILE_ERROR,
+  GET_FOLLOW_REQUESTS,
+  GET_FOLLOW_REQUESTS_ERROR,
+  HANDLE_REQUESTS,
+  HANDLE_REQUESTS_ERROR,
 } from "../types/types";
 import axios from "axios";
 
@@ -291,6 +295,53 @@ export const followProfile = (follow) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: FOLLOW_PROFILE_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const getFollowRequests = () => async (dispatch) => {
+  try {
+    debugger;
+    const response = await axios.get(
+      "https://localhost:44355/api/users/" +
+        sessionStorage.getItem("userId") +
+        "/followRequests",
+      {
+        headers: { "Access-Control-Allow-Origin": "" },
+      }
+    );
+    debugger;
+    dispatch({
+      type: GET_FOLLOW_REQUESTS,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_FOLLOW_REQUESTS_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const handleRequests = (follow) => async (dispatch) => {
+  try {
+    debugger;
+    const response = await axios.put(
+      "https://localhost:44355/api/users/handlerequest",
+      follow,
+      {
+        headers: { "Access-Control-Allow-Origin": "" },
+      }
+    );
+    debugger;
+    dispatch({
+      type: HANDLE_REQUESTS,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: HANDLE_REQUESTS_ERROR,
       payload: console.log(e),
     });
   }

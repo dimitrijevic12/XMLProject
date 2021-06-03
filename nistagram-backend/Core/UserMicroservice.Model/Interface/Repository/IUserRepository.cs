@@ -25,5 +25,7 @@ namespace UserMicroservice.Core.Interface.Repository
         public Boolean AlreadyFollowingPrivate(Guid requests_follow_id, Guid recieves_follow_id);
 
         public void HandleFollowRequest(Guid id, String type, Boolean is_approved);
+
+        public IEnumerable<FollowRequest> GetFollowRequestsForUser(Guid id);
     }
 }

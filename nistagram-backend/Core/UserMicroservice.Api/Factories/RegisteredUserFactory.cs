@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using UserMicroservice.Api.DTOs;
 
 namespace UserMicroservice.Api.Factories
@@ -12,6 +10,36 @@ namespace UserMicroservice.Api.Factories
         {
             return new RegisteredUser()
             {
+                Id = registeredUser.Id,
+                Username = registeredUser.Username,
+                EmailAddress = registeredUser.EmailAddress,
+                FirstName = registeredUser.FirstName,
+                LastName = registeredUser.LastName,
+                DateOfBirth = registeredUser.DateOfBirth,
+                PhoneNumber = registeredUser.PhoneNumber,
+                Gender = registeredUser.Gender,
+                WebsiteAddress = registeredUser.WebsiteAddress,
+                Bio = registeredUser.Bio,
+                Password = registeredUser.Password,
+                IsPrivate = registeredUser.IsPrivate,
+                IsAcceptingMessages = registeredUser.IsAcceptingMessages,
+                IsAcceptingTags = registeredUser.IsAcceptingTags,
+                BlockedUsers = Convert(registeredUser.BlockedUsers),
+                BlockedByUsers = Convert(registeredUser.BlockedByUsers),
+                MutedUsers = Convert(registeredUser.MutedUsers),
+                MutedByUsers = Convert(registeredUser.MutedByUsers),
+                Following = Convert(registeredUser.Following),
+                Followers = Convert(registeredUser.Followers),
+                MyCloseFriends = Convert(registeredUser.MyCloseFriends),
+                CloseFriendTo = Convert(registeredUser.CloseFriendTo)
+            };
+        }
+
+        public IEnumerable<RegisteredUser> Convert(IEnumerable<Core.Model.RegisteredUser> registeredUsers)
+        {
+            return registeredUsers.Select(registeredUser => new RegisteredUser
+            {
+                Id = registeredUser.Id,
                 Username = registeredUser.Username,
                 EmailAddress = registeredUser.EmailAddress,
                 FirstName = registeredUser.FirstName,
@@ -25,7 +53,7 @@ namespace UserMicroservice.Api.Factories
                 IsPrivate = registeredUser.IsPrivate,
                 IsAcceptingMessages = registeredUser.IsAcceptingMessages,
                 IsAcceptingTags = registeredUser.IsAcceptingTags
-            };
+            }).ToList();
         }
     }
 }

@@ -26,6 +26,8 @@ import {
   GET_COLLECTIONS_BY_USER,
   ADD_POST_TO_COLLECTION,
   GET_POSTS_BY_COLLECTION_AND_USER,
+  GET_FOLLOW_REQUESTS,
+  HANDLE_REQUESTS,
 } from "../types/types";
 
 const initialState = {
@@ -41,6 +43,7 @@ const initialState = {
   loggedUser: {},
   users: [],
   collections: [],
+  followRequests: [],
 };
 
 function reducer(state = initialState, action) {
@@ -151,6 +154,19 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         posts: action.payload,
+      };
+    case GET_FOLLOW_REQUESTS:
+      return {
+        ...state,
+        followRequests: action.payload,
+      };
+    case HANDLE_REQUESTS:
+      return {
+        ...state,
+        followRequests: [
+          ...state.followRequests.slice(0, action.payload),
+          ...state.followRequests.slice(action.payload + 1),
+        ],
       };
     default:
       return state;

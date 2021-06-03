@@ -5,17 +5,17 @@ namespace UserMicroservice.Core.Model
 {
     public class FollowRequest
     {
-        private readonly Guid id;
-        private DateTime timestamp;
-        private readonly RegisteredUser requestsFollow;
-        private readonly RegisteredUser receivesFollow;
+        public Guid Id { get; }
+        public DateTime Timestamp { get; }
+        public RegisteredUser RequestsFollow { get; }
+        public RegisteredUser ReceivesFollow { get; }
 
         protected FollowRequest(Guid id, DateTime timestamp, RegisteredUser requestsFollow, RegisteredUser receivesFollow)
         {
-            this.id = id;
-            this.timestamp = timestamp;
-            this.requestsFollow = requestsFollow;
-            this.receivesFollow = receivesFollow;
+            Id = id;
+            Timestamp = timestamp;
+            RequestsFollow = requestsFollow;
+            ReceivesFollow = receivesFollow;
         }
 
         public static Result<FollowRequest> Create(Guid id, DateTime timestamp, RegisteredUser requestsFollow, RegisteredUser receivesFollow)

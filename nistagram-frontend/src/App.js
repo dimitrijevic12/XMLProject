@@ -18,6 +18,7 @@ import Explore from "./pages/Explore";
 import PublicProfile from "./components/Profile/PublicProfile";
 import CollectionsMenuPage from "./pages/CollectionsMenuPage";
 import PostsInCollectionPage from "./pages/PostsInCollectionPage";
+import FollowRequestPage from "./pages/FollowRequestsPage";
 
 function App() {
   return (
@@ -59,6 +60,9 @@ function App() {
           </Route>
           <Route exact path="/collections">
             <CollectionsMenuPage />
+          </Route>
+          <Route exact path="/requests">
+            <FollowRequestPage />
           </Route>
           <Route path="/explore/:search">
             <Explore />

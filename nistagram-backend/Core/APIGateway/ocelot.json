@@ -318,6 +318,17 @@
         }
       ],
       "UpstreamPathTemplate": "/api/posts/collections/{collectionId}/users/{userId}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/{userId}/followRequests",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44313
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/{userId}/followRequests"
     }
   ],
   "GlobalConfiguration": {

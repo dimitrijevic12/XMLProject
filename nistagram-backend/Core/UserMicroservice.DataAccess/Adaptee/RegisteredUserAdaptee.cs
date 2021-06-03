@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UserMicroservice.Core.Model;
 
 namespace UserMicroservice.DataAccess.Adaptee
 {
     public class RegisteredUserAdaptee
     {
-        public RegisteredUser ConvertSqlDataReaderToRegisteredUser(DataRow dataRow)
+        public RegisteredUser ConvertSqlDataReaderToRegisteredUser(DataRow dataRow,
+            IEnumerable<RegisteredUser> blockedUsers, IEnumerable<RegisteredUser> blockedByUsers,
+            IEnumerable<RegisteredUser> mutedUsers, IEnumerable<RegisteredUser> mutedByUsers,
+            IEnumerable<RegisteredUser> following, IEnumerable<RegisteredUser> followers,
+            IEnumerable<RegisteredUser> myCloseFriends, IEnumerable<RegisteredUser> closeFriendsTo)
         {
             return RegisteredUser.Create(Guid.Parse(dataRow[0].ToString()),
                                     Username.Create(dataRow[1].ToString()).Value,
@@ -26,14 +27,14 @@ namespace UserMicroservice.DataAccess.Adaptee
                                     bool.Parse(dataRow[11].ToString()),
                                     bool.Parse(dataRow[12].ToString()),
                                     Password.Create(dataRow[15].ToString()).Value,
-                                    new List<Core.Model.RegisteredUser>(),
-                                    new List<Core.Model.RegisteredUser>(),
-                                    new List<Core.Model.RegisteredUser>(),
-                                    new List<Core.Model.RegisteredUser>(),
-                                    new List<Core.Model.RegisteredUser>(),
-                                    new List<Core.Model.RegisteredUser>(),
-                                    new List<Core.Model.RegisteredUser>(),
-                                    new List<Core.Model.RegisteredUser>()).Value;
+                                    blockedUsers,
+                                    blockedByUsers,
+                                    mutedUsers,
+                                    mutedByUsers,
+                                    following,
+                                    followers,
+                                    myCloseFriends,
+                                    closeFriendsTo).Value;
         }
     }
 }

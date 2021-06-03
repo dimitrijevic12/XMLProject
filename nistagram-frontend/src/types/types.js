@@ -50,3 +50,7 @@ export const GET_POSTS_BY_COLLECTION_AND_USER_ERROR =
   "getPostsByCollectionAndUserError";
 export const FOLLOW_PROFILE = "followProfile";
 export const FOLLOW_PROFILE_ERROR = "followProfileError";
+export const GET_FOLLOW_REQUESTS = "getFollowRequests";
+export const GET_FOLLOW_REQUESTS_ERROR = "getFollowRequestsError";
+export const HANDLE_REQUESTS = "handleRequests";
+export const HANDLE_REQUESTS_ERROR = "handleRequestsError";

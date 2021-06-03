@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace UserMicroservice.Api.DTOs
 {
@@ -21,5 +19,13 @@ namespace UserMicroservice.Api.DTOs
         public bool IsPrivate { get; set; }
         public bool IsAcceptingMessages { get; set; }
         public bool IsAcceptingTags { get; set; }
+        public IEnumerable<RegisteredUser> BlockedUsers { get; set; }
+        public IEnumerable<RegisteredUser> BlockedByUsers { get; set; }
+        public IEnumerable<RegisteredUser> MutedUsers { get; set; }
+        public IEnumerable<RegisteredUser> MutedByUsers { get; set; }
+        public IEnumerable<RegisteredUser> Following { get; set; }
+        public IEnumerable<RegisteredUser> Followers { get; set; }
+        public IEnumerable<RegisteredUser> MyCloseFriends { get; set; }
+        public IEnumerable<RegisteredUser> CloseFriendTo { get; set; }
     }
 }

@@ -20,14 +20,17 @@ namespace UserMicroservice.Api.Controllers
     public class UsersController : ControllerBase
     {
         private readonly UserService userService;
-        private readonly RegisterUserFactory registerUserFactory;
+        private readonly RegisteredUserFactory registerUserFactory;
         private readonly IUserRepository _userRepository;
+        private readonly FollowRequestFactory followRequestFactory;
 
-        public UsersController(UserService userService, IUserRepository userRepository, RegisterUserFactory registerUserFactory)
+        public UsersController(UserService userService, IUserRepository userRepository,
+            RegisteredUserFactory registerUserFactory, FollowRequestFactory followRequestFactory)
         {
             this.userService = userService;
             _userRepository = userRepository;
             this.registerUserFactory = registerUserFactory;
+            this.followRequestFactory = followRequestFactory;
         }
 
         //[Authorize(Roles = "ApprovedAgent")]
@@ -168,6 +171,13 @@ namespace UserMicroservice.Api.Controllers
             Guid newId = Guid.NewGuid();
             userService.HandleFollowRequest(follow.Id, follow.FollowedById, follow.FollowingId, follow.Type, follow.IsApproved, newId);
             return Ok();
+        }
+
+        [HttpGet("{userId}/followRequests")]
+        public IActionResult GetFollowRequests(Guid userId)
+        {
+            return Ok(_userRepository.GetFollowRequestsForUser(userId)
+               .Select(followRequest => followRequestFactory.Create(followRequest)));
         }
     }
 }

@@ -9,7 +9,6 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using UserMicroservice.Api.Factories;
 using UserMicroservice.Core.Interface.Repository;
-using UserMicroservice.Core.Interface.Service;
 using UserMicroservice.Core.Services;
 using UserMicroservice.DataAccess.Implementation;
 
@@ -37,6 +36,8 @@ namespace UserMicroservice.Api
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IAdminRepository, AdminRepository>();
             services.AddScoped<RegisterUserFactory>();
+            services.AddScoped<RegisteredUserFactory>();
+            services.AddScoped<FollowRequestFactory>();
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {

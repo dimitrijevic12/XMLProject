@@ -6,7 +6,6 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using UserMicroservice.Core.Interface.Repository;
 using UserMicroservice.Core.Model;
 using UserMicroservice.DataAccess.Adaptee;
@@ -17,8 +16,9 @@ namespace UserMicroservice.DataAccess.Implementation
 {
     public class UserRepository : Repository, IUserRepository
     {
-        public ITarget _registeredUserTarget = new RegisteredUserAdapter(new RegisteredUserAdaptee());
+        public RegisteredUserAdapter _registeredUserTarget = new RegisteredUserAdapter(new RegisteredUserAdaptee());
         public ITarget _userModelTarget = new UserModelAdapter(new UserModelAdaptee());
+        public ITarget _followRequestTarget = new FollowRequestAdapter(new FollowRequestAdaptee());
 
         public UserRepository(IConfiguration configuration) : base(configuration)
         {
@@ -78,7 +78,9 @@ namespace UserMicroservice.DataAccess.Implementation
             if (dataTable.Rows.Count > 0)
             {
                 return (RegisteredUser)_registeredUserTarget.ConvertSql(
-                dataTable.Rows[0]
+                dataTable.Rows[0], GetBlocking(id), GetBlockedBy(id),
+                GetMuted(id), GetMutedBy(id), GetFollowing(id), GetFollowers(id),
+                GetMyCloseFriends(id), GetCloseFriendsTo(id)
                 );
             }
             return Maybe<RegisteredUser>.None;
@@ -101,7 +103,10 @@ namespace UserMicroservice.DataAccess.Implementation
             if (dataTable.Rows.Count > 0)
             {
                 return (RegisteredUser)_registeredUserTarget.ConvertSql(
-                dataTable.Rows[0]
+                dataTable.Rows[0], GetBlocking((Guid)dataTable.Rows[0][0]), GetBlockedBy((Guid)dataTable.Rows[0][0]),
+                GetMuted((Guid)dataTable.Rows[0][0]), GetMutedBy((Guid)dataTable.Rows[0][0]),
+                GetFollowing((Guid)dataTable.Rows[0][0]), GetFollowers((Guid)dataTable.Rows[0][0]),
+                GetMyCloseFriends((Guid)dataTable.Rows[0][0]), GetCloseFriendsTo((Guid)dataTable.Rows[0][0])
                 );
             }
             return Maybe<RegisteredUser>.None;
@@ -171,7 +176,12 @@ namespace UserMicroservice.DataAccess.Implementation
 
             return (from DataRow dataRow in dataTable.Rows
 
-                    select (RegisteredUser)_registeredUserTarget.ConvertSql(dataRow)).ToList();
+                    select (RegisteredUser)_registeredUserTarget.ConvertSql(dataRow,
+                    GetBlocking((Guid)dataRow[0]), GetBlockedBy((Guid)dataRow[0]),
+                    GetMuted((Guid)dataRow[0]), GetMutedBy((Guid)dataRow[0]), GetFollowing((Guid)dataRow[0]),
+                    GetFollowers((Guid)dataRow[0]), GetMyCloseFriends((Guid)dataRow[0]),
+                    GetCloseFriendsTo((Guid)dataRow[0])
+                    )).ToList();
         }
 
         public RegisteredUser Save(RegisteredUser registeredUser)
@@ -300,14 +310,17 @@ namespace UserMicroservice.DataAccess.Implementation
             ExecuteQuery(query, parameters);
         }
 
-        public IEnumerable<RegisteredUser> GetAllFollowingRequests(Guid id)
+        public IEnumerable<FollowRequest> GetFollowRequestsForUser(Guid id)
         {
-            StringBuilder queryBuilder = new StringBuilder("f.id, f.timestamp, r.id, r.username, r.email, r.first_name, r.last_name, r.date_of_birth, " +
-                "r.phone_number, r.gender, r.website_address, r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.password, r2.id," +
-                " r2.username, r2.email, r2.first_name, r2.last_name, r2.date_of_birth, r2.phone_number, r2.gender, r2.website_address, r2.bio," +
-                " r2.is_private, r2.is_accepting_messages, r2.is_accepting_tags, r2.password ");
-            queryBuilder.Append("FROM dbo.RegisteredUser As r, dbo.FollowRequest As f, dbo.RegisteredUser As r2");
-            queryBuilder.Append("WHERE r.id = f.requests_follow_id And f.recieves_follow_id = @id  And f.recieves_follow_id = r2.id ;");
+            StringBuilder queryBuilder = new StringBuilder("SELECT f.id, f.timestamp, r.id, r.username, r.email, r.first_name, r.last_name, r.date_of_birth, " +
+                "r.phone_number, r.gender, r.website_address, r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, " +
+                "r.password, r2.id, r2.username, r2.email, r2.first_name, r2.last_name, r2.date_of_birth, " +
+                "r2.phone_number, r2.gender, r2.website_address, r2.bio, r2.is_private, " +
+                "r2.is_accepting_messages, r2.is_accepting_tags, r2.type, r2.category, r2.password ");
+            queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.FollowRequest AS f, dbo.RegisteredUser As r2 ");
+            queryBuilder.Append("WHERE r.id = f.requests_follow_id AND f.recieves_follow_id = @id  AND f.recieves_follow_id = r2.id " +
+                "AND f.type = \'unappr\' ");
+            queryBuilder.Append("ORDER BY f.timestamp DESC");
 
             string query = queryBuilder.ToString();
 
@@ -319,8 +332,207 @@ namespace UserMicroservice.DataAccess.Implementation
             DataTable dataTable = ExecuteQuery(query, parameters);
 
             return (from DataRow dataRow in dataTable.Rows
+                    select (FollowRequest)_followRequestTarget.ConvertSql(dataRow)).ToList();
+        }
 
-                    select (RegisteredUser)_registeredUserTarget.ConvertSql(dataRow)).ToList();
+        private IEnumerable<RegisteredUser> GetFollowers(Guid id)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT r.id, r.username, r.email, " +
+                "r.first_name, r.last_name, r.date_of_birth, r.phone_number, r.gender, r.website_address, " +
+                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password ");
+            queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.RegisteredUser AS r2, " +
+                "dbo.Follows as f ");
+            queryBuilder.Append("WHERE f.following_id = r2.id AND f.followed_by_id = r.id " +
+                "AND f.following_id = @Id");
+
+            List<SqlParameter> parameters = new List<SqlParameter>{
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = id }
+             };
+
+            string query = queryBuilder.ToString();
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            return (from DataRow dataRow in dataTable.Rows
+                    select (RegisteredUser)_registeredUserTarget.ConvertSql(dataRow,
+                    new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>(),
+                    new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>(),
+                    new List<RegisteredUser>(), new List<RegisteredUser>())).ToList();
+        }
+
+        private IEnumerable<RegisteredUser> GetFollowing(Guid id)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT r.id, r.username, r.email, " +
+                "r.first_name, r.last_name, r.date_of_birth, r.phone_number, r.gender, r.website_address, " +
+                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password ");
+            queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.RegisteredUser AS r2, " +
+                "dbo.Follows as f ");
+            queryBuilder.Append("WHERE f.following_id=r.id AND f.followed_by_id=r2.id " +
+                "AND f.followed_by_id = @Id");
+
+            List<SqlParameter> parameters = new List<SqlParameter>{
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = id }
+             };
+
+            string query = queryBuilder.ToString();
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            return (from DataRow dataRow in dataTable.Rows
+                    select (RegisteredUser)_registeredUserTarget.ConvertSql(dataRow,
+                    new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>(),
+                    new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>(),
+                    new List<RegisteredUser>(), new List<RegisteredUser>())).ToList();
+        }
+
+        private IEnumerable<RegisteredUser> GetBlockedBy(Guid id)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT r.id, r.username, r.email, " +
+                "r.first_name, r.last_name, r.date_of_birth, r.phone_number, r.gender, r.website_address, " +
+                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password ");
+            queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.RegisteredUser AS r2, " +
+                "dbo.Blocks as f ");
+            queryBuilder.Append("WHERE f.blocking_id = r2.id AND f.blocked_by_id = r.id " +
+                "AND f.blocking_id = @Id");
+
+            List<SqlParameter> parameters = new List<SqlParameter>{
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = id }
+             };
+
+            string query = queryBuilder.ToString();
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            return (from DataRow dataRow in dataTable.Rows
+                    select (RegisteredUser)_registeredUserTarget.ConvertSql(dataRow,
+                    new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>(),
+                    new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>(),
+                    new List<RegisteredUser>(), new List<RegisteredUser>())).ToList();
+        }
+
+        private IEnumerable<RegisteredUser> GetBlocking(Guid id)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT r.id, r.username, r.email, " +
+                "r.first_name, r.last_name, r.date_of_birth, r.phone_number, r.gender, r.website_address, " +
+                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password ");
+            queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.RegisteredUser AS r2, " +
+                "dbo.Blocks as f ");
+            queryBuilder.Append("WHERE f.blocking_id = r.id AND f.blocked_by_id = r2.id " +
+                "AND f.blocked_by_id = @Id");
+
+            List<SqlParameter> parameters = new List<SqlParameter>{
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = id }
+             };
+
+            string query = queryBuilder.ToString();
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            return (from DataRow dataRow in dataTable.Rows
+                    select (RegisteredUser)_registeredUserTarget.ConvertSql(dataRow,
+                    new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>(),
+                    new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>(),
+                    new List<RegisteredUser>(), new List<RegisteredUser>())).ToList();
+        }
+
+        private IEnumerable<RegisteredUser> GetMutedBy(Guid id)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT r.id, r.username, r.email, " +
+                "r.first_name, r.last_name, r.date_of_birth, r.phone_number, r.gender, r.website_address, " +
+                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password ");
+            queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.RegisteredUser AS r2, " +
+                "dbo.Mutes as f ");
+            queryBuilder.Append("WHERE f.muting_id = r2.id AND f.muted_by_id = r.id " +
+                "AND f.muting_id = @Id");
+
+            List<SqlParameter> parameters = new List<SqlParameter>{
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = id }
+             };
+
+            string query = queryBuilder.ToString();
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            return (from DataRow dataRow in dataTable.Rows
+                    select (RegisteredUser)_registeredUserTarget.ConvertSql(dataRow,
+                    new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>(),
+                    new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>(),
+                    new List<RegisteredUser>(), new List<RegisteredUser>())).ToList();
+        }
+
+        private IEnumerable<RegisteredUser> GetMuted(Guid id)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT r.id, r.username, r.email, " +
+                "r.first_name, r.last_name, r.date_of_birth, r.phone_number, r.gender, r.website_address, " +
+                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password ");
+            queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.RegisteredUser AS r2, " +
+                "dbo.Mutes as f ");
+            queryBuilder.Append("WHERE f.muting_id = r.id AND f.muted_by_id = r2.id " +
+                "AND f.muted_by_id = @Id");
+
+            List<SqlParameter> parameters = new List<SqlParameter>{
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = id }
+             };
+
+            string query = queryBuilder.ToString();
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            return (from DataRow dataRow in dataTable.Rows
+                    select (RegisteredUser)_registeredUserTarget.ConvertSql(dataRow,
+                    new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>(),
+                    new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>(),
+                    new List<RegisteredUser>(), new List<RegisteredUser>())).ToList();
+        }
+
+        private IEnumerable<RegisteredUser> GetCloseFriendsTo(Guid id)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT r.id, r.username, r.email, " +
+                "r.first_name, r.last_name, r.date_of_birth, r.phone_number, r.gender, r.website_address, " +
+                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password ");
+            queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.RegisteredUser AS r2, " +
+                "dbo.CloseFriends as f ");
+            queryBuilder.Append("WHERE f.my_close_friend_id = r2.id AND f.close_friend_to_id = r.id " +
+                "AND f.my_close_friend_id = @Id");
+
+            List<SqlParameter> parameters = new List<SqlParameter>{
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = id }
+             };
+
+            string query = queryBuilder.ToString();
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            return (from DataRow dataRow in dataTable.Rows
+                    select (RegisteredUser)_registeredUserTarget.ConvertSql(dataRow,
+                    new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>(),
+                    new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>(),
+                    new List<RegisteredUser>(), new List<RegisteredUser>())).ToList();
+        }
+
+        private IEnumerable<RegisteredUser> GetMyCloseFriends(Guid id)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT r.id, r.username, r.email, " +
+                "r.first_name, r.last_name, r.date_of_birth, r.phone_number, r.gender, r.website_address, " +
+                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password ");
+            queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.RegisteredUser AS r2, " +
+                "dbo.CloseFriends as f ");
+            queryBuilder.Append("WHERE f.my_close_friend_id = r.id AND f.close_friend_to_id = r2.id " +
+                "AND f.close_friend_to_id = @Id");
+
+            List<SqlParameter> parameters = new List<SqlParameter>{
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = id }
+             };
+
+            string query = queryBuilder.ToString();
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            return (from DataRow dataRow in dataTable.Rows
+                    select (RegisteredUser)_registeredUserTarget.ConvertSql(dataRow,
+                    new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>(),
+                    new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>(),
+                    new List<RegisteredUser>(), new List<RegisteredUser>())).ToList();
         }
     }
 }
