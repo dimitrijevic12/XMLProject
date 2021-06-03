@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import DatePicker from "react-datepicker";
-import { editUser, getLoggedUser } from "../../actions/actionsUser"
+import { editUser, editUserForPost, getLoggedUser } from "../../actions/actionsUser"
 import { connect } from "react-redux"
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
 
@@ -230,6 +230,19 @@ class EditProfile extends Component {
 
   async edit() {
     debugger;
+
+    this.props.editUserForPost({ 
+      "Id" : this.state.id,  
+      "Username" : this.state.username,
+      "EmailAddress" : this.state.email,
+      "FirstName" : this.state.firstName,
+      "LastName" : this.state.lastName,
+      "DateOfBirth" : this.state.dateOfBirth,
+      "PhoneNumber" : this.state.phoneNumber,
+      "Gender" : this.state.gender,
+      "WebsiteAddress" : this.state.webSite,
+      "Bio" : this.state.bio
+    })   
       this.props.editUser({ 
       "Id" : this.state.id,  
       "Username" : this.state.username,
@@ -241,8 +254,11 @@ class EditProfile extends Component {
       "Gender" : this.state.gender,
       "WebsiteAddress" : this.state.webSite,
       "Bio" : this.state.bio
-})      
+    })    
+    
+     
   }
+  
 
 }
 
@@ -251,4 +267,4 @@ const mapStateToProps = (state) =>
 
     ({ loggedUser: state.loggedUser })
 
-export default connect(mapStateToProps, { editUser, getLoggedUser })(EditProfile);
+export default connect(mapStateToProps, { editUser, editUserForPost, getLoggedUser })(EditProfile);

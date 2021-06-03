@@ -67,9 +67,25 @@ namespace PostMicroservice.DataAccess.Implementation
             return registeredUser;
         }
 
-        public RegisteredUser Edit(RegisteredUser obj)
+        public RegisteredUser Edit(RegisteredUser registeredUser)
         {
-            throw new NotImplementedException();
+            StringBuilder queryBuilder = new StringBuilder("UPDATE dbo.RegisteredUser ");
+            queryBuilder.Append("SET username = @username,  first_name = @first_name, last_name = @last_name ");
+            queryBuilder.Append("WHERE id = @id;");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+            {
+                new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = registeredUser.Id },
+                 new SqlParameter("@username", SqlDbType.NVarChar) { Value = registeredUser.Username.ToString() },
+                 new SqlParameter("@first_name", SqlDbType.NVarChar) { Value = registeredUser.FirstName.ToString() },
+                 new SqlParameter("@last_name", SqlDbType.NVarChar) { Value = registeredUser.LastName.ToString() }
+            };
+
+            ExecuteQuery(query, parameters);
+
+            return registeredUser;
         }
 
         public RegisteredUser Delete(RegisteredUser obj)
