@@ -204,5 +204,100 @@ namespace UserMicroservice.DataAccess.Implementation
 
             return registeredUser;
         }
+
+        public void Follow(Guid id, Guid followedById, Guid followingId)
+        {
+            StringBuilder queryBuilder = new StringBuilder("INSERT INTO dbo.Follows ");
+            queryBuilder.Append("(id, followed_by_id, following_id) ");
+            queryBuilder.Append("VALUES (@id, @followed_by_id, @following_id);");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = id },
+                 new SqlParameter("@followed_by_id", SqlDbType.UniqueIdentifier) { Value = followedById },
+                 new SqlParameter("@following_id", SqlDbType.UniqueIdentifier) { Value = followingId }
+             };
+
+            ExecuteQuery(query, parameters);
+        }
+
+        public void FollowPrivate(Guid id, Guid requests_follow_id, Guid recieves_follow_id)
+        {
+            StringBuilder queryBuilder = new StringBuilder("INSERT INTO dbo.FollowRequest ");
+            queryBuilder.Append("(id, requests_follow_id, recieves_follow_id, timestamp, type, is_approved) ");
+            queryBuilder.Append("VALUES (@id, @followed_by_id, @following_id, @timestamp, @type, @is_approved );");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = id },
+                 new SqlParameter("@followed_by_id", SqlDbType.UniqueIdentifier) { Value = requests_follow_id },
+                 new SqlParameter("@following_id", SqlDbType.UniqueIdentifier) { Value = recieves_follow_id },
+                 new SqlParameter("@timestamp", SqlDbType.NVarChar) { Value = DateTime.Now },
+                 new SqlParameter("@type", SqlDbType.NVarChar) { Value = "unappr" },
+                 new SqlParameter("@is_approved", SqlDbType.Bit) { Value = false }
+             };
+
+            ExecuteQuery(query, parameters);
+        }
+
+        public Boolean AlreadyFollowing(Guid requests_follow_id, Guid recieves_follow_id)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT * FROM dbo.Follows ");
+            queryBuilder.Append("WHERE @followed_by_id = followed_by_id AND @following_id = following_id; ");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@followed_by_id", SqlDbType.UniqueIdentifier) { Value = requests_follow_id },
+                 new SqlParameter("@following_id", SqlDbType.UniqueIdentifier) { Value = recieves_follow_id }
+             };
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            return dataTable.Rows.Count > 0;
+        }
+
+        public Boolean AlreadyFollowingPrivate(Guid requests_follow_id, Guid recieves_follow_id)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT * FROM dbo.FollowRequest ");
+            queryBuilder.Append("WHERE @followed_by_id = requests_follow_id AND @following_id = recieves_follow_id AND (@type = type OR @is_approved = is_approved); ");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@followed_by_id", SqlDbType.UniqueIdentifier) { Value = requests_follow_id },
+                 new SqlParameter("@following_id", SqlDbType.UniqueIdentifier) { Value = recieves_follow_id },
+                 new SqlParameter("@type", SqlDbType.NVarChar) { Value = "unappr" },
+                 new SqlParameter("@is_approved", SqlDbType.Bit) { Value = true }
+             };
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            return dataTable.Rows.Count > 0;
+        }
+
+        public void HandleFollowRequest(Guid id, String type, Boolean is_approved)
+        {
+            StringBuilder queryBuilder = new StringBuilder("UPDATE dbo.FollowRequest ");
+            queryBuilder.Append("SET type = @type, is_approved = @is_approved ");
+            queryBuilder.Append("WHERE id = @id;");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = id },
+                 new SqlParameter("@type", SqlDbType.NVarChar) { Value = type },
+                 new SqlParameter("@is_approved", SqlDbType.Bit) { Value = is_approved }
+             };
+
+            ExecuteQuery(query, parameters);
+        }
     }
 }
