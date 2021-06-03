@@ -23,7 +23,7 @@ namespace StoryMicroservice.Api.Controllers
         [HttpPost]
         public IActionResult RegisterUser(DTOs.RegisteredUser dto)
         {
-            Guid id = Guid.NewGuid();
+            Guid id = dto.Id;
 
             Result<Username> username = Username.Create(dto.Username);
             Result<FirstName> firstName = FirstName.Create(dto.FirstName);
@@ -32,13 +32,31 @@ namespace StoryMicroservice.Api.Controllers
             if (result.IsFailure) return BadRequest();
 
             if (userService.Create(Core.Model.RegisteredUser
-                                       .Create(id,
+                                       .Create(dto.Id,
                                           username.Value,
                                           firstName.Value,
                                           lastName.Value,
                                           dto.isPrivate,
                                           dto.isAcceptingTags).Value).IsFailure) return BadRequest();
             return Created(this.Request.Path + id, "");
+        }
+
+        [HttpPut("edit")]
+        public IActionResult Edit(DTOs.RegisteredUser dto)
+        {
+            Result<Username> username = Username.Create(dto.Username);
+            Result<FirstName> firstName = FirstName.Create(dto.FirstName);
+            Result<LastName> lastName = LastName.Create(dto.LastName);
+
+            Result result = Result.Combine(username, firstName, lastName);
+            if (result.IsFailure) return BadRequest(result.Error);
+
+            return Ok(userService.Edit((Core.Model.RegisteredUser.Create(dto.Id,
+                                          username.Value,
+                                          firstName.Value,
+                                          lastName.Value,
+                                          true,
+                                          true).Value)));
         }
     }
 }

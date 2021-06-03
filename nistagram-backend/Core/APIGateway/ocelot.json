@@ -1,6 +1,28 @@
 {
   "Routes": [
     {
+      "DownstreamPathTemplate": "/api/users/edit",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44333
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/editforpost"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/edit",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 9587
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/editforstory"
+    },
+    {
       "DownstreamPathTemplate": "/api/posts/users/{id}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [

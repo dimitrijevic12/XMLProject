@@ -72,7 +72,8 @@ namespace UserMicroservice.Api.Controllers
                                           new List<Core.Model.RegisteredUser>(),
                                           new List<Core.Model.RegisteredUser>(),
                                           new List<Core.Model.RegisteredUser>()).Value).IsFailure) return BadRequest();
-            return Created(this.Request.Path + id, "");
+            dto.Id = id;
+            return Ok(/*this.Request.Path + id, ""*/ dto);
         }
 
         [HttpPost("login")]

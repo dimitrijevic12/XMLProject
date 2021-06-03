@@ -270,7 +270,7 @@ class Registration extends Component {
 
   async register() {
     debugger;
-      this.props.userRegistration({ "Username" : this.state.username,
+      await this.props.userRegistration({ "Username" : this.state.username,
       "EmailAddress" : this.state.email,
       "FirstName" : this.state.firstName,
       "LastName" : this.state.lastName,
@@ -284,20 +284,21 @@ class Registration extends Component {
       "IsAcceptingTags" : this.state.isAcceptingTags,
       "Password" : this.state.password })      
     
-    this.props.userRegistrationForPost({ "Username" : this.state.username,
-      "EmailAddress" : this.state.email,
-      "FirstName" : this.state.firstName,
-      "LastName" : this.state.lastName,
-      "DateOfBirth" : this.state.dateOfBirth,
-      "PhoneNumber" : this.state.phoneNumber,
-      "Gender" : this.state.gender,
-      "WebsiteAddress" : this.state.webSite,
-      "Bio" : this.state.bio,
-      "IsPrivate" : this.state.isPrivate,
-      "IsAcceptingMessages" : this.state.isAcceptingMessages,
-      "IsAcceptingTags" : this.state.isAcceptingTags,
-      "Password" : this.state.password 
-    })
+      this.props.userRegistrationForPost( this.props.registeredUser)
+    //   "Username" : this.state.username,
+    //   "EmailAddress" : this.state.email,
+    //   "FirstName" : this.state.firstName,
+    //   "LastName" : this.state.lastName,
+    //   "DateOfBirth" : this.state.dateOfBirth,
+    //   "PhoneNumber" : this.state.phoneNumber,
+    //   "Gender" : this.state.gender,
+    //   "WebsiteAddress" : this.state.webSite,
+    //   "Bio" : this.state.bio,
+    //   "IsPrivate" : this.state.isPrivate,
+    //   "IsAcceptingMessages" : this.state.isAcceptingMessages,
+    //   "IsAcceptingTags" : this.state.isAcceptingTags,
+    //   "Password" : this.state.password 
+    // })
 
     //ZA STORY KOJI JE NO SQL
     // this.props.userRegistrationForStory({ "Username" : this.state.username,
@@ -323,6 +324,6 @@ class Registration extends Component {
 
 const mapStateToProps = (state) =>
 
-    ({ userRegistration: state.userRegistration, userRegistrationForPost: state.userRegistrationForPost, userRegistrationForStory: state.userRegistrationForStory })
+    ({ userRegistration: state.userRegistration, userRegistrationForPost: state.userRegistrationForPost, userRegistrationForStory: state.userRegistrationForStory , registeredUser : state.registeredUser})
 
 export default connect(mapStateToProps, { userRegistration, userRegistrationForPost, userRegistrationForStory })(Registration);
