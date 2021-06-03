@@ -145,5 +145,29 @@ namespace UserMicroservice.Api.Controllers
             return Ok(_userRepository.GetBy(name, access)
                 .Select(user => registerUserFactory.Create(user)));
         }
+
+        [HttpPost("follow")]
+        public IActionResult Follow(Follow follow)
+        {
+            Guid id = Guid.NewGuid();
+            if (userService.Follow(id, follow.FollowedById, follow.FollowingId).IsFailure) return BadRequest();
+            return Created(this.Request.Path + id, "");
+        }
+
+        [HttpPost("followprivate")]
+        public IActionResult FollowPrivate(Follow follow)
+        {
+            Guid id = Guid.NewGuid();
+            _userRepository.Follow(id, follow.FollowedById, follow.FollowingId);
+            return Created(this.Request.Path + id, "");
+        }
+
+        [HttpPut("handlerequest")]
+        public IActionResult HandleFollowRequest(Follow follow)
+        {
+            Guid newId = Guid.NewGuid();
+            userService.HandleFollowRequest(follow.Id, follow.FollowedById, follow.FollowingId, follow.Type, follow.IsApproved, newId);
+            return Ok();
+        }
     }
 }

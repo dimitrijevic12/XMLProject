@@ -204,5 +204,123 @@ namespace UserMicroservice.DataAccess.Implementation
 
             return registeredUser;
         }
+
+        public void Follow(Guid id, Guid followedById, Guid followingId)
+        {
+            StringBuilder queryBuilder = new StringBuilder("INSERT INTO dbo.Follows ");
+            queryBuilder.Append("(id, followed_by_id, following_id) ");
+            queryBuilder.Append("VALUES (@id, @followed_by_id, @following_id);");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = id },
+                 new SqlParameter("@followed_by_id", SqlDbType.UniqueIdentifier) { Value = followedById },
+                 new SqlParameter("@following_id", SqlDbType.UniqueIdentifier) { Value = followingId }
+             };
+
+            ExecuteQuery(query, parameters);
+        }
+
+        public void FollowPrivate(Guid id, Guid requests_follow_id, Guid recieves_follow_id)
+        {
+            StringBuilder queryBuilder = new StringBuilder("INSERT INTO dbo.FollowRequest ");
+            queryBuilder.Append("(id, requests_follow_id, recieves_follow_id, timestamp, type, is_approved) ");
+            queryBuilder.Append("VALUES (@id, @followed_by_id, @following_id, @timestamp, @type, @is_approved );");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = id },
+                 new SqlParameter("@followed_by_id", SqlDbType.UniqueIdentifier) { Value = requests_follow_id },
+                 new SqlParameter("@following_id", SqlDbType.UniqueIdentifier) { Value = recieves_follow_id },
+                 new SqlParameter("@timestamp", SqlDbType.NVarChar) { Value = DateTime.Now },
+                 new SqlParameter("@type", SqlDbType.NVarChar) { Value = "unappr" },
+                 new SqlParameter("@is_approved", SqlDbType.Bit) { Value = false }
+             };
+
+            ExecuteQuery(query, parameters);
+        }
+
+        public Boolean AlreadyFollowing(Guid requests_follow_id, Guid recieves_follow_id)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT * FROM dbo.Follows ");
+            queryBuilder.Append("WHERE @followed_by_id = followed_by_id AND @following_id = following_id; ");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@followed_by_id", SqlDbType.UniqueIdentifier) { Value = requests_follow_id },
+                 new SqlParameter("@following_id", SqlDbType.UniqueIdentifier) { Value = recieves_follow_id }
+             };
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            return dataTable.Rows.Count > 0;
+        }
+
+        public Boolean AlreadyFollowingPrivate(Guid requests_follow_id, Guid recieves_follow_id)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT * FROM dbo.FollowRequest ");
+            queryBuilder.Append("WHERE @followed_by_id = requests_follow_id AND @following_id = recieves_follow_id AND (@type = type OR @is_approved = is_approved); ");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@followed_by_id", SqlDbType.UniqueIdentifier) { Value = requests_follow_id },
+                 new SqlParameter("@following_id", SqlDbType.UniqueIdentifier) { Value = recieves_follow_id },
+                 new SqlParameter("@type", SqlDbType.NVarChar) { Value = "unappr" },
+                 new SqlParameter("@is_approved", SqlDbType.Bit) { Value = true }
+             };
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            return dataTable.Rows.Count > 0;
+        }
+
+        public void HandleFollowRequest(Guid id, String type, Boolean is_approved)
+        {
+            StringBuilder queryBuilder = new StringBuilder("UPDATE dbo.FollowRequest ");
+            queryBuilder.Append("SET type = @type, is_approved = @is_approved ");
+            queryBuilder.Append("WHERE id = @id;");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = id },
+                 new SqlParameter("@type", SqlDbType.NVarChar) { Value = type },
+                 new SqlParameter("@is_approved", SqlDbType.Bit) { Value = is_approved }
+             };
+
+            ExecuteQuery(query, parameters);
+        }
+
+        public IEnumerable<RegisteredUser> GetAllFollowingRequests(Guid id)
+        {
+            StringBuilder queryBuilder = new StringBuilder("f.id, f.timestamp, r.id, r.username, r.email, r.first_name, r.last_name, r.date_of_birth, " +
+                "r.phone_number, r.gender, r.website_address, r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.password, r2.id," +
+                " r2.username, r2.email, r2.first_name, r2.last_name, r2.date_of_birth, r2.phone_number, r2.gender, r2.website_address, r2.bio," +
+                " r2.is_private, r2.is_accepting_messages, r2.is_accepting_tags, r2.password ");
+            queryBuilder.Append("FROM dbo.RegisteredUser As r, dbo.FollowRequest As f, dbo.RegisteredUser As r2");
+            queryBuilder.Append("WHERE r.id = f.requests_follow_id And f.recieves_follow_id = @id  And f.recieves_follow_id = r2.id ;");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = id }
+             };
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            return (from DataRow dataRow in dataTable.Rows
+
+                    select (RegisteredUser)_registeredUserTarget.ConvertSql(dataRow)).ToList();
+        }
     }
 }

@@ -48,3 +48,5 @@ export const ADD_POST_TO_COLLECTION_ERROR = "addPostToCollectionError";
 export const GET_POSTS_BY_COLLECTION_AND_USER = "getPostsByCollectionAndUser";
 export const GET_POSTS_BY_COLLECTION_AND_USER_ERROR =
   "getPostsByCollectionAndUserError";
+export const FOLLOW_PROFILE = "followProfile";
+export const FOLLOW_PROFILE_ERROR = "followProfileError";
