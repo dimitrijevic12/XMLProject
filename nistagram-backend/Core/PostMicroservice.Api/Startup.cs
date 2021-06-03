@@ -48,6 +48,8 @@ namespace PostMicroservice.Api
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<LocationService>();
             services.AddScoped<ILocationRepository, LocationRepository>();
+            services.AddScoped<ICollectionRepository, CollectionRepository>();
+            services.AddScoped<CollectionFactory>();
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {

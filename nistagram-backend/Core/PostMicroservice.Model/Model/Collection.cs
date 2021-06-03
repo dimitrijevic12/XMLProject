@@ -9,17 +9,21 @@ namespace PostMicroservice.Core.Model
         public Guid Id { get; }
         public CollectionName CollectionName { get; }
         public IEnumerable<Post> Posts { get; }
+        public RegisteredUser RegisteredUser { get; }
 
-        public Collection(Guid id, CollectionName collectionName, IEnumerable<Post> posts)
+        public Collection(Guid id, CollectionName collectionName, IEnumerable<Post> posts,
+            RegisteredUser registeredUser)
         {
             Id = id;
             CollectionName = collectionName;
             Posts = posts;
+            RegisteredUser = registeredUser;
         }
 
-        public static Result<Collection> Create(Guid id, CollectionName collectionName, IEnumerable<Post> posts)
+        public static Result<Collection> Create(Guid id, CollectionName collectionName, IEnumerable<Post> posts,
+            RegisteredUser registeredUser)
         {
-            return Result.Success(new Collection(id, collectionName, posts));
+            return Result.Success(new Collection(id, collectionName, posts, registeredUser));
         }
     }
 }
