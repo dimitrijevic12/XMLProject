@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import {
   NavbarBrand,
   DropdownToggle,
@@ -41,7 +42,7 @@ class NavigationBar extends Component {
               </DropdownItem>
               <DropdownItem divider />
               <DropdownItem>
-                <NavLink to="/logout">Logout</NavLink>
+                <NavLink to="/login"  onClick={this.logout.bind(this)}>Logout</NavLink>
               </DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
@@ -50,6 +51,27 @@ class NavigationBar extends Component {
     };
     return <NavBar />;
   }
+
+  logout() {   
+    this.removeLocalStorage();
+    this.removeSessionStorage();
+    this.props.history.push("/login");
+  }
+  removeLocalStorage() {
+    localStorage.setItem("storage", "");
+    localStorage.setItem("token", "");
+    localStorage.setItem("id", "");
+    localStorage.setItem("role", "");
+    localStorage.setItem("username", "");
+  }
+
+  removeSessionStorage() {
+    localStorage.setItem("storage", "");
+    sessionStorage.setItem("token", "");
+    sessionStorage.setItem("id", "");
+    sessionStorage.setItem("role", "");
+    sessionStorage.setItem("username", "");
+  }
 }
 
-export default NavigationBar;
+export default withRouter(NavigationBar);

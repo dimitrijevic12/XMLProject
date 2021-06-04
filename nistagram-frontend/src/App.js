@@ -15,6 +15,7 @@ import ApprovalAgentPage from "./pages/ApprovalAgentPage";
 import CreateItemPage from "./pages/CreateItemPage";
 import ReviewItemPage from "./pages/ReviewItemPage";
 import Explore from "./pages/Explore";
+import ProtectedRoute from "./routes/ProtectedRoute";
 import PublicProfile from "./components/Profile/PublicProfile";
 
 function App() {
@@ -59,9 +60,7 @@ function App() {
             <Explore />
           </Route>
           <Route path="/profile/:username" component={ProfilePage}></Route>
-          <Route path="/">
-            <HomePage />
-          </Route>
+          <ProtectedRoute exact path="/" component={HomePage} />
         </Switch>
       </div>
     </Router>
