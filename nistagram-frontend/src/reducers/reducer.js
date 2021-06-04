@@ -31,6 +31,10 @@ import {
   GET_FOLLOWING,
   GET_POSTS_FOR_FOLLOWING,
   GET_ALL_IMAGES,
+  GET_STORIES,
+  LOAD_IMAGE_STORY,
+  GET_STORIES_FOR_MODAL,
+  LOAD_IMAGES_FOR_STORY_MODAL,
 } from "../types/types";
 
 const initialState = {
@@ -48,6 +52,10 @@ const initialState = {
   collections: [],
   followRequests: [],
   following: [],
+  stories: [],
+  storyImage: {},
+  storyImages: [],
+  storiesForModal: {},
 };
 
 function reducer(state = initialState, action) {
@@ -186,6 +194,27 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         loadedImages: action.payload,
+      };
+    case GET_STORIES:
+      return {
+        ...state,
+        stories: action.payload,
+      };
+    case LOAD_IMAGE_STORY:
+      return {
+        ...state,
+        storyImage: action.payload,
+      };
+    case GET_STORIES_FOR_MODAL:
+      return {
+        ...state,
+        storiesForModal: action.payload,
+      };
+    case LOAD_IMAGES_FOR_STORY_MODAL:
+      debugger;
+      return {
+        ...state,
+        storyImages: action.payload,
       };
     default:
       return state;

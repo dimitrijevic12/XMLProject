@@ -37,10 +37,11 @@ namespace StoryMicroservice.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult Search([FromQuery(Name = "story-owner-id")] string storyOwnerId, [FromQuery(Name = "following-id")] string followingId)
+        public IActionResult Search([FromQuery(Name = "story-owner-id")] string storyOwnerId, [FromQuery(Name = "following-id")] string followingId,
+            [FromQuery(Name = "last-24h")] string last24h)
         {
             if (Request.Query.Count == 0) return BadRequest();
-            return Ok(storyFactory.CreateStories(_storyRepository.GetBy(storyOwnerId, followingId)));
+            return Ok(storyFactory.CreateStories(_storyRepository.GetBy(storyOwnerId, followingId, last24h)));
         }
 
         [HttpPost]
@@ -52,7 +53,8 @@ namespace StoryMicroservice.Api.Controllers
             if (registeredUser.HasNoValue) return BadRequest("Registered user doesn't exist.");
             Maybe<Core.Model.Location> location = _locationRepository.GetById(new Guid(story.Location.Id));
             if (location.HasNoValue) return BadRequest("Location doesn't exist.");
-            if (storyService.Create(storyFactory.Create(story, _userRepository.GetUsersByDTO(story.TaggedUsers))).IsFailure) return BadRequest();
+            if (storyService.Create(storyFactory.Create(story, _userRepository.GetUsersByDTO(story.SeenByUsers),
+                _userRepository.GetUsersByDTO(story.TaggedUsers))).IsFailure) return BadRequest();
             return Created(this.Request.Path + "/" + story.Id, "");
         }
     }

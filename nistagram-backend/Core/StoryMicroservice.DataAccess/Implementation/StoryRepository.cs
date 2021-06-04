@@ -39,7 +39,8 @@ namespace StoryMicroservice.DataAccess.Implementation
             var storyDTO = _stories.Find<Story>(story => story.Id.Equals(id)).FirstOrDefault();
             if (storyDTO == null) return Maybe<Core.Model.Story>.None;
             var taggedUsers = _userRepository.GetUsersByDTO(storyDTO.TaggedUsers);
-            return storyFactory.Create(storyDTO, taggedUsers);
+            var seenByUsers = _userRepository.GetUsersByDTO(storyDTO.TaggedUsers);
+            return storyFactory.Create(storyDTO, seenByUsers, taggedUsers);
         }
 
         public Core.Model.Story Save(Core.Model.Story story)
@@ -59,7 +60,7 @@ namespace StoryMicroservice.DataAccess.Implementation
             _stories.DeleteOne(story => story.Id.Equals(storyIn.Id));
         }
 
-        public IEnumerable<Core.Model.Story> GetBy(string storyOwnerId, string followingId)
+        public IEnumerable<Core.Model.Story> GetBy(string storyOwnerId, string followingId, string last24h)
         {
             List<Core.Model.Story> stories = new List<Core.Model.Story>();
             if (!String.IsNullOrWhiteSpace(storyOwnerId))
@@ -69,6 +70,11 @@ namespace StoryMicroservice.DataAccess.Implementation
                 var user = _userRepository.GetById(new Guid(followingId)).Value;
                 var followingUsers = userFactory.CreateIds(user.Following);
                 stories.AddRange(storyFactory.CreateStories(_stories.Find(story => followingUsers.Contains(story.RegisteredUser.Id)).ToList()));
+            }
+            if (!String.IsNullOrWhiteSpace(last24h) && last24h.Equals("true"))
+            {
+                var tempStories = storyFactory.CreateStories(_stories.Find(story => story.TimeStamp < DateTime.Now.AddDays(-1)).ToList());
+                foreach (var story in tempStories) stories.Remove(story);
             }
             return stories;
         }

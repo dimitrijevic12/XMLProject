@@ -29,6 +29,7 @@ namespace StoryMicroservice.DataAccess.Factories
                 Description = story.Description,
                 RegisteredUser = registeredUserFactory.Create(story.RegisteredUser),
                 Location = locationFactory.Create(story.Location),
+                SeenByUsers = registeredUserFactory.CreateUsers(story.SeenByUsers),
                 TaggedUsers = registeredUserFactory.CreateUsers(story.TaggedUsers),
                 HashTags = hashTagFactory.CreateHashTags(story.HashTags),
                 ContentPath = story.ContentPath.ToString(),
@@ -37,14 +38,15 @@ namespace StoryMicroservice.DataAccess.Factories
             };
         }
 
-        public Core.Model.Story Create(Story story, IEnumerable<Core.Model.RegisteredUser> taggedUsers)
+        public Core.Model.Story Create(Story story, IEnumerable<Core.Model.RegisteredUser> seenByUsers,
+            IEnumerable<Core.Model.RegisteredUser> taggedUsers)
         {
             return Core.Model.Story.Create(new Guid(story.Id), ContentPath.Create(story.ContentPath).Value,
                 story.TimeStamp,
                 Duration.Create(story.Duration).Value, Description.Create(story.Description).Value, registeredUserFactory.Create(story.RegisteredUser,
                 new List<Core.Model.RegisteredUser>(), new List<Core.Model.RegisteredUser>(), new List<Core.Model.RegisteredUser>(),
                 new List<Core.Model.RegisteredUser>(), new List<Core.Model.RegisteredUser>(), new List<Core.Model.RegisteredUser>()),
-                locationFactory.Create(story.Location), taggedUsers,
+                locationFactory.Create(story.Location), seenByUsers, taggedUsers,
                 hashTagFactory.CreateHashTags(story.HashTags)).Value;
         }
 
@@ -55,7 +57,8 @@ namespace StoryMicroservice.DataAccess.Factories
 
         public IEnumerable<Core.Model.Story> CreateStories(List<Story> stories)
         {
-            return stories.Select(story => Create(story, new List<Core.Model.RegisteredUser>())).ToList();
+            return stories.Select(story => Create(story, registeredUserFactory.CreateUsers(story.SeenByUsers),
+                registeredUserFactory.CreateUsers(story.TaggedUsers))).ToList();
         }
     }
 }

@@ -5,7 +5,6 @@ import SearchBar from "./SearchBar";
 class Header extends Component {
   state = {};
   render() {
-    debugger;
     return (
       <header className="pt-4">
         <b>Ništagram</b>

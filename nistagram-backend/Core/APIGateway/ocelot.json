@@ -309,6 +309,28 @@
       "UpstreamPathTemplate": "/api/contents"
     },
     {
+      "DownstreamPathTemplate": "/api/contents/images",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 9587
+        }
+      ],
+      "UpstreamPathTemplate": "/api/contents/images"
+    },
+    {
+      "DownstreamPathTemplate": "/api/contents/{fileName}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 9587
+        }
+      ],
+      "UpstreamPathTemplate": "/api/contents/{fileName}"
+    },
+    {
       "DownstreamPathTemplate": "/api/stories?{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [

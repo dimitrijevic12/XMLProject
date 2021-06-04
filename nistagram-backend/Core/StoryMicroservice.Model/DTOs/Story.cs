@@ -19,6 +19,7 @@ namespace StoryMicroservice.Core.DTOs
         public int Duration { get; set; }
 
         public Location Location { get; set; }
+        public List<RegisteredUser> SeenByUsers { get; set; }
         public List<RegisteredUser> TaggedUsers { get; set; }
         public List<string> HashTags { get; set; }
     }

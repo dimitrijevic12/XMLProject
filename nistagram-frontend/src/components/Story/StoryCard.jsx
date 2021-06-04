@@ -15,7 +15,11 @@ class StoryCard extends Component {
     return (
       <Card>
         <CardBody style={{ zIndex: "0" }}>
-          <StoryList items={this.state.items} onClick={this.handleClick} />
+          <StoryList
+            users={this.props.users}
+            items={this.props.users}
+            onClick={this.handleClick}
+          />
         </CardBody>
       </Card>
     );

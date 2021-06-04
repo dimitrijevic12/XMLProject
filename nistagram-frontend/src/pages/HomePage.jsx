@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import StoryCard from "../components/StoryCard";
+import StoryCard from "../components/Story/StoryCard";
 import Layout from "../layouts/Layout";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Card, CardBody, CardHeader } from "reactstrap";
@@ -16,6 +16,7 @@ import {
   dislikePost,
   commentPost,
 } from "../actions/actions";
+import { getStories } from "../actions/actionsStory";
 import moment from "moment";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -44,29 +45,33 @@ class HomePage extends Component {
     debugger;
     await this.props.getFollowing();
     await this.props.getPostsForFollowing(this.props.following);
+    await this.props.getStories();
+    var posts = [...this.props.posts];
+    posts.sort(function compare(a, b) {
+      var dateA = new Date(a.timeStamp);
+      var dateB = new Date(b.timeStamp);
+      return dateB - dateA;
+    });
+    await this.getAllImages(posts);
   }
   render() {
-    debugger;
     if (this.props.following === undefined) {
       return null;
     }
     if (this.props.posts === undefined) {
       return null;
     }
+    if (this.props.stories === undefined) {
+      return null;
+    }
 
     const posts = this.props.posts;
-
-    posts.sort(function compare(a, b) {
-      var dateA = new Date(a.timeStamp);
-      var dateB = new Date(b.timeStamp);
-      return dateB - dateA;
-    });
-
-    this.getAllImages(posts);
 
     if (this.props.loadedImages === undefined) {
       return null;
     }
+
+    var users = this.getAllUsersFromStories();
 
     debugger;
     return (
@@ -85,7 +90,7 @@ class HomePage extends Component {
             onShowChange={this.displayModalCollection.bind(this)}
           />
         ) : null}
-        <StoryCard />
+        <StoryCard users={users} />
         <InfiniteScroll
           dataLength={posts.length}
           next={this.fetchMoreData}
@@ -328,12 +333,24 @@ class HomePage extends Component {
       });
     }, 1500);
   };
+  getAllUsersFromStories = () => {
+    debugger;
+    var users = [];
+    this.props.stories.forEach((story) => {
+      if (!users.some((e) => e.id === story.registeredUser.id)) {
+        users.push(story.registeredUser);
+      }
+    });
+    debugger;
+    return users;
+  };
 }
 
 const mapStateToProps = (state) => ({
   following: state.following,
   posts: state.posts,
   loadedImages: state.loadedImages,
+  stories: state.stories,
 });
 
 export default compose(
@@ -345,5 +362,6 @@ export default compose(
     likePost,
     dislikePost,
     commentPost,
+    getStories,
   })
 )(HomePage);

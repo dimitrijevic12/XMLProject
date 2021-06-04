@@ -1,0 +1,32 @@
+.story-footer-description {
+  color: white !important;
+  opacity: 100% !important;
+  bottom: 100px;
+  position: absolute;
+  z-index: 20;
+  font-size: 20px;
+  text-align: left;
+  padding-left: 5px;
+}
+
+.story-footer-hashtag {
+  color: white !important;
+  opacity: 100% !important;
+  bottom: 50px;
+  position: absolute;
+  z-index: 20;
+  font-size: 20px;
+  text-align: left;
+  padding-left: 5px;
+}
+
+.story-footer-bottom {
+  color: white !important;
+  width: 200px !important;
+  height: 25px;
+  bottom: 15px;
+  left: 30%;
+  position: absolute;
+  z-index: 20;
+  text-align: center;
+}
