@@ -25,9 +25,9 @@ namespace StoryMicroservice.Core.Services
             return Result.Success(registeredUser);
         }
 
-        public Result Edit(RegisteredUser registeredUser)
+        public Result Edit(string id, RegisteredUser registeredUser)
         {
-            _userRepository.Edit(registeredUser);
+            _userRepository.Edit(id, registeredUser);
             return Result.Success(registeredUser);
         }
     }

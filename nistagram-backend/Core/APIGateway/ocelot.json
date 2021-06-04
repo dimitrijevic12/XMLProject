@@ -12,7 +12,7 @@
       "UpstreamPathTemplate": "/api/users/editforpost"
     },
     {
-      "DownstreamPathTemplate": "/api/users/edit",
+      "DownstreamPathTemplate": "/api/users/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -20,7 +20,7 @@
           "Port": 9587
         }
       ],
-      "UpstreamPathTemplate": "/api/users/editforstory"
+      "UpstreamPathTemplate": "/api/story-users/{id}"
     },
     {
       "DownstreamPathTemplate": "/api/users/follow",

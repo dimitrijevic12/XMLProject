@@ -28,9 +28,10 @@ namespace StoryMicroservice.DataAccess.Implementation
             throw new NotImplementedException();
         }
 
-        public Core.Model.RegisteredUser Edit(string id, Core.Model.RegisteredUser obj)
+        public Core.Model.RegisteredUser Edit(string id, Core.Model.RegisteredUser userIn)
         {
-            throw new NotImplementedException();
+            _users.ReplaceOne(user => user.Id == id, userFactory.Create(userIn));
+            return userIn;
         }
 
         public IEnumerable<Core.Model.RegisteredUser> GetAll()
