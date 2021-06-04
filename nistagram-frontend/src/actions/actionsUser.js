@@ -174,7 +174,7 @@ export const editUserForStory = (user) => async (dispatch) => {
   try {
     debugger;
     const response = await axios.put(
-      "http://localhost:9587/api/users/editforstory", user,
+      "http://localhost:9587/api/users/story-users/" + sessionStorage.getItem("userId") , user,
       {
         headers: { "Access-Control-Allow-Origin": "*",
                    "Authorization" :  "Bearer " + sessionStorage.getItem("token")}
