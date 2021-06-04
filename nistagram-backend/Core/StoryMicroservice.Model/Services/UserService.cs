@@ -24,5 +24,11 @@ namespace StoryMicroservice.Core.Services
             _userRepository.Save(registeredUser);
             return Result.Success(registeredUser);
         }
+
+        public Result Edit(RegisteredUser registeredUser)
+        {
+            _userRepository.Edit(registeredUser);
+            return Result.Success(registeredUser);
+        }
     }
 }

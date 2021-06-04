@@ -9,6 +9,12 @@ import {
     GET_USERS_BY_NAME_ERROR,
     GET_USER_BY_ID,
     GET_USER_BY_ID_ERROR,
+    EDIT_USER_POST,
+    EDIT_USER_POST_ERROR,
+    EDIT_USER_STORY,
+    EDIT_USER_STORY_ERROR,
+    FOLLOW_PROFILE,
+    FOLLOW_PROFILE_ERROR,
   } from "../types/types";
   import axios from "axios";
   
@@ -141,6 +147,51 @@ export const editUser = (user) => async (dispatch) => {
     });
   }
 };
+
+export const editUserForPost = (user) => async (dispatch) => {
+  try {
+    debugger;
+    const response = await axios.put(
+      "https://localhost:44355/api/users/editforpost", user,
+      {
+        headers: { "Access-Control-Allow-Origin": "*",
+                   "Authorization" :  "Bearer " + sessionStorage.getItem("token")}
+      });
+    debugger;
+    dispatch({
+      type: EDIT_USER_POST,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: EDIT_USER_POST_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const editUserForStory = (user) => async (dispatch) => {
+  try {
+    debugger;
+    const response = await axios.put(
+      "http://localhost:9587/api/users/editforstory", user,
+      {
+        headers: { "Access-Control-Allow-Origin": "*",
+                   "Authorization" :  "Bearer " + sessionStorage.getItem("token")}
+      });
+    debugger;
+    dispatch({
+      type: EDIT_USER_STORY,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: EDIT_USER_STORY_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
 export const getUsersByName = (name) => async (dispatch) => {
   try {
     debugger;
@@ -181,6 +232,28 @@ export const getUserById = (id) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: GET_USER_BY_ID_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const followProfile = (follow) => async (dispatch) => {
+  try {
+    debugger;
+    const response = await axios.post(
+      "https://localhost:44355/api/users/follow", follow,
+      {
+        headers: { "Access-Control-Allow-Origin": "*",
+                   "Authorization" :  "Bearer " + sessionStorage.getItem("token")}
+      });
+    debugger;
+    dispatch({
+      type: FOLLOW_PROFILE,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: FOLLOW_PROFILE_ERROR,
       payload: console.log(e),
     });
   }

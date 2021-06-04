@@ -95,5 +95,30 @@ namespace UserMicroservice.Core.Services
         {
             throw new NotImplementedException();
         }
+
+        public Result Follow(Guid id, Guid followedById, Guid followingId)
+        {
+            if ((_userRepository.GetById(followedById).HasNoValue) || (_userRepository.GetById(followingId).HasNoValue)) return Result.Failure("There is no user with that id");
+            if (_userRepository.GetById(followingId).Value.IsPrivate)
+            {
+                if (_userRepository.AlreadyFollowingPrivate(followedById, followingId)) return Result.Failure("Request is already sent or you are already following this account");
+                _userRepository.FollowPrivate(id, followedById, followingId);
+                return Result.Success();
+            }
+            if (_userRepository.AlreadyFollowing(followedById, followingId)) return Result.Failure("They are already following");
+            _userRepository.Follow(id, followedById, followingId);
+            return Result.Success();
+        }
+
+        public Result HandleFollowRequest(Guid id, Guid followedById, Guid followingId, String type, Boolean is_approved, Guid newId)
+        {
+            _userRepository.HandleFollowRequest(id, type, is_approved);
+            if (is_approved && type == "approv")
+            {
+                _userRepository.Follow(newId, followedById, followingId);
+                return Result.Success();
+            }
+            return Result.Success();
+        }
     }
 }

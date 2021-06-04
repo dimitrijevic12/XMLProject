@@ -46,5 +46,23 @@ namespace StoryMicroservice.Api.Controllers
                 return BadRequest();
             return Created(this.Request.Path + "/" + dto.Id, "");
         }
+
+        [HttpPut("edit")]
+        public IActionResult Edit(DTOs.RegisteredUser dto)
+        {
+            Result<Username> username = Username.Create(dto.Username);
+            Result<FirstName> firstName = FirstName.Create(dto.FirstName);
+            Result<LastName> lastName = LastName.Create(dto.LastName);
+
+            Result result = Result.Combine(username, firstName, lastName);
+            if (result.IsFailure) return BadRequest(result.Error);
+
+            return Ok(userService.Edit((Core.Model.RegisteredUser.Create(dto.Id,
+                                          username.Value,
+                                          firstName.Value,
+                                          lastName.Value,
+                                          true,
+                                          true).Value)));
+        }
     }
 }

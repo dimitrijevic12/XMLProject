@@ -1,6 +1,61 @@
 {
   "Routes": [
     {
+      "DownstreamPathTemplate": "/api/users/edit",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44333
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/editforpost"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/edit",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 9587
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/editforstory"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/follow",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44313
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/follow"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/followprivate",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44313
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/followprivate"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/handlerequest",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44313
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/handlerequest"
+    },
+    {
       "DownstreamPathTemplate": "/api/posts/users/{id}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
