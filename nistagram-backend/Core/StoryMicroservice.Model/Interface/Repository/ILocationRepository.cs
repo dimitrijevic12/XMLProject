@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace StoryMicroservice.Core.Interface.Repository
 {
-    public interface IStoryRepository : IRepository<Story>
+    public interface ILocationRepository : IRepository<Location>
     {
-        public IEnumerable<Core.Model.Story> GetBy(string storyOwnerId, string followingId);
     }
 }

@@ -1,4 +1,5 @@
-﻿using StoryMicroservice.Core.Model;
+﻿using CSharpFunctionalExtensions;
+using StoryMicroservice.Core.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;

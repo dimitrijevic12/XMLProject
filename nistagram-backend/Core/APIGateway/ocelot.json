@@ -219,6 +219,39 @@
         }
       ],
       "UpstreamPathTemplate": "/api/usersforstory"
+    },
+    {
+      "DownstreamPathTemplate": "/api/stories",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 9587
+        }
+      ],
+      "UpstreamPathTemplate": "/api/stories"
+    },
+    {
+      "DownstreamPathTemplate": "/api/contents",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 9587
+        }
+      ],
+      "UpstreamPathTemplate": "/api/contents"
+    },
+    {
+      "DownstreamPathTemplate": "/api/stories?{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 9587
+        }
+      ],
+      "UpstreamPathTemplate": "/api/stories?{everything}"
     }
   ],
   "GlobalConfiguration": {

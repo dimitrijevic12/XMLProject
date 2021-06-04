@@ -30,8 +30,10 @@ namespace StoryMicroservice.Api
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "StoryMicroservice.Api", Version = "v1" });
             });
             services.AddScoped<UserService>();
+            services.AddScoped<StoryService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IStoryRepository, StoryRepository>();
+            services.AddScoped<ILocationRepository, LocationRepository>();
             services.AddScoped<RegisteredUserFactory>();
             services.AddScoped<LocationFactory>();
             services.AddScoped<HashTagFactory>();

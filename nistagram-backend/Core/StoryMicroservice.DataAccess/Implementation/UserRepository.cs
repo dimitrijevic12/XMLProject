@@ -41,6 +41,7 @@ namespace StoryMicroservice.DataAccess.Implementation
         public Maybe<Core.Model.RegisteredUser> GetById(Guid id)
         {
             var userDTO = _users.Find<RegisteredUser>(user => user.Id.Equals(id)).FirstOrDefault();
+            if (userDTO == null) return Maybe<Core.Model.RegisteredUser>.None;
             var blockedByUsers = GetUsersById(userDTO.BlockedByUsers);
             var blockedUsers = GetUsersById(userDTO.BlockedUsers);
             var followers = GetUsersById(userDTO.Followers);
