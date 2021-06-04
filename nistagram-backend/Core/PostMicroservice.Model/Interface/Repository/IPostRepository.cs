@@ -21,5 +21,7 @@ namespace PostMicroservice.Core.Interface.Repository
         public IEnumerable<Post> GetByUserId(Guid id);
 
         public IEnumerable<Post> GetByCollectionAndUser(Guid collectionId, Guid userId);
+
+        public IEnumerable<Post> GetForFollowing(IEnumerable<RegisteredUser> registeredUsers);
     }
 }

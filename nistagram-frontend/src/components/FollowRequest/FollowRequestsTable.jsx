@@ -25,10 +25,7 @@ class FollowRequestsTable extends Component {
         <div className="wrap bg-white pt-3 pb-3" style={{ height: "100vh" }}>
           <div style={{ marginTop: "40px" }} id="appointmentTable">
             <div className="text-center">
-              <img
-                style={{ width: 48, height: 48 }}
-                src="/images/collection.png"
-              />
+              <img style={{ width: 32, height: 32 }} src="/images/user.png" />
             </div>
 
             <Card

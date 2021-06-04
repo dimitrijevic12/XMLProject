@@ -28,6 +28,9 @@ import {
   GET_POSTS_BY_COLLECTION_AND_USER,
   GET_FOLLOW_REQUESTS,
   HANDLE_REQUESTS,
+  GET_FOLLOWING,
+  GET_POSTS_FOR_FOLLOWING,
+  GET_ALL_IMAGES,
 } from "../types/types";
 
 const initialState = {
@@ -44,11 +47,13 @@ const initialState = {
   users: [],
   collections: [],
   followRequests: [],
+  following: [],
 };
 
 function reducer(state = initialState, action) {
   switch (action.type) {
     case GET_POSTS_BY_USER_ID:
+      debugger;
       return {
         ...state,
         posts: action.payload,
@@ -150,7 +155,6 @@ function reducer(state = initialState, action) {
         ...state,
       };
     case GET_POSTS_BY_COLLECTION_AND_USER:
-      debugger;
       return {
         ...state,
         posts: action.payload,
@@ -167,6 +171,21 @@ function reducer(state = initialState, action) {
           ...state.followRequests.slice(0, action.payload),
           ...state.followRequests.slice(action.payload + 1),
         ],
+      };
+    case GET_FOLLOWING:
+      return {
+        ...state,
+        following: action.payload,
+      };
+    case GET_POSTS_FOR_FOLLOWING:
+      return {
+        ...state,
+        posts: action.payload,
+      };
+    case GET_ALL_IMAGES:
+      return {
+        ...state,
+        loadedImages: action.payload,
       };
     default:
       return state;

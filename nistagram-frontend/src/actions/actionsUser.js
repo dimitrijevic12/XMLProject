@@ -19,6 +19,8 @@ import {
   GET_FOLLOW_REQUESTS_ERROR,
   HANDLE_REQUESTS,
   HANDLE_REQUESTS_ERROR,
+  GET_FOLLOWING,
+  GET_FOLLOWING_ERROR,
 } from "../types/types";
 import axios from "axios";
 
@@ -342,6 +344,30 @@ export const handleRequests = (follow) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: HANDLE_REQUESTS_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const getFollowing = () => async (dispatch) => {
+  try {
+    debugger;
+    const response = await axios.get(
+      "https://localhost:44355/api/users/" +
+        sessionStorage.getItem("userId") +
+        "/following",
+      {
+        headers: { "Access-Control-Allow-Origin": "" },
+      }
+    );
+    debugger;
+    dispatch({
+      type: GET_FOLLOWING,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_FOLLOWING_ERROR,
       payload: console.log(e),
     });
   }

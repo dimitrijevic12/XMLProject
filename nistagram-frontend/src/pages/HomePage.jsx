@@ -5,6 +5,22 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { Card, CardBody, CardHeader } from "reactstrap";
 import { Checkbox, FormControlLabel } from "@material-ui/core";
 import { Favorite, FavoriteBorder } from "@material-ui/icons";
+import { getFollowing } from "../actions/actionsUser";
+import { withRouter } from "react-router-dom";
+import { compose } from "redux";
+import { connect } from "react-redux";
+import {
+  getPostsForFollowing,
+  getAllImages,
+  likePost,
+  dislikePost,
+  commentPost,
+} from "../actions/actions";
+import moment from "moment";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import ChooseCollectionModal from "../components/Collection/ChooseCollectionModal";
+import TaggedUsersModal from "../components/Profile/TaggedUsersModal";
 
 const style = {
   height: 30,
@@ -16,18 +32,67 @@ const style = {
 class HomePage extends Component {
   state = {
     items: Array.from({ length: 10 }),
+    comments: [],
+    showTaggedModal: false,
+    showChooseCollectionModal: false,
+    liked: false,
+    disliked: false,
+    post: {},
   };
+
+  async componentDidMount() {
+    debugger;
+    await this.props.getFollowing();
+    await this.props.getPostsForFollowing(this.props.following);
+  }
   render() {
+    debugger;
+    if (this.props.following === undefined) {
+      return null;
+    }
+    if (this.props.posts === undefined) {
+      return null;
+    }
+
+    const posts = this.props.posts;
+
+    posts.sort(function compare(a, b) {
+      var dateA = new Date(a.timeStamp);
+      var dateB = new Date(b.timeStamp);
+      return dateB - dateA;
+    });
+
+    this.getAllImages(posts);
+
+    if (this.props.loadedImages === undefined) {
+      return null;
+    }
+
+    debugger;
     return (
       <Layout>
+        {this.state.showTaggedModal ? (
+          <TaggedUsersModal
+            show={this.state.showTaggedModal}
+            postId={this.state.post.id}
+            onShowChange={this.displayModalPost.bind(this)}
+          />
+        ) : null}
+        {this.state.showChooseCollectionModal ? (
+          <ChooseCollectionModal
+            show={this.state.showChooseCollectionModal}
+            postId={this.state.post.id}
+            onShowChange={this.displayModalCollection.bind(this)}
+          />
+        ) : null}
         <StoryCard />
         <InfiniteScroll
-          dataLength={this.state.items.length}
+          dataLength={posts.length}
           next={this.fetchMoreData}
           hasMore={true}
           loader={<h4>Loading...</h4>}
         >
-          {this.state.items.map((i, index) => (
+          {posts.map((post, index) => (
             <Card
               style={{
                 marginTop: "40px",
@@ -42,49 +107,114 @@ class HomePage extends Component {
                   style={{ width: 32, height: 32, borderRadius: 50 }}
                 />
                 <span style={{ width: 15, display: "inline-block" }}></span>
-                sample
+                {post.registeredUser.username}
               </CardHeader>
               <CardBody>
                 <img
-                  src="images/nature.jpg"
+                  onClick={() => {
+                    this.displayModalPost(post);
+                  }}
+                  src={
+                    "data:image/jpg;base64," +
+                    this.props.loadedImages[index].fileContents
+                  }
                   style={{
                     maxHeight: "530px",
                     width: "100%",
                     height: "100%",
                   }}
                 />
-                <div>September 29, 2020</div>
+                <div>
+                  {post.hashTags.map((hashTag) => hashTag.hashTagText + " ")}
+                </div>
+                {post.description}
+                <br />
+                {moment(post.timeStamp).format("DD/MM/YYYY HH:mm")}
+                {Object.entries(post.location).length !== 0
+                  ? ", " +
+                    post.location.street +
+                    " " +
+                    post.location.cityName +
+                    ", " +
+                    post.location.country
+                  : ""}
+                <a
+                  style={{ float: "right" }}
+                  className="mr-4"
+                  href="javascript:;"
+                >
+                  Report
+                </a>
                 <br />
                 <br />
                 <FormControlLabel
                   style={{ width: 24, height: 24 }}
                   control={
                     <Checkbox
+                      onClick={() => {
+                        this.likePost();
+                      }}
                       icon={<FavoriteBorder />}
                       checkedIcon={<Favorite />}
                       name="checkedH"
                     />
                   }
                 />
-                <img src="images/chat.png" />
+                <img
+                  style={{ width: 24, height: 24 }}
+                  onClick={() => {
+                    this.dislikePost();
+                  }}
+                  src="/images/dislike.png"
+                />
                 <span style={{ width: 15, display: "inline-block" }}></span>
-                <img src="images/send.png" />
+                <img src="/images/chat.png" />
+                <span style={{ width: 15, display: "inline-block" }}></span>
+                <img src="/images/send.png" />
+                <span style={{ width: 15, display: "inline-block" }}></span>
+                <img
+                  style={{ width: 24, height: 24 }}
+                  src="/images/collection.png"
+                  onClick={() => {
+                    this.displayModalCollection(post);
+                  }}
+                />
                 <br />
                 <br />
-                Likes: <a href="javascript:;">61</a> <br />
+                Likes:{" "}
+                <a href="javascript:;" className="mr-2">
+                  {post.likes.length}
+                </a>
+                Dislikes: <a href="javascript:;">{post.dislikes.length}</a>{" "}
+                <br />
                 <hr />
-                <img src="images/user.png" /> Nice photo great eye
-                <br />
-                <hr />
+                {this.state.comments.map((comment) => (
+                  <div>
+                    <img src="/images/user.png" /> {comment.commentText}
+                    <br />
+                    <hr />
+                  </div>
+                ))}
                 <div style={{ float: "left" }}>
                   <input
+                    name="commentText"
+                    value={this.state.commentText}
+                    onChange={this.handleChange}
                     style={{ border: 0 }}
                     type="text"
                     placeholder="Add a comment..."
                   />
                 </div>
                 <div style={{ float: "right" }}>
-                  <a href="javascript:;"> Post </a>
+                  <a
+                    onClick={() => {
+                      this.commentPost();
+                    }}
+                    href=""
+                  >
+                    {" "}
+                    Post{" "}
+                  </a>
                 </div>
               </CardBody>
             </Card>
@@ -92,6 +222,101 @@ class HomePage extends Component {
         </InfiniteScroll>
       </Layout>
     );
+  }
+
+  handleChange = (event) => {
+    debugger;
+    const { name, value, type, checked } = event.target;
+    type === "checkbox"
+      ? this.setState({
+          [name]: checked,
+        })
+      : this.setState({
+          [name]: value,
+        });
+  };
+
+  async likePost() {
+    debugger;
+    if (this.state.liked == false) {
+      this.setState((prevState) => {
+        return { likesCount: prevState.likesCount + 1 };
+      });
+    } else {
+      this.setState((prevState) => {
+        return { likesCount: prevState.likesCount - 1 };
+      });
+    }
+
+    await this.props.likePost({
+      id: this.props.post.id,
+      userId: sessionStorage.getItem("userId"),
+    });
+    this.setState({
+      liked: !this.state.liked,
+    });
+  }
+
+  async getAllImages(posts) {
+    const paths = [];
+    for (var i = 0; i < posts.length; i++) {
+      if (posts[i].contentPath === undefined) {
+        paths.push(posts[i].contentPaths[0]);
+      } else {
+        paths.push(posts[i].contentPath);
+      }
+    }
+    await this.props.getAllImages(paths);
+  }
+
+  async dislikePost() {
+    debugger;
+    if (this.state.disliked == false) {
+      this.setState((prevState) => {
+        return { dislikesCount: prevState.dislikesCount + 1 };
+      });
+    } else {
+      this.setState((prevState) => {
+        return { dislikesCount: prevState.dislikesCount - 1 };
+      });
+    }
+
+    await this.props.dislikePost({
+      id: this.props.post.id,
+      userId: sessionStorage.getItem("userId"),
+    });
+    this.setState({
+      disliked: !this.state.disliked,
+    });
+  }
+
+  async commentPost() {
+    const comment = {
+      CommentText: this.state.commentText,
+      RegisteredUser: { id: sessionStorage.getItem("userId") },
+    };
+    debugger;
+    await this.props.commentPost({ id: this.props.post.id, comment: comment });
+    toast.configure();
+    toast.success("Commented successfully!", {
+      position: toast.POSITION.TOP_RIGHT,
+    });
+  }
+
+  displayModalPost(post) {
+    debugger;
+    this.setState({
+      post: post,
+      showTaggedModal: !this.state.showTaggedModal,
+    });
+  }
+
+  displayModalCollection(post) {
+    debugger;
+    this.setState({
+      post: post,
+      showChooseCollectionModal: !this.state.showChooseCollectionModal,
+    });
   }
 
   fetchMoreData = () => {
@@ -105,4 +330,20 @@ class HomePage extends Component {
   };
 }
 
-export default HomePage;
+const mapStateToProps = (state) => ({
+  following: state.following,
+  posts: state.posts,
+  loadedImages: state.loadedImages,
+});
+
+export default compose(
+  withRouter,
+  connect(mapStateToProps, {
+    getFollowing,
+    getPostsForFollowing,
+    getAllImages,
+    likePost,
+    dislikePost,
+    commentPost,
+  })
+)(HomePage);

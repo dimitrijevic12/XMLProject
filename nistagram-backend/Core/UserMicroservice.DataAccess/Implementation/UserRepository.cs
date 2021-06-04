@@ -360,7 +360,7 @@ namespace UserMicroservice.DataAccess.Implementation
                     new List<RegisteredUser>(), new List<RegisteredUser>())).ToList();
         }
 
-        private IEnumerable<RegisteredUser> GetFollowing(Guid id)
+        public IEnumerable<RegisteredUser> GetFollowing(Guid id)
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT r.id, r.username, r.email, " +
                 "r.first_name, r.last_name, r.date_of_birth, r.phone_number, r.gender, r.website_address, " +

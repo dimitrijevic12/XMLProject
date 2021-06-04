@@ -588,5 +588,15 @@ namespace PostMicroservice.DataAccess.Implementation
                     GetCommentsForPost((Guid)dataRow[0]), GetTaggedPeopleForPost((Guid)dataRow[0]),
                     GetContentsPathForPost((Guid)dataRow[0]))).ToList();
         }
+
+        public IEnumerable<Post> GetForFollowing(IEnumerable<RegisteredUser> registeredUsers)
+        {
+            List<Post> posts = new List<Post>();
+            foreach (RegisteredUser registeredUser in registeredUsers)
+            {
+                posts.AddRange(GetBy(registeredUser.Id, "", "", "", "", ""));
+            }
+            return posts;
+        }
     }
 }

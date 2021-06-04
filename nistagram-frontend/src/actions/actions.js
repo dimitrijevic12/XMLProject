@@ -38,6 +38,10 @@ import {
   ADD_POST_TO_COLLECTION_ERROR,
   GET_POSTS_BY_COLLECTION_AND_USER,
   GET_POSTS_BY_COLLECTION_AND_USER_ERROR,
+  GET_POSTS_FOR_FOLLOWING,
+  GET_POSTS_FOR_FOLLOWING_ERROR,
+  GET_ALL_IMAGES,
+  GET_ALL_IMAGES_ERROR,
 } from "../types/types";
 import axios from "axios";
 
@@ -496,3 +500,51 @@ export const getPostsByCollectionAndUser =
       });
     }
   };
+
+export const getPostsForFollowing = (users) => async (dispatch) => {
+  try {
+    debugger;
+    const response = await axios.post(
+      "https://localhost:44355/api/posts/following",
+      users,
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
+    );
+    dispatch({
+      type: GET_POSTS_FOR_FOLLOWING,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_POSTS_FOR_FOLLOWING_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const getAllImages = (posts) => async (dispatch) => {
+  try {
+    debugger;
+    const response = await axios.post(
+      "https://localhost:44355/api/posts/images",
+      posts,
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
+    );
+    dispatch({
+      type: GET_ALL_IMAGES,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_ALL_IMAGES_ERROR,
+      payload: console.log(e),
+    });
+  }
+};

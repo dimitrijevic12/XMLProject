@@ -179,5 +179,12 @@ namespace UserMicroservice.Api.Controllers
             return Ok(_userRepository.GetFollowRequestsForUser(userId)
                .Select(followRequest => followRequestFactory.Create(followRequest)));
         }
+
+        [HttpGet("{userId}/following")]
+        public IActionResult GetFollowers(Guid userId)
+        {
+            return Ok(_userRepository.GetFollowing(userId)
+               .Select(follower => registerUserFactory.Create(follower)));
+        }
     }
 }

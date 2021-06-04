@@ -155,6 +155,17 @@
       "UpstreamPathTemplate": "/api/locations?text={text}"
     },
     {
+      "DownstreamPathTemplate": "/api/posts/images",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44333
+        }
+      ],
+      "UpstreamPathTemplate": "/api/posts/images"
+    },
+    {
       "DownstreamPathTemplate": "/api/posts/contents/{fileName}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
@@ -329,6 +340,28 @@
         }
       ],
       "UpstreamPathTemplate": "/api/users/{userId}/followRequests"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/{userId}/following",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44313
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/{userId}/following"
+    },
+    {
+      "DownstreamPathTemplate": "/api/posts/following",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44333
+        }
+      ],
+      "UpstreamPathTemplate": "/api/posts/following"
     }
   ],
   "GlobalConfiguration": {

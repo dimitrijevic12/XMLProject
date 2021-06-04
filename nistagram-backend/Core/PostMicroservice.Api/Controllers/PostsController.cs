@@ -80,6 +80,18 @@ namespace PostMicroservice.Api.Controllers
             return Ok(fileContentResult);
         }
 
+        [HttpPost("images")]
+        public IActionResult GetImages(List<string> contentPaths)
+        {
+            List<FileContentResult> fileContentResults = new List<FileContentResult>();
+            foreach (string contentPath in contentPaths)
+            {
+                fileContentResults.Add(File(_postService.GetImage(_env.WebRootPath, contentPath),
+                "image/jpeg"));
+            }
+            return Ok(fileContentResults);
+        }
+
         [HttpPost("contents")]
         public IActionResult SaveImg([FromForm] FileModel file)
         {
@@ -183,6 +195,27 @@ namespace PostMicroservice.Api.Controllers
         public IActionResult GetByCollectionAndUser(Guid collectionId, Guid userId)
         {
             List<Post> posts = _postRepository.GetByCollectionAndUser(collectionId, userId).ToList();
+            List<DTOs.Post> toReturn = new List<DTOs.Post>();
+            foreach (Post post in posts)
+            {
+                if (post.GetType().Name.Equals("PostSingle"))
+                {
+                    toReturn.Add(postSingleFactory.Create((PostSingle)post));
+                }
+                else
+                {
+                    toReturn.Add(postAlbumFactory.Create((PostAlbum)post));
+                }
+            }
+            return Ok(toReturn);
+        }
+
+        [HttpPost("following")]
+        public IActionResult GetForFollowing(List<DTOs.RegisteredUser> registeredUsers)
+        {
+            List<RegisteredUser> users = (registeredUsers.Select(registeredUser =>
+                userService.GetById(registeredUser.Id))).ToList();
+            List<Post> posts = _postRepository.GetForFollowing(users).ToList();
             List<DTOs.Post> toReturn = new List<DTOs.Post>();
             foreach (Post post in posts)
             {

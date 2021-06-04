@@ -27,5 +27,7 @@ namespace UserMicroservice.Core.Interface.Repository
         public void HandleFollowRequest(Guid id, String type, Boolean is_approved);
 
         public IEnumerable<FollowRequest> GetFollowRequestsForUser(Guid id);
+
+        public IEnumerable<RegisteredUser> GetFollowing(Guid id);
     }
 }
