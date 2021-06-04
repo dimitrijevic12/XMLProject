@@ -20,13 +20,14 @@ namespace StoryMicroservice.Core.Services
 
         public Result Create(RegisteredUser registeredUser)
         {
+            if (_userRepository.GetById(registeredUser.Id).HasValue) return Result.Failure("Users with that Id already exists.");
             _userRepository.Save(registeredUser);
             return Result.Success(registeredUser);
         }
 
-        public Result Edit(RegisteredUser registeredUser)
+        public Result Edit(string id, RegisteredUser registeredUser)
         {
-            _userRepository.Edit(registeredUser);
+            _userRepository.Edit(id, registeredUser);
             return Result.Success(registeredUser);
         }
     }

@@ -1,64 +1,73 @@
 ﻿using CSharpFunctionalExtensions;
-using Microsoft.Extensions.Configuration;
+using MongoDB.Driver;
+using StoryMicroservice.Core.DTOs;
 using StoryMicroservice.Core.Interface.Repository;
-using StoryMicroservice.Core.Model;
+using StoryMicroservice.DataAccess.Factories;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StoryMicroservice.DataAccess.Implementation
 {
-    public class UserRepository : Repository, IUserRepository
+    public class UserRepository : IUserRepository
     {
-        public UserRepository(IConfiguration configuration) : base(configuration)
+        private readonly IMongoCollection<RegisteredUser> _users;
+        private readonly RegisteredUserFactory userFactory;
+
+        public UserRepository(IStoryDatabaseSettings settings, RegisteredUserFactory userFactory)
         {
+            var client = new MongoClient(settings.ConnectionString);
+            var database = client.GetDatabase(settings.DatabaseName);
+
+            _users = database.GetCollection<RegisteredUser>(settings.RegisteredUsersCollectionName);
+            this.userFactory = userFactory;
         }
 
-        public RegisteredUser Delete(RegisteredUser obj)
+        public void Delete(Core.Model.RegisteredUser obj)
         {
             throw new NotImplementedException();
         }
 
-        public RegisteredUser Edit(RegisteredUser obj)
+        public Core.Model.RegisteredUser Edit(string id, Core.Model.RegisteredUser userIn)
+        {
+            _users.ReplaceOne(user => user.Id == id, userFactory.Create(userIn));
+            return userIn;
+        }
+
+        public IEnumerable<Core.Model.RegisteredUser> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<RegisteredUser> GetAll()
+        public Maybe<Core.Model.RegisteredUser> GetById(Guid id)
         {
-            throw new NotImplementedException();
+            var userDTO = _users.Find<RegisteredUser>(user => user.Id.Equals(id)).FirstOrDefault();
+            if (userDTO == null) return Maybe<Core.Model.RegisteredUser>.None;
+            var blockedByUsers = GetUsersById(userDTO.BlockedByUsers);
+            var blockedUsers = GetUsersById(userDTO.BlockedUsers);
+            var followers = GetUsersById(userDTO.Followers);
+            var following = GetUsersById(userDTO.Following);
+            var closeFriendTo = GetUsersById(userDTO.CloseFriendTo);
+            var MyCloseFriends = GetUsersById(userDTO.MyCloseFriends);
+            return userFactory.Create(userDTO,
+                blockedUsers, blockedByUsers, followers, following, closeFriendTo, MyCloseFriends);
         }
 
-        public Maybe<RegisteredUser> GetById(Guid id)
+        public Core.Model.RegisteredUser Save(Core.Model.RegisteredUser user)
         {
-            throw new NotImplementedException();
+            _users.InsertOne(userFactory.Create(user));
+            return user;
         }
 
-        public RegisteredUser Save(RegisteredUser registeredUser)
+        public IEnumerable<Core.Model.RegisteredUser> GetUsersById(List<string> ids)
         {
-            StringBuilder queryBuilder = new StringBuilder("INSERT INTO dbo.RegisteredUser ");
-            queryBuilder.Append("(id, username, first_name, last_name, isPrivate, isAcceptingTags) ");
-            queryBuilder.Append("VALUES (@id, @username, @first_name, @last_name, @is_private, @is_accepting_tags);");
+            return userFactory.CreateUsers(_users.Find(user => ids.Contains(user.Id)).ToList());
+        }
 
-            string query = queryBuilder.ToString();
-
-            List<SqlParameter> parameters = new List<SqlParameter>
-             {
-                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = registeredUser.Id },
-                 new SqlParameter("@username", SqlDbType.NVarChar) { Value = registeredUser.Username.ToString() },
-                 new SqlParameter("@first_name", SqlDbType.NVarChar) { Value = registeredUser.FirstName.ToString() },
-                 new SqlParameter("@last_name", SqlDbType.NVarChar) { Value = registeredUser.LastName.ToString() },
-                 new SqlParameter("@is_private", SqlDbType.Bit) { Value = registeredUser.IsPrivate },
-                 new SqlParameter("@is_accepting_tags", SqlDbType.Bit) { Value = registeredUser.IsAcceptingTags },
-             };
-
-            ExecuteQuery(query, parameters);
-
-            return registeredUser;
+        public IEnumerable<Core.Model.RegisteredUser> GetUsersByDTO(List<RegisteredUser> users)
+        {
+            var test = users.Select(user => user.Id);
+            return userFactory.CreateUsers(_users.Find(user => test.Contains(user.Id)).ToList());
         }
     }
 }

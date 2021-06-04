@@ -209,7 +209,8 @@ export const editUserForStory = (user) => async (dispatch) => {
   try {
     debugger;
     const response = await axios.put(
-      "http://localhost:9587/api/users/editforstory",
+      "http://localhost:9587/api/users/story-users/" +
+        sessionStorage.getItem("userId"),
       user,
       {
         headers: {

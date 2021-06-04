@@ -12,7 +12,7 @@
       "UpstreamPathTemplate": "/api/users/editforpost"
     },
     {
-      "DownstreamPathTemplate": "/api/users/edit",
+      "DownstreamPathTemplate": "/api/users/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -20,7 +20,7 @@
           "Port": 9587
         }
       ],
-      "UpstreamPathTemplate": "/api/users/editforstory"
+      "UpstreamPathTemplate": "/api/story-users/{id}"
     },
     {
       "DownstreamPathTemplate": "/api/users/follow",
@@ -285,6 +285,39 @@
         }
       ],
       "UpstreamPathTemplate": "/api/usersforstory"
+    },
+    {
+      "DownstreamPathTemplate": "/api/stories",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 9587
+        }
+      ],
+      "UpstreamPathTemplate": "/api/stories"
+    },
+    {
+      "DownstreamPathTemplate": "/api/contents",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 9587
+        }
+      ],
+      "UpstreamPathTemplate": "/api/contents"
+    },
+    {
+      "DownstreamPathTemplate": "/api/stories?{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 9587
+        }
+      ],
+      "UpstreamPathTemplate": "/api/stories?{everything}"
     },
     {
       "DownstreamPathTemplate": "/api/collections?userId={userId}",

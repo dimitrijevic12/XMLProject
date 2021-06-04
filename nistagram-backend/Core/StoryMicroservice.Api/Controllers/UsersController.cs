@@ -1,11 +1,17 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
+using StoryMicroservice.Core.DTOs;
+using StoryMicroservice.Core.Interface.Repository;
 using StoryMicroservice.Core.Model;
 using StoryMicroservice.Core.Services;
+using StoryMicroservice.DataAccess.Factories;
+using StoryMicroservice.DataAccess.Implementation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using RegisteredUser = StoryMicroservice.Core.DTOs.RegisteredUser;
 
 namespace StoryMicroservice.Api.Controllers
 {
@@ -13,36 +19,36 @@ namespace StoryMicroservice.Api.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
+        private readonly RegisteredUserFactory userFactory;
         private readonly UserService userService;
+        private readonly IUserRepository _userRepository;
 
-        public UsersController(UserService userService)
+        public UsersController(UserService userService, RegisteredUserFactory userFactory, IUserRepository userRepository)
         {
             this.userService = userService;
+            this.userFactory = userFactory;
+            _userRepository = userRepository;
         }
 
         [HttpPost]
-        public IActionResult RegisterUser(DTOs.RegisteredUser dto)
+        public IActionResult RegisterUser(RegisteredUser dto)
         {
-            Guid id = dto.Id;
-
             Result<Username> username = Username.Create(dto.Username);
             Result<FirstName> firstName = FirstName.Create(dto.FirstName);
             Result<LastName> lastName = LastName.Create(dto.LastName);
             Result result = Result.Combine(username, firstName, lastName);
             if (result.IsFailure) return BadRequest();
 
-            if (userService.Create(Core.Model.RegisteredUser
-                                       .Create(dto.Id,
-                                          username.Value,
-                                          firstName.Value,
-                                          lastName.Value,
-                                          dto.isPrivate,
-                                          dto.isAcceptingTags).Value).IsFailure) return BadRequest();
-            return Created(this.Request.Path + id, "");
+            if (userService.Create(userFactory.Create(dto, _userRepository.GetUsersById(dto.BlockedByUsers),
+                _userRepository.GetUsersById(dto.BlockedByUsers), _userRepository.GetUsersById(dto.Followers),
+                _userRepository.GetUsersById(dto.Following), _userRepository.GetUsersById(dto.CloseFriendTo)
+                , _userRepository.GetUsersById(dto.MyCloseFriends))).IsFailure)
+                return BadRequest();
+            return Created(this.Request.Path + "/" + dto.Id, "");
         }
 
-        [HttpPut("edit")]
-        public IActionResult Edit(DTOs.RegisteredUser dto)
+        [HttpPut("{id}")]
+        public IActionResult Edit(RegisteredUser dto, [FromRoute] string id)
         {
             Result<Username> username = Username.Create(dto.Username);
             Result<FirstName> firstName = FirstName.Create(dto.FirstName);
@@ -51,12 +57,12 @@ namespace StoryMicroservice.Api.Controllers
             Result result = Result.Combine(username, firstName, lastName);
             if (result.IsFailure) return BadRequest(result.Error);
 
-            return Ok(userService.Edit((Core.Model.RegisteredUser.Create(dto.Id,
-                                          username.Value,
-                                          firstName.Value,
-                                          lastName.Value,
-                                          true,
-                                          true).Value)));
+            userService.Edit(id, userFactory.Create(dto, _userRepository.GetUsersById(dto.BlockedByUsers),
+                _userRepository.GetUsersById(dto.BlockedByUsers), _userRepository.GetUsersById(dto.Followers),
+                _userRepository.GetUsersById(dto.Following), _userRepository.GetUsersById(dto.CloseFriendTo)
+                , _userRepository.GetUsersById(dto.MyCloseFriends)));
+
+            return NoContent();
         }
     }
 }

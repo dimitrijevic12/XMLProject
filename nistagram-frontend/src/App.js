@@ -15,6 +15,7 @@ import ApprovalAgentPage from "./pages/ApprovalAgentPage";
 import CreateItemPage from "./pages/CreateItemPage";
 import ReviewItemPage from "./pages/ReviewItemPage";
 import Explore from "./pages/Explore";
+import ProtectedRoute from "./routes/ProtectedRoute";
 import PublicProfile from "./components/Profile/PublicProfile";
 import CollectionsMenuPage from "./pages/CollectionsMenuPage";
 import PostsInCollectionPage from "./pages/PostsInCollectionPage";
@@ -72,9 +73,7 @@ function App() {
             path="/collection/:collectionId"
             component={PostsInCollectionPage}
           ></Route>
-          <Route path="/">
-            <HomePage />
-          </Route>
+          <ProtectedRoute exact path="/" component={HomePage} />
         </Switch>
       </div>
     </Router>
