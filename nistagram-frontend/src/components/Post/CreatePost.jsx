@@ -228,7 +228,7 @@ class CreatePost extends Component {
       try {
         const res = await axios({
           method: "post",
-          url: "https://localhost:44355/api/posts/contents",
+          url: "http://localhost:44355/api/posts/contents",
           data: formData,
           headers: {
             "Content-Type": "multipart/form-data",

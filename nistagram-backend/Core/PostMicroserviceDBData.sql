@@ -1,0 +1,73 @@
+USE [postdb]
+GO
+INSERT [dbo].[Location] ([id], [city_name], [street], [country]) VALUES (N'12345678-1234-1234-1234-123456789123', N'Novi Sad', N'Veljka Petrovica 10', N'Serbia')
+GO
+INSERT [dbo].[RegisteredUser] ([id], [username], [first_name], [last_name], [isPrivate], [isAcceptingTags], [profilePicturePath]) VALUES (N'12345678-1234-1234-1234-123456789123', N'stefan', N'Stefan', N'Santrac', 0, 1, NULL)
+INSERT [dbo].[RegisteredUser] ([id], [username], [first_name], [last_name], [isPrivate], [isAcceptingTags], [profilePicturePath]) VALUES (N'12345678-1234-1234-1234-123456789124', N'aleksa', N'Aleksa', N'Aleksic', 0, 1, NULL)
+INSERT [dbo].[RegisteredUser] ([id], [username], [first_name], [last_name], [isPrivate], [isAcceptingTags], [profilePicturePath]) VALUES (N'ab8cd480-54d6-4608-9e3d-37f1c3d8de8d', N'luna', N'Luna', N'Lunic', 0, 1, N'')
+INSERT [dbo].[RegisteredUser] ([id], [username], [first_name], [last_name], [isPrivate], [isAcceptingTags], [profilePicturePath]) VALUES (N'a737d587-e29f-488c-aca3-bd5944ebdf23', N'marko', N'Marko', N'Zivkovic', 0, 1, N'')
+GO
+INSERT [dbo].[Post] ([id], [timestamp], [description], [registered_user_id], [type], [location_id]) VALUES (N'12345678-1234-1234-1234-123456789123', CAST(N'2021-05-19T05:50:00.0000000' AS DateTime2), N'From today', N'12345678-1234-1234-1234-123456789123', N'Single', N'12345678-1234-1234-1234-123456789123')
+INSERT [dbo].[Post] ([id], [timestamp], [description], [registered_user_id], [type], [location_id]) VALUES (N'6b0248af-e164-432e-9ce2-1b6c54fae3f8', CAST(N'2021-05-31T21:20:09.0000000' AS DateTime2), N'Trying from front end', N'12345678-1234-1234-1234-123456789123', N'single', N'12345678-1234-1234-1234-123456789123')
+INSERT [dbo].[Post] ([id], [timestamp], [description], [registered_user_id], [type], [location_id]) VALUES (N'a72c6373-c2b0-4baa-9c74-4a6ad2aedaa2', CAST(N'2021-05-31T18:16:13.0000000' AS DateTime2), N'last check', N'12345678-1234-1234-1234-123456789123', N'single', N'12345678-1234-1234-1234-123456789123')
+INSERT [dbo].[Post] ([id], [timestamp], [description], [registered_user_id], [type], [location_id]) VALUES (N'1a07e6c5-84df-4df1-a342-4cbdbe7e3043', CAST(N'2021-06-02T14:50:16.0000000' AS DateTime2), N'Video', N'12345678-1234-1234-1234-123456789123', N'single', N'12345678-1234-1234-1234-123456789123')
+INSERT [dbo].[Post] ([id], [timestamp], [description], [registered_user_id], [type], [location_id]) VALUES (N'b9da218e-63ab-4347-835c-6c8355dde72e', CAST(N'2021-06-02T19:02:52.0000000' AS DateTime2), N'More pictures', N'12345678-1234-1234-1234-123456789123', N'album', N'12345678-1234-1234-1234-123456789123')
+INSERT [dbo].[Post] ([id], [timestamp], [description], [registered_user_id], [type], [location_id]) VALUES (N'2440c0df-98d7-4b06-afe3-6fdab82da615', CAST(N'2021-05-31T17:25:30.0000000' AS DateTime2), N'now image second', N'12345678-1234-1234-1234-123456789123', N'Single', N'12345678-1234-1234-1234-123456789123')
+INSERT [dbo].[Post] ([id], [timestamp], [description], [registered_user_id], [type], [location_id]) VALUES (N'a07a3509-9fe1-4fb1-af69-761fe50ef4a4', CAST(N'2021-06-01T14:39:01.0000000' AS DateTime2), N'Lets see', N'12345678-1234-1234-1234-123456789123', N'single', N'12345678-1234-1234-1234-123456789123')
+INSERT [dbo].[Post] ([id], [timestamp], [description], [registered_user_id], [type], [location_id]) VALUES (N'5fa0b074-489a-4140-b142-ad36c071c744', CAST(N'2021-05-31T17:22:59.0000000' AS DateTime2), N'now image', N'12345678-1234-1234-1234-123456789123', N'Single', N'12345678-1234-1234-1234-123456789123')
+INSERT [dbo].[Post] ([id], [timestamp], [description], [registered_user_id], [type], [location_id]) VALUES (N'a74180f1-1550-4478-9e9b-cdbb51c84533', CAST(N'2021-06-03T00:35:08.0000000' AS DateTime2), N'Final description', N'12345678-1234-1234-1234-123456789123', N'single', N'12345678-1234-1234-1234-123456789123')
+GO
+INSERT [dbo].[Comment] ([id], [timestamp], [comment_text], [registered_user_id], [post_id]) VALUES (N'12345678-1234-1234-1234-123456789123', CAST(N'2021-05-20T05:50:00.0000000' AS DateTime2), N'Nice picture', N'12345678-1234-1234-1234-123456789123', N'12345678-1234-1234-1234-123456789123')
+INSERT [dbo].[Comment] ([id], [timestamp], [comment_text], [registered_user_id], [post_id]) VALUES (N'12345678-1234-1234-1234-123456789124', CAST(N'2021-05-25T09:50:00.0000000' AS DateTime2), N'Not so good', N'12345678-1234-1234-1234-123456789123', N'12345678-1234-1234-1234-123456789123')
+INSERT [dbo].[Comment] ([id], [timestamp], [comment_text], [registered_user_id], [post_id]) VALUES (N'4a91feac-b235-47eb-8003-15aaf2611bc1', CAST(N'2021-06-01T22:30:22.0000000' AS DateTime2), N'Nice bird', N'12345678-1234-1234-1234-123456789123', N'2440c0df-98d7-4b06-afe3-6fdab82da615')
+INSERT [dbo].[Comment] ([id], [timestamp], [comment_text], [registered_user_id], [post_id]) VALUES (N'e8148fc9-0b04-4b2c-a36e-77c15076feef', CAST(N'2021-06-03T00:35:38.0000000' AS DateTime2), N'Wow so great wp', N'12345678-1234-1234-1234-123456789123', N'a74180f1-1550-4478-9e9b-cdbb51c84533')
+INSERT [dbo].[Comment] ([id], [timestamp], [comment_text], [registered_user_id], [post_id]) VALUES (N'5ad0805a-70de-4c93-a0a7-885d36a2fae5', CAST(N'2021-06-01T21:41:52.0000000' AS DateTime2), N'Lets try comment', N'12345678-1234-1234-1234-123456789123', N'a07a3509-9fe1-4fb1-af69-761fe50ef4a4')
+INSERT [dbo].[Comment] ([id], [timestamp], [comment_text], [registered_user_id], [post_id]) VALUES (N'fe75e741-fc3e-4f72-9275-c7038b7d67e6', CAST(N'2021-06-01T22:22:33.0000000' AS DateTime2), N'Great sky', N'12345678-1234-1234-1234-123456789123', N'a72c6373-c2b0-4baa-9c74-4a6ad2aedaa2')
+GO
+INSERT [dbo].[Content] ([id], [post_id], [content_path]) VALUES (N'12345678-1234-1234-1234-123456789123', N'12345678-1234-1234-1234-123456789123', N'sample1.jpeg')
+INSERT [dbo].[Content] ([id], [post_id], [content_path]) VALUES (N'12345678-1234-1234-1234-123456789124', N'2440c0df-98d7-4b06-afe3-6fdab82da615', N'sample2.jpg')
+INSERT [dbo].[Content] ([id], [post_id], [content_path]) VALUES (N'a7d26d78-eaad-4ab8-9d67-1965c50e9d12', N'b9da218e-63ab-4347-835c-6c8355dde72e', N'man.jfif')
+INSERT [dbo].[Content] ([id], [post_id], [content_path]) VALUES (N'6d56e2ce-fbd3-4eff-95e2-3e680a58498b', N'a72c6373-c2b0-4baa-9c74-4a6ad2aedaa2', N'sample1.jpeg')
+INSERT [dbo].[Content] ([id], [post_id], [content_path]) VALUES (N'45bbda53-abf8-4567-b5b2-57454be8ce2a', N'a74180f1-1550-4478-9e9b-cdbb51c84533', N'woman.jfif')
+INSERT [dbo].[Content] ([id], [post_id], [content_path]) VALUES (N'235873fe-4c57-41a6-acb4-9110a358c8f6', N'a07a3509-9fe1-4fb1-af69-761fe50ef4a4', N'381fec2c-b545-44f1-9011-757b98274308.jfif')
+INSERT [dbo].[Content] ([id], [post_id], [content_path]) VALUES (N'28be1380-8c41-465c-8880-a8d1c5afe4db', N'1a07e6c5-84df-4df1-a342-4cbdbe7e3043', N'video.mp4')
+INSERT [dbo].[Content] ([id], [post_id], [content_path]) VALUES (N'5fa0b074-489a-4140-b142-ad36c071c744', N'5fa0b074-489a-4140-b142-ad36c071c744', N'download.jfif')
+INSERT [dbo].[Content] ([id], [post_id], [content_path]) VALUES (N'04e27c43-bdb3-47d1-8efa-d0d040a10779', N'b9da218e-63ab-4347-835c-6c8355dde72e', N'images.jfif')
+INSERT [dbo].[Content] ([id], [post_id], [content_path]) VALUES (N'49e0cd11-526d-4c7b-a9b4-ff62665cfa55', N'6b0248af-e164-432e-9ce2-1b6c54fae3f8', N'images.jfif')
+GO
+INSERT [dbo].[Dislikes] ([id], [post_id], [registered_user_id]) VALUES (N'f8214755-e18b-4fb4-b22c-ccbe5feeaacf', N'a07a3509-9fe1-4fb1-af69-761fe50ef4a4', N'12345678-1234-1234-1234-123456789123')
+INSERT [dbo].[Dislikes] ([id], [post_id], [registered_user_id]) VALUES (N'a5dd8071-324c-4c00-8828-e844314972fa', N'a74180f1-1550-4478-9e9b-cdbb51c84533', N'12345678-1234-1234-1234-123456789123')
+GO
+INSERT [dbo].[HashTags] ([id], [post_id], [text]) VALUES (N'a61d1224-b36e-4d13-89ed-0033606f284a', N'a07a3509-9fe1-4fb1-af69-761fe50ef4a4', N'#second')
+INSERT [dbo].[HashTags] ([id], [post_id], [text]) VALUES (N'12345678-1234-1234-1234-123456789123', N'12345678-1234-1234-1234-123456789123', N'#nature')
+INSERT [dbo].[HashTags] ([id], [post_id], [text]) VALUES (N'6b0248af-e164-432e-9ce2-1b6c54fae3f9', N'6b0248af-e164-432e-9ce2-1b6c54fae3f8', N'')
+INSERT [dbo].[HashTags] ([id], [post_id], [text]) VALUES (N'a72c6373-c2b0-4baa-9c74-4a6ad2aedaa5', N'a72c6373-c2b0-4baa-9c74-4a6ad2aedaa2', N'')
+INSERT [dbo].[HashTags] ([id], [post_id], [text]) VALUES (N'11389f7e-4c6b-499b-9fcf-685104d6c5a7', N'a07a3509-9fe1-4fb1-af69-761fe50ef4a4', N'#first')
+INSERT [dbo].[HashTags] ([id], [post_id], [text]) VALUES (N'7e867785-876c-447b-a070-6d42978c1903', N'1a07e6c5-84df-4df1-a342-4cbdbe7e3043', N'#video')
+INSERT [dbo].[HashTags] ([id], [post_id], [text]) VALUES (N'2440c0df-98d7-4b06-afe3-6fdab82da612', N'2440c0df-98d7-4b06-afe3-6fdab82da615', N'')
+INSERT [dbo].[HashTags] ([id], [post_id], [text]) VALUES (N'd18b758f-0206-48a1-9461-71ccce3b1f41', N'a74180f1-1550-4478-9e9b-cdbb51c84533', N'#final')
+INSERT [dbo].[HashTags] ([id], [post_id], [text]) VALUES (N'5fa0b074-489a-4140-b142-ad36c071c745', N'5fa0b074-489a-4140-b142-ad36c071c744', N'')
+INSERT [dbo].[HashTags] ([id], [post_id], [text]) VALUES (N'6bbca380-a1c6-4227-863f-edd7c3d10bf0', N'b9da218e-63ab-4347-835c-6c8355dde72e', N'#more')
+GO
+INSERT [dbo].[Likes] ([id], [post_id], [registered_user_id]) VALUES (N'8f18497f-f8c6-4614-9ae4-0660f479cb19', N'b9da218e-63ab-4347-835c-6c8355dde72e', N'12345678-1234-1234-1234-123456789123')
+INSERT [dbo].[Likes] ([id], [post_id], [registered_user_id]) VALUES (N'9c0ed682-d03f-4e51-ad06-3374ffe1e62f', N'a07a3509-9fe1-4fb1-af69-761fe50ef4a4', N'12345678-1234-1234-1234-123456789123')
+INSERT [dbo].[Likes] ([id], [post_id], [registered_user_id]) VALUES (N'a713122a-0cc9-4d05-9aad-8bd680628ceb', N'12345678-1234-1234-1234-123456789123', N'12345678-1234-1234-1234-123456789123')
+INSERT [dbo].[Likes] ([id], [post_id], [registered_user_id]) VALUES (N'a64ff294-352e-4c14-b121-8c0a04560c6e', N'6b0248af-e164-432e-9ce2-1b6c54fae3f8', N'12345678-1234-1234-1234-123456789123')
+INSERT [dbo].[Likes] ([id], [post_id], [registered_user_id]) VALUES (N'4f9621ab-0e9c-49a1-829a-98d347ffa900', N'2440c0df-98d7-4b06-afe3-6fdab82da615', N'12345678-1234-1234-1234-123456789123')
+INSERT [dbo].[Likes] ([id], [post_id], [registered_user_id]) VALUES (N'73490446-d7de-45ae-aba1-e11f85ae6890', N'a74180f1-1550-4478-9e9b-cdbb51c84533', N'12345678-1234-1234-1234-123456789123')
+INSERT [dbo].[Likes] ([id], [post_id], [registered_user_id]) VALUES (N'ef1d2c9e-0d59-4b5b-b050-fbb57907b39d', N'5fa0b074-489a-4140-b142-ad36c071c744', N'12345678-1234-1234-1234-123456789123')
+GO
+INSERT [dbo].[PostProfileTags] ([id], [post_id], [registered_user_id]) VALUES (N'12345678-1234-1234-1234-123456789123', N'12345678-1234-1234-1234-123456789123', N'12345678-1234-1234-1234-123456789124')
+INSERT [dbo].[PostProfileTags] ([id], [post_id], [registered_user_id]) VALUES (N'12345678-1234-1234-1234-123456789124', N'12345678-1234-1234-1234-123456789123', N'12345678-1234-1234-1234-123456789123')
+INSERT [dbo].[PostProfileTags] ([id], [post_id], [registered_user_id]) VALUES (N'2c5e46f5-a8c0-4b4a-9cd1-1cb574b9a2cd', N'a74180f1-1550-4478-9e9b-cdbb51c84533', N'12345678-1234-1234-1234-123456789124')
+INSERT [dbo].[PostProfileTags] ([id], [post_id], [registered_user_id]) VALUES (N'aef4499c-b39a-4e66-8293-e2cf54c33e12', N'a07a3509-9fe1-4fb1-af69-761fe50ef4a4', N'12345678-1234-1234-1234-123456789123')
+GO
+INSERT [dbo].[Collection] ([id], [collection_name], [registered_user_id]) VALUES (N'181b113c-fe4d-4666-a463-081d43272a23', N'nature', N'12345678-1234-1234-1234-123456789123')
+INSERT [dbo].[Collection] ([id], [collection_name], [registered_user_id]) VALUES (N'12345678-1234-1234-1234-123456789123', N'favourites', N'12345678-1234-1234-1234-123456789123')
+INSERT [dbo].[Collection] ([id], [collection_name], [registered_user_id]) VALUES (N'12345678-1234-1234-1234-123456789124', N'favourites', N'12345678-1234-1234-1234-123456789124')
+INSERT [dbo].[Collection] ([id], [collection_name], [registered_user_id]) VALUES (N'4d221cb5-a48b-4f8a-b91c-2329ac764b18', N'favourites', N'a737d587-e29f-488c-aca3-bd5944ebdf23')
+INSERT [dbo].[Collection] ([id], [collection_name], [registered_user_id]) VALUES (N'fc050d3a-f6ca-4da2-beda-2724d0a7143a', N'favourites', N'ab8cd480-54d6-4608-9e3d-37f1c3d8de8d')
+GO
+INSERT [dbo].[CollectionContent] ([id], [collection_id], [post_id]) VALUES (N'b232ac51-0941-42c1-b455-b44631c29741', N'12345678-1234-1234-1234-123456789123', N'a07a3509-9fe1-4fb1-af69-761fe50ef4a4')
+INSERT [dbo].[CollectionContent] ([id], [collection_id], [post_id]) VALUES (N'fbda55fb-f71e-4820-bc24-d11da4696b26', N'12345678-1234-1234-1234-123456789123', N'a74180f1-1550-4478-9e9b-cdbb51c84533')
+GO

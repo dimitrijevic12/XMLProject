@@ -28,7 +28,7 @@ export const userRegistration = (user) => async (dispatch) => {
   try {
     debugger;
     const response = await axios.post(
-      "https://localhost:44355/api/users",
+      "http://localhost:44355/api/users",
       user,
       {
         headers: {
@@ -54,7 +54,7 @@ export const userRegistrationForPost = (user) => async (dispatch) => {
   try {
     debugger;
     const response = await axios.post(
-      "https://localhost:44355/api/usersforpost",
+      "http://localhost:44355/api/usersforpost",
       user,
       {
         headers: {
@@ -80,7 +80,7 @@ export const userRegistrationForStory = (user) => async (dispatch) => {
   try {
     debugger;
     const response = await axios.post(
-      "https://localhost:44355/api/usersforstory",
+      "http://localhost:44355/api/usersforstory",
       user,
       {
         headers: {
@@ -106,7 +106,7 @@ export const userLoggedIn = (user) => async (dispatch) => {
   try {
     debugger;
     const response = await axios.post(
-      "https://localhost:44355/api/users/login",
+      "http://localhost:44355/api/users/login",
       user,
       {
         headers: {
@@ -132,7 +132,7 @@ export const getLoggedUser = () => async (dispatch) => {
   try {
     debugger;
     const response = await axios.get(
-      "https://localhost:44355/api/users/" + sessionStorage.getItem("userId"),
+      "http://localhost:44355/api/users/" + sessionStorage.getItem("userId"),
       {
         headers: {
           "Access-Control-Allow-Origin": "*",
@@ -157,7 +157,7 @@ export const editUser = (user) => async (dispatch) => {
   try {
     debugger;
     const response = await axios.put(
-      "https://localhost:44355/api/users/edit",
+      "http://localhost:44355/api/users/edit",
       user,
       {
         headers: {
@@ -183,7 +183,7 @@ export const editUserForPost = (user) => async (dispatch) => {
   try {
     debugger;
     const response = await axios.put(
-      "https://localhost:44355/api/users/editforpost",
+      "http://localhost:44355/api/users/editforpost",
       user,
       {
         headers: {
@@ -235,7 +235,7 @@ export const editUserForStory = (user) => async (dispatch) => {
 export const getUsersByName = (name) => async (dispatch) => {
   try {
     debugger;
-    const response = await axios.get("https://localhost:44355/api/users?", {
+    const response = await axios.get("http://localhost:44355/api/users?", {
       params: {
         name: name,
         access: "public",
@@ -258,12 +258,9 @@ export const getUsersByName = (name) => async (dispatch) => {
 export const getUserById = (id) => async (dispatch) => {
   try {
     debugger;
-    const response = await axios.get(
-      "https://localhost:44355/api/users/" + id,
-      {
-        headers: { "Access-Control-Allow-Origin": "" },
-      }
-    );
+    const response = await axios.get("http://localhost:44355/api/users/" + id, {
+      headers: { "Access-Control-Allow-Origin": "" },
+    });
     debugger;
     dispatch({
       type: GET_USER_BY_ID,
@@ -281,7 +278,7 @@ export const followProfile = (follow) => async (dispatch) => {
   try {
     debugger;
     const response = await axios.post(
-      "https://localhost:44355/api/users/follow",
+      "http://localhost:44355/api/users/follow",
       follow,
       {
         headers: {
@@ -307,7 +304,7 @@ export const getFollowRequests = () => async (dispatch) => {
   try {
     debugger;
     const response = await axios.get(
-      "https://localhost:44355/api/users/" +
+      "http://localhost:44355/api/users/" +
         sessionStorage.getItem("userId") +
         "/followRequests",
       {
@@ -331,7 +328,7 @@ export const handleRequests = (follow) => async (dispatch) => {
   try {
     debugger;
     const response = await axios.put(
-      "https://localhost:44355/api/users/handlerequest",
+      "http://localhost:44355/api/users/handlerequest",
       follow,
       {
         headers: { "Access-Control-Allow-Origin": "" },
@@ -354,7 +351,7 @@ export const getFollowing = () => async (dispatch) => {
   try {
     debugger;
     const response = await axios.get(
-      "https://localhost:44355/api/users/" +
+      "http://localhost:44355/api/users/" +
         sessionStorage.getItem("userId") +
         "/following",
       {

@@ -1,0 +1,54 @@
+version: "3.8"
+
+services:
+  ms-sql-server:
+    image: xmldockerid/ms-sql-server:latest
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile.MSSQLServer
+    ports:
+      - "1433:1433"
+
+  usermicroservice-api:
+    image: xmldockerid/usermicroserviceapi:latest
+    restart: on-failure
+    build:
+      context: .
+      dockerfile: Dockerfile.UserMicroservice
+    depends_on:
+      - ms-sql-server
+    ports:
+      - "8081:80"
+
+  postmicroservice-api:
+    image: xmldockerid/postmicroserviceapi:latest
+    restart: on-failure
+    build:
+      context: .
+      dockerfile: Dockerfile.PostMicroservice
+    depends_on:
+      - ms-sql-server
+    ports:
+      - "44333:80"
+
+  storymicroservice-api:
+    image: xmldockerid/storymicroserviceapi:latest
+    restart: on-failure
+    build:
+      context: .
+      dockerfile: Dockerfile.StoryMicroservice
+    ports:
+      - "8082:80"
+
+  apigateway:
+    image: xmldockerid/apigateway:latest
+    restart: on-failure
+    build:
+      context: .
+      dockerfile: Dockerfile.APIGateway
+    ports:
+      - "44355:80"
+
+volumes:
+  ms-sql-server:

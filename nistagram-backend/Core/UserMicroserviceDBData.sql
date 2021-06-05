@@ -1,0 +1,11 @@
+USE [userdb]
+GO
+INSERT [dbo].[RegisteredUser] ([id], [username], [email], [first_name], [last_name], [date_of_birth], [phone_number], [gender], [website_address], [bio], [is_private], [is_accepting_messages], [is_accepting_tags], [type], [category], [password], [profilePicturePath]) VALUES (N'12345678-1234-1234-1234-123456789123', N'stefan', N'stefan@gmail.com', N'Stefan', N'Santrac', CAST(N'1998-05-08T00:00:00.0000000' AS DateTime2), N'123123123', N'male', N'', N'Bio bio biobiobio bio bio.', 0, 1, 1, N'default', NULL, N'password', NULL)
+INSERT [dbo].[RegisteredUser] ([id], [username], [email], [first_name], [last_name], [date_of_birth], [phone_number], [gender], [website_address], [bio], [is_private], [is_accepting_messages], [is_accepting_tags], [type], [category], [password], [profilePicturePath]) VALUES (N'ab8cd480-54d6-4608-9e3d-37f1c3d8de8d', N'luna', N'luna@gmail.com', N'Luna', N'Lunic', CAST(N'1998-02-13T23:00:00.0000000' AS DateTime2), N'06312323', N'female', N'', N'Biobibibibisad dasdsa', 1, 1, 1, N'default', N'', N'password', NULL)
+INSERT [dbo].[RegisteredUser] ([id], [username], [email], [first_name], [last_name], [date_of_birth], [phone_number], [gender], [website_address], [bio], [is_private], [is_accepting_messages], [is_accepting_tags], [type], [category], [password], [profilePicturePath]) VALUES (N'a737d587-e29f-488c-aca3-bd5944ebdf23', N'marko', N'marko@gmail.com', N'Marko', N'Zivkovic', CAST(N'2000-02-14T23:00:00.0000000' AS DateTime2), N'06312323', N'male', N'', N'Biobibibibibia sad asd asibo', 0, 1, 1, N'default', N'', N'password', NULL)
+GO
+INSERT [dbo].[FollowRequest] ([id], [requests_follow_id], [recieves_follow_id], [timestamp], [type], [is_approved]) VALUES (N'12345678-1234-1234-1234-123456789123', N'12345678-1234-1234-1234-123456789123', N'ab8cd480-54d6-4608-9e3d-37f1c3d8de8d', CAST(N'2021-06-03T00:00:00.0000000' AS DateTime2), N'approve', 1)
+GO
+INSERT [dbo].[Follows] ([id], [followed_by_id], [following_id]) VALUES (N'12345678-1234-1234-1234-123456789123', N'ab8cd480-54d6-4608-9e3d-37f1c3d8de8d', N'12345678-1234-1234-1234-123456789123')
+INSERT [dbo].[Follows] ([id], [followed_by_id], [following_id]) VALUES (N'12345678-1234-1234-1234-123456789124', N'12345678-1234-1234-1234-123456789123', N'a737d587-e29f-488c-aca3-bd5944ebdf23')
+GO

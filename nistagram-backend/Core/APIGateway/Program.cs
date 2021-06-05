@@ -25,7 +25,7 @@ namespace APIGateway
                 {
                     config
                     .SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
-                    .AddJsonFile("ocelot.json");
+                    .AddJsonFile("configuration-dep.json");
                 });
     }
 }
