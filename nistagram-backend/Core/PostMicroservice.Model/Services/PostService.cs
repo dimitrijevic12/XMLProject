@@ -48,7 +48,7 @@ namespace PostMicroservice.Core.Services
 
         public byte[] GetImage(string path, string fileName)
         {
-            path = path + "\\images\\" + fileName;
+            path = path + "/images/" + fileName;
             return File.ReadAllBytes(path);
         }
 
@@ -56,7 +56,7 @@ namespace PostMicroservice.Core.Services
         {
             try
             {
-                using (Stream stream = new FileStream(path + "\\images\\" + file.FileName, FileMode.Create))
+                using (Stream stream = new FileStream(path + "/images/" + file.FileName, FileMode.Create))
                 {
                     file.FormFile.CopyTo(stream);
                 }
