@@ -20,6 +20,7 @@ import PublicProfile from "./components/Profile/PublicProfile";
 import CollectionsMenuPage from "./pages/CollectionsMenuPage";
 import PostsInCollectionPage from "./pages/PostsInCollectionPage";
 import FollowRequestPage from "./pages/FollowRequestsPage";
+import CreateStoryPage from "./pages/CreateStoryPage";
 
 function App() {
   return (
@@ -34,6 +35,9 @@ function App() {
           </Route>
           <Route exact path="/post">
             <CreatePostPage />
+          </Route>
+          <Route exact path="/story">
+            <CreateStoryPage />
           </Route>
           <Route exact path="/private">
             <PrivateProfilePage />

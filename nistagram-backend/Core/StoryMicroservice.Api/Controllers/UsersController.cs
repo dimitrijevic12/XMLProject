@@ -1,16 +1,10 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson;
-using StoryMicroservice.Core.DTOs;
 using StoryMicroservice.Core.Interface.Repository;
 using StoryMicroservice.Core.Model;
 using StoryMicroservice.Core.Services;
 using StoryMicroservice.DataAccess.Factories;
-using StoryMicroservice.DataAccess.Implementation;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using RegisteredUser = StoryMicroservice.Core.DTOs.RegisteredUser;
 
 namespace StoryMicroservice.Api.Controllers
@@ -28,6 +22,13 @@ namespace StoryMicroservice.Api.Controllers
             this.userService = userService;
             this.userFactory = userFactory;
             _userRepository = userRepository;
+        }
+
+        [HttpGet]
+        public IActionResult GetBy([FromQuery(Name = "is-taggable")] string isTaggable)
+        {
+            if (Request.Query.Count == 0) return BadRequest();
+            return Ok(userFactory.CreateUsers(_userRepository.GetBy(isTaggable)));
         }
 
         [HttpPost]
@@ -63,6 +64,12 @@ namespace StoryMicroservice.Api.Controllers
                 , _userRepository.GetUsersById(dto.MyCloseFriends)));
 
             return NoContent();
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult GetById(Guid id)
+        {
+            return Ok(userFactory.Create(_userRepository.GetById(id).Value));
         }
     }
 }

@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import StoryModal from "./StoryModal";
-import { loadImageStory } from "../../actions/actionsStory";
 import { connect } from "react-redux";
+import { compose } from "redux";
+import { withRouter } from "react-router-dom";
 
 class Story extends Component {
   state = {
@@ -9,16 +10,7 @@ class Story extends Component {
     user: {},
   };
 
-  componentDidMount() {
-    debugger;
-    if (this.props.item.profilePicturePath !== undefined)
-      this.props.loadImageStory(this.props.item.profilePicturePath);
-  }
-
   render() {
-    if (this.props.image === undefined) {
-      return null;
-    }
     debugger;
     return (
       <div>
@@ -27,23 +19,28 @@ class Story extends Component {
             show={this.state.showStoryModal}
             onShowChange={this.displayModalStory.bind(this)}
             user={this.state.user}
-            profileImage={this.props.image}
+            profileImage={this.props.profileImage}
           />
         ) : null}
         <div
           className="story-circle"
           style={{
             backgroundImage:
-              this.props.i === 0
+              this.props.first === true
                 ? `url("/images/white_plus2.png")`
-                : `url("data:image/jpg;base64,${this.props.image}"`,
+                : `url("data:image/jpg;base64,${this.props.profileImage}"`,
             paddingBottom: "51px",
             backgroundSize: "50px",
             paddingRight: "51px",
           }}
           key={this.props.item.id}
           onClick={() => {
-            this.displayModalStory(this.props.item.id);
+            debugger;
+            if (this.props.first === true)
+              this.props.history.push({
+                pathname: "/story",
+              });
+            else this.displayModalStory(this.props.item.id);
           }}
         />
       </div>
@@ -63,4 +60,4 @@ const mapStateToProps = (state) => ({
   image: state.storyImage,
 });
 
-export default connect(mapStateToProps, { loadImageStory })(Story);
+export default compose(withRouter, connect(mapStateToProps, {}))(Story);

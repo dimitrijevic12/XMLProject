@@ -1,5 +1,8 @@
 ﻿using StoryMicroservice.Core.Model;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Location = StoryMicroservice.Core.DTOs.Location;
 
 namespace StoryMicroservice.DataAccess.Factories
@@ -21,6 +24,17 @@ namespace StoryMicroservice.DataAccess.Factories
         {
             return Core.Model.Location.Create(new Guid(location.Id), Street.Create(location.Street).Value, CityName.Create(location.CityName).Value,
                 Country.Create(location.Country).Value).Value;
+        }
+
+        public IEnumerable<Core.Model.Location> CreateLoactions(List<Location> locations)
+        {
+            return locations.Select(location => Core.Model.Location.Create(new Guid(location.Id), Street.Create(location.Street).Value,
+                CityName.Create(location.CityName).Value, Country.Create(location.Country).Value).Value);
+        }
+
+        public List<Location> CreateLoactions(IEnumerable<Core.Model.Location> locations)
+        {
+            return locations.Select(location => Create(location)).ToList();
         }
     }
 }

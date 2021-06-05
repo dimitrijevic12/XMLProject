@@ -68,3 +68,15 @@ export const GET_STORIES_FOR_MODAL = "getStoriesForModal";
 export const GET_STORIES_FOR_MODAL_ERROR = "getStoriesForModalError";
 export const LOAD_IMAGES_FOR_STORY_MODAL = "loadImagesForStoryModal";
 export const LOAD_IMAGES_FOR_STORY_MODAL_ERROR = "loadImagesForStoryModalError";
+export const LOAD_PROFILE_IMAGES_FOR_STORY = "loadProfileImagesForStory";
+export const LOAD_PROFILE_IMAGES_FOR_STORYL_ERROR =
+  "loadProfileImagesForStoryError";
+export const GET_TAGGABLE_USERS_FOR_STORY = "getTaggableUsersForStory";
+export const GET_TAGGABLE_USERS_FOR_STORY_ERROR =
+  "getTaggableUsersForStoryError";
+export const GET_LOCATIONS_FOR_STORY = "getLocationsForStory";
+export const GET_LOCATIONS_FOR_STORY_ERROR = "getLocationsForStoryError";
+export const SAVE_STORY = "saveStory";
+export const SAVE_STORY_ERROR = "saveStoryError";
+export const GET_USER_FOR_STORY = "getUserForStory";
+export const GET_USER_FOR_STORY_ERROR = "getUserForStoryError";

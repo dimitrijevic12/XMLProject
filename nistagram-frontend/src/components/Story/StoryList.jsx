@@ -1,20 +1,44 @@
 import React, { Component } from "react";
 import "./StoryCircle.css";
 import Story from "./Story";
+import { connect } from "react-redux";
+import { loadProfileImagesStory } from "../../actions/actionsStory";
 
 class StoryList extends Component {
   state = {};
+
+  componentDidMount() {
+    this.props.loadProfileImagesStory(this.createImagesList(this.props.items));
+  }
+
   render() {
     debugger;
+    if (this.props.profileImages === undefined) return null;
     return (
       <div className="story-wrapper">
-        <Story item={{}} i={0} />
+        <Story first={true} item={{}} i={0} />
         {this.props.items.map((item, i) => (
-          <Story item={item} i={i + 1} />
+          <Story
+            profileImage={this.props.profileImages[i]}
+            item={item}
+            first={false}
+          />
         ))}
       </div>
     );
   }
+
+  createImagesList() {
+    var images = [];
+    this.props.items.forEach((element) => {
+      images.push(element.profilePicturePath);
+    });
+    return images;
+  }
 }
 
-export default StoryList;
+const mapStateToProps = (state) => ({
+  profileImages: state.storyProfileImages,
+});
+
+export default connect(mapStateToProps, { loadProfileImagesStory })(StoryList);

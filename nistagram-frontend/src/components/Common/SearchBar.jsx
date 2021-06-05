@@ -23,7 +23,6 @@ class SearchBar extends Component {
   }
 
   search = (value) => {
-    debugger;
     if (value.type === "hashtag") {
       this.props.history.replace({
         pathname: "/explore/tag/" + value.label,

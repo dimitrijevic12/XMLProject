@@ -35,6 +35,11 @@ import {
   LOAD_IMAGE_STORY,
   GET_STORIES_FOR_MODAL,
   LOAD_IMAGES_FOR_STORY_MODAL,
+  LOAD_PROFILE_IMAGES_FOR_STORY,
+  GET_TAGGABLE_USERS_FOR_STORY,
+  GET_LOCATIONS_FOR_STORY,
+  SAVE_STORY,
+  GET_USER_FOR_STORY,
 } from "../types/types";
 
 const initialState = {
@@ -56,6 +61,8 @@ const initialState = {
   storyImage: {},
   storyImages: [],
   storiesForModal: {},
+  storyProfileImages: [],
+  story: {},
 };
 
 function reducer(state = initialState, action) {
@@ -211,10 +218,34 @@ function reducer(state = initialState, action) {
         storiesForModal: action.payload,
       };
     case LOAD_IMAGES_FOR_STORY_MODAL:
-      debugger;
       return {
         ...state,
         storyImages: action.payload,
+      };
+    case LOAD_PROFILE_IMAGES_FOR_STORY:
+      return {
+        ...state,
+        storyProfileImages: action.payload,
+      };
+    case GET_TAGGABLE_USERS_FOR_STORY:
+      return {
+        ...state,
+        taggableUsers: action.payload,
+      };
+    case GET_LOCATIONS_FOR_STORY:
+      return {
+        ...state,
+        locations: action.payload,
+      };
+    case SAVE_STORY:
+      return {
+        ...state,
+        story: action.payload,
+      };
+    case GET_USER_FOR_STORY:
+      return {
+        ...state,
+        registeredUser: action.payload,
       };
     default:
       return state;

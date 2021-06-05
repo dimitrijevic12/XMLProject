@@ -48,9 +48,9 @@ namespace StoryMicroservice.DataAccess.Implementation
             var followers = GetUsersById(userDTO.Followers);
             var following = GetUsersById(userDTO.Following);
             var closeFriendTo = GetUsersById(userDTO.CloseFriendTo);
-            var MyCloseFriends = GetUsersById(userDTO.MyCloseFriends);
+            var myCloseFriends = GetUsersById(userDTO.MyCloseFriends);
             return userFactory.Create(userDTO,
-                blockedUsers, blockedByUsers, followers, following, closeFriendTo, MyCloseFriends);
+                blockedUsers, blockedByUsers, followers, following, closeFriendTo, myCloseFriends);
         }
 
         public Core.Model.RegisteredUser Save(Core.Model.RegisteredUser user)
@@ -68,6 +68,19 @@ namespace StoryMicroservice.DataAccess.Implementation
         {
             var test = users.Select(user => user.Id);
             return userFactory.CreateUsers(_users.Find(user => test.Contains(user.Id)).ToList());
+        }
+
+        public IEnumerable<Core.Model.RegisteredUser> GetBy(string isTaggable)
+        {
+            List<Core.Model.RegisteredUser> result = new List<Core.Model.RegisteredUser>();
+            if (!String.IsNullOrWhiteSpace(isTaggable))
+            {
+                if (isTaggable.Equals("true"))
+                {
+                    result = userFactory.CreateUsers(_users.Find(user => user.IsAcceptingTags == true).ToList()).ToList();
+                }
+            }
+            return result;
         }
     }
 }

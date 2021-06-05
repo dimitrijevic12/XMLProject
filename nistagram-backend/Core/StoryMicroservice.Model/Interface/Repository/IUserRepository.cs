@@ -12,5 +12,7 @@ namespace StoryMicroservice.Core.Interface.Repository
         public IEnumerable<Core.Model.RegisteredUser> GetUsersById(List<string> ids);
 
         public IEnumerable<Core.Model.RegisteredUser> GetUsersByDTO(List<RegisteredUser> users);
+
+        public IEnumerable<Core.Model.RegisteredUser> GetBy(string isTaggable);
     }
 }

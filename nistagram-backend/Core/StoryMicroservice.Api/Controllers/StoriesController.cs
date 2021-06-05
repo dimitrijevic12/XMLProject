@@ -51,10 +51,13 @@ namespace StoryMicroservice.Api.Controllers
             story.TimeStamp = DateTime.Now;
             Maybe<Core.Model.RegisteredUser> registeredUser = _userRepository.GetById(new Guid(story.RegisteredUser.Id));
             if (registeredUser.HasNoValue) return BadRequest("Registered user doesn't exist.");
-            Maybe<Core.Model.Location> location = _locationRepository.GetById(new Guid(story.Location.Id));
-            if (location.HasNoValue) return BadRequest("Location doesn't exist.");
+            if (story.Location.CityName != null || story.Location.Street != null || story.Location.Country != null)
+            {
+                Maybe<Core.Model.Location> location = _locationRepository.GetById(new Guid(story.Location.Id));
+                if (location.HasNoValue) return BadRequest("Location doesn't exist.");
+            }
             if (storyService.Create(storyFactory.Create(story, _userRepository.GetUsersByDTO(story.SeenByUsers),
-                _userRepository.GetUsersByDTO(story.TaggedUsers))).IsFailure) return BadRequest();
+                _userRepository.GetUsersByDTO(story.TaggedUsers), _userRepository.GetUsersById(story.RegisteredUser.MyCloseFriends))).IsFailure) return BadRequest();
             return Created(this.Request.Path + "/" + story.Id, "");
         }
     }

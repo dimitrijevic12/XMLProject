@@ -7,6 +7,16 @@ import {
   GET_STORIES_FOR_MODAL_ERROR,
   LOAD_IMAGES_FOR_STORY_MODAL,
   LOAD_IMAGES_FOR_STORY_MODAL_ERROR,
+  LOAD_PROFILE_IMAGES_FOR_STORY,
+  LOAD_PROFILE_IMAGES_FOR_STORYL_ERROR,
+  GET_LOCATIONS_FOR_STORY,
+  GET_LOCATIONS_FOR_STORY_ERROR,
+  GET_TAGGABLE_USERS_FOR_STORY,
+  GET_TAGGABLE_USERS_FOR_STORY_ERROR,
+  SAVE_STORY,
+  SAVE_STORY_ERROR,
+  GET_USER_FOR_STORY,
+  GET_USER_FOR_STORY_ERROR,
 } from "../types/types";
 import axios from "axios";
 
@@ -56,31 +66,6 @@ export const getStoriesForModal = (userid) => async (dispatch) => {
   }
 };
 
-export const loadImageStory = (path) => async (dispatch) => {
-  try {
-    debugger;
-    const response = await axios.get(
-      "https://localhost:44355/api/contents/" + path,
-      {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          Authorization: "Bearer " + sessionStorage.getItem("token"),
-        },
-      }
-    );
-    debugger;
-    dispatch({
-      type: LOAD_IMAGE_STORY,
-      payload: response.data.fileContents,
-    });
-  } catch (e) {
-    dispatch({
-      type: LOAD_IMAGE_ERROR,
-      payload: console.log(e),
-    });
-  }
-};
-
 export const loadImagesStory = (images) => async (dispatch) => {
   try {
     debugger;
@@ -102,6 +87,129 @@ export const loadImagesStory = (images) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: LOAD_IMAGES_FOR_STORY_MODAL_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const loadProfileImagesStory = (images) => async (dispatch) => {
+  try {
+    debugger;
+    const response = await axios.post(
+      "https://localhost:44355/api/contents/images",
+      images,
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      }
+    );
+    debugger;
+    dispatch({
+      type: LOAD_PROFILE_IMAGES_FOR_STORY,
+      payload: createFileContents(response.data),
+    });
+  } catch (e) {
+    dispatch({
+      type: LOAD_PROFILE_IMAGES_FOR_STORYL_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const getTaggableForStory = () => async (dispatch) => {
+  try {
+    debugger;
+    const response = await axios.get(
+      "https://localhost:44355/api/users-for-story",
+      {
+        params: { "is-taggable": "true" },
+        headers: { "Access-Control-Allow-Origin": "" },
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
+      }
+    );
+    debugger;
+    dispatch({
+      type: GET_TAGGABLE_USERS_FOR_STORY,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_TAGGABLE_USERS_FOR_STORY_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const getLocationsForStory = () => async (dispatch) => {
+  try {
+    debugger;
+    const response = await axios.get(
+      "https://localhost:44355/api/locations-for-story",
+      {
+        headers: { "Access-Control-Allow-Origin": "" },
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
+      }
+    );
+    debugger;
+    dispatch({
+      type: GET_LOCATIONS_FOR_STORY,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_LOCATIONS_FOR_STORY_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const saveStory = (story) => async (dispatch) => {
+  try {
+    debugger;
+    const response = await axios.post(
+      "https://localhost:44355/api/stories",
+      story,
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      }
+    );
+    debugger;
+    dispatch({
+      type: SAVE_STORY,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: SAVE_STORY_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const getUserForStory = () => async (dispatch) => {
+  try {
+    debugger;
+    const response = await axios.get(
+      "https://localhost:44355/api/users-for-story/" +
+        sessionStorage.getItem("userId"),
+      {
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
+        headers: { "Access-Control-Allow-Origin": "" },
+      }
+    );
+    debugger;
+    dispatch({
+      type: GET_USER_FOR_STORY,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_USER_FOR_STORY_ERROR,
       payload: console.log(e),
     });
   }

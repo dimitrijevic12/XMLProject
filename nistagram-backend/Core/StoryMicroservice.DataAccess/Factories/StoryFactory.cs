@@ -39,15 +39,23 @@ namespace StoryMicroservice.DataAccess.Factories
         }
 
         public Core.Model.Story Create(Story story, IEnumerable<Core.Model.RegisteredUser> seenByUsers,
-            IEnumerable<Core.Model.RegisteredUser> taggedUsers)
+            IEnumerable<Core.Model.RegisteredUser> taggedUsers, IEnumerable<Core.Model.RegisteredUser> myCloseFriends)
         {
-            return Core.Model.Story.Create(new Guid(story.Id), ContentPath.Create(story.ContentPath).Value,
-                story.TimeStamp,
+            if (story.Type.Equals("CloseFriendStory")) return Core.Model.CloseFriendStory.Create(new Guid(story.Id),
+                ContentPath.Create(story.ContentPath).Value, story.TimeStamp,
                 Duration.Create(story.Duration).Value, Description.Create(story.Description).Value, registeredUserFactory.Create(story.RegisteredUser,
                 new List<Core.Model.RegisteredUser>(), new List<Core.Model.RegisteredUser>(), new List<Core.Model.RegisteredUser>(),
-                new List<Core.Model.RegisteredUser>(), new List<Core.Model.RegisteredUser>(), new List<Core.Model.RegisteredUser>()),
+                new List<Core.Model.RegisteredUser>(), new List<Core.Model.RegisteredUser>(), myCloseFriends),
                 locationFactory.Create(story.Location), seenByUsers, taggedUsers,
                 hashTagFactory.CreateHashTags(story.HashTags)).Value;
+            else
+                return Core.Model.Story.Create(new Guid(story.Id), ContentPath.Create(story.ContentPath).Value,
+                    story.TimeStamp,
+                    Duration.Create(story.Duration).Value, Description.Create(story.Description).Value, registeredUserFactory.Create(story.RegisteredUser,
+                    new List<Core.Model.RegisteredUser>(), new List<Core.Model.RegisteredUser>(), new List<Core.Model.RegisteredUser>(),
+                    new List<Core.Model.RegisteredUser>(), new List<Core.Model.RegisteredUser>(), new List<Core.Model.RegisteredUser>()),
+                    locationFactory.Create(story.Location), seenByUsers, taggedUsers,
+                    hashTagFactory.CreateHashTags(story.HashTags)).Value;
         }
 
         public List<Story> CreateStories(IEnumerable<Core.Model.Story> stories)
@@ -58,7 +66,7 @@ namespace StoryMicroservice.DataAccess.Factories
         public IEnumerable<Core.Model.Story> CreateStories(List<Story> stories)
         {
             return stories.Select(story => Create(story, registeredUserFactory.CreateUsers(story.SeenByUsers),
-                registeredUserFactory.CreateUsers(story.TaggedUsers))).ToList();
+                registeredUserFactory.CreateUsers(story.TaggedUsers), new List<RegisteredUser>())).ToList();
         }
     }
 }
