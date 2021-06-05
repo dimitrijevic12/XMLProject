@@ -450,6 +450,17 @@
         }
       ],
       "UpstreamPathTemplate": "/api/locations-for-story"
+    },
+    {
+      "DownstreamPathTemplate": "/api/highlights?{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 9587
+        }
+      ],
+      "UpstreamPathTemplate": "/api/highlights?{everything}"
     }
   ],
   "GlobalConfiguration": {

@@ -43,6 +43,28 @@ export const getStories = () => async (dispatch) => {
   }
 };
 
+export const getStoriesForUser = () => async (dispatch) => {
+  try {
+    debugger;
+    const response = await axios.get("https://localhost:44355/api/stories", {
+      params: {
+        "story-owner-id": sessionStorage.getItem("userId"),
+      },
+      headers: { "Access-Control-Allow-Origin": "" },
+    });
+    debugger;
+    dispatch({
+      type: GET_STORIES,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_STORIES_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
 export const getStoriesForModal = (userid) => async (dispatch) => {
   try {
     debugger;

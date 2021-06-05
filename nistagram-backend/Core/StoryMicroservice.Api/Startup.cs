@@ -34,10 +34,12 @@ namespace StoryMicroservice.Api
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IStoryRepository, StoryRepository>();
             services.AddScoped<ILocationRepository, LocationRepository>();
+            services.AddScoped<IHighlightRepositry, HighlightRepository>();
             services.AddScoped<RegisteredUserFactory>();
             services.AddScoped<LocationFactory>();
             services.AddScoped<HashTagFactory>();
             services.AddScoped<StoryFactory>();
+            services.AddScoped<HighlightFactory>();
             services.Configure<StoryDatabaseSettings>(
             Configuration.GetSection(nameof(StoryDatabaseSettings)));
 

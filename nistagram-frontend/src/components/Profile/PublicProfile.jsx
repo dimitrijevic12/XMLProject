@@ -13,6 +13,8 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { withRouter } from "react-router-dom";
 import { getUserById, followProfile } from "../../actions/actionsUser";
+import StoryCard from "../Story/StoryCard";
+import ProfileStoryCard from "./ProfileStoryCard";
 
 function PublicProfile(props) {
   const [postId, setPostId] = useState("");
@@ -31,10 +33,10 @@ function PublicProfile(props) {
 
   const follow = () => {
     props.followProfile({
-      "FollowedById" : sessionStorage.getItem("userId"),
-      "FollowingId" : props.location.pathname.slice(9)
-    })          
-    }
+      FollowedById: sessionStorage.getItem("userId"),
+      FollowingId: props.location.pathname.slice(9),
+    });
+  };
 
   const Posts = () =>
     posts.map((post) => (
@@ -69,8 +71,9 @@ function PublicProfile(props) {
       ) : null}
       <OptionsButton />
       <ProfileHeader user={user} userid={user.id} postsCount={posts.length} />
+      <ProfileStoryCard stories={{}} />
       <button
-        onClick={follow} 
+        onClick={follow}
         style={{ float: "right" }}
         className="btn btn-block btn-primary btn-md mt-4 mb-4"
       >
@@ -94,5 +97,5 @@ const mapStateToProps = (state) => ({
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, { getPostsByUserId, getUserById , followProfile})
+  connect(mapStateToProps, { getPostsByUserId, getUserById, followProfile })
 )(PublicProfile);
