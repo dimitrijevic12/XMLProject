@@ -4,11 +4,22 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
 import { connect } from "react-redux";
+import { loadImagesForArchive } from "../../actions/actionsStory";
+import ProfileStoryModal from "./ProfileStoryModal";
 
 class MyOptionsModal extends Component {
   state = {
     showOptionsModal: this.props.show,
+    showProfileStoryModal: false,
+    user: "",
   };
+
+  async componentDidMount() {
+    this.props.loadImagesForArchive(
+      this.createImagesList(this.props.allStories)
+    );
+  }
+
   render() {
     return (
       <Modal
@@ -19,6 +30,18 @@ class MyOptionsModal extends Component {
         isOpen={this.state.showOptionsModal}
         centered={true}
       >
+        {this.state.showProfileStoryModal ? (
+          <ProfileStoryModal
+            show={this.state.showProfileStoryModal}
+            onShowChange={this.displayModalProfileStory.bind(this)}
+            user={this.state.user}
+            profileImage={this.props.profileImage}
+            isActiveStories={true}
+            isArchive={true}
+            highlights={this.props.highlights}
+            stories={this.props.allStories}
+          />
+        ) : null}
         <ModalHeader toggle={this.toggle.bind(this)}></ModalHeader>
         <ModalBody>
           <button
@@ -35,7 +58,9 @@ class MyOptionsModal extends Component {
           </button>
           <hr />
           <button
-            onClick={() => this.mute()}
+            onClick={() =>
+              this.displayModalProfileStory(sessionStorage.getItem("userId"))
+            }
             style={{
               height: "100%",
               width: "100%",
@@ -86,6 +111,29 @@ class MyOptionsModal extends Component {
     this.setState({ showOptionsModal: false });
     this.props.onShowChange();
   }
+
+  createImagesList() {
+    debugger;
+    var images = [];
+    this.props.allStories.forEach((element) => {
+      images.push(element.contentPath);
+    });
+    return images;
+  }
+
+  displayModalProfileStory(userid) {
+    this.setState({
+      showProfileStoryModal: !this.state.showProfileStoryModal,
+      user: userid,
+    });
+  }
 }
 
-export default compose(withRouter)(MyOptionsModal);
+const mapStateToProps = (state) => ({
+  allStories: state.allStories,
+});
+
+export default compose(
+  withRouter,
+  connect(mapStateToProps, { loadImagesForArchive })
+)(MyOptionsModal);
