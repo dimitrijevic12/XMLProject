@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import Registration from "../components/Registration/Registration";
-import LayoutRegistration from "../layouts/LayoutRegistration";
+import Layout from "../layouts/Layout";
 
 class RegistrationPage extends Component {
   render() {
     return (
-      <LayoutRegistration>
+      <Layout>
         <Registration />
-      </LayoutRegistration>
+      </Layout>
     );
   }
 }

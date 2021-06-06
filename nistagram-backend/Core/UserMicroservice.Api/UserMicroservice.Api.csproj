@@ -15,4 +15,8 @@
     <ProjectReference Include="..\UserMicroservice.Model\UserMicroservice.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
 </Project>

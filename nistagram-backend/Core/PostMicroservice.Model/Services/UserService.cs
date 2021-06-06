@@ -1,8 +1,10 @@
 ﻿using CSharpFunctionalExtensions;
 using PostMicroservice.Core.Interface.Repository;
 using PostMicroservice.Core.Model;
+using PostMicroservice.Core.Model.File;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace PostMicroservice.Core.Services
 {
@@ -39,6 +41,28 @@ namespace PostMicroservice.Core.Services
         {
             _userRepository.Edit(registeredUser);
             return Result.Success(registeredUser);
+        }
+
+        public byte[] GetImage(string path, string fileName)
+        {
+            path = path + "\\images\\" + fileName;
+            return File.ReadAllBytes(path);
+        }
+
+        public string ImageToSave(string path, FileModel file)
+        {
+            try
+            {
+                using (Stream stream = new FileStream(path + "\\images\\" + file.FileName, FileMode.Create))
+                {
+                    file.FormFile.CopyTo(stream);
+                }
+                return file.FileName;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
     }
 }

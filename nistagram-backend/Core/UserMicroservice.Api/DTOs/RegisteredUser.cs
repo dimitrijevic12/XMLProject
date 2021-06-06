@@ -16,6 +16,7 @@ namespace UserMicroservice.Api.DTOs
         public string WebsiteAddress { get; set; }
         public string Bio { get; set; }
         public string Password { get; set; }
+        public string ProfilePicturePath { get; set; }
         public bool IsPrivate { get; set; }
         public bool IsAcceptingMessages { get; set; }
         public bool IsAcceptingTags { get; set; }
