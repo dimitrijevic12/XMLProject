@@ -6,6 +6,13 @@
   margin: 2px;
 }
 
+.card-body-profile {
+  flex: 1 1 auto;
+  min-height: 1px;
+  padding: 0.5rem;
+  padding-bottom: 2px;
+}
+
 .story-circle::after {
   content: "\00a0";
   background: linear-gradient(to bottom, #d82b7e, #f57939);
@@ -21,7 +28,7 @@
 
 .story-wrapper {
   display: grid;
-  grid-gap: 20px;
+  grid-gap: 30px !important;
   grid-auto-columns: 50px;
   grid-auto-flow: column dense;
   overflow: auto;

@@ -1,7 +1,7 @@
 .story-footer-description {
   color: white !important;
   opacity: 100% !important;
-  bottom: 100px;
+  bottom: 250px;
   position: absolute;
   z-index: 20;
   font-size: 20px;
@@ -10,9 +10,9 @@
 }
 
 .story-footer-hashtag {
-  color: white !important;
+  color: lightblue !important;
   opacity: 100% !important;
-  bottom: 50px;
+  bottom: 150px;
   position: absolute;
   z-index: 20;
   font-size: 20px;
@@ -20,11 +20,22 @@
   padding-left: 5px;
 }
 
-.story-footer-bottom {
+.story-footer-tagged {
   color: white !important;
   width: 200px !important;
   height: 25px;
   bottom: 15px;
+  left: 30%;
+  position: absolute;
+  z-index: 20;
+  text-align: center;
+}
+
+.story-footer-collections {
+  color: white !important;
+  width: 200px !important;
+  height: 25px;
+  bottom: 60px;
   left: 30%;
   position: absolute;
   z-index: 20;

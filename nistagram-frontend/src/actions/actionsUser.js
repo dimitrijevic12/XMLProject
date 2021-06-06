@@ -26,7 +26,6 @@ import axios from "axios";
 
 export const userRegistration = (user) => async (dispatch) => {
   try {
-    debugger;
     const response = await axios.post(
       "https://localhost:44355/api/users",
       user,
@@ -37,7 +36,6 @@ export const userRegistration = (user) => async (dispatch) => {
         },
       }
     );
-    debugger;
     dispatch({
       type: REGISTER_USER,
       payload: response.data,
@@ -52,7 +50,6 @@ export const userRegistration = (user) => async (dispatch) => {
 
 export const userRegistrationForPost = (user) => async (dispatch) => {
   try {
-    debugger;
     const response = await axios.post(
       "https://localhost:44355/api/usersforpost",
       user,
@@ -63,7 +60,6 @@ export const userRegistrationForPost = (user) => async (dispatch) => {
         },
       }
     );
-    debugger;
     dispatch({
       type: REGISTER_USER,
       payload: response.data,
@@ -78,7 +74,6 @@ export const userRegistrationForPost = (user) => async (dispatch) => {
 
 export const userRegistrationForStory = (user) => async (dispatch) => {
   try {
-    debugger;
     const response = await axios.post(
       "https://localhost:44355/api/usersforstory",
       user,
@@ -89,7 +84,6 @@ export const userRegistrationForStory = (user) => async (dispatch) => {
         },
       }
     );
-    debugger;
     dispatch({
       type: REGISTER_USER,
       payload: response.data,
@@ -104,7 +98,6 @@ export const userRegistrationForStory = (user) => async (dispatch) => {
 
 export const userLoggedIn = (user) => async (dispatch) => {
   try {
-    debugger;
     const response = await axios.post(
       "https://localhost:44355/api/users/login",
       user,
@@ -115,7 +108,6 @@ export const userLoggedIn = (user) => async (dispatch) => {
         },
       }
     );
-    debugger;
     var parts = response.data.token.split("."); // header, payload, signature
     var userInfo = JSON.parse(atob(parts[1]));
     sessionStorage.setItem("token", response.data.token);
@@ -130,7 +122,6 @@ export const userLoggedIn = (user) => async (dispatch) => {
 
 export const getLoggedUser = () => async (dispatch) => {
   try {
-    debugger;
     const response = await axios.get(
       "https://localhost:44355/api/users/" + sessionStorage.getItem("userId"),
       {
@@ -140,7 +131,6 @@ export const getLoggedUser = () => async (dispatch) => {
         },
       }
     );
-    debugger;
     dispatch({
       type: GET_LOGGED_USER,
       payload: response.data,
@@ -155,7 +145,6 @@ export const getLoggedUser = () => async (dispatch) => {
 
 export const editUser = (user) => async (dispatch) => {
   try {
-    debugger;
     const response = await axios.put(
       "https://localhost:44355/api/users/edit",
       user,
@@ -166,7 +155,6 @@ export const editUser = (user) => async (dispatch) => {
         },
       }
     );
-    debugger;
     dispatch({
       type: EDIT_USER,
       payload: response.data,
@@ -181,7 +169,6 @@ export const editUser = (user) => async (dispatch) => {
 
 export const editUserForPost = (user) => async (dispatch) => {
   try {
-    debugger;
     const response = await axios.put(
       "https://localhost:44355/api/users/editforpost",
       user,
@@ -192,7 +179,6 @@ export const editUserForPost = (user) => async (dispatch) => {
         },
       }
     );
-    debugger;
     dispatch({
       type: EDIT_USER_POST,
       payload: response.data,
@@ -207,7 +193,6 @@ export const editUserForPost = (user) => async (dispatch) => {
 
 export const editUserForStory = (user) => async (dispatch) => {
   try {
-    debugger;
     const response = await axios.put(
       "http://localhost:9587/api/users/story-users/" +
         sessionStorage.getItem("userId"),
@@ -219,7 +204,6 @@ export const editUserForStory = (user) => async (dispatch) => {
         },
       }
     );
-    debugger;
     dispatch({
       type: EDIT_USER_STORY,
       payload: response.data,
@@ -234,7 +218,6 @@ export const editUserForStory = (user) => async (dispatch) => {
 
 export const getUsersByName = (name) => async (dispatch) => {
   try {
-    debugger;
     const response = await axios.get("https://localhost:44355/api/users?", {
       params: {
         name: name,
@@ -242,7 +225,6 @@ export const getUsersByName = (name) => async (dispatch) => {
       },
       headers: { "Access-Control-Allow-Origin": "" },
     });
-    debugger;
     dispatch({
       type: GET_USERS_BY_NAME,
       payload: response.data,
@@ -257,14 +239,12 @@ export const getUsersByName = (name) => async (dispatch) => {
 
 export const getUserById = (id) => async (dispatch) => {
   try {
-    debugger;
     const response = await axios.get(
       "https://localhost:44355/api/users/" + id,
       {
         headers: { "Access-Control-Allow-Origin": "" },
       }
     );
-    debugger;
     dispatch({
       type: GET_USER_BY_ID,
       payload: response.data,
@@ -279,7 +259,6 @@ export const getUserById = (id) => async (dispatch) => {
 
 export const followProfile = (follow) => async (dispatch) => {
   try {
-    debugger;
     const response = await axios.post(
       "https://localhost:44355/api/users/follow",
       follow,
@@ -290,7 +269,6 @@ export const followProfile = (follow) => async (dispatch) => {
         },
       }
     );
-    debugger;
     dispatch({
       type: FOLLOW_PROFILE,
       payload: response.data,
@@ -305,7 +283,6 @@ export const followProfile = (follow) => async (dispatch) => {
 
 export const getFollowRequests = () => async (dispatch) => {
   try {
-    debugger;
     const response = await axios.get(
       "https://localhost:44355/api/users/" +
         sessionStorage.getItem("userId") +
@@ -314,7 +291,6 @@ export const getFollowRequests = () => async (dispatch) => {
         headers: { "Access-Control-Allow-Origin": "" },
       }
     );
-    debugger;
     dispatch({
       type: GET_FOLLOW_REQUESTS,
       payload: response.data,
@@ -329,7 +305,6 @@ export const getFollowRequests = () => async (dispatch) => {
 
 export const handleRequests = (follow) => async (dispatch) => {
   try {
-    debugger;
     const response = await axios.put(
       "https://localhost:44355/api/users/handlerequest",
       follow,
@@ -337,7 +312,6 @@ export const handleRequests = (follow) => async (dispatch) => {
         headers: { "Access-Control-Allow-Origin": "" },
       }
     );
-    debugger;
     dispatch({
       type: HANDLE_REQUESTS,
       payload: response.data,
@@ -352,7 +326,6 @@ export const handleRequests = (follow) => async (dispatch) => {
 
 export const getFollowing = () => async (dispatch) => {
   try {
-    debugger;
     const response = await axios.get(
       "https://localhost:44355/api/users/" +
         sessionStorage.getItem("userId") +
@@ -361,7 +334,6 @@ export const getFollowing = () => async (dispatch) => {
         headers: { "Access-Control-Allow-Origin": "" },
       }
     );
-    debugger;
     dispatch({
       type: GET_FOLLOWING,
       payload: response.data,

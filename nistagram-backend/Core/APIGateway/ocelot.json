@@ -452,6 +452,17 @@
       "UpstreamPathTemplate": "/api/locations-for-story"
     },
     {
+      "DownstreamPathTemplate": "/api/highlights",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 9587
+        }
+      ],
+      "UpstreamPathTemplate": "/api/highlights"
+    },
+    {
       "DownstreamPathTemplate": "/api/highlights?{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -461,6 +472,17 @@
         }
       ],
       "UpstreamPathTemplate": "/api/highlights?{everything}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/highlights/{id}/stories",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 9587
+        }
+      ],
+      "UpstreamPathTemplate": "/api/highlights/{id}/stories"
     }
   ],
   "GlobalConfiguration": {

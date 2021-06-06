@@ -14,15 +14,20 @@ namespace StoryMicroservice.DataAccess.Implementation
     public class HighlightRepository : IHighlightRepositry
     {
         private readonly IMongoCollection<Highlights> _highlights;
+        private readonly IStoryRepository _storyRepository;
         private readonly HighlightFactory highlightFactory;
+        private readonly StoryFactory storyFactory;
 
-        public HighlightRepository(IStoryDatabaseSettings settings, HighlightFactory highlightFactory)
+        public HighlightRepository(IStoryDatabaseSettings settings, IStoryRepository storyRepository,
+            HighlightFactory highlightFactory, StoryFactory storyFactory)
         {
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
 
             _highlights = database.GetCollection<Highlights>(settings.HighlightsCollectionName);
+            _storyRepository = storyRepository;
             this.highlightFactory = highlightFactory;
+            this.storyFactory = storyFactory;
         }
 
         public void Delete(Core.Model.Highlights obj)
@@ -30,9 +35,10 @@ namespace StoryMicroservice.DataAccess.Implementation
             throw new NotImplementedException();
         }
 
-        public Core.Model.Highlights Edit(string id, Core.Model.Highlights obj)
+        public Core.Model.Highlights Edit(string id, Core.Model.Highlights highlightIn)
         {
-            throw new NotImplementedException();
+            _highlights.ReplaceOne(highlight => highlight.Id == id, highlightFactory.Create(highlightIn));
+            return highlightIn;
         }
 
         public IEnumerable<Core.Model.Highlights> GetAll()
@@ -42,7 +48,7 @@ namespace StoryMicroservice.DataAccess.Implementation
 
         public Maybe<Core.Model.Highlights> GetById(Guid id)
         {
-            throw new NotImplementedException();
+            return highlightFactory.Create(_highlights.Find(highlight => highlight.Id.Equals(id.ToString())).FirstOrDefault());
         }
 
         public Core.Model.Highlights Save(Core.Model.Highlights highlight)
@@ -60,6 +66,16 @@ namespace StoryMicroservice.DataAccess.Implementation
                     .ToList();
             }
             return highlights;
+        }
+
+        public Core.Model.Highlights AddStory(string highlightId, Core.Model.Story story)
+        {
+            var highlight = GetById(new Guid(highlightId)).Value;
+            var storyToAdd = _storyRepository.GetById(story.Id).Value;
+            var stories = highlight.Stories.ToList();
+            stories.Add(storyToAdd);
+            Edit(highlightId, Core.Model.Highlights.Create(highlight.Id, highlight.HighlightName, stories, highlight.RegisteredUser).Value);
+            return highlight;
         }
     }
 }

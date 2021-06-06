@@ -10,7 +10,6 @@ class ProfileHeader extends Component {
   };
 
   render() {
-    debugger;
     if (this.props.user === undefined) return null;
     return (
       <Profile

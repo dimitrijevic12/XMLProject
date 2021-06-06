@@ -12,11 +12,18 @@ class ProfileStoryCard extends Component {
     items,
   };
   render() {
+    if (
+      this.props.highlights === undefined ||
+      this.props.activeStories === undefined
+    )
+      return null;
     return (
       <Card>
-        <CardBody style={{ zIndex: "0" }}>
+        <CardBody className="card-body-profile" style={{ zIndex: "0" }}>
           <ProfileStoryList
-            items={this.props.users}
+            user={this.props.user}
+            activeStories={this.props.activeStories}
+            highlights={this.props.highlights}
             onClick={this.handleClick}
           />
         </CardBody>

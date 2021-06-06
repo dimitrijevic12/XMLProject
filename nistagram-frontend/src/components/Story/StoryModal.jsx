@@ -51,7 +51,7 @@ class StoryModal extends Component {
                   backgroundColor: "black",
                   opacity: "50%",
                   color: "white",
-                  height: "150px",
+                  height: "300px",
                 }}
               ></div>
               <div className="story-footer-description">
@@ -60,7 +60,7 @@ class StoryModal extends Component {
               <div className="story-footer-hashtag">
                 {this.convertHashtagsToString(story.hashTags)}
               </div>
-              <div className="story-footer-bottom">
+              <div className="story-footer-tagged">
                 <button
                   className="btn btn-sm btn-primary"
                   onClick={() => this.displayModalStory(story.taggedUsers)}

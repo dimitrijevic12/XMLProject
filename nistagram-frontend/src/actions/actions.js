@@ -47,12 +47,10 @@ import axios from "axios";
 
 export const getPostsByUserId = (id) => async (dispatch) => {
   try {
-    debugger;
     const response = await axios.get("https://localhost:44355/api/posts?", {
       params: { userid: id },
       headers: { "Access-Control-Allow-Origin": "*" },
     });
-    debugger;
     dispatch({
       type: GET_POSTS_BY_USER_ID,
       payload: response.data,
@@ -67,12 +65,10 @@ export const getPostsByUserId = (id) => async (dispatch) => {
 
 export const getPostsByHashTag = (hashtag) => async (dispatch) => {
   try {
-    debugger;
     const response = await axios.get("https://localhost:44355/api/posts?", {
       params: { hashtag: hashtag, access: "public" },
       headers: { "Access-Control-Allow-Origin": "*" },
     });
-    debugger;
     dispatch({
       type: GET_POSTS_BY_HASHTAG,
       payload: response.data,
@@ -88,7 +84,6 @@ export const getPostsByHashTag = (hashtag) => async (dispatch) => {
 export const getPostsByLocation =
   (country, city, street) => async (dispatch) => {
     try {
-      debugger;
       const response = await axios.get("https://localhost:44355/api/posts?", {
         params: {
           country: country,
@@ -98,7 +93,6 @@ export const getPostsByLocation =
         },
         headers: { "Access-Control-Allow-Origin": "*" },
       });
-      debugger;
       dispatch({
         type: GET_POSTS_BY_LOCATION,
         payload: response.data,
@@ -113,13 +107,11 @@ export const getPostsByLocation =
 
 export const getPost = (id) => async (dispatch) => {
   try {
-    debugger;
     const response = await axios
       .get("https://localhost:44355/api/posts/" + id, {
         headers: { "Access-Control-Allow-Origin": "*" },
       })
       .then(async function (response) {
-        debugger;
         dispatch({ type: CLEAR_IMAGES });
         dispatch({
           type: GET_POST,
@@ -127,7 +119,6 @@ export const getPost = (id) => async (dispatch) => {
         });
         if (response.data.contentPath == undefined) {
           var i;
-          debugger;
           for (i = 0; i < response.data.contentPaths.length; i++) {
             const response2 = await axios
               .get(
@@ -140,7 +131,6 @@ export const getPost = (id) => async (dispatch) => {
                 }
               )
               .then(function (response2) {
-                debugger;
                 dispatch({
                   type: LOAD_IMAGES,
                   payload: response2.data.fileContents,
@@ -159,7 +149,6 @@ export const getPost = (id) => async (dispatch) => {
               }
             )
             .then(function (response2) {
-              debugger;
               dispatch({
                 type: LOAD_IMAGE,
                 payload: response2.data.fileContents,
@@ -177,14 +166,12 @@ export const getPost = (id) => async (dispatch) => {
 
 export const loadImage = (path) => async (dispatch) => {
   try {
-    debugger;
     const response = await axios.get(
       "https://localhost:44355/api/posts/contents/" + path,
       {
         headers: { "Access-Control-Allow-Origin": "*" },
       }
     );
-    debugger;
     dispatch({
       type: LOAD_IMAGE,
       payload: response.data.fileContents,
@@ -199,14 +186,12 @@ export const loadImage = (path) => async (dispatch) => {
 
 export const loadImages = (path) => async (dispatch) => {
   try {
-    debugger;
     const response = await axios.get(
       "https://localhost:44355/api/posts/contents/" + path,
       {
         headers: { "Access-Control-Allow-Origin": "*" },
       }
     );
-    debugger;
     dispatch({
       type: LOAD_IMAGES,
       payload: response.data.fileContents,
@@ -221,7 +206,6 @@ export const loadImages = (path) => async (dispatch) => {
 
 export const savePost = (post) => async (dispatch) => {
   try {
-    debugger;
     const response = await axios.post(
       "https://localhost:44355/api/posts/",
       post,
@@ -232,7 +216,6 @@ export const savePost = (post) => async (dispatch) => {
         },
       }
     );
-    debugger;
     dispatch({
       type: SAVE_POST,
       payload: response.data,
@@ -247,7 +230,6 @@ export const savePost = (post) => async (dispatch) => {
 
 export const getHashTagsByText = (text) => async (dispatch) => {
   try {
-    debugger;
     const response = await axios.get(
       "https://localhost:44355/api/hashtags?text=" + text,
       {
@@ -268,7 +250,6 @@ export const getHashTagsByText = (text) => async (dispatch) => {
 
 export const getLocationsByText = (text) => async (dispatch) => {
   try {
-    debugger;
     const response = await axios.get(
       "https://localhost:44355/api/locations?text=" + text,
       {
@@ -289,11 +270,9 @@ export const getLocationsByText = (text) => async (dispatch) => {
 
 export const getLocations = () => async (dispatch) => {
   try {
-    debugger;
     const response = await axios.get("https://localhost:44355/api/locations", {
       headers: { "Access-Control-Allow-Origin": "*" },
     });
-    debugger;
     dispatch({
       type: GET_LOCATIONS,
       payload: response.data,
@@ -308,14 +287,12 @@ export const getLocations = () => async (dispatch) => {
 
 export const getTaggableUsers = () => async (dispatch) => {
   try {
-    debugger;
     const response = await axios.get(
       "https://localhost:44355/api/users?isTaggable=" + true,
       {
         headers: { "Access-Control-Allow-Origin": "*" },
       }
     );
-    debugger;
     dispatch({
       type: GET_TAGGABLE_USERS,
       payload: response.data,
@@ -330,7 +307,6 @@ export const getTaggableUsers = () => async (dispatch) => {
 
 export const likePost = (dto) => async (dispatch) => {
   try {
-    debugger;
     const response = await axios.put(
       "https://localhost:44355/api/posts/" +
         dto.id +
@@ -345,13 +321,11 @@ export const likePost = (dto) => async (dispatch) => {
         },
       }
     );
-    debugger;
     dispatch({
       type: LIKE_POST,
       payload: response.data,
     });
   } catch (e) {
-    debugger;
     dispatch({
       type: LIKE_POST_ERROR,
       payload: console.log(e),
@@ -361,7 +335,6 @@ export const likePost = (dto) => async (dispatch) => {
 
 export const dislikePost = (dto) => async (dispatch) => {
   try {
-    debugger;
     const response = await axios.put(
       "https://localhost:44355/api/posts/" +
         dto.id +
@@ -376,7 +349,6 @@ export const dislikePost = (dto) => async (dispatch) => {
         },
       }
     );
-    debugger;
     dispatch({
       type: DISLIKE_POST,
       payload: response.data,
@@ -391,7 +363,6 @@ export const dislikePost = (dto) => async (dispatch) => {
 
 export const commentPost = (dto) => async (dispatch) => {
   try {
-    debugger;
     const comment = dto.comment;
     const response = await axios.post(
       "https://localhost:44355/api/posts/" + dto.id + "/comments",
@@ -404,7 +375,6 @@ export const commentPost = (dto) => async (dispatch) => {
         },
       }
     );
-    debugger;
     dispatch({
       type: COMMENT_POST,
       payload: response.data,
@@ -418,7 +388,6 @@ export const commentPost = (dto) => async (dispatch) => {
 };
 
 export const getCollectionsByUser = () => async (dispatch) => {
-  debugger;
   try {
     const response = await axios.get(
       "https://localhost:44355/api/collections?userId=" +
@@ -430,7 +399,6 @@ export const getCollectionsByUser = () => async (dispatch) => {
         },
       }
     );
-    debugger;
     dispatch({
       type: GET_COLLECTIONS_BY_USER,
       payload: response.data,
@@ -445,7 +413,6 @@ export const getCollectionsByUser = () => async (dispatch) => {
 
 export const addPostToCollection = (dto) => async (dispatch) => {
   try {
-    debugger;
     const response = await axios.put(
       "https://localhost:44355/api/collections/" +
         dto.id +
@@ -460,7 +427,6 @@ export const addPostToCollection = (dto) => async (dispatch) => {
         },
       }
     );
-    debugger;
     dispatch({
       type: ADD_POST_TO_COLLECTION,
       payload: response.data,
@@ -476,7 +442,6 @@ export const addPostToCollection = (dto) => async (dispatch) => {
 export const getPostsByCollectionAndUser =
   (collectionId) => async (dispatch) => {
     try {
-      debugger;
       const response = await axios.get(
         "https://localhost:44355/api/posts/collections/" +
           collectionId +
@@ -503,7 +468,6 @@ export const getPostsByCollectionAndUser =
 
 export const getPostsForFollowing = (users) => async (dispatch) => {
   try {
-    debugger;
     const response = await axios.post(
       "https://localhost:44355/api/posts/following",
       users,
@@ -527,7 +491,6 @@ export const getPostsForFollowing = (users) => async (dispatch) => {
 
 export const getAllImages = (posts) => async (dispatch) => {
   try {
-    debugger;
     const response = await axios.post(
       "https://localhost:44355/api/posts/images",
       posts,

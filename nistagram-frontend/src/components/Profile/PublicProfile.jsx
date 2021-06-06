@@ -13,7 +13,12 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { withRouter } from "react-router-dom";
 import { getUserById, followProfile } from "../../actions/actionsUser";
-import StoryCard from "../Story/StoryCard";
+import {
+  getHighlights,
+  getActiveStoriesForUser,
+  getStoriesForUser,
+  loadImagesForArchive,
+} from "../../actions/actionsStory";
 import ProfileStoryCard from "./ProfileStoryCard";
 
 function PublicProfile(props) {
@@ -25,10 +30,15 @@ function PublicProfile(props) {
   const user = props.user;
   const initialUser = {};
   const posts = props.posts;
+  const highlights = props.highlights;
 
   useEffect(() => {
     props.getUserById(props.location.pathname.slice(9));
     props.getPostsByUserId(props.location.pathname.slice(9));
+    props.getHighlights(props.location.pathname.slice(9));
+    props.getActiveStoriesForUser(props.location.pathname.slice(9));
+    props.getStoriesForUser();
+    props.loadImagesForArchive();
   }, [props.location.pathname]);
 
   const follow = () => {
@@ -54,7 +64,12 @@ function PublicProfile(props) {
     setShowPostModal(!showPostModal);
   };
 
-  if (props.posts === undefined || user === undefined) {
+  if (
+    props.posts === undefined ||
+    user === undefined ||
+    props.highlights === undefined ||
+    props.stories === null
+  ) {
     return null;
   }
 
@@ -71,7 +86,11 @@ function PublicProfile(props) {
       ) : null}
       <OptionsButton />
       <ProfileHeader user={user} userid={user.id} postsCount={posts.length} />
-      <ProfileStoryCard stories={{}} />
+      <ProfileStoryCard
+        user={props.user}
+        activeStories={props.stories}
+        highlights={props.highlights}
+      />
       <button
         onClick={follow}
         style={{ float: "right" }}
@@ -93,9 +112,19 @@ function PublicProfile(props) {
 const mapStateToProps = (state) => ({
   posts: state.posts,
   user: state.registeredUser,
+  highlights: state.highlights,
+  stories: state.stories,
 });
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, { getPostsByUserId, getUserById, followProfile })
+  connect(mapStateToProps, {
+    getPostsByUserId,
+    getUserById,
+    followProfile,
+    getHighlights,
+    getActiveStoriesForUser,
+    getStoriesForUser,
+    loadImagesForArchive,
+  })
 )(PublicProfile);

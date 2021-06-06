@@ -25,6 +25,7 @@
   grid-auto-columns: 50px;
   grid-auto-flow: column dense;
   overflow: auto;
+  text-align: center;
 }
 ::-webkit-scrollbar {
   display: none;

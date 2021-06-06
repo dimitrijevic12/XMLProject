@@ -17,11 +17,13 @@ namespace StoryMicroservice.Api.Controllers
     public class HighlightsController : Controller
     {
         private readonly HighlightFactory highlightFactory;
+        private readonly StoryFactory storyFactory;
         private readonly IHighlightRepositry _highlightRepository;
 
-        public HighlightsController(HighlightFactory highlightFactory, IHighlightRepositry highlightRepository)
+        public HighlightsController(HighlightFactory highlightFactory, StoryFactory storyFactory, IHighlightRepositry highlightRepository)
         {
             this.highlightFactory = highlightFactory;
+            this.storyFactory = storyFactory;
             _highlightRepository = highlightRepository;
         }
 
@@ -40,6 +42,14 @@ namespace StoryMicroservice.Api.Controllers
             if (highlightName.IsFailure) return BadRequest(highlightName.Error);
             _highlightRepository.Save(highlightFactory.Create(highlight));
             return Created(this.Request.Path + "/" + highlight.Id, "");
+        }
+
+        [HttpPost("{id}/stories")]
+        public IActionResult AddStory([FromRoute] string id, Core.DTOs.Story story)
+        {
+            _highlightRepository.AddStory(id, storyFactory.Create(story, new List<Core.Model.RegisteredUser>(),
+                new List<Core.Model.RegisteredUser>(), new List<Core.Model.RegisteredUser>()));
+            return Created(this.Request.Path + "/" + id, "");
         }
     }
 }

@@ -40,6 +40,11 @@ import {
   GET_LOCATIONS_FOR_STORY,
   SAVE_STORY,
   GET_USER_FOR_STORY,
+  GET_HIGHLIGHTS,
+  ADD_STORY_TO_HIGHLIGHT,
+  CREATE_HIGHLIGHT,
+  LOAD_IMAGES_FOR_ARCHIVE,
+  GET_STORIES_FOR_ARCHIVE,
 } from "../types/types";
 
 const initialState = {
@@ -58,17 +63,19 @@ const initialState = {
   followRequests: [],
   following: [],
   stories: [],
+  allStories: [],
+  allStoriesImages: [],
   storyImage: {},
   storyImages: [],
   storiesForModal: {},
   storyProfileImages: [],
   story: {},
+  highlights: [],
 };
 
 function reducer(state = initialState, action) {
   switch (action.type) {
     case GET_POSTS_BY_USER_ID:
-      debugger;
       return {
         ...state,
         posts: action.payload,
@@ -246,6 +253,31 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         registeredUser: action.payload,
+      };
+    case GET_HIGHLIGHTS:
+      return {
+        ...state,
+        highlights: action.payload,
+      };
+    case ADD_STORY_TO_HIGHLIGHT:
+      return {
+        ...state,
+        story: action.payload,
+      };
+    case CREATE_HIGHLIGHT:
+      return {
+        ...state,
+        highlights: state.highlights.concat(action.payload),
+      };
+    case LOAD_IMAGES_FOR_ARCHIVE:
+      return {
+        ...state,
+        allStoriesImages: action.payload,
+      };
+    case GET_STORIES_FOR_ARCHIVE:
+      return {
+        ...state,
+        allStories: action.payload,
       };
     default:
       return state;

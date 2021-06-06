@@ -8,16 +8,19 @@ import {
 import { connect } from "react-redux";
 import "../../css/story.css";
 import TaggedUsersProfileStoryModal from "./TaggedUsersProfileStoryModal";
+import CollectionsModal from "./CollectionsModal";
 
 class ProfileStoryModal extends Component {
   state = {
     showProfileStoryModal: this.props.show,
     showTaggedUsersModal: false,
+    showCollectionsModal: false,
     users: [],
+    story: {},
   };
 
   async componentDidMount() {
-    await this.props.getStoriesForModal(this.props.user);
+    debugger;
     await this.props.loadImagesStory(this.createImagesList(this.props.stories));
   }
 
@@ -36,7 +39,6 @@ class ProfileStoryModal extends Component {
             " " +
             story.registeredUser.lastName,
           subheading: `Posted ${this.timeSince(story.timeStamp)} ago`,
-          profileImage: "data:image/jpg;base64," + this.props.profileImage,
         },
         seeMore: ({ close }) => {
           return (
@@ -51,7 +53,7 @@ class ProfileStoryModal extends Component {
                   backgroundColor: "black",
                   opacity: "50%",
                   color: "white",
-                  height: "150px",
+                  height: "300px",
                 }}
               ></div>
               <div className="story-footer-description">
@@ -60,13 +62,23 @@ class ProfileStoryModal extends Component {
               <div className="story-footer-hashtag">
                 {this.convertHashtagsToString(story.hashTags)}
               </div>
-              <div className="story-footer-bottom">
+              <div className="story-footer-tagged">
                 <button
                   className="btn btn-sm btn-primary"
                   onClick={() => this.displayModalStory(story.taggedUsers)}
                 >
                   Tagged users:
                 </button>
+              </div>
+              <div className="story-footer-collections">
+                {this.props.isActiveStories ? (
+                  <button
+                    className="btn btn-sm btn-primary"
+                    onClick={() => this.displayCollectionsModal(story)}
+                  >
+                    Add to collection:
+                  </button>
+                ) : null}
               </div>
             </div>
           );
@@ -93,6 +105,14 @@ class ProfileStoryModal extends Component {
             show={this.state.showTaggedUsersModal}
             taggedUsers={this.state.users}
             onShowChange={this.displayModalStory.bind(this)}
+          />
+        ) : null}
+        {this.state.showCollectionsModal ? (
+          <CollectionsModal
+            show={this.state.showCollectionsModal}
+            highlights={this.props.highlights}
+            story={this.state.story}
+            onShowChange={this.displayCollectionsModal.bind(this)}
           />
         ) : null}
         <ModalBody
@@ -175,11 +195,19 @@ class ProfileStoryModal extends Component {
       users: users,
     });
   }
+
+  displayCollectionsModal(story) {
+    debugger;
+    this.setState({
+      showCollectionsModal: !this.state.showCollectionsModal,
+      story: story,
+    });
+  }
 }
 
 const mapStateToProps = (state) => ({
-  stories: state.storiesForModal,
   images: state.storyImages,
+  allImages: state.allStoriesImages,
 });
 
 export default connect(mapStateToProps, {

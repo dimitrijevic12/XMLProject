@@ -48,14 +48,12 @@ class SearchBar extends Component {
   };
 
   handleInputChange = (newValue) => {
-    debugger;
     const inputValue = newValue.replace(/\W/g, "");
     this.setState({ inputValue });
     return inputValue;
   };
 
   loadOptions = async (inputValue, callback) => {
-    debugger;
     await this.props.getHashTagsByText(inputValue);
     var valueList = [];
     this.props.hashtags.forEach((element) => {
@@ -73,7 +71,6 @@ class SearchBar extends Component {
         type: "location",
       });
     });
-    debugger;
     await this.props.getUsersByName(inputValue);
     this.props.users.forEach((element) => {
       valueList.push({
@@ -86,7 +83,6 @@ class SearchBar extends Component {
   };
 
   filterOptions = (valueList) => {
-    debugger;
     return valueList;
   };
 
@@ -99,7 +95,6 @@ class SearchBar extends Component {
   }
 
   createLocationLabel(element) {
-    debugger;
     if (element.street !== "") return element.street + ", " + element.cityName;
     if (element.cityName !== "")
       return element.cityName + ", " + element.country;

@@ -87,9 +87,12 @@ namespace StoryMicroservice.DataAccess.Implementation
                 var expiredStories = storyFactory.CreateStories(_stories.Find(story => story.TimeStamp < DateTime.Now.AddDays(-1)).ToList());
                 foreach (var story in expiredStories) stories.Remove(story);
                 var tempStories = new List<Core.Model.Story>(stories);
-                foreach (var story in tempStories) if (story.GetType().Name == "CloseFriendStory"
-                        && !userFactory.CreateIds(story.RegisteredUser.MyCloseFriends).Contains(followingId))
-                        stories.Remove(story);
+                if (!String.IsNullOrWhiteSpace(followingId))
+                {
+                    foreach (var story in tempStories) if (story.GetType().Name == "CloseFriendStory"
+                       && !userFactory.CreateIds(story.RegisteredUser.MyCloseFriends).Contains(followingId))
+                            stories.Remove(story);
+                }
                 tempStories = new List<Core.Model.Story>(stories);
                 foreach (var story in tempStories) if (userFactory.CreateIds(story.RegisteredUser.BlockedUsers).Contains(followingId) ||
                         userFactory.CreateIds(story.RegisteredUser.BlockedByUsers).Contains(followingId))
