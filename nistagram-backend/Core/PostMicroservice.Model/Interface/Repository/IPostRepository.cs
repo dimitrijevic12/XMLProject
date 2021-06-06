@@ -12,9 +12,9 @@ namespace PostMicroservice.Core.Interface.Repository
 
         public Post SaveAlbumPost(PostAlbum post);
 
-        public void Like(Guid id, Guid userId);
+        public bool Like(Guid id, Guid userId);
 
-        public void Dislike(Guid id, Guid userId);
+        public bool Dislike(Guid id, Guid userId);
 
         public void CommentPost(Guid postId, Comment comment);
 

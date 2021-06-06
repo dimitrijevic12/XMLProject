@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { getPostsByUserId } from "../../actions/actions";
+import React, { useCallback, useEffect, useState } from "react";
+import { getPostsByUserId, getAllImages } from "../../actions/actions";
 import PostModal from "../../components/Profile/PostModal";
 import OptionsButton from "./OptionsButton";
 import MyOptionsButton from "./MyOptionsButton";
@@ -25,9 +25,9 @@ function PublicProfile(props) {
   const initialUser = {};
   const posts = props.posts;
 
-  useEffect(() => {
-    props.getUserById(props.location.pathname.slice(9));
-    props.getPostsByUserId(props.location.pathname.slice(9));
+  useEffect(async () => {
+    await props.getUserById(props.location.pathname.slice(9));
+    await props.getPostsByUserId(props.location.pathname.slice(9));
   }, [props.location.pathname]);
 
   const follow = () => {
@@ -35,6 +35,21 @@ function PublicProfile(props) {
       FollowedById: sessionStorage.getItem("userId"),
       FollowingId: props.location.pathname.slice(9),
     });
+  };
+
+  const GetAllImages = (posts) => {
+    const getAllImages = useCallback(async () => {
+      const paths = [];
+      for (var i = 0; i < props.posts.length; i++) {
+        if (props.posts[i].contentPath === undefined) {
+          paths.push(props.posts[i].contentPaths[0]);
+        } else {
+          paths.push(props.posts[i].contentPath);
+        }
+      }
+      await props.getAllImages(paths);
+    });
+    return props.homePageImages;
   };
 
   const Posts = () => {
@@ -62,6 +77,8 @@ function PublicProfile(props) {
         }
       }
     }
+    console.log(props.homePageImages);
+    debugger;
     if (shouldDisplayPosts === true) {
       return posts.map((post) => (
         <Photo
@@ -122,7 +139,7 @@ function PublicProfile(props) {
         <PostModal
           show={showPostModal}
           postId={postId}
-          personPhoto="/images/download.jfif"
+          personPhoto={user.profilePicturePath}
           person={username}
           onShowChange={() => displayModalPost()}
         />
@@ -132,7 +149,12 @@ function PublicProfile(props) {
       ) : (
         <OptionsButton />
       )}
-      <ProfileHeader user={user} userid={user.id} postsCount={posts.length} />
+      <ProfileHeader
+        user={user}
+        userid={user.id}
+        postsCount={posts.length}
+        location={props.location.pathname.slice(9)}
+      />
       {props.location.pathname.slice(9) === sessionStorage.getItem("userId") ? (
         ""
       ) : (
@@ -153,9 +175,15 @@ function PublicProfile(props) {
 const mapStateToProps = (state) => ({
   posts: state.posts,
   user: state.registeredUser,
+  homePageImages: state.homePageImages,
 });
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, { getPostsByUserId, getUserById, followProfile })
+  connect(mapStateToProps, {
+    getPostsByUserId,
+    getUserById,
+    followProfile,
+    getAllImages,
+  })
 )(PublicProfile);

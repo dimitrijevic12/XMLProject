@@ -141,19 +141,21 @@ namespace PostMicroservice.Api.Controllers
         }
 
         [Authorize(Roles = "RegisteredUser")]
-        [HttpPut("{id}/users/{userId}/likes"), ProducesResponseType(StatusCodes.Status204NoContent)]
+        [HttpPut("{id}/users/{userId}/likes")]
         public IActionResult Like([FromRoute] Guid id, [FromRoute] Guid userId)
         {
-            _postService.Like(id, userId);
-            return NoContent();
+            bool like = _postService.Like(id, userId);
+            if (like == false) return BadRequest();
+            return Ok();
         }
 
         [Authorize(Roles = "RegisteredUser")]
-        [HttpPut("{id}/users/{userId}/dislikes"), ProducesResponseType(StatusCodes.Status204NoContent)]
+        [HttpPut("{id}/users/{userId}/dislikes")]
         public IActionResult Dislike([FromRoute] Guid id, [FromRoute] Guid userId)
         {
-            _postService.Dislike(id, userId);
-            return NoContent();
+            bool dislike = _postService.Dislike(id, userId);
+            if (dislike == false) return BadRequest();
+            return Ok();
         }
 
         [Authorize(Roles = "RegisteredUser")]

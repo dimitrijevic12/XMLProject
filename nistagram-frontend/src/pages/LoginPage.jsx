@@ -56,7 +56,10 @@ class LoginPage extends Component {
           </div>
           <div class="sub-content">
             <div class="s-part">
-              Don't have an account?<a href="#">Sign up</a>
+              Don't have an account?
+              <a onClick={this.register.bind(this)} href="javascript:;">
+                Sign up
+              </a>
             </div>
           </div>
         </div>
@@ -75,6 +78,12 @@ class LoginPage extends Component {
           [name]: value,
         });
   };
+
+  register() {
+    this.props.history.replace({
+      pathname: "/registration",
+    });
+  }
 
   async login() {
     debugger;

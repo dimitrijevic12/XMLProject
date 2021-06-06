@@ -67,7 +67,7 @@ class HomePage extends Component {
 
     const posts = this.props.posts;
 
-    if (this.props.loadedImages === undefined) {
+    if (this.props.homePageImages === undefined) {
       return null;
     }
 
@@ -128,7 +128,7 @@ class HomePage extends Component {
                     }}
                     src={
                       "data:image/jpg;base64," +
-                      this.props.loadedImages[index].fileContents
+                      this.props.homePageImages[index].fileContents
                     }
                     style={{
                       maxHeight: "530px",
@@ -164,7 +164,7 @@ class HomePage extends Component {
                     control={
                       <Checkbox
                         onClick={() => {
-                          this.likePost();
+                          this.likePost(post);
                         }}
                         icon={<FavoriteBorder />}
                         checkedIcon={<Favorite />}
@@ -175,7 +175,7 @@ class HomePage extends Component {
                   <img
                     style={{ width: 24, height: 24 }}
                     onClick={() => {
-                      this.dislikePost();
+                      this.dislikePost(post);
                     }}
                     src="/images/dislike.png"
                   />
@@ -200,9 +200,11 @@ class HomePage extends Component {
                   Dislikes: <a href="javascript:;">{post.dislikes.length}</a>{" "}
                   <br />
                   <hr />
-                  {this.state.comments.map((comment) => (
+                  {post.comments.map((comment) => (
                     <div>
-                      <img src="/images/user.png" /> {comment.commentText}
+                      {comment.registeredUser.username +
+                        ": " +
+                        comment.commentText}
                       <br />
                       <hr />
                     </div>
@@ -220,7 +222,7 @@ class HomePage extends Component {
                   <div style={{ float: "right" }}>
                     <a
                       onClick={() => {
-                        this.commentPost();
+                        this.commentPost(post);
                       }}
                       href=""
                     >
@@ -249,7 +251,7 @@ class HomePage extends Component {
         });
   };
 
-  async likePost() {
+  async likePost(post) {
     debugger;
     if (this.state.liked == false) {
       this.setState((prevState) => {
@@ -261,13 +263,22 @@ class HomePage extends Component {
       });
     }
 
-    await this.props.likePost({
-      id: this.props.post.id,
+    var success = false;
+    success = await this.props.likePost({
+      id: post.id,
       userId: sessionStorage.getItem("userId"),
     });
-    this.setState({
-      liked: !this.state.liked,
-    });
+    if (success === true) {
+      this.setState({
+        liked: !this.state.liked,
+      });
+      window.location.href = "http://localhost:3000/";
+    } else {
+      toast.configure();
+      toast.error("You have already liked this post!", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
   }
 
   async getAllImages(posts) {
@@ -282,7 +293,7 @@ class HomePage extends Component {
     await this.props.getAllImages(paths);
   }
 
-  async dislikePost() {
+  async dislikePost(post) {
     debugger;
     if (this.state.disliked == false) {
       this.setState((prevState) => {
@@ -294,22 +305,32 @@ class HomePage extends Component {
       });
     }
 
-    await this.props.dislikePost({
-      id: this.props.post.id,
+    var success = false;
+
+    success = await this.props.dislikePost({
+      id: post.id,
       userId: sessionStorage.getItem("userId"),
     });
-    this.setState({
-      disliked: !this.state.disliked,
-    });
+    if (success === true) {
+      this.setState({
+        disliked: !this.state.disliked,
+      });
+      window.location.href = "http://localhost:3000/";
+    } else {
+      toast.configure();
+      toast.error("You have already disliked this post!", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
   }
 
-  async commentPost() {
+  async commentPost(post) {
     const comment = {
       CommentText: this.state.commentText,
       RegisteredUser: { id: sessionStorage.getItem("userId") },
     };
     debugger;
-    await this.props.commentPost({ id: this.props.post.id, comment: comment });
+    await this.props.commentPost({ id: post.id, comment: comment });
     toast.configure();
     toast.success("Commented successfully!", {
       position: toast.POSITION.TOP_RIGHT,
@@ -357,7 +378,7 @@ class HomePage extends Component {
 const mapStateToProps = (state) => ({
   following: state.following,
   posts: state.posts,
-  loadedImages: state.loadedImages,
+  homePageImages: state.homePageImages,
   stories: state.stories,
 });
 

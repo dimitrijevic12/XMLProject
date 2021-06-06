@@ -42,6 +42,8 @@ import {
   GET_POSTS_FOR_FOLLOWING_ERROR,
   GET_ALL_IMAGES,
   GET_ALL_IMAGES_ERROR,
+  CHANGE_PROFILE_PICTURE_POSTMICROSERVICE,
+  CHANGE_PROFILE_PICTURE_POSTMICROSERVICE_ERROR,
 } from "../types/types";
 import axios from "axios";
 
@@ -350,6 +352,7 @@ export const likePost = (dto) => async (dispatch) => {
       type: LIKE_POST,
       payload: response.data,
     });
+    return true;
   } catch (e) {
     debugger;
     dispatch({
@@ -381,6 +384,7 @@ export const dislikePost = (dto) => async (dispatch) => {
       type: DISLIKE_POST,
       payload: response.data,
     });
+    return true;
   } catch (e) {
     dispatch({
       type: DISLIKE_POST_ERROR,
@@ -548,3 +552,30 @@ export const getAllImages = (posts) => async (dispatch) => {
     });
   }
 };
+
+export const changeProfilePicturePostmicroservice =
+  (picture) => async (dispatch) => {
+    try {
+      debugger;
+      const response = await axios.put(
+        "https://localhost:44355/api/post-microservice/users/" +
+          sessionStorage.getItem("userId") +
+          "/profile-picture/" +
+          picture,
+        {},
+        {
+          headers: { "Access-Control-Allow-Origin": "" },
+        }
+      );
+      debugger;
+      dispatch({
+        type: CHANGE_PROFILE_PICTURE_POSTMICROSERVICE,
+        payload: response.data,
+      });
+    } catch (e) {
+      dispatch({
+        type: CHANGE_PROFILE_PICTURE_POSTMICROSERVICE_ERROR,
+        payload: console.log(e),
+      });
+    }
+  };

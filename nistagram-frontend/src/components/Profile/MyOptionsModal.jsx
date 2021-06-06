@@ -57,7 +57,7 @@ class MyOptionsModal extends Component {
             }}
             className="btn btn-block btn-md mb-2"
           >
-            <label>Edit profile</label>
+            <label>Change profile picture</label>
           </button>
           <hr />
         </ModalBody>
@@ -73,7 +73,7 @@ class MyOptionsModal extends Component {
 
   edit() {
     this.props.history.replace({
-      pathname: "/edit",
+      pathname: "/change-profile-picture",
     });
   }
 

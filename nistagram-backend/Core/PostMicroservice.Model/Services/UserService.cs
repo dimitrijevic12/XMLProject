@@ -43,26 +43,9 @@ namespace PostMicroservice.Core.Services
             return Result.Success(registeredUser);
         }
 
-        public byte[] GetImage(string path, string fileName)
+        public void AddProfilePicture(Guid id, string image)
         {
-            path = path + "\\images\\" + fileName;
-            return File.ReadAllBytes(path);
-        }
-
-        public string ImageToSave(string path, FileModel file)
-        {
-            try
-            {
-                using (Stream stream = new FileStream(path + "\\images\\" + file.FileName, FileMode.Create))
-                {
-                    file.FormFile.CopyTo(stream);
-                }
-                return file.FileName;
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+            _userRepository.AddProfilePicture(id, image);
         }
     }
 }

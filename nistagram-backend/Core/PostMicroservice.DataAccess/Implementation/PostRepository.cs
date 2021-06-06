@@ -434,11 +434,11 @@ namespace PostMicroservice.DataAccess.Implementation
             }
         }
 
-        public void Like(Guid id, Guid userId)
+        public bool Like(Guid id, Guid userId)
         {
             if (AlreadyLiked(id, userId))
             {
-                return;
+                return false;
             }
             StringBuilder queryBuilder = new StringBuilder("INSERT INTO dbo.Likes ");
             queryBuilder.Append("(id, post_id, registered_user_id) ");
@@ -454,13 +454,14 @@ namespace PostMicroservice.DataAccess.Implementation
             };
 
             ExecuteQuery(query, parameters);
+            return true;
         }
 
-        public void Dislike(Guid id, Guid userId)
+        public bool Dislike(Guid id, Guid userId)
         {
             if (AlreadyDisliked(id, userId))
             {
-                return;
+                return false;
             }
             StringBuilder queryBuilder = new StringBuilder("INSERT INTO dbo.Dislikes ");
             queryBuilder.Append("(id, post_id, registered_user_id) ");
@@ -476,6 +477,7 @@ namespace PostMicroservice.DataAccess.Implementation
             };
 
             ExecuteQuery(query, parameters);
+            return true;
         }
 
         private bool AlreadyLiked(Guid id, Guid userId)

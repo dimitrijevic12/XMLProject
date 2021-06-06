@@ -21,6 +21,10 @@ import {
   HANDLE_REQUESTS_ERROR,
   GET_FOLLOWING,
   GET_FOLLOWING_ERROR,
+  CHANGE_PROFILE_PICTURE_USERMICROSERVICE,
+  CHANGE_PROFILE_PICTURE_USERMICROSERVICE_ERROR,
+  LOAD_IMAGE_PROFILE,
+  LOAD_IMAGE_PROFILE_ERROR,
 } from "../types/types";
 import axios from "axios";
 
@@ -369,6 +373,55 @@ export const getFollowing = () => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: GET_FOLLOWING_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const changeProfilePictureUsermicroservice =
+  (picture) => async (dispatch) => {
+    try {
+      debugger;
+      const response = await axios.put(
+        "https://localhost:44355/api/users/" +
+          sessionStorage.getItem("userId") +
+          "/profile-picture/" +
+          picture,
+        {},
+        {
+          headers: { "Access-Control-Allow-Origin": "" },
+        }
+      );
+      debugger;
+      dispatch({
+        type: CHANGE_PROFILE_PICTURE_USERMICROSERVICE,
+        payload: response.data,
+      });
+    } catch (e) {
+      dispatch({
+        type: CHANGE_PROFILE_PICTURE_USERMICROSERVICE_ERROR,
+        payload: console.log(e),
+      });
+    }
+  };
+
+export const loadImageProfile = (path) => async (dispatch) => {
+  try {
+    debugger;
+    const response = await axios.get(
+      "https://localhost:44355/api/users/contents/" + path,
+      {
+        headers: { "Access-Control-Allow-Origin": "*" },
+      }
+    );
+    debugger;
+    dispatch({
+      type: LOAD_IMAGE_PROFILE,
+      payload: response.data.fileContents,
+    });
+  } catch (e) {
+    dispatch({
+      type: LOAD_IMAGE_PROFILE_ERROR,
       payload: console.log(e),
     });
   }

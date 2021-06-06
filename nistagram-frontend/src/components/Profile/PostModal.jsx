@@ -16,6 +16,7 @@ import {
   commentPost,
   loadImages,
 } from "../../actions/actions";
+import { loadImageProfile } from "../../actions/actionsUser";
 import { connect } from "react-redux";
 import TaggedUsersModal from "./TaggedUsersModal";
 import { toast } from "react-toastify";
@@ -38,6 +39,7 @@ class PostModal extends Component {
   async componentDidMount() {
     debugger;
     await this.props.getPost(this.props.postId);
+    await this.props.loadImageProfile(this.props.personPhoto);
     this.setState({
       likesCount: this.props.post.likes.length,
       dislikesCount: this.props.post.dislikes.length,
@@ -59,6 +61,9 @@ class PostModal extends Component {
       this.props.post.contentPaths == undefined &&
       this.props.loadedImage == undefined
     ) {
+      return null;
+    }
+    if (this.props.profileImage === undefined) {
       return null;
     }
     const post = this.props.post;
@@ -89,7 +94,7 @@ class PostModal extends Component {
             />
           ) : null}
           <img
-            src={"data:image/jpg;base64," + loadedImage}
+            src={"data:image/jpg;base64," + this.props.profileImage}
             style={{ width: 32, height: 32, borderRadius: 50 }}
           />
           <span style={{ width: 15, display: "inline-block" }}></span>
@@ -184,7 +189,8 @@ class PostModal extends Component {
             <hr />
             {this.state.comments.map((comment) => (
               <div>
-                <img src="/images/user.png" /> {comment.commentText}
+                <img src="/images/user.png" />{" "}
+                {comment.registeredUser.username + ": " + comment.commentText}
                 <br />
                 <hr />
               </div>
@@ -309,6 +315,7 @@ const mapStateToProps = (state) => ({
   post: state.post,
   loadedImage: state.loadedImage,
   loadedImages: state.loadedImages,
+  profileImage: state.profileImage,
 });
 
 export default connect(mapStateToProps, {
@@ -318,4 +325,5 @@ export default connect(mapStateToProps, {
   dislikePost,
   commentPost,
   loadImages,
+  loadImageProfile,
 })(PostModal);

@@ -78,14 +78,14 @@ namespace PostMicroservice.Core.Services
             return _postRepository.SaveAlbumPost(post);
         }
 
-        public void Like(Guid id, Guid userId)
+        public bool Like(Guid id, Guid userId)
         {
-            _postRepository.Like(id, userId);
+            return _postRepository.Like(id, userId);
         }
 
-        public void Dislike(Guid id, Guid userId)
+        public bool Dislike(Guid id, Guid userId)
         {
-            _postRepository.Dislike(id, userId);
+            return _postRepository.Dislike(id, userId);
         }
 
         public void CommentPost(Guid postId, Comment comment)

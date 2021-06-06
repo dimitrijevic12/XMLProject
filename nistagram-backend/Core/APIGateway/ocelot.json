@@ -450,6 +450,39 @@
         }
       ],
       "UpstreamPathTemplate": "/api/locations-for-story"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/contents",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44313
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/contents"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/{id}/profile-picture/{image}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44313
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/{id}/profile-picture/{image}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/{id}/profile-picture/{image}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44333
+        }
+      ],
+      "UpstreamPathTemplate": "/api/post-microservice/users/{id}/profile-picture/{image}"
     }
   ],
   "GlobalConfiguration": {

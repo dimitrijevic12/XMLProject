@@ -20,17 +20,21 @@ class NavigationBar extends Component {
             <img src="/images/home.png" />
           </NavLink>
           <span style={{ width: 25, display: "inline-block" }}></span>
+          <NavLink exact to="/post">
+            <img src="/images/addpost.png" />
+          </NavLink>
+          <span style={{ width: 25, display: "inline-block" }}></span>
           <NavLink exact to="/messages">
             <img src="/images/send.png" />
           </NavLink>
           <span style={{ width: 25, display: "inline-block" }}></span>
-          <NavLink exact to="/notifications">
+          <NavLink exact to="/requests">
             <img src="/images/heart.png" />
           </NavLink>
           <span style={{ width: 25, display: "inline-block" }}></span>
           <NavLink exact to={"/profile/" + sessionStorage.getItem("userId")}>
             <img
-              src="/images/download.jfif"
+              src="/images/user.png"
               style={{ width: 24, height: 24, borderRadius: 50 }}
             />
           </NavLink>

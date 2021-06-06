@@ -80,3 +80,13 @@ export const SAVE_STORY = "saveStory";
 export const SAVE_STORY_ERROR = "saveStoryError";
 export const GET_USER_FOR_STORY = "getUserForStory";
 export const GET_USER_FOR_STORY_ERROR = "getUserForStoryError";
+export const CHANGE_PROFILE_PICTURE_USERMICROSERVICE =
+  "changeProfilePictureUsermicroservice";
+export const CHANGE_PROFILE_PICTURE_USERMICROSERVICE_ERROR =
+  "changeProfilePictureUsermicroserviceError";
+export const CHANGE_PROFILE_PICTURE_POSTMICROSERVICE =
+  "changeProfilePicturePostmicroservice";
+export const CHANGE_PROFILE_PICTURE_POSTMICROSERVICE_ERROR =
+  "changeProfilePicturePostmicroserviceError";
+export const LOAD_IMAGE_PROFILE = "loadImageProfile";
+export const LOAD_IMAGE_PROFILE_ERROR = "loadImageProfileError";

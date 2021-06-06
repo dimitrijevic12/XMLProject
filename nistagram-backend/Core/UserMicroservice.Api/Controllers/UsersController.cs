@@ -197,6 +197,10 @@ namespace UserMicroservice.Api.Controllers
         [HttpGet("contents/{fileName}")]
         public IActionResult GetImage(string fileName)
         {
+            if (fileName.Equals(""))
+            {
+                return Ok();
+            }
             FileContentResult fileContentResult = File(userService.GetImage(_env.WebRootPath, fileName),
                 "image/jpeg");
             return Ok(fileContentResult);

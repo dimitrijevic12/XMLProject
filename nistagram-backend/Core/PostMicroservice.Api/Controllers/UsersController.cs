@@ -82,5 +82,12 @@ namespace PostMicroservice.Api.Controllers
                                           new List<Core.Model.RegisteredUser>(),
                                           new List<Core.Model.RegisteredUser>()).Value)));
         }
+
+        [HttpPut("{id}/profile-picture/{image}")]
+        public IActionResult AddProfilePicture([FromRoute] Guid id, [FromRoute] string image)
+        {
+            userService.AddProfilePicture(id, image);
+            return Ok();
+        }
     }
 }

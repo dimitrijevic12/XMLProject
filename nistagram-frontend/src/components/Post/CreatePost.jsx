@@ -15,7 +15,7 @@ class CreatePost extends Component {
     fileName: "",
     fileUrl: null,
     description: "",
-    location: {},
+    location: undefined,
     locations: [],
     hashTagText: "",
     contentPath: "",
@@ -147,7 +147,10 @@ class CreatePost extends Component {
         </div>
         <div className="mt-5 pb-5">
           <button
-            disabled={this.state.contentPaths.length === 0}
+            disabled={
+              this.state.contentPaths.length === 0 ||
+              this.state.location === undefined
+            }
             className="btn btn-primary btn-block"
             onClick={() => {
               this.createPost();

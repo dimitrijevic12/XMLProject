@@ -21,6 +21,7 @@ import CollectionsMenuPage from "./pages/CollectionsMenuPage";
 import PostsInCollectionPage from "./pages/PostsInCollectionPage";
 import FollowRequestPage from "./pages/FollowRequestsPage";
 import CreateStoryPage from "./pages/CreateStoryPage";
+import ChangeProfilePicturePage from "./pages/ChangeProfilePicturePage";
 
 function App() {
   return (
@@ -68,6 +69,9 @@ function App() {
           </Route>
           <Route exact path="/requests">
             <FollowRequestPage />
+          </Route>
+          <Route exact path="/change-profile-picture">
+            <ChangeProfilePicturePage />
           </Route>
           <Route path="/explore/:search">
             <Explore />

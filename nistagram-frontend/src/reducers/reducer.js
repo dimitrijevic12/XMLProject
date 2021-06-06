@@ -40,6 +40,10 @@ import {
   GET_LOCATIONS_FOR_STORY,
   SAVE_STORY,
   GET_USER_FOR_STORY,
+  CHANGE_PROFILE_PICTURE_USERMICROSERVICE,
+  CHANGE_PROFILE_PICTURE_POSTMICROSERVICE,
+  LOAD_IMAGE_PROFILE,
+  LOAD_IMAGE_PROFILE_ERROR,
 } from "../types/types";
 
 const initialState = {
@@ -63,6 +67,8 @@ const initialState = {
   storiesForModal: {},
   storyProfileImages: [],
   story: {},
+  profileImage: "",
+  homePageImages: [],
 };
 
 function reducer(state = initialState, action) {
@@ -200,7 +206,7 @@ function reducer(state = initialState, action) {
     case GET_ALL_IMAGES:
       return {
         ...state,
-        loadedImages: action.payload,
+        homePageImages: action.payload,
       };
     case GET_STORIES:
       return {
@@ -246,6 +252,19 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         registeredUser: action.payload,
+      };
+    case CHANGE_PROFILE_PICTURE_USERMICROSERVICE:
+      return {
+        ...state,
+      };
+    case CHANGE_PROFILE_PICTURE_POSTMICROSERVICE:
+      return {
+        ...state,
+      };
+    case LOAD_IMAGE_PROFILE:
+      return {
+        ...state,
+        profileImage: action.payload,
       };
     default:
       return state;
