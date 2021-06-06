@@ -64,6 +64,7 @@ export const userRegistrationForPost = (user) => async (dispatch) => {
       type: REGISTER_USER,
       payload: response.data,
     });
+    return true;
   } catch (e) {
     dispatch({
       type: REGISTER_USER_ERROR,
@@ -88,6 +89,7 @@ export const userRegistrationForStory = (user) => async (dispatch) => {
       type: REGISTER_USER,
       payload: response.data,
     });
+    return true;
   } catch (e) {
     dispatch({
       type: REGISTER_USER_ERROR,
@@ -159,6 +161,7 @@ export const editUser = (user) => async (dispatch) => {
       type: EDIT_USER,
       payload: response.data,
     });
+    return true;
   } catch (e) {
     dispatch({
       type: EDIT_USER_ERROR,
@@ -183,6 +186,7 @@ export const editUserForPost = (user) => async (dispatch) => {
       type: EDIT_USER_POST,
       payload: response.data,
     });
+    return true;
   } catch (e) {
     dispatch({
       type: EDIT_USER_POST_ERROR,
@@ -194,7 +198,7 @@ export const editUserForPost = (user) => async (dispatch) => {
 export const editUserForStory = (user) => async (dispatch) => {
   try {
     const response = await axios.put(
-      "http://localhost:9587/api/users/story-users/" +
+      "https://localhost:44355/api/story-users/" +
         sessionStorage.getItem("userId"),
       user,
       {
@@ -208,6 +212,7 @@ export const editUserForStory = (user) => async (dispatch) => {
       type: EDIT_USER_STORY,
       payload: response.data,
     });
+    return true;
   } catch (e) {
     dispatch({
       type: EDIT_USER_STORY_ERROR,

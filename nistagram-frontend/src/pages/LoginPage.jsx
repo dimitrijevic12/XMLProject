@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
+import Header from "../components/Common/Header";
 
 class LoginPage extends Component {
   state = {
@@ -22,6 +23,9 @@ class LoginPage extends Component {
           backgroundImage: `url(${background})`,
         }}
       >
+        <div className="container">
+          <Header />
+        </div>
         <div id="wrapper">
           <div class="main-content">
             <div class="l-part">

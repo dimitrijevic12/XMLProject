@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 using UserMicroservice.Core.Interface.Repository;
 using UserMicroservice.Core.Interface.Service;
 using UserMicroservice.Core.Model;
+using UserMicroservice.Core.Model.File;
 
 namespace UserMicroservice.Core.Services
 {
@@ -119,6 +121,28 @@ namespace UserMicroservice.Core.Services
                 return Result.Success();
             }
             return Result.Success();
+        }
+
+        public byte[] GetImage(string path, string fileName)
+        {
+            path = path + "\\images\\" + fileName;
+            return File.ReadAllBytes(path);
+        }
+
+        public string ImageToSave(string path, FileModel file)
+        {
+            try
+            {
+                using (Stream stream = new FileStream(path + "\\images\\" + file.FileName, FileMode.Create))
+                {
+                    file.FormFile.CopyTo(stream);
+                }
+                return file.FileName;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
     }
 }

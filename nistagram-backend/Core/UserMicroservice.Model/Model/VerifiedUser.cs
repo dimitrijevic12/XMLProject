@@ -11,12 +11,12 @@ namespace UserMicroservice.Core.Model
         private VerifiedUser(Guid id, Username username, EmailAddress emailAddress, FirstName firstName,
             LastName lastName, DateTime dateOfBirth, PhoneNumber phoneNumber,
             Gender gender, WebsiteAddress websiteAddress, Bio bio, bool isPrivate, bool isAcceptingMessages,
-            bool isAcceptingTags, Password password, IEnumerable<RegisteredUser> blockedUsers, IEnumerable<RegisteredUser> blockedByUsers,
+            bool isAcceptingTags, Password password, ProfileImagePath profileImagePath, IEnumerable<RegisteredUser> blockedUsers, IEnumerable<RegisteredUser> blockedByUsers,
             IEnumerable<RegisteredUser> mutedUsers, IEnumerable<RegisteredUser> mutedByUsers,
             IEnumerable<RegisteredUser> following, IEnumerable<RegisteredUser> followers,
             IEnumerable<RegisteredUser> myCloseFriends, IEnumerable<RegisteredUser> closeFriendTo, Category category)
             : base(id, username, emailAddress, firstName, lastName, dateOfBirth, phoneNumber, gender, websiteAddress,
-                  bio, isPrivate, isAcceptingMessages, isAcceptingTags, password, blockedUsers, blockedByUsers,
+                  bio, isPrivate, isAcceptingMessages, isAcceptingTags, password, profileImagePath, blockedUsers, blockedByUsers,
                   mutedUsers, mutedByUsers, following, followers, myCloseFriends, closeFriendTo)
         {
             this.category = category;
@@ -25,14 +25,14 @@ namespace UserMicroservice.Core.Model
         public static Result<VerifiedUser> Create(Guid id, Username username, EmailAddress emailAddress, FirstName firstName,
             LastName lastName, DateTime dateOfBirth, PhoneNumber phoneNumber,
             Gender gender, WebsiteAddress websiteAddress, Bio bio, bool isPrivate, bool isAcceptingMessages,
-            bool isAcceptingTags, Password password, IEnumerable<RegisteredUser> blockedUsers, IEnumerable<RegisteredUser> blockedByUsers,
+            bool isAcceptingTags, Password password, ProfileImagePath profileImagePath, IEnumerable<RegisteredUser> blockedUsers, IEnumerable<RegisteredUser> blockedByUsers,
             IEnumerable<RegisteredUser> mutedUsers, IEnumerable<RegisteredUser> mutedByUsers,
             IEnumerable<RegisteredUser> following, IEnumerable<RegisteredUser> followers,
             IEnumerable<RegisteredUser> myCloseFriends, IEnumerable<RegisteredUser> closeFriendTo, Category category)
         {
             return Result.Success(new VerifiedUser(id, username, emailAddress, firstName,
             lastName, dateOfBirth, phoneNumber, gender, websiteAddress, bio, isPrivate, isAcceptingMessages,
-            isAcceptingTags, password, blockedUsers, blockedByUsers,
+            isAcceptingTags, password, profileImagePath, blockedUsers, blockedByUsers,
             mutedUsers, mutedByUsers, following, followers, myCloseFriends, closeFriendTo, category));
         }
     }
