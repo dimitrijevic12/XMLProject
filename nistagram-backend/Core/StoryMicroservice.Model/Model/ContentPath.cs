@@ -28,6 +28,7 @@ namespace StoryMicroservice.Core.Model
 
         public override string ToString()
         {
+            if (path == null) return "";
             return path.ToString();
         }
     }

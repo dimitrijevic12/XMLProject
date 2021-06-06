@@ -300,6 +300,7 @@ class Registration extends Component {
     //   "Password" : this.state.password 
     // })
 
+    this.props.userRegistrationForStory( this.props.registeredUser)
     //ZA STORY KOJI JE NO SQL
     // this.props.userRegistrationForStory({ "Username" : this.state.username,
     //   "EmailAddress" : this.state.email,

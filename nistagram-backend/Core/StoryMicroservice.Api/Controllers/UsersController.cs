@@ -5,6 +5,7 @@ using StoryMicroservice.Core.Model;
 using StoryMicroservice.Core.Services;
 using StoryMicroservice.DataAccess.Factories;
 using System;
+using System.Collections.Generic;
 using RegisteredUser = StoryMicroservice.Core.DTOs.RegisteredUser;
 
 namespace StoryMicroservice.Api.Controllers
@@ -40,10 +41,12 @@ namespace StoryMicroservice.Api.Controllers
             Result result = Result.Combine(username, firstName, lastName);
             if (result.IsFailure) return BadRequest();
 
-            if (userService.Create(userFactory.Create(dto, _userRepository.GetUsersById(dto.BlockedByUsers),
-                _userRepository.GetUsersById(dto.BlockedByUsers), _userRepository.GetUsersById(dto.Followers),
-                _userRepository.GetUsersById(dto.Following), _userRepository.GetUsersById(dto.CloseFriendTo)
-                , _userRepository.GetUsersById(dto.MyCloseFriends))).IsFailure)
+            if (userService.Create(userFactory.Create(dto, new List<Core.Model.RegisteredUser>(),
+                                          new List<Core.Model.RegisteredUser>(),
+                                          new List<Core.Model.RegisteredUser>(),
+                                          new List<Core.Model.RegisteredUser>(),
+                                          new List<Core.Model.RegisteredUser>(),
+                                          new List<Core.Model.RegisteredUser>())).IsFailure)
                 return BadRequest();
             return Created(this.Request.Path + "/" + dto.Id, "");
         }
