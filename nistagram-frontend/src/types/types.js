@@ -92,3 +92,5 @@ export const GET_STORIES_FOR_ARCHIVE = "getStoriesForArchive";
 export const GET_STORIES_FOR_ARCHIVE_ERROR = "getStoriesForArchiveError";
 export const GET_ACTIVE_STORIES = "getActiveStories";
 export const GET_ACTIVE_STORIES_ERROR = "getActiveStoriesError";
+export const GET_ALL_IMAGES_FOR_SEARCH = "getAllImagesForSearch";
+export const GET_ALL_IMAGES_FOR_SEARCH_ERROR = "getAllImagesForSearchError";

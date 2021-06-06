@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../layouts/Layout";
 import { Grid, Photo } from "react-instagram-ui-kit";
-import { getPostsByHashTag, getPostsByLocation } from "../actions/actions";
+import {
+  getPostsByHashTag,
+  getPostsByLocation,
+  getAllImagesForSearch,
+} from "../actions/actions";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { withRouter } from "react-router-dom";
@@ -12,7 +16,18 @@ function Explore(props) {
   const [postId, setPostId] = useState("");
   const [showPostModal, setShowPostModal] = useState(false);
   const [username, setUsername] = useState("");
-  const posts = props.posts;
+
+  const getAllImages = async (posts) => {
+    const paths = [];
+    for (var i = 0; i < posts.length; i++) {
+      if (posts[i].contentPath === undefined) {
+        paths.push(posts[i].contentPaths[0]);
+      } else {
+        paths.push(posts[i].contentPath);
+      }
+    }
+    await props.getAllImagesForSearch(paths);
+  };
 
   useEffect(() => {
     var test = props.location.pathname.slice(18);
@@ -38,13 +53,20 @@ function Explore(props) {
     }
   }, [props.location.pathname]);
 
-  if (props.posts === undefined) {
+  useEffect(() => {
+    debugger;
+    if (props.posts !== undefined) getAllImages(props.posts);
+  }, [props.posts]);
+
+  debugger;
+  if (props.posts === undefined || props.images === undefined) {
     return null;
   }
+  if (props.images.length !== props.posts.length) return null;
   const Posts = () =>
-    posts.map((post) => (
+    props.posts.map((post, i) => (
       <Photo
-        src={"/images/" + post.contentPath}
+        src={"data:image/jpg;base64," + props.images[i].fileContents}
         onClick={() => displayModalPost(post)}
       />
     ));
@@ -76,9 +98,16 @@ function Explore(props) {
   );
 }
 
-const mapStateToProps = (state) => ({ posts: state.posts });
+const mapStateToProps = (state) => ({
+  posts: state.explorePosts,
+  images: state.searchImages,
+});
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, { getPostsByHashTag, getPostsByLocation })
+  connect(mapStateToProps, {
+    getPostsByHashTag,
+    getPostsByLocation,
+    getAllImagesForSearch,
+  })
 )(Explore);

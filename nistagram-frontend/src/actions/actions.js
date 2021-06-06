@@ -42,6 +42,8 @@ import {
   GET_POSTS_FOR_FOLLOWING_ERROR,
   GET_ALL_IMAGES,
   GET_ALL_IMAGES_ERROR,
+  GET_ALL_IMAGES_FOR_SEARCH,
+  GET_ALL_IMAGES_FOR_SEARCH_ERROR,
 } from "../types/types";
 import axios from "axios";
 
@@ -507,6 +509,29 @@ export const getAllImages = (posts) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: GET_ALL_IMAGES_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const getAllImagesForSearch = (posts) => async (dispatch) => {
+  try {
+    const response = await axios.post(
+      "https://localhost:44355/api/posts/images",
+      posts,
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
+    );
+    dispatch({
+      type: GET_ALL_IMAGES_FOR_SEARCH,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_ALL_IMAGES_FOR_SEARCH_ERROR,
       payload: console.log(e),
     });
   }

@@ -46,6 +46,7 @@ import {
   LOAD_IMAGES_FOR_ARCHIVE,
   GET_STORIES_FOR_ARCHIVE,
   GET_ACTIVE_STORIES,
+  GET_ALL_IMAGES_FOR_SEARCH,
 } from "../types/types";
 
 const initialState = {
@@ -73,6 +74,8 @@ const initialState = {
   story: {},
   highlights: [],
   activeStories: [],
+  explorePosts: [],
+  searchImages: [],
 };
 
 function reducer(state = initialState, action) {
@@ -100,12 +103,12 @@ function reducer(state = initialState, action) {
     case GET_POSTS_BY_HASHTAG:
       return {
         ...state,
-        posts: action.payload,
+        explorePosts: action.payload,
       };
     case GET_POSTS_BY_LOCATION:
       return {
         ...state,
-        posts: action.payload,
+        explorePosts: action.payload,
       };
     case LOAD_IMAGE:
       return {
@@ -285,6 +288,11 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         allStories: action.payload,
+      };
+    case GET_ALL_IMAGES_FOR_SEARCH:
+      return {
+        ...state,
+        searchImages: action.payload,
       };
     default:
       return state;
