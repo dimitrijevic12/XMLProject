@@ -3,6 +3,7 @@ import StoryModal from "./StoryModal";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { withRouter } from "react-router-dom";
+import "./StoryCircle.css";
 
 class Story extends Component {
   state = {
@@ -11,7 +12,8 @@ class Story extends Component {
   };
 
   render() {
-    debugger;
+    if (this.props.profileImage === undefined && this.props.first === false)
+      return null;
     return (
       <div>
         {this.state.showStoryModal ? (
@@ -25,13 +27,14 @@ class Story extends Component {
         <div
           className="story-circle"
           style={{
-            backgroundImage:
-              this.props.first === true
-                ? `url("/images/white_plus2.png")`
-                : `url("data:image/jpg;base64,${this.props.profileImage}"`,
+            backgroundImage: this.props.first
+              ? `url("/images/white_plus2.png")`
+              : `url("data:image/jpg;base64,${this.props.profileImage.fileContents}"`,
+            backgroundRepeat: "no-repeat",
             paddingBottom: "51px",
-            backgroundSize: "50px",
+            backgroundSize: "cover",
             paddingRight: "51px",
+            backgroundPosition: "center",
           }}
           key={this.props.item.id}
           onClick={() => {

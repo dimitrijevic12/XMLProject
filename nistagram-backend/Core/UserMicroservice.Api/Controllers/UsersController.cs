@@ -121,7 +121,7 @@ namespace UserMicroservice.Api.Controllers
 
             Result result = Result.Combine(username, emailAddress, firstName, lastName, phoneNumber, gender, websiteAddress, bio, password);
             if (result.IsFailure) return BadRequest(result.Error);
-
+            if (_userRepository.GetByUsername(dto.Username).HasValue) return BadRequest();
             return Ok(userService.Edit((Core.Model.RegisteredUser.Create(dto.Id,
                                           username.Value,
                                           emailAddress.Value,

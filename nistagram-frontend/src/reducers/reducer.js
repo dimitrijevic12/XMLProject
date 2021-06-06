@@ -44,6 +44,13 @@ import {
   CHANGE_PROFILE_PICTURE_POSTMICROSERVICE,
   LOAD_IMAGE_PROFILE,
   LOAD_IMAGE_PROFILE_ERROR,
+  GET_HIGHLIGHTS,
+  ADD_STORY_TO_HIGHLIGHT,
+  CREATE_HIGHLIGHT,
+  LOAD_IMAGES_FOR_ARCHIVE,
+  GET_STORIES_FOR_ARCHIVE,
+  GET_ACTIVE_STORIES,
+  GET_ALL_IMAGES_FOR_SEARCH,
 } from "../types/types";
 
 const initialState = {
@@ -62,6 +69,8 @@ const initialState = {
   followRequests: [],
   following: [],
   stories: [],
+  allStories: [],
+  allStoriesImages: [],
   storyImage: {},
   storyImages: [],
   storiesForModal: {},
@@ -69,12 +78,15 @@ const initialState = {
   story: {},
   profileImage: "",
   homePageImages: [],
+  highlights: [],
+  activeStories: [],
+  explorePosts: [],
+  searchImages: [],
 };
 
 function reducer(state = initialState, action) {
   switch (action.type) {
     case GET_POSTS_BY_USER_ID:
-      debugger;
       return {
         ...state,
         posts: action.payload,
@@ -97,12 +109,12 @@ function reducer(state = initialState, action) {
     case GET_POSTS_BY_HASHTAG:
       return {
         ...state,
-        posts: action.payload,
+        explorePosts: action.payload,
       };
     case GET_POSTS_BY_LOCATION:
       return {
         ...state,
-        posts: action.payload,
+        explorePosts: action.payload,
       };
     case LOAD_IMAGE:
       return {
@@ -213,6 +225,11 @@ function reducer(state = initialState, action) {
         ...state,
         stories: action.payload,
       };
+    case GET_ACTIVE_STORIES:
+      return {
+        ...state,
+        activeStories: action.payload,
+      };
     case LOAD_IMAGE_STORY:
       return {
         ...state,
@@ -252,6 +269,36 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         registeredUser: action.payload,
+      };
+    case GET_HIGHLIGHTS:
+      return {
+        ...state,
+        highlights: action.payload,
+      };
+    case ADD_STORY_TO_HIGHLIGHT:
+      return {
+        ...state,
+        story: action.payload,
+      };
+    case CREATE_HIGHLIGHT:
+      return {
+        ...state,
+        highlights: state.highlights.concat(action.payload),
+      };
+    case LOAD_IMAGES_FOR_ARCHIVE:
+      return {
+        ...state,
+        allStoriesImages: action.payload,
+      };
+    case GET_STORIES_FOR_ARCHIVE:
+      return {
+        ...state,
+        allStories: action.payload,
+      };
+    case GET_ALL_IMAGES_FOR_SEARCH:
+      return {
+        ...state,
+        searchImages: action.payload,
       };
     case CHANGE_PROFILE_PICTURE_USERMICROSERVICE:
       return {

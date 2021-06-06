@@ -10,6 +10,7 @@ namespace StoryMicroservice.DataAccess.Implementation
         public string StoriesCollectionName { get; set; }
         public string RegisteredUsersCollectionName { get; set; }
         public string LocationsCollectionName { get; set; }
+        public string HighlightsCollectionName { get; set; }
         public string ConnectionString { get; set; }
         public string DatabaseName { get; set; }
     }

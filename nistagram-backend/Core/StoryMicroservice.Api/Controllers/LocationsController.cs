@@ -23,7 +23,7 @@ namespace StoryMicroservice.Api.Controllers
 
         public IActionResult GetAll()
         {
-            return Ok(locationFactory.CreateLoactions(_locationRepository.GetAll()));
+            return Ok(locationFactory.CreateLocations(_locationRepository.GetAll()));
         }
     }
 }

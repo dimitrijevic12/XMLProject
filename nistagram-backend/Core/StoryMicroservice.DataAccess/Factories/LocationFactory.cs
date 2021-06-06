@@ -26,13 +26,13 @@ namespace StoryMicroservice.DataAccess.Factories
                 Country.Create(location.Country).Value).Value;
         }
 
-        public IEnumerable<Core.Model.Location> CreateLoactions(List<Location> locations)
+        public IEnumerable<Core.Model.Location> CreateLocations(List<Location> locations)
         {
             return locations.Select(location => Core.Model.Location.Create(new Guid(location.Id), Street.Create(location.Street).Value,
                 CityName.Create(location.CityName).Value, Country.Create(location.Country).Value).Value);
         }
 
-        public List<Location> CreateLoactions(IEnumerable<Core.Model.Location> locations)
+        public List<Location> CreateLocations(IEnumerable<Core.Model.Location> locations)
         {
             return locations.Select(location => Create(location)).ToList();
         }

@@ -14,6 +14,13 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { withRouter } from "react-router-dom";
 import { getUserById, followProfile } from "../../actions/actionsUser";
+import {
+  getHighlights,
+  getActiveStoriesForUser,
+  getStoriesForUser,
+  loadImagesForArchive,
+} from "../../actions/actionsStory";
+import ProfileStoryCard from "./ProfileStoryCard";
 
 function PublicProfile(props) {
   const [postId, setPostId] = useState("");
@@ -24,10 +31,15 @@ function PublicProfile(props) {
   const user = props.user;
   const initialUser = {};
   const posts = props.posts;
+  const highlights = props.highlights;
 
   useEffect(async () => {
     await props.getUserById(props.location.pathname.slice(9));
     await props.getPostsByUserId(props.location.pathname.slice(9));
+    props.getHighlights(props.location.pathname.slice(9));
+    props.getActiveStoriesForUser(props.location.pathname.slice(9));
+    props.getStoriesForUser();
+    props.loadImagesForArchive();
   }, [props.location.pathname]);
 
   const follow = () => {
@@ -105,7 +117,12 @@ function PublicProfile(props) {
     setShowPostModal(!showPostModal);
   };
 
-  if (props.posts === undefined || user === undefined) {
+  if (
+    props.posts === undefined ||
+    user === undefined ||
+    props.highlights === undefined ||
+    props.stories === null
+  ) {
     return null;
   }
 
@@ -155,12 +172,16 @@ function PublicProfile(props) {
         postsCount={posts.length}
         location={props.location.pathname.slice(9)}
       />
+      <ProfileStoryCard
+        user={props.user}
+        activeStories={props.stories}
+        highlights={props.highlights}
+      />
       {props.location.pathname.slice(9) === sessionStorage.getItem("userId") ? (
         ""
       ) : (
         <DisplayFollowButton />
       )}
-
       <Grid>
         <GridControlBar>
           <GridControlBarItem isActive>𐄹 Posts</GridControlBarItem>
@@ -176,6 +197,8 @@ const mapStateToProps = (state) => ({
   posts: state.posts,
   user: state.registeredUser,
   homePageImages: state.homePageImages,
+  highlights: state.highlights,
+  stories: state.activeStories,
 });
 
 export default compose(
@@ -185,5 +208,9 @@ export default compose(
     getUserById,
     followProfile,
     getAllImages,
+    getHighlights,
+    getActiveStoriesForUser,
+    getStoriesForUser,
+    loadImagesForArchive,
   })
 )(PublicProfile);

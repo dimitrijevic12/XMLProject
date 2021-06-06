@@ -90,3 +90,17 @@ export const CHANGE_PROFILE_PICTURE_POSTMICROSERVICE_ERROR =
   "changeProfilePicturePostmicroserviceError";
 export const LOAD_IMAGE_PROFILE = "loadImageProfile";
 export const LOAD_IMAGE_PROFILE_ERROR = "loadImageProfileError";
+export const GET_HIGHLIGHTS = "getHighlights";
+export const GET_HIGHLIGHTS_ERROR = "getHighlightsError";
+export const ADD_STORY_TO_HIGHLIGHT = "addStoryToHighlight";
+export const ADD_STORY_TO_HIGHLIGHT_ERROR = "addStoryToHighlightError";
+export const CREATE_HIGHLIGHT = "createHighlight";
+export const CREATE_HIGHLIGHT_ERROR = "createHighlightError";
+export const LOAD_IMAGES_FOR_ARCHIVE = "loadImagesForArchive";
+export const LOAD_IMAGES_FOR_ARCHIVE_ERROR = "loadImagesForArchiveError";
+export const GET_STORIES_FOR_ARCHIVE = "getStoriesForArchive";
+export const GET_STORIES_FOR_ARCHIVE_ERROR = "getStoriesForArchiveError";
+export const GET_ACTIVE_STORIES = "getActiveStories";
+export const GET_ACTIVE_STORIES_ERROR = "getActiveStoriesError";
+export const GET_ALL_IMAGES_FOR_SEARCH = "getAllImagesForSearch";
+export const GET_ALL_IMAGES_FOR_SEARCH_ERROR = "getAllImagesForSearchError";

@@ -2,11 +2,13 @@ import React, { Component } from "react";
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Height } from "@material-ui/icons";
+import ProfileStoryModal from "./ProfileStoryModal";
 
 class OptionsModal extends Component {
   state = {
     showOptionsModal: this.props.show,
   };
+
   render() {
     return (
       <Modal
@@ -54,6 +56,10 @@ class OptionsModal extends Component {
             className="btn btn-block btn-md mb-2"
           >
             <label>Report this user</label>
+          </button>
+          <hr />
+          <button>
+            <label>Add user to close friends</label>
           </button>
           <hr />
         </ModalBody>
