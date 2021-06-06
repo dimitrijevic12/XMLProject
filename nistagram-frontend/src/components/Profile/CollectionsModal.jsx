@@ -99,7 +99,7 @@ class CollectionsModal extends Component {
     await this.props.createHighlight(highlight);
     await this.props.getHighlights(this.props.story.registeredUser.id);
     await this.props.loadProfileImagesStory(this.createImagesList());
-    this.toggle();
+    window.location.reload(false);
   }
 
   async addStoryToHighlight(highlightId) {

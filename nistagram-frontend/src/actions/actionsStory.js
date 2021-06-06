@@ -27,6 +27,8 @@ import {
   LOAD_IMAGES_FOR_ARCHIVE_ERROR,
   GET_STORIES_FOR_ARCHIVE,
   GET_STORIES_FOR_ARCHIVE_ERROR,
+  GET_ACTIVE_STORIES,
+  GET_ACTIVE_STORIES_ERROR,
 } from "../types/types";
 import axios from "axios";
 
@@ -84,12 +86,12 @@ export const getActiveStoriesForUser = (userId) => async (dispatch) => {
       headers: { "Access-Control-Allow-Origin": "" },
     });
     dispatch({
-      type: GET_STORIES,
+      type: GET_ACTIVE_STORIES,
       payload: response.data,
     });
   } catch (e) {
     dispatch({
-      type: GET_STORIES_ERROR,
+      type: GET_ACTIVE_STORIES_ERROR,
       payload: console.log(e),
     });
   }
@@ -152,7 +154,7 @@ export const loadImagesStory = (images) => async (dispatch) => {
     );
     dispatch({
       type: LOAD_IMAGES_FOR_STORY_MODAL,
-      payload: createFileContents(response.data),
+      payload: response.data,
     });
   } catch (e) {
     dispatch({
@@ -176,7 +178,7 @@ export const loadImagesForArchive = (images) => async (dispatch) => {
     );
     dispatch({
       type: LOAD_IMAGES_FOR_ARCHIVE,
-      payload: createFileContents(response.data),
+      payload: response.data,
     });
   } catch (e) {
     dispatch({
@@ -187,6 +189,7 @@ export const loadImagesForArchive = (images) => async (dispatch) => {
 };
 
 export const loadProfileImagesStory = (images) => async (dispatch) => {
+  debugger;
   try {
     const response = await axios.post(
       "https://localhost:44355/api/contents/images",
@@ -200,7 +203,7 @@ export const loadProfileImagesStory = (images) => async (dispatch) => {
     );
     dispatch({
       type: LOAD_PROFILE_IMAGES_FOR_STORY,
-      payload: createFileContents(response.data),
+      payload: response.data,
     });
   } catch (e) {
     dispatch({

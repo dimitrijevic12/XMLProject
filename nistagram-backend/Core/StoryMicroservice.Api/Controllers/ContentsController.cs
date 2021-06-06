@@ -33,7 +33,7 @@ namespace StoryMicroservice.Api.Controllers
         [HttpGet("{fileName}")]
         public IActionResult GetImage(string fileName)
         {
-            FileContentResult fileContentResult = File(storyService.GetImage(_env.WebRootPath, fileName),
+            FileContentResult fileContentResult = File(storyService.GetImage(_env.WebRootPath, fileName).Bytes,
                 "image/jpeg");
             return Ok(fileContentResult);
         }
@@ -44,8 +44,10 @@ namespace StoryMicroservice.Api.Controllers
             List<FileContentResult> fileContentResults = new List<FileContentResult>();
             foreach (string contentPath in contentPaths)
             {
-                fileContentResults.Add(File(storyService.GetImage(_env.WebRootPath, contentPath),
-                "image/jpeg"));
+                var content = storyService.GetImage(_env.WebRootPath, contentPath);
+                if (content.Type.Equals(".mp4")) content.Type = "video/mp4";
+                else content.Type = "image/jpeg";
+                fileContentResults.Add(File(content.Bytes, content.Type));
             }
             return Ok(fileContentResults);
         }

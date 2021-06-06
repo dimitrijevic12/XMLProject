@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using StoryMicroservice.Core.DTOs;
 using StoryMicroservice.Core.Interface.Repository;
 using StoryMicroservice.Core.Model;
 using StoryMicroservice.Core.Model.FileModel;
@@ -8,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Story = StoryMicroservice.Core.Model.Story;
 
 namespace StoryMicroservice.Core.Services
 {
@@ -43,10 +45,11 @@ namespace StoryMicroservice.Core.Services
             }
         }
 
-        public byte[] GetImage(string path, string fileName)
+        public Content GetImage(string path, string fileName)
         {
+            var type = Path.GetExtension(fileName);
             path = path + "\\images\\" + fileName;
-            return File.ReadAllBytes(path);
+            return new Content() { Bytes = System.IO.File.ReadAllBytes(path), Type = type };
         }
     }
 }

@@ -22,21 +22,30 @@ class StoryModal extends Component {
   }
 
   render() {
-    if (this.props.stories === undefined || this.props.images === undefined)
+    if (
+      this.props.stories === undefined ||
+      this.props.images === undefined ||
+      this.props.stories.length !== this.props.images.length
+    )
       return null;
-    debugger;
     const stories = [];
     this.props.stories.forEach((story, i) => {
       stories.push({
-        url: "data:image/jpg;base64," + this.props.images[i],
+        url:
+          this.props.images[i].contentType === "image/jpeg"
+            ? "data:image/jpg;base64," + this.props.images[i].fileContents
+            : "data:video/mp4;base64," + this.props.images[i].fileContents,
         duration: 1000 * story.duration,
+        type:
+          this.props.images[i].contentType !== "image/jpeg" ? "video" : "image",
         header: {
           heading:
             story.registeredUser.firstName +
             " " +
             story.registeredUser.lastName,
           subheading: `Posted ${this.timeSince(story.timeStamp)} ago`,
-          profileImage: "data:image/jpg;base64," + this.props.profileImage,
+          profileImage:
+            "data:image/jpg;base64," + this.props.profileImage.fileContents,
         },
         seeMore: ({ close }) => {
           return (

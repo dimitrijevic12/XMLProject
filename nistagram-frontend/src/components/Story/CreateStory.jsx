@@ -15,6 +15,7 @@ class CreateStory extends Component {
     file: null,
     fileName: "",
     fileUrl: null,
+    fileType: "",
     description: "",
     location: {},
     locations: [],
@@ -70,10 +71,16 @@ class CreateStory extends Component {
           <div className="d-inline-flex w-50">
             <div class="form-group w-100 pr-5">
               <input type="file" onChange={this.choosePost} multiple />
-              <img
-                src={this.state.fileUrl}
-                style={{ width: 500, height: 300 }}
-              />
+              {this.state.fileType === "video/mp4" ? (
+                <video width="500" height="300" controls>
+                  <source src={this.state.fileUrl} type="video/mp4" />
+                </video>
+              ) : (
+                <img
+                  src={this.state.fileUrl}
+                  style={{ width: 500, height: 300 }}
+                />
+              )}
             </div>
           </div>
           <div className="d-inline-flex w-50">
@@ -225,7 +232,6 @@ class CreateStory extends Component {
   }
 
   async createPost() {
-    debugger;
     const hashTagsObjects = this.state.hashTagText.split(" ");
     await this.state.contentPaths.forEach((element, i) => {
       debugger;
@@ -245,9 +251,7 @@ class CreateStory extends Component {
       });
     });
 
-    this.props.history.replace({
-      pathname: "/profile/" + sessionStorage.getItem("userId"),
-    });
+    window.location = "/";
   }
 
   handleChangeCheckboxCloseFriendsStory = (e) => {
@@ -273,15 +277,16 @@ class CreateStory extends Component {
   };
 
   choosePost = async (event) => {
+    debugger;
     var result = [];
     var files = event.target.files;
-    debugger;
     Array.prototype.forEach.call(files, (file) => {
       result.push(URL.createObjectURL(file));
     });
     this.setState({
       fileUrl: URL.createObjectURL(event.target.files[0]),
       fileUrls: result,
+      fileType: files[0].type,
     });
 
     var contentPaths = [];

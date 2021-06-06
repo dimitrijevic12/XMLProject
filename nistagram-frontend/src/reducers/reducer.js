@@ -45,6 +45,7 @@ import {
   CREATE_HIGHLIGHT,
   LOAD_IMAGES_FOR_ARCHIVE,
   GET_STORIES_FOR_ARCHIVE,
+  GET_ACTIVE_STORIES,
 } from "../types/types";
 
 const initialState = {
@@ -71,6 +72,7 @@ const initialState = {
   storyProfileImages: [],
   story: {},
   highlights: [],
+  activeStories: [],
 };
 
 function reducer(state = initialState, action) {
@@ -213,6 +215,11 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         stories: action.payload,
+      };
+    case GET_ACTIVE_STORIES:
+      return {
+        ...state,
+        activeStories: action.payload,
       };
     case LOAD_IMAGE_STORY:
       return {

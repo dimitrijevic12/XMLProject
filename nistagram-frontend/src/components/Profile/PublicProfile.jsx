@@ -113,7 +113,7 @@ const mapStateToProps = (state) => ({
   posts: state.posts,
   user: state.registeredUser,
   highlights: state.highlights,
-  stories: state.stories,
+  stories: state.activeStories,
 });
 
 export default compose(

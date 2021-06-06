@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import Stories from "react-insta-stories";
 import { Modal, ModalBody } from "reactstrap";
 import {
@@ -10,129 +10,17 @@ import "../../css/story.css";
 import TaggedUsersProfileStoryModal from "./TaggedUsersProfileStoryModal";
 import CollectionsModal from "./CollectionsModal";
 
-class ProfileStoryModal extends Component {
-  state = {
-    showProfileStoryModal: this.props.show,
-    showTaggedUsersModal: false,
-    showCollectionsModal: false,
-    users: [],
-    story: {},
-  };
+function ProfileStoryModal(props) {
+  const [showProfileStoryModal, setShowProfileStoryModal] = useState(
+    props.show
+  );
+  const [showTaggedUsersModal, setShowTaggedUsersModal] = useState(false);
+  const [showCollectionsModal, setShowCollectionsModal] = useState(false);
+  const [users, setUsers] = useState([]);
+  const [story, setStory] = useState({});
+  var tempStories = [];
 
-  async componentDidMount() {
-    debugger;
-    await this.props.loadImagesStory(this.createImagesList(this.props.stories));
-  }
-
-  render() {
-    if (this.props.stories === undefined || this.props.images === undefined)
-      return null;
-    debugger;
-    const stories = [];
-    this.props.stories.forEach((story, i) => {
-      stories.push({
-        url: "data:image/jpg;base64," + this.props.images[i],
-        duration: 1000 * story.duration,
-        header: {
-          heading:
-            story.registeredUser.firstName +
-            " " +
-            story.registeredUser.lastName,
-          subheading: `Posted ${this.timeSince(story.timeStamp)} ago`,
-        },
-        seeMore: ({ close }) => {
-          return (
-            <div>
-              <div
-                onClick={close}
-                style={{
-                  bottom: 0,
-                  position: "absolute",
-                  zIndex: 10,
-                  width: "100%",
-                  backgroundColor: "black",
-                  opacity: "50%",
-                  color: "white",
-                  height: "300px",
-                }}
-              ></div>
-              <div className="story-footer-description">
-                {story.description}
-              </div>
-              <div className="story-footer-hashtag">
-                {this.convertHashtagsToString(story.hashTags)}
-              </div>
-              <div className="story-footer-tagged">
-                <button
-                  className="btn btn-sm btn-primary"
-                  onClick={() => this.displayModalStory(story.taggedUsers)}
-                >
-                  Tagged users:
-                </button>
-              </div>
-              <div className="story-footer-collections">
-                {this.props.isActiveStories ? (
-                  <button
-                    className="btn btn-sm btn-primary"
-                    onClick={() => this.displayCollectionsModal(story)}
-                  >
-                    Add to collection:
-                  </button>
-                ) : null}
-              </div>
-            </div>
-          );
-        },
-      });
-    });
-    return (
-      <Modal
-        style={{
-          maxWidth: "450px",
-          width: "450px",
-          maxHeight: "700px",
-          width: "700px",
-          borderRadius: "15px",
-        }}
-        className="text-center"
-        isOpen={this.state.showProfileStoryModal}
-        toggle={this.toggle.bind(this)}
-        centered={true}
-        backdropClassName="story-modal-backdrop"
-      >
-        {this.state.showTaggedUsersModal ? (
-          <TaggedUsersProfileStoryModal
-            show={this.state.showTaggedUsersModal}
-            taggedUsers={this.state.users}
-            onShowChange={this.displayModalStory.bind(this)}
-          />
-        ) : null}
-        {this.state.showCollectionsModal ? (
-          <CollectionsModal
-            show={this.state.showCollectionsModal}
-            highlights={this.props.highlights}
-            story={this.state.story}
-            onShowChange={this.displayCollectionsModal.bind(this)}
-          />
-        ) : null}
-        <ModalBody
-          className="story-modal-body"
-          style={{ padding: "2px !important" }}
-        >
-          <Stories
-            keyboardNavigation
-            width="100%"
-            height="670px"
-            stories={stories}
-            onAllStoriesEnd={(s, st) => this.toggle()}
-            storyStyles={{ height: "670px" }}
-          />
-        </ModalBody>
-      </Modal>
-    );
-  }
-
-  timeSince(date) {
+  const timeSince = (date) => {
     var correctDate = new Date(Date.parse(date));
     correctDate.setHours(correctDate.getHours() - 2);
     var seconds = Math.floor(
@@ -161,9 +49,9 @@ class ProfileStoryModal extends Component {
       return Math.floor(interval) + " minutes";
     }
     return Math.floor(seconds) + " seconds";
-  }
+  };
 
-  convertHashtagsToString(hashtags) {
+  const convertHashtagsToString = (hashtags) => {
     debugger;
     var temp = [...hashtags];
     var text = temp[0];
@@ -172,37 +60,154 @@ class ProfileStoryModal extends Component {
       text += " " + element;
     });
     return text;
-  }
+  };
 
-  createImagesList() {
+  const createImagesList = () => {
     var images = [];
-    this.props.stories.forEach((element) => {
+    props.stories.forEach((element) => {
       images.push(element.contentPath);
     });
     return images;
-  }
+  };
 
-  toggle() {
+  const toggle = () => {
     debugger;
-    this.setState({ showPostModal: false });
-    this.props.onShowChange();
-  }
+    setShowProfileStoryModal(false);
+    props.onShowChange();
+  };
 
-  displayModalStory(users) {
+  const displayModalStory = (users) => {
     debugger;
-    this.setState({
-      showTaggedUsersModal: !this.state.showTaggedUsersModal,
-      users: users,
+    setShowTaggedUsersModal(!showTaggedUsersModal);
+    setUsers(users);
+  };
+
+  const displayCollectionsModal = (story) => {
+    debugger;
+    setShowCollectionsModal(!showCollectionsModal);
+    setStory(story);
+  };
+
+  useEffect(() => {
+    debugger;
+    props.loadImagesStory(createImagesList(props.stories));
+  }, [props.stories]);
+
+  useEffect(() => {
+    debugger;
+    props.loadImagesStory(createImagesList(props.stories));
+    tempStories = props.images;
+  }, [props.highlight]);
+
+  if (
+    props.stories === undefined ||
+    props.images === undefined ||
+    props.stories.length !== props.images.length
+  )
+    return null;
+  debugger;
+  const stories = [];
+  props.stories.forEach((story, i) => {
+    stories.push({
+      url:
+        props.images[i].contentType === "image/jpeg"
+          ? "data:image/jpg;base64," + props.images[i].fileContents
+          : "data:video/mp4;base64," + props.images[i].fileContents,
+      duration: 1000 * story.duration,
+      type: props.images[i].contentType !== "image/jpeg" ? "video" : "image",
+      header: {
+        heading:
+          story.registeredUser.firstName + " " + story.registeredUser.lastName,
+        subheading: `Posted ${timeSince(story.timeStamp)} ago`,
+      },
+      seeMore: ({ close }) => {
+        return (
+          <div>
+            <div
+              onClick={close}
+              style={{
+                bottom: 0,
+                position: "absolute",
+                zIndex: 10,
+                width: "100%",
+                backgroundColor: "black",
+                opacity: "50%",
+                color: "white",
+                height: "300px",
+              }}
+            ></div>
+            <div className="story-footer-description">{story.description}</div>
+            <div className="story-footer-hashtag">
+              {convertHashtagsToString(story.hashTags)}
+            </div>
+            <div className="story-footer-tagged">
+              <button
+                className="btn btn-sm btn-primary"
+                onClick={() => displayModalStory(story.taggedUsers)}
+              >
+                Tagged users:
+              </button>
+            </div>
+            <div className="story-footer-collections">
+              {props.isActiveStories ? (
+                <button
+                  className="btn btn-sm btn-primary"
+                  onClick={() => displayCollectionsModal(story)}
+                >
+                  Add to collection:
+                </button>
+              ) : null}
+            </div>
+          </div>
+        );
+      },
     });
-  }
-
-  displayCollectionsModal(story) {
-    debugger;
-    this.setState({
-      showCollectionsModal: !this.state.showCollectionsModal,
-      story: story,
-    });
-  }
+  });
+  return (
+    <Modal
+      style={{
+        maxWidth: "450px",
+        width: "450px",
+        maxHeight: "700px",
+        width: "700px",
+        borderRadius: "15px",
+      }}
+      className="text-center"
+      isOpen={showProfileStoryModal}
+      toggle={toggle}
+      centered={true}
+      backdropClassName="story-modal-backdrop"
+    >
+      {showTaggedUsersModal ? (
+        <TaggedUsersProfileStoryModal
+          show={showTaggedUsersModal}
+          taggedUsers={users}
+          onShowChange={displayModalStory}
+        />
+      ) : null}
+      {showCollectionsModal ? (
+        <CollectionsModal
+          show={showCollectionsModal}
+          highlights={props.highlights}
+          story={story}
+          onShowChange={displayCollectionsModal}
+        />
+      ) : null}
+      <ModalBody
+        className="story-modal-body"
+        style={{ padding: "2px !important" }}
+      >
+        <Stories
+          keyboardNavigation
+          width="100%"
+          height="670px"
+          stories={stories}
+          onAllStoriesEnd={(s, st) => toggle()}
+          storyStyles={{ height: "670px" }}
+        />
+      </ModalBody>
+    </Modal>
+  );
 }
 
 const mapStateToProps = (state) => ({

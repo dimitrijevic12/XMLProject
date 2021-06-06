@@ -120,8 +120,7 @@ class HomePage extends Component {
                     this.displayModalPost(post);
                   }}
                   src={
-                    "data:image/jpg;base64," +
-                    this.props.loadedImages[index].fileContents
+                    "data:image/jpg;base64," + this.props.loadedImages[index]
                   }
                   style={{
                     maxHeight: "530px",

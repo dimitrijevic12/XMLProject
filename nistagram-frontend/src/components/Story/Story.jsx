@@ -12,7 +12,8 @@ class Story extends Component {
   };
 
   render() {
-    debugger;
+    if (this.props.profileImage === undefined && this.props.first === false)
+      return null;
     return (
       <div>
         {this.state.showStoryModal ? (
@@ -26,10 +27,9 @@ class Story extends Component {
         <div
           className="story-circle"
           style={{
-            backgroundImage:
-              this.props.first === true
-                ? `url("/images/white_plus2.png")`
-                : `url("data:image/jpg;base64,${this.props.profileImage}"`,
+            backgroundImage: this.props.first
+              ? `url("/images/white_plus2.png")`
+              : `url("data:image/jpg;base64,${this.props.profileImage.fileContents}"`,
             backgroundRepeat: "no-repeat",
             paddingBottom: "51px",
             backgroundSize: "cover",
