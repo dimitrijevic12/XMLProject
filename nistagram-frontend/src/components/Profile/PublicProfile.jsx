@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getPostsByUserId } from "../../actions/actions";
 import PostModal from "../../components/Profile/PostModal";
 import OptionsButton from "./OptionsButton";
+import MyOptionsButton from "./MyOptionsButton";
 import ProfileHeader from "./ProfileHeader";
 import {
   Grid,
@@ -31,18 +32,53 @@ function PublicProfile(props) {
 
   const follow = () => {
     props.followProfile({
-      "FollowedById" : sessionStorage.getItem("userId"),
-      "FollowingId" : props.location.pathname.slice(9)
-    })          
-    }
+      FollowedById: sessionStorage.getItem("userId"),
+      FollowingId: props.location.pathname.slice(9),
+    });
+  };
 
-  const Posts = () =>
-    posts.map((post) => (
-      <Photo
-        src={"/images/download.jfif"}
-        onClick={() => displayModalPost(post)}
-      />
-    ));
+  const Posts = () => {
+    if (posts.length === 0) {
+      return (
+        <div className="text-center pt-5">
+          <img src="/images/noposts.png" />
+          <br />
+          <h4>No Posts Yet</h4>
+        </div>
+      );
+    }
+    var shouldDisplayPosts = false;
+    if (props.location.pathname.slice(9) === sessionStorage.getItem("userId")) {
+      shouldDisplayPosts = true;
+    } else {
+      if (user.isPrivate === false) {
+        shouldDisplayPosts = true;
+      } else {
+        for (var i = 0; i < user.followers.length; i++) {
+          if (user.followers[i].id === sessionStorage.getItem("userId")) {
+            shouldDisplayPosts = true;
+            break;
+          }
+        }
+      }
+    }
+    if (shouldDisplayPosts === true) {
+      return posts.map((post) => (
+        <Photo
+          src={"/images/download.jfif"}
+          onClick={() => displayModalPost(post)}
+        />
+      ));
+    } else {
+      return (
+        <div className="text-center pt-5">
+          <img src="/images/padlock.png" />
+          <br />
+          <h4>This Account Is Private</h4>
+        </div>
+      );
+    }
+  };
 
   const displayModalPost = (post) => {
     if (post != undefined) {
@@ -56,6 +92,30 @@ function PublicProfile(props) {
     return null;
   }
 
+  const DisplayFollowButton = () => {
+    var display = true;
+    debugger;
+    for (var i = 0; i < user.followers.length; i++) {
+      if (user.followers[i].id === sessionStorage.getItem("userId")) {
+        display = false;
+        break;
+      }
+    }
+    if (display === true) {
+      return (
+        <button
+          onClick={follow}
+          style={{ float: "right" }}
+          className="btn btn-block btn-primary btn-md mt-4 mb-4"
+        >
+          Follow
+        </button>
+      );
+    } else {
+      return "";
+    }
+  };
+
   return (
     <div>
       {showPostModal ? (
@@ -67,15 +127,18 @@ function PublicProfile(props) {
           onShowChange={() => displayModalPost()}
         />
       ) : null}
-      <OptionsButton />
+      {props.location.pathname.slice(9) === sessionStorage.getItem("userId") ? (
+        <MyOptionsButton />
+      ) : (
+        <OptionsButton />
+      )}
       <ProfileHeader user={user} userid={user.id} postsCount={posts.length} />
-      <button
-        onClick={follow} 
-        style={{ float: "right" }}
-        className="btn btn-block btn-primary btn-md mt-4 mb-4"
-      >
-        Follow
-      </button>
+      {props.location.pathname.slice(9) === sessionStorage.getItem("userId") ? (
+        ""
+      ) : (
+        <DisplayFollowButton />
+      )}
+
       <Grid>
         <GridControlBar>
           <GridControlBarItem isActive>𐄹 Posts</GridControlBarItem>
@@ -94,5 +157,5 @@ const mapStateToProps = (state) => ({
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, { getPostsByUserId, getUserById , followProfile})
+  connect(mapStateToProps, { getPostsByUserId, getUserById, followProfile })
 )(PublicProfile);

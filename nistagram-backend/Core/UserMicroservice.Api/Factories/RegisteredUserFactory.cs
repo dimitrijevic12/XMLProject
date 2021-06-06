@@ -21,6 +21,7 @@ namespace UserMicroservice.Api.Factories
                 WebsiteAddress = registeredUser.WebsiteAddress,
                 Bio = registeredUser.Bio,
                 Password = registeredUser.Password,
+                ProfilePicturePath = registeredUser.ProfileImagePath,
                 IsPrivate = registeredUser.IsPrivate,
                 IsAcceptingMessages = registeredUser.IsAcceptingMessages,
                 IsAcceptingTags = registeredUser.IsAcceptingTags,
@@ -50,6 +51,7 @@ namespace UserMicroservice.Api.Factories
                 WebsiteAddress = registeredUser.WebsiteAddress,
                 Bio = registeredUser.Bio,
                 Password = registeredUser.Password,
+                ProfilePicturePath = registeredUser.ProfileImagePath,
                 IsPrivate = registeredUser.IsPrivate,
                 IsAcceptingMessages = registeredUser.IsAcceptingMessages,
                 IsAcceptingTags = registeredUser.IsAcceptingTags

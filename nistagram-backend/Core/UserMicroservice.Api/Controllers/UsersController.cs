@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using UserMicroservice.Api.Factories;
 using UserMicroservice.Core.Interface.Repository;
 using UserMicroservice.Core.Interface.Service;
 using UserMicroservice.Core.Model;
+using UserMicroservice.Core.Model.File;
 using UserMicroservice.Core.Services;
 using UserMicroservice.DataAccess.Implementation;
 
@@ -23,14 +25,17 @@ namespace UserMicroservice.Api.Controllers
         private readonly RegisteredUserFactory registerUserFactory;
         private readonly IUserRepository _userRepository;
         private readonly FollowRequestFactory followRequestFactory;
+        private readonly IWebHostEnvironment _env;
 
         public UsersController(UserService userService, IUserRepository userRepository,
-            RegisteredUserFactory registerUserFactory, FollowRequestFactory followRequestFactory)
+            RegisteredUserFactory registerUserFactory, FollowRequestFactory followRequestFactory,
+            IWebHostEnvironment env)
         {
             this.userService = userService;
             _userRepository = userRepository;
             this.registerUserFactory = registerUserFactory;
             this.followRequestFactory = followRequestFactory;
+            _env = env;
         }
 
         //[Authorize(Roles = "ApprovedAgent")]
@@ -67,6 +72,7 @@ namespace UserMicroservice.Api.Controllers
                                           dto.IsAcceptingMessages,
                                           dto.IsAcceptingTags,
                                           password.Value,
+                                          ProfileImagePath.Create("").Value,
                                           new List<Core.Model.RegisteredUser>(),
                                           new List<Core.Model.RegisteredUser>(),
                                           new List<Core.Model.RegisteredUser>(),
@@ -130,6 +136,7 @@ namespace UserMicroservice.Api.Controllers
                                           true,
                                           true,
                                           password.Value,
+                                          ProfileImagePath.Create("").Value,
                                           new List<Core.Model.RegisteredUser>(),
                                           new List<Core.Model.RegisteredUser>(),
                                           new List<Core.Model.RegisteredUser>(),
@@ -185,6 +192,29 @@ namespace UserMicroservice.Api.Controllers
         {
             return Ok(_userRepository.GetFollowing(userId)
                .Select(follower => registerUserFactory.Create(follower)));
+        }
+
+        [HttpGet("contents/{fileName}")]
+        public IActionResult GetImage(string fileName)
+        {
+            FileContentResult fileContentResult = File(userService.GetImage(_env.WebRootPath, fileName),
+                "image/jpeg");
+            return Ok(fileContentResult);
+        }
+
+        [HttpPost("contents")]
+        public IActionResult SaveImg([FromForm] FileModel file)
+        {
+            string fileName = userService.ImageToSave(_env.WebRootPath, file);
+
+            return Ok(fileName);
+        }
+
+        [HttpPut("{id}/profile-picture/{image}")]
+        public IActionResult AddProfilePicture([FromRoute] Guid id, [FromRoute] string image)
+        {
+            _userRepository.AddProfilePicture(id, image);
+            return Ok();
         }
     }
 }

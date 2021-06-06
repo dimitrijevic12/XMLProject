@@ -27,6 +27,7 @@ namespace UserMicroservice.DataAccess.Adaptee
                                     bool.Parse(dataRow[11].ToString()),
                                     bool.Parse(dataRow[12].ToString()),
                                     Password.Create(dataRow[15].ToString()).Value,
+                                    ProfileImagePath.Create(dataRow[16].ToString()).Value,
                                     blockedUsers,
                                     blockedByUsers,
                                     mutedUsers,

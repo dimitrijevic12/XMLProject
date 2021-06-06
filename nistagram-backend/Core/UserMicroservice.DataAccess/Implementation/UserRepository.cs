@@ -314,9 +314,9 @@ namespace UserMicroservice.DataAccess.Implementation
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT f.id, f.timestamp, r.id, r.username, r.email, r.first_name, r.last_name, r.date_of_birth, " +
                 "r.phone_number, r.gender, r.website_address, r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, " +
-                "r.password, r2.id, r2.username, r2.email, r2.first_name, r2.last_name, r2.date_of_birth, " +
+                "r.password, r.profilePicturePath, r2.id, r2.username, r2.email, r2.first_name, r2.last_name, r2.date_of_birth, " +
                 "r2.phone_number, r2.gender, r2.website_address, r2.bio, r2.is_private, " +
-                "r2.is_accepting_messages, r2.is_accepting_tags, r2.type, r2.category, r2.password ");
+                "r2.is_accepting_messages, r2.is_accepting_tags, r2.type, r2.category, r2.password, r2.profilePicturePath ");
             queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.FollowRequest AS f, dbo.RegisteredUser As r2 ");
             queryBuilder.Append("WHERE r.id = f.requests_follow_id AND f.recieves_follow_id = @id  AND f.recieves_follow_id = r2.id " +
                 "AND f.type = \'unappr\' ");
@@ -339,7 +339,7 @@ namespace UserMicroservice.DataAccess.Implementation
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT r.id, r.username, r.email, " +
                 "r.first_name, r.last_name, r.date_of_birth, r.phone_number, r.gender, r.website_address, " +
-                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password ");
+                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password, r.profilePicturePath ");
             queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.RegisteredUser AS r2, " +
                 "dbo.Follows as f ");
             queryBuilder.Append("WHERE f.following_id = r2.id AND f.followed_by_id = r.id " +
@@ -364,7 +364,7 @@ namespace UserMicroservice.DataAccess.Implementation
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT r.id, r.username, r.email, " +
                 "r.first_name, r.last_name, r.date_of_birth, r.phone_number, r.gender, r.website_address, " +
-                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password ");
+                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password, r.profilePicturePath  ");
             queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.RegisteredUser AS r2, " +
                 "dbo.Follows as f ");
             queryBuilder.Append("WHERE f.following_id=r.id AND f.followed_by_id=r2.id " +
@@ -389,7 +389,7 @@ namespace UserMicroservice.DataAccess.Implementation
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT r.id, r.username, r.email, " +
                 "r.first_name, r.last_name, r.date_of_birth, r.phone_number, r.gender, r.website_address, " +
-                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password ");
+                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password, r.profilePicturePath ");
             queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.RegisteredUser AS r2, " +
                 "dbo.Blocks as f ");
             queryBuilder.Append("WHERE f.blocking_id = r2.id AND f.blocked_by_id = r.id " +
@@ -414,7 +414,7 @@ namespace UserMicroservice.DataAccess.Implementation
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT r.id, r.username, r.email, " +
                 "r.first_name, r.last_name, r.date_of_birth, r.phone_number, r.gender, r.website_address, " +
-                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password ");
+                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password, r.profilePicturePath ");
             queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.RegisteredUser AS r2, " +
                 "dbo.Blocks as f ");
             queryBuilder.Append("WHERE f.blocking_id = r.id AND f.blocked_by_id = r2.id " +
@@ -439,7 +439,7 @@ namespace UserMicroservice.DataAccess.Implementation
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT r.id, r.username, r.email, " +
                 "r.first_name, r.last_name, r.date_of_birth, r.phone_number, r.gender, r.website_address, " +
-                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password ");
+                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password, r.profilePicturePath ");
             queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.RegisteredUser AS r2, " +
                 "dbo.Mutes as f ");
             queryBuilder.Append("WHERE f.muting_id = r2.id AND f.muted_by_id = r.id " +
@@ -464,7 +464,7 @@ namespace UserMicroservice.DataAccess.Implementation
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT r.id, r.username, r.email, " +
                 "r.first_name, r.last_name, r.date_of_birth, r.phone_number, r.gender, r.website_address, " +
-                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password ");
+                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password, r.profilePicturePath ");
             queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.RegisteredUser AS r2, " +
                 "dbo.Mutes as f ");
             queryBuilder.Append("WHERE f.muting_id = r.id AND f.muted_by_id = r2.id " +
@@ -489,7 +489,7 @@ namespace UserMicroservice.DataAccess.Implementation
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT r.id, r.username, r.email, " +
                 "r.first_name, r.last_name, r.date_of_birth, r.phone_number, r.gender, r.website_address, " +
-                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password ");
+                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password, r.profilePicturePath ");
             queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.RegisteredUser AS r2, " +
                 "dbo.CloseFriends as f ");
             queryBuilder.Append("WHERE f.my_close_friend_id = r2.id AND f.close_friend_to_id = r.id " +
@@ -514,7 +514,7 @@ namespace UserMicroservice.DataAccess.Implementation
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT r.id, r.username, r.email, " +
                 "r.first_name, r.last_name, r.date_of_birth, r.phone_number, r.gender, r.website_address, " +
-                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password ");
+                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password, r.profilePicturePath ");
             queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.RegisteredUser AS r2, " +
                 "dbo.CloseFriends as f ");
             queryBuilder.Append("WHERE f.my_close_friend_id = r.id AND f.close_friend_to_id = r2.id " +
@@ -533,6 +533,23 @@ namespace UserMicroservice.DataAccess.Implementation
                     new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>(),
                     new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>(),
                     new List<RegisteredUser>(), new List<RegisteredUser>())).ToList();
+        }
+
+        public void AddProfilePicture(Guid id, string image)
+        {
+            StringBuilder queryBuilder = new StringBuilder("UPDATE dbo.RegisteredUser ");
+            queryBuilder.Append("SET profilePicturePath = @profilePicturePath ");
+            queryBuilder.Append("WHERE id = @id;");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = id },
+                 new SqlParameter("@profilePicturePath", SqlDbType.NVarChar) { Value = image },
+             };
+
+            ExecuteQuery(query, parameters);
         }
     }
 }
