@@ -33,50 +33,26 @@ function App() {
           <Route exact path="/login">
             <LoginPage />
           </Route>
-          <Route exact path="/post">
-            <CreatePostPage />
-          </Route>
-          <Route exact path="/story">
-            <CreateStoryPage />
-          </Route>
-          <Route exact path="/private">
-            <PrivateProfilePage />
-          </Route>
-          <Route exact path="/someone">
-            <SomeoneProfilePage />
-          </Route>
-          <Route exact path="/privacy">
-            <PrivacyPage />
-          </Route>
-          <Route exact path="/edit">
-            <EditProfilePage />
-          </Route>
-          <Route exact path="/verification">
-            <VerificationRequestPage />
-          </Route>
-          <Route exact path="/approval">
-            <ApprovalAgentPage />
-          </Route>
-          <Route exact path="/create-item">
-            <CreateItemPage />
-          </Route>
-          <Route exact path="/review-item">
-            <ReviewItemPage />
-          </Route>
-          <Route exact path="/collections">
-            <CollectionsMenuPage />
-          </Route>
-          <Route exact path="/requests">
-            <FollowRequestPage />
-          </Route>
+          <ProtectedRoute exact path="/post" component = {CreatePostPage}/>
+          <ProtectedRoute exact path="/story" component = {CreateStoryPage}/>
+          <ProtectedRoute exact path="/private" component = {PrivateProfilePage}/>
+          <ProtectedRoute exact path="/someone" component = {SomeoneProfilePage}/>
+          <ProtectedRoute exact path="/privacy" component = {PrivacyPage}/>
+          <ProtectedRoute exact path="/edit" component = {EditProfilePage}/>
+          <ProtectedRoute exact path="/verification" component = {VerificationRequestPage}/>
+          <ProtectedRoute exact path="/approval" component = {ApprovalAgentPage}/>
+          <ProtectedRoute exact path="/create-item" component = {CreateItemPage}/>
+          <ProtectedRoute exact path="/review-item" component = {ReviewItemPage}/>
+          <ProtectedRoute exact path="/collections" component = {CollectionsMenuPage}/>
+          <ProtectedRoute exact path="/requests" component = {FollowRequestPage}/>
           <Route path="/explore/:search">
             <Explore />
           </Route>
           <Route path="/profile/:username" component={ProfilePage}></Route>
-          <Route
+          <ProtectedRoute
             path="/collection/:collectionId"
             component={PostsInCollectionPage}
-          ></Route>
+          />
           <ProtectedRoute exact path="/" component={HomePage} />
         </Switch>
       </div>

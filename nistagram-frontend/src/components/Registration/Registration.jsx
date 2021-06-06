@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import { userRegistration, userRegistrationForPost, userRegistrationForStory } from "../../actions/actionsUser"
 import DatePicker from "react-datepicker";
 import { connect } from "react-redux"
+import { toast } from "react-toastify";
+import { withRouter } from "react-router-dom";
+import { compose } from "redux";
+import "react-toastify/dist/ReactToastify.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
 
 class Registration extends Component {
@@ -270,7 +274,8 @@ class Registration extends Component {
 
   async register() {
     debugger;
-      await this.props.userRegistration({ "Username" : this.state.username,
+    var successful = false;
+     await this.props.userRegistration({ "Username" : this.state.username,
       "EmailAddress" : this.state.email,
       "FirstName" : this.state.firstName,
       "LastName" : this.state.lastName,
@@ -284,7 +289,7 @@ class Registration extends Component {
       "IsAcceptingTags" : this.state.isAcceptingTags,
       "Password" : this.state.password })      
     
-      this.props.userRegistrationForPost( this.props.registeredUser)
+      successful = this.props.userRegistrationForPost( this.props.registeredUser)
     //   "Username" : this.state.username,
     //   "EmailAddress" : this.state.email,
     //   "FirstName" : this.state.firstName,
@@ -299,8 +304,8 @@ class Registration extends Component {
     //   "IsAcceptingTags" : this.state.isAcceptingTags,
     //   "Password" : this.state.password 
     // })
-
-    this.props.userRegistrationForStory( this.props.registeredUser)
+    
+    successful = await this.props.userRegistrationForStory( this.props.registeredUser)
     //ZA STORY KOJI JE NO SQL
     // this.props.userRegistrationForStory({ "Username" : this.state.username,
     //   "EmailAddress" : this.state.email,
@@ -316,7 +321,16 @@ class Registration extends Component {
     //   "IsAcceptingTags" : this.state.isAcceptingTags,
     //   "Password" : this.state.password 
     // })
-    
+    if (successful === true) {
+      this.props.history.replace({
+        pathname: "/login",
+      });
+    } else {
+      toast.configure();
+      toast.error("Unsuccessful registration!", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
   }
 }
 
@@ -327,4 +341,5 @@ const mapStateToProps = (state) =>
 
     ({ userRegistration: state.userRegistration, userRegistrationForPost: state.userRegistrationForPost, userRegistrationForStory: state.userRegistrationForStory , registeredUser : state.registeredUser})
 
-export default connect(mapStateToProps, { userRegistration, userRegistrationForPost, userRegistrationForStory })(Registration);
+export default compose(
+  withRouter,connect(mapStateToProps, { userRegistration, userRegistrationForPost, userRegistrationForStory }))(Registration);
