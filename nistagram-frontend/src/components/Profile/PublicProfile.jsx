@@ -33,14 +33,15 @@ function PublicProfile(props) {
   const posts = props.posts;
   const highlights = props.highlights;
 
-  useEffect(() => {
-    props.getUserById(props.location.pathname.slice(9));
-    props.getPostsByUserId(props.location.pathname.slice(9));
-    props.getHighlights(props.location.pathname.slice(9));
-    props.getActiveStoriesForUser(props.location.pathname.slice(9));
-    if (sessionStorage.getItem("userId") === props.location.pathname.slice(9))
-      props.getStoriesForUser();
-    props.loadImagesForArchive();
+  useEffect(async () => {
+    await props.getUserById(props.location.pathname.slice(9));
+    await props.getPostsByUserId(props.location.pathname.slice(9));
+    await props.getHighlights(props.location.pathname.slice(9));
+    await props.getActiveStoriesForUser(props.location.pathname.slice(9));
+    if (sessionStorage.getItem("userId") === props.location.pathname.slice(9)) {
+      await props.getStoriesForUser();
+      await props.loadImagesForArchive();
+    }
   }, [props.location.pathname]);
 
   const follow = () => {

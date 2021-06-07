@@ -26,7 +26,7 @@ namespace StoryMicroservice.Api.Controllers
             _userRepository = userRepository;
         }
 
-        [Authorize(Roles = "RegisteredUser")]
+        //[Authorize(Roles = "RegisteredUser")]
         [HttpGet]
         public IActionResult GetBy([FromQuery(Name = "is-taggable")] string isTaggable)
         {

@@ -3,16 +3,23 @@ import "./ProfileStoryCircle.css";
 import ProfileStory from "./ProfileStory";
 import { connect } from "react-redux";
 import { loadProfileImagesStory } from "../../actions/actionsStory";
+import { withRouter } from "react-router-dom";
+import { compose } from "redux";
 
 function ProfileProfileStoryList(props) {
-  useEffect(() => {
-    props.loadProfileImagesStory(createImagesList(props.highlights));
-  }, props.highlights);
+  useEffect(async () => {
+    await props.loadProfileImagesStory(createImagesList(props.highlights));
+  }, [props.highlights]);
+
+  useEffect(async () => {
+    await props.loadProfileImagesStory(createImagesList(props.highlights));
+  }, [props.activeStories]);
 
   const createImagesList = () => {
+    debugger;
     var images = [];
-    if (props.activeStories[0] === undefined) return images;
-    images.push(props.activeStories[0].contentPath);
+    if (props.activeStories[0] !== undefined)
+      images.push(props.activeStories[0].contentPath);
     props.highlights.forEach((element) => {
       images.push(element.stories[0].contentPath);
     });
@@ -22,10 +29,18 @@ function ProfileProfileStoryList(props) {
   if (props.profileImages === undefined || props.highlights === undefined)
     return null;
   debugger;
-  if (props.profileImages.length - 1 !== props.highlights.length) return null;
+  var activeStoriesLength = props.activeStories.length > 0 ? 1 : 0;
+  if (
+    activeStoriesLength + props.highlights.length >
+    props.profileImages.length
+  ) {
+    return null;
+  }
+
   return (
     <div className="story-wrapper">
-      {props.activeStories === undefined ? null : (
+      {props.activeStories === undefined ||
+      props.activeStories.length === 0 ? null : (
         <ProfileStory
           user={props.user}
           first={true}
@@ -51,6 +66,7 @@ const mapStateToProps = (state) => ({
   profileImages: state.storyProfileImages,
 });
 
-export default connect(mapStateToProps, { loadProfileImagesStory })(
-  ProfileProfileStoryList
-);
+export default compose(
+  withRouter,
+  connect(mapStateToProps, { loadProfileImagesStory })
+)(ProfileProfileStoryList);
