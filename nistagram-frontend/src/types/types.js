@@ -60,3 +60,52 @@ export const GET_POSTS_FOR_FOLLOWING = "getPostsForFollowing";
 export const GET_POSTS_FOR_FOLLOWING_ERROR = "getPostsForFollowingError";
 export const GET_ALL_IMAGES = "getAllImages";
 export const GET_ALL_IMAGES_ERROR = "getAllImages";
+export const GET_STORIES = "getStories";
+export const GET_STORIES_ERROR = "getStoriesError";
+export const LOAD_IMAGE_STORY = "loadImageStory";
+export const LOAD_IMAGE_STORY_ERROR = "loadImageStoryError";
+export const GET_STORIES_FOR_MODAL = "getStoriesForModal";
+export const GET_STORIES_FOR_MODAL_ERROR = "getStoriesForModalError";
+export const LOAD_IMAGES_FOR_STORY_MODAL = "loadImagesForStoryModal";
+export const LOAD_IMAGES_FOR_STORY_MODAL_ERROR = "loadImagesForStoryModalError";
+export const LOAD_PROFILE_IMAGES_FOR_STORY = "loadProfileImagesForStory";
+export const LOAD_PROFILE_IMAGES_FOR_STORYL_ERROR =
+  "loadProfileImagesForStoryError";
+export const GET_TAGGABLE_USERS_FOR_STORY = "getTaggableUsersForStory";
+export const GET_TAGGABLE_USERS_FOR_STORY_ERROR =
+  "getTaggableUsersForStoryError";
+export const GET_LOCATIONS_FOR_STORY = "getLocationsForStory";
+export const GET_LOCATIONS_FOR_STORY_ERROR = "getLocationsForStoryError";
+export const SAVE_STORY = "saveStory";
+export const SAVE_STORY_ERROR = "saveStoryError";
+export const GET_USER_FOR_STORY = "getUserForStory";
+export const GET_USER_FOR_STORY_ERROR = "getUserForStoryError";
+export const CHANGE_PROFILE_PICTURE_USERMICROSERVICE =
+  "changeProfilePictureUsermicroservice";
+export const CHANGE_PROFILE_PICTURE_USERMICROSERVICE_ERROR =
+  "changeProfilePictureUsermicroserviceError";
+export const CHANGE_PROFILE_PICTURE_POSTMICROSERVICE =
+  "changeProfilePicturePostmicroservice";
+export const CHANGE_PROFILE_PICTURE_POSTMICROSERVICE_ERROR =
+  "changeProfilePicturePostmicroserviceError";
+export const LOAD_IMAGE_PROFILE = "loadImageProfile";
+export const LOAD_IMAGE_PROFILE_ERROR = "loadImageProfileError";
+export const GET_HIGHLIGHTS = "getHighlights";
+export const GET_HIGHLIGHTS_ERROR = "getHighlightsError";
+export const ADD_STORY_TO_HIGHLIGHT = "addStoryToHighlight";
+export const ADD_STORY_TO_HIGHLIGHT_ERROR = "addStoryToHighlightError";
+export const CREATE_HIGHLIGHT = "createHighlight";
+export const CREATE_HIGHLIGHT_ERROR = "createHighlightError";
+export const LOAD_IMAGES_FOR_ARCHIVE = "loadImagesForArchive";
+export const LOAD_IMAGES_FOR_ARCHIVE_ERROR = "loadImagesForArchiveError";
+export const GET_STORIES_FOR_ARCHIVE = "getStoriesForArchive";
+export const GET_STORIES_FOR_ARCHIVE_ERROR = "getStoriesForArchiveError";
+export const GET_ACTIVE_STORIES = "getActiveStories";
+export const GET_ACTIVE_STORIES_ERROR = "getActiveStoriesError";
+export const GET_ALL_IMAGES_FOR_SEARCH = "getAllImagesForSearch";
+export const GET_ALL_IMAGES_FOR_SEARCH_ERROR = "getAllImagesForSearchError";
+export const GET_ALL_IMAGES_FOR_PROFILE = "getAllImagesForProfile";
+export const GET_ALL_IMAGES_FOR_PROFILE_ERROR = "getAllImagesForProfileError";
+export const GET_ALL_IMAGES_FOR_COLLECTION = "getAllImagesForCollection";
+export const GET_ALL_IMAGES_FOR_COLLECTION_ERROR =
+  "getAllImagesForCollectionError";

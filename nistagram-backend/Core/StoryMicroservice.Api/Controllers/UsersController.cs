@@ -1,16 +1,12 @@
 ﻿using CSharpFunctionalExtensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson;
-using StoryMicroservice.Core.DTOs;
 using StoryMicroservice.Core.Interface.Repository;
 using StoryMicroservice.Core.Model;
 using StoryMicroservice.Core.Services;
 using StoryMicroservice.DataAccess.Factories;
-using StoryMicroservice.DataAccess.Implementation;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using RegisteredUser = StoryMicroservice.Core.DTOs.RegisteredUser;
 
 namespace StoryMicroservice.Api.Controllers
@@ -30,6 +26,14 @@ namespace StoryMicroservice.Api.Controllers
             _userRepository = userRepository;
         }
 
+        [Authorize(Roles = "RegisteredUser")]
+        [HttpGet]
+        public IActionResult GetBy([FromQuery(Name = "is-taggable")] string isTaggable)
+        {
+            if (Request.Query.Count == 0) return BadRequest();
+            return Ok(userFactory.CreateUsers(_userRepository.GetBy(isTaggable)));
+        }
+
         [HttpPost]
         public IActionResult RegisterUser(RegisteredUser dto)
         {
@@ -39,14 +43,17 @@ namespace StoryMicroservice.Api.Controllers
             Result result = Result.Combine(username, firstName, lastName);
             if (result.IsFailure) return BadRequest();
 
-            if (userService.Create(userFactory.Create(dto, _userRepository.GetUsersById(dto.BlockedByUsers),
-                _userRepository.GetUsersById(dto.BlockedByUsers), _userRepository.GetUsersById(dto.Followers),
-                _userRepository.GetUsersById(dto.Following), _userRepository.GetUsersById(dto.CloseFriendTo)
-                , _userRepository.GetUsersById(dto.MyCloseFriends))).IsFailure)
+            if (userService.Create(userFactory.Create(dto, new List<Core.Model.RegisteredUser>(),
+                                          new List<Core.Model.RegisteredUser>(),
+                                          new List<Core.Model.RegisteredUser>(),
+                                          new List<Core.Model.RegisteredUser>(),
+                                          new List<Core.Model.RegisteredUser>(),
+                                          new List<Core.Model.RegisteredUser>())).IsFailure)
                 return BadRequest();
             return Created(this.Request.Path + "/" + dto.Id, "");
         }
 
+        [Authorize(Roles = "RegisteredUser")]
         [HttpPut("{id}")]
         public IActionResult Edit(RegisteredUser dto, [FromRoute] string id)
         {
@@ -63,6 +70,12 @@ namespace StoryMicroservice.Api.Controllers
                 , _userRepository.GetUsersById(dto.MyCloseFriends)));
 
             return NoContent();
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult GetById(Guid id)
+        {
+            return Ok(userFactory.Create(_userRepository.GetById(id).Value));
         }
     }
 }

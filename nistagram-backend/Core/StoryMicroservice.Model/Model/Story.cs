@@ -14,11 +14,13 @@ namespace StoryMicroservice.Core.Model
         public Description Description { get; }
         public RegisteredUser RegisteredUser { get; }
         public Location Location { get; }
+        public IEnumerable<RegisteredUser> SeenByUsers { get; }
         public IEnumerable<RegisteredUser> TaggedUsers { get; }
         public IEnumerable<HashTag> HashTags { get; }
 
         public Story(Guid id, ContentPath contentPath, DateTime timeStamp, Duration duration, Description description,
-            RegisteredUser registeredUser, Location location, IEnumerable<RegisteredUser> taggedUsers, IEnumerable<HashTag> hashTags)
+            RegisteredUser registeredUser, Location location,
+            IEnumerable<RegisteredUser> seenByUsers, IEnumerable<RegisteredUser> taggedUsers, IEnumerable<HashTag> hashTags)
         {
             Id = id;
             ContentPath = contentPath;
@@ -27,14 +29,23 @@ namespace StoryMicroservice.Core.Model
             Description = description;
             RegisteredUser = registeredUser;
             Location = location;
+            SeenByUsers = seenByUsers;
             TaggedUsers = taggedUsers;
             HashTags = hashTags;
         }
 
         public static Result<Story> Create(Guid id, ContentPath contentPath, DateTime timeStamp, Duration duration, Description description,
-            RegisteredUser registeredUser, Location location, IEnumerable<RegisteredUser> taggedUsers, IEnumerable<HashTag> hashTags)
+            RegisteredUser registeredUser, Location location,
+            IEnumerable<RegisteredUser> seenByUsers, IEnumerable<RegisteredUser> taggedUsers, IEnumerable<HashTag> hashTags)
         {
-            return Result.Success(new Story(id, contentPath, timeStamp, duration, description, registeredUser, location, taggedUsers, hashTags));
+            return Result.Success(new Story(id, contentPath, timeStamp, duration, description, registeredUser, location,
+                seenByUsers, taggedUsers, hashTags));
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Story story &&
+                   Id.Equals(story.Id);
         }
     }
 }

@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import DatePicker from "react-datepicker";
-import { editUser, editUserForPost, getLoggedUser } from "../../actions/actionsUser"
+import { editUser, editUserForPost, getLoggedUser, editUserForStory } from "../../actions/actionsUser"
 import { connect } from "react-redux"
+import { toast } from "react-toastify";
+import { withRouter } from "react-router-dom";
+import { compose } from "redux";
+import "react-toastify/dist/ReactToastify.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
 
 class EditProfile extends Component {
@@ -16,6 +20,17 @@ class EditProfile extends Component {
     username: "",
     bio: "",
     webSite: "",
+    profilePicturePath : "",
+    blockedUsers: [],
+    blockedByUsers: [],
+    mutedUsers: [],
+    mutedByUsers: [],
+    following: [],
+    followers: [],
+    myCloseFriends: [],
+    closeFriendTo: [],
+    isPrivate : false,
+    IsAcceptingTags : false
   };
 
   componentDidMount() {
@@ -33,7 +48,18 @@ class EditProfile extends Component {
         gender: loggedUser.gender,
         username: loggedUser.username,
         bio: loggedUser.bio,
-        webSite: loggedUser.websiteAddress
+        webSite: loggedUser.websiteAddress,
+        profilePicturePath: loggedUser.profilePicturePath,
+        blockedUsers: loggedUser.blockedUsers,
+        blockedByUsers: loggedUser.blockedByUsers,
+        mutedUsers: loggedUser.mutedUsers,
+        mutedByUsers: loggedUser.mutedByUsers,
+        following: loggedUser.following,
+        followers: loggedUser.followers,
+        closeFriendTo: loggedUser.closeFriendTo,
+        myCloseFriends: loggedUser.myCloseFriends,
+        isPrivate: loggedUser.isPrivate,
+        IsAcceptingTags: loggedUser.isAcceptingTags
     })
   }
 
@@ -230,8 +256,24 @@ class EditProfile extends Component {
 
   async edit() {
     debugger;
+    var successful = false;
+    successful = await this.props.editUserForStory({ 
+      "Id" : this.state.id,  
+      "Username" : this.state.username,
+      "FirstName" : this.state.firstName,
+      "LastName" : this.state.lastName,
+      "IsPrivate" : this.state.isPrivate,
+      "IsAcceptingTags" : this.state.IsAcceptingTags,
+      "ProfilePicturePath" : this.state.profilePicturePath,
+      "BlockedUsers" : this.state.blockedUsers,
+      "BlockedByUsers" : this.state.blockedByUsers,
+      "Following" : this.state.following,
+      "Followers" : this.state.followers,
+      "MyCloseFriends": this.state.myCloseFriends,
+      "CloseFriendTo" : this.state.closeFriendTo
+    })   
 
-    this.props.editUserForPost({ 
+    successful = await this.props.editUserForPost({ 
       "Id" : this.state.id,  
       "Username" : this.state.username,
       "EmailAddress" : this.state.email,
@@ -243,7 +285,7 @@ class EditProfile extends Component {
       "WebsiteAddress" : this.state.webSite,
       "Bio" : this.state.bio
     })   
-      this.props.editUser({ 
+    successful = await  this.props.editUser({ 
       "Id" : this.state.id,  
       "Username" : this.state.username,
       "EmailAddress" : this.state.email,
@@ -256,7 +298,16 @@ class EditProfile extends Component {
       "Bio" : this.state.bio
     })    
     
-     
+    if (successful === true) {
+      this.props.history.replace({
+        pathname: "/",
+      });
+    } else {
+      toast.configure();
+      toast.error("Unsuccessful edit!", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
   }
   
 
@@ -267,4 +318,5 @@ const mapStateToProps = (state) =>
 
     ({ loggedUser: state.loggedUser })
 
-export default connect(mapStateToProps, { editUser, editUserForPost, getLoggedUser })(EditProfile);
+export default compose(
+  withRouter,connect(mapStateToProps, { editUser, editUserForPost, getLoggedUser, editUserForStory }))(EditProfile);

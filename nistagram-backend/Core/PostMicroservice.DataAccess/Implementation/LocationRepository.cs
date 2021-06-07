@@ -49,9 +49,14 @@ namespace PostMicroservice.DataAccess.Implementation
 
             List<SqlParameter> parameters = new List<SqlParameter>() { parameterId };
 
-            return (Location)_locationTarget.ConvertSql(
-                ExecuteQuery(query, parameters).Rows[0]
-            );
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            if (dataTable.Rows.Count > 0)
+            {
+                return (Location)_locationTarget.ConvertSql(dataTable.Rows[0]);
+            }
+
+            return null;
         }
 
         public Location Save(Location obj)

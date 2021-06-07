@@ -16,12 +16,14 @@ namespace UserMicroservice.Api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment currentEnvironment)
         {
             Configuration = configuration;
+            CurrentEnvironment = currentEnvironment;
         }
 
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment CurrentEnvironment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)

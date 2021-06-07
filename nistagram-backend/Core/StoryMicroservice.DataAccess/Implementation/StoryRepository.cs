@@ -39,7 +39,9 @@ namespace StoryMicroservice.DataAccess.Implementation
             var storyDTO = _stories.Find<Story>(story => story.Id.Equals(id)).FirstOrDefault();
             if (storyDTO == null) return Maybe<Core.Model.Story>.None;
             var taggedUsers = _userRepository.GetUsersByDTO(storyDTO.TaggedUsers);
-            return storyFactory.Create(storyDTO, taggedUsers);
+            var seenByUsers = _userRepository.GetUsersByDTO(storyDTO.SeenByUsers);
+            var myCloseFriends = _userRepository.GetUsersById(storyDTO.RegisteredUser.MyCloseFriends);
+            return storyFactory.Create(storyDTO, seenByUsers, taggedUsers, myCloseFriends);
         }
 
         public Core.Model.Story Save(Core.Model.Story story)
@@ -59,7 +61,7 @@ namespace StoryMicroservice.DataAccess.Implementation
             _stories.DeleteOne(story => story.Id.Equals(storyIn.Id));
         }
 
-        public IEnumerable<Core.Model.Story> GetBy(string storyOwnerId, string followingId)
+        public IEnumerable<Core.Model.Story> GetBy(string storyOwnerId, string followingId, string last24h)
         {
             List<Core.Model.Story> stories = new List<Core.Model.Story>();
             if (!String.IsNullOrWhiteSpace(storyOwnerId))
@@ -69,6 +71,32 @@ namespace StoryMicroservice.DataAccess.Implementation
                 var user = _userRepository.GetById(new Guid(followingId)).Value;
                 var followingUsers = userFactory.CreateIds(user.Following);
                 stories.AddRange(storyFactory.CreateStories(_stories.Find(story => followingUsers.Contains(story.RegisteredUser.Id)).ToList()));
+                var tempStories = new List<Core.Model.Story>();
+                foreach (var story in stories) if (story.GetType().Name.Equals("CloseFriendStory"))
+                        tempStories.Add(Core.Model.CloseFriendStory.Create(story.Id, story.ContentPath,
+                     story.TimeStamp, story.Duration, story.Description, _userRepository.GetById(story.RegisteredUser.Id).Value,
+                     story.Location, story.SeenByUsers, story.TaggedUsers, story.HashTags).Value);
+                    else
+                        tempStories.Add(Core.Model.Story.Create(story.Id, story.ContentPath,
+                    story.TimeStamp, story.Duration, story.Description, _userRepository.GetById(story.RegisteredUser.Id).Value,
+                    story.Location, story.SeenByUsers, story.TaggedUsers, story.HashTags).Value);
+                stories = tempStories;
+            }
+            if (!String.IsNullOrWhiteSpace(last24h) && last24h.Equals("true"))
+            {
+                var expiredStories = storyFactory.CreateStories(_stories.Find(story => story.TimeStamp < DateTime.Now.AddDays(-1)).ToList());
+                foreach (var story in expiredStories) stories.Remove(story);
+                var tempStories = new List<Core.Model.Story>(stories);
+                if (!String.IsNullOrWhiteSpace(followingId))
+                {
+                    foreach (var story in tempStories) if (story.GetType().Name == "CloseFriendStory"
+                       && !userFactory.CreateIds(story.RegisteredUser.MyCloseFriends).Contains(followingId))
+                            stories.Remove(story);
+                }
+                tempStories = new List<Core.Model.Story>(stories);
+                foreach (var story in tempStories) if (userFactory.CreateIds(story.RegisteredUser.BlockedUsers).Contains(followingId) ||
+                        userFactory.CreateIds(story.RegisteredUser.BlockedByUsers).Contains(followingId))
+                        stories.Remove(story);
             }
             return stories;
         }

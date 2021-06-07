@@ -107,5 +107,22 @@ namespace PostMicroservice.DataAccess.Implementation
             return (from DataRow dataRow in dataTable.Rows
                     select (RegisteredUser)_registeredUserTarget.ConvertSql(dataRow)).ToList();
         }
+
+        public void AddProfilePicture(Guid id, string image)
+        {
+            StringBuilder queryBuilder = new StringBuilder("UPDATE dbo.RegisteredUser ");
+            queryBuilder.Append("SET profilePicturePath = @profilePicturePath ");
+            queryBuilder.Append("WHERE id = @id;");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = id },
+                 new SqlParameter("@profilePicturePath", SqlDbType.NVarChar) { Value = image },
+             };
+
+            ExecuteQuery(query, parameters);
+        }
     }
 }

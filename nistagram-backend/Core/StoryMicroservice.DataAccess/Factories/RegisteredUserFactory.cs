@@ -42,7 +42,8 @@ namespace StoryMicroservice.DataAccess.Factories
 
         public List<string> CreateIds(IEnumerable<Core.Model.RegisteredUser> registeredUsers)
         {
-            return registeredUsers.Select(registeredUser => registeredUser.Id.ToString()).ToList();
+            var test = registeredUsers.Select(registeredUser => registeredUser.Id.ToString()).ToList();
+            return test;
         }
 
         public List<RegisteredUser> CreateUsers(IEnumerable<Core.Model.RegisteredUser> registeredUsers)

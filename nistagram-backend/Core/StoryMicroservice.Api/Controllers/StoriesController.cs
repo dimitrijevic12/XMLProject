@@ -1,11 +1,9 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Mvc;
 using StoryMicroservice.Core.Interface.Repository;
-using StoryMicroservice.Core.Model;
 using StoryMicroservice.Core.Services;
 using StoryMicroservice.DataAccess.Factories;
 using System;
-using System.Collections.Generic;
 using System.Web.Http;
 using HttpGetAttribute = Microsoft.AspNetCore.Mvc.HttpGetAttribute;
 using HttpPostAttribute = System.Web.Http.HttpPostAttribute;
@@ -37,12 +35,14 @@ namespace StoryMicroservice.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult Search([FromQuery(Name = "story-owner-id")] string storyOwnerId, [FromQuery(Name = "following-id")] string followingId)
+        public IActionResult Search([FromQuery(Name = "story-owner-id")] string storyOwnerId, [FromQuery(Name = "following-id")] string followingId,
+            [FromQuery(Name = "last-24h")] string last24h)
         {
             if (Request.Query.Count == 0) return BadRequest();
-            return Ok(storyFactory.CreateStories(_storyRepository.GetBy(storyOwnerId, followingId)));
+            return Ok(storyFactory.CreateStories(_storyRepository.GetBy(storyOwnerId, followingId, last24h)));
         }
 
+        [Authorize(Roles = "RegisteredUser")]
         [HttpPost]
         public IActionResult Create(Story story)
         {
@@ -50,9 +50,13 @@ namespace StoryMicroservice.Api.Controllers
             story.TimeStamp = DateTime.Now;
             Maybe<Core.Model.RegisteredUser> registeredUser = _userRepository.GetById(new Guid(story.RegisteredUser.Id));
             if (registeredUser.HasNoValue) return BadRequest("Registered user doesn't exist.");
-            Maybe<Core.Model.Location> location = _locationRepository.GetById(new Guid(story.Location.Id));
-            if (location.HasNoValue) return BadRequest("Location doesn't exist.");
-            if (storyService.Create(storyFactory.Create(story, _userRepository.GetUsersByDTO(story.TaggedUsers))).IsFailure) return BadRequest();
+            if (story.Location.CityName != null || story.Location.Street != null || story.Location.Country != null)
+            {
+                Maybe<Core.Model.Location> location = _locationRepository.GetById(new Guid(story.Location.Id));
+                if (location.HasNoValue) return BadRequest("Location doesn't exist.");
+            }
+            if (storyService.Create(storyFactory.Create(story, _userRepository.GetUsersByDTO(story.SeenByUsers),
+                _userRepository.GetUsersByDTO(story.TaggedUsers), _userRepository.GetUsersById(story.RegisteredUser.MyCloseFriends))).IsFailure) return BadRequest();
             return Created(this.Request.Path + "/" + story.Id, "");
         }
     }

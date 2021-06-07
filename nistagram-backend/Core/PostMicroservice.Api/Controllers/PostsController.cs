@@ -75,8 +75,10 @@ namespace PostMicroservice.Api.Controllers
         [HttpGet("contents/{fileName}")]
         public IActionResult GetImage(string fileName)
         {
-            FileContentResult fileContentResult = File(_postService.GetImage(_env.WebRootPath, fileName),
-                "image/jpeg");
+            var content = _postService.GetImage(_env.WebRootPath, fileName);
+            if (content.Type.Equals(".mp4")) content.Type = "video/mp4";
+            else content.Type = "image/jpeg";
+            FileContentResult fileContentResult = File(content.Bytes, content.Type);
             return Ok(fileContentResult);
         }
 
@@ -86,8 +88,10 @@ namespace PostMicroservice.Api.Controllers
             List<FileContentResult> fileContentResults = new List<FileContentResult>();
             foreach (string contentPath in contentPaths)
             {
-                fileContentResults.Add(File(_postService.GetImage(_env.WebRootPath, contentPath),
-                "image/jpeg"));
+                var content = _postService.GetImage(_env.WebRootPath, contentPath);
+                if (content.Type.Equals(".mp4")) content.Type = "video/mp4";
+                else content.Type = "image/jpeg";
+                fileContentResults.Add(File(content.Bytes, content.Type));
             }
             return Ok(fileContentResults);
         }
@@ -141,19 +145,21 @@ namespace PostMicroservice.Api.Controllers
         }
 
         [Authorize(Roles = "RegisteredUser")]
-        [HttpPut("{id}/users/{userId}/likes"), ProducesResponseType(StatusCodes.Status204NoContent)]
+        [HttpPut("{id}/users/{userId}/likes")]
         public IActionResult Like([FromRoute] Guid id, [FromRoute] Guid userId)
         {
-            _postService.Like(id, userId);
-            return NoContent();
+            bool like = _postService.Like(id, userId);
+            if (like == false) return BadRequest();
+            return Ok();
         }
 
         [Authorize(Roles = "RegisteredUser")]
-        [HttpPut("{id}/users/{userId}/dislikes"), ProducesResponseType(StatusCodes.Status204NoContent)]
+        [HttpPut("{id}/users/{userId}/dislikes")]
         public IActionResult Dislike([FromRoute] Guid id, [FromRoute] Guid userId)
         {
-            _postService.Dislike(id, userId);
-            return NoContent();
+            bool dislike = _postService.Dislike(id, userId);
+            if (dislike == false) return BadRequest();
+            return Ok();
         }
 
         [Authorize(Roles = "RegisteredUser")]

@@ -29,5 +29,7 @@ namespace UserMicroservice.Core.Interface.Repository
         public IEnumerable<FollowRequest> GetFollowRequestsForUser(Guid id);
 
         public IEnumerable<RegisteredUser> GetFollowing(Guid id);
+
+        public void AddProfilePicture(Guid id, string image);
     }
 }

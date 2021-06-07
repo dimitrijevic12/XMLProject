@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import StoryCard from "../components/StoryCard";
+import StoryCard from "../components/Story/StoryCard";
 import Layout from "../layouts/Layout";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Card, CardBody, CardHeader } from "reactstrap";
@@ -16,6 +16,7 @@ import {
   dislikePost,
   commentPost,
 } from "../actions/actions";
+import { getStories } from "../actions/actionsStory";
 import moment from "moment";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -44,29 +45,33 @@ class HomePage extends Component {
     debugger;
     await this.props.getFollowing();
     await this.props.getPostsForFollowing(this.props.following);
+    await this.props.getStories();
+    var posts = [...this.props.posts];
+    posts.sort(function compare(a, b) {
+      var dateA = new Date(a.timeStamp);
+      var dateB = new Date(b.timeStamp);
+      return dateB - dateA;
+    });
+    await this.getAllImages(posts);
   }
   render() {
-    debugger;
     if (this.props.following === undefined) {
       return null;
     }
     if (this.props.posts === undefined) {
       return null;
     }
+    if (this.props.stories === undefined) {
+      return null;
+    }
 
     const posts = this.props.posts;
 
-    posts.sort(function compare(a, b) {
-      var dateA = new Date(a.timeStamp);
-      var dateB = new Date(b.timeStamp);
-      return dateB - dateA;
-    });
-
-    this.getAllImages(posts);
-
-    if (this.props.loadedImages === undefined) {
+    if (this.props.homePageImages === undefined) {
       return null;
     }
+
+    var users = this.getAllUsersFromStories();
 
     debugger;
     return (
@@ -85,140 +90,290 @@ class HomePage extends Component {
             onShowChange={this.displayModalCollection.bind(this)}
           />
         ) : null}
-        <StoryCard />
+        <StoryCard users={users} />
         <InfiniteScroll
           dataLength={posts.length}
           next={this.fetchMoreData}
           hasMore={true}
-          loader={<h4>Loading...</h4>}
+          loader={<h4></h4>}
         >
-          {posts.map((post, index) => (
-            <Card
-              style={{
-                marginTop: "40px",
-                marginBottom: "40px",
-                maxHeight: "900px",
-                height: "900px",
-              }}
-            >
-              <CardHeader>
-                <img
-                  src="images/nature.jpg"
-                  style={{ width: 32, height: 32, borderRadius: 50 }}
-                />
-                <span style={{ width: 15, display: "inline-block" }}></span>
-                {post.registeredUser.username}
-              </CardHeader>
-              <CardBody>
-                <img
-                  onClick={() => {
-                    this.displayModalPost(post);
-                  }}
-                  src={
-                    "data:image/jpg;base64," +
-                    this.props.loadedImages[index].fileContents
-                  }
+          {posts.length === 0 ? (
+            <div className="text-center pt-5">
+              <img src="/images/noposts.png" />
+              <br />
+              <h4>No Posts Yet</h4>
+            </div>
+          ) : (
+            posts.map((post, index) =>
+              this.props.homePageImages[index].contentType === "image/jpeg" ? (
+                <Card
                   style={{
-                    maxHeight: "530px",
-                    width: "100%",
-                    height: "100%",
+                    marginTop: "40px",
+                    marginBottom: "40px",
+                    maxHeight: "900px",
+                    height: "900px",
                   }}
-                />
-                <div>
-                  {post.hashTags.map((hashTag) => hashTag.hashTagText + " ")}
-                </div>
-                {post.description}
-                <br />
-                {moment(post.timeStamp).format("DD/MM/YYYY HH:mm")}
-                {Object.entries(post.location).length !== 0
-                  ? ", " +
-                    post.location.street +
-                    " " +
-                    post.location.cityName +
-                    ", " +
-                    post.location.country
-                  : ""}
-                <a
-                  style={{ float: "right" }}
-                  className="mr-4"
-                  href="javascript:;"
                 >
-                  Report
-                </a>
-                <br />
-                <br />
-                <FormControlLabel
-                  style={{ width: 24, height: 24 }}
-                  control={
-                    <Checkbox
-                      onClick={() => {
-                        this.likePost();
-                      }}
-                      icon={<FavoriteBorder />}
-                      checkedIcon={<Favorite />}
-                      name="checkedH"
+                  <CardHeader>
+                    <img
+                      src="images/nature.jpg"
+                      style={{ width: 32, height: 32, borderRadius: 50 }}
                     />
-                  }
-                />
-                <img
-                  style={{ width: 24, height: 24 }}
-                  onClick={() => {
-                    this.dislikePost();
-                  }}
-                  src="/images/dislike.png"
-                />
-                <span style={{ width: 15, display: "inline-block" }}></span>
-                <img src="/images/chat.png" />
-                <span style={{ width: 15, display: "inline-block" }}></span>
-                <img src="/images/send.png" />
-                <span style={{ width: 15, display: "inline-block" }}></span>
-                <img
-                  style={{ width: 24, height: 24 }}
-                  src="/images/collection.png"
-                  onClick={() => {
-                    this.displayModalCollection(post);
-                  }}
-                />
-                <br />
-                <br />
-                Likes:{" "}
-                <a href="javascript:;" className="mr-2">
-                  {post.likes.length}
-                </a>
-                Dislikes: <a href="javascript:;">{post.dislikes.length}</a>{" "}
-                <br />
-                <hr />
-                {this.state.comments.map((comment) => (
-                  <div>
-                    <img src="/images/user.png" /> {comment.commentText}
+                    <span style={{ width: 15, display: "inline-block" }}></span>
+                    {post.registeredUser.username}
+                  </CardHeader>
+                  <CardBody>
+                    <img
+                      onClick={() => {
+                        this.displayModalPost(post);
+                      }}
+                      src={
+                        "data:image/jpg;base64," +
+                        this.props.homePageImages[index].fileContents
+                      }
+                      style={{
+                        maxHeight: "530px",
+                        width: "100%",
+                        height: "100%",
+                      }}
+                    />
+                    <div>
+                      {post.hashTags.map(
+                        (hashTag) => hashTag.hashTagText + " "
+                      )}
+                    </div>
+                    {post.description}
+                    <br />
+                    {moment(post.timeStamp).format("DD/MM/YYYY HH:mm")}
+                    {Object.entries(post.location).length !== 0
+                      ? ", " +
+                        post.location.street +
+                        " " +
+                        post.location.cityName +
+                        ", " +
+                        post.location.country
+                      : ""}
+                    <a
+                      style={{ float: "right" }}
+                      className="mr-4"
+                      href="javascript:;"
+                    >
+                      Report
+                    </a>
+                    <br />
+                    <br />
+                    <FormControlLabel
+                      style={{ width: 24, height: 24 }}
+                      control={
+                        <Checkbox
+                          onClick={() => {
+                            this.likePost(post);
+                          }}
+                          icon={<FavoriteBorder />}
+                          checkedIcon={<Favorite />}
+                          name="checkedH"
+                        />
+                      }
+                    />
+                    <img
+                      style={{ width: 24, height: 24 }}
+                      onClick={() => {
+                        this.dislikePost(post);
+                      }}
+                      src="/images/dislike.png"
+                    />
+                    <span style={{ width: 15, display: "inline-block" }}></span>
+                    <img src="/images/chat.png" />
+                    <span style={{ width: 15, display: "inline-block" }}></span>
+                    <img src="/images/send.png" />
+                    <span style={{ width: 15, display: "inline-block" }}></span>
+                    <img
+                      style={{ width: 24, height: 24 }}
+                      src="/images/collection.png"
+                      onClick={() => {
+                        this.displayModalCollection(post);
+                      }}
+                    />
+                    <br />
+                    <br />
+                    Likes:{" "}
+                    <a href="javascript:;" className="mr-2">
+                      {post.likes.length}
+                    </a>
+                    Dislikes: <a href="javascript:;">{post.dislikes.length}</a>{" "}
                     <br />
                     <hr />
-                  </div>
-                ))}
-                <div style={{ float: "left" }}>
-                  <input
-                    name="commentText"
-                    value={this.state.commentText}
-                    onChange={this.handleChange}
-                    style={{ border: 0 }}
-                    type="text"
-                    placeholder="Add a comment..."
-                  />
-                </div>
-                <div style={{ float: "right" }}>
-                  <a
-                    onClick={() => {
-                      this.commentPost();
-                    }}
-                    href=""
-                  >
-                    {" "}
-                    Post{" "}
-                  </a>
-                </div>
-              </CardBody>
-            </Card>
-          ))}
+                    {post.comments.map((comment) => (
+                      <div>
+                        {comment.registeredUser.username +
+                          ": " +
+                          comment.commentText}
+                        <br />
+                        <hr />
+                      </div>
+                    ))}
+                    <div style={{ float: "left" }}>
+                      <input
+                        name="commentText"
+                        value={this.state.commentText}
+                        onChange={this.handleChange}
+                        style={{ border: 0 }}
+                        type="text"
+                        placeholder="Add a comment..."
+                      />
+                    </div>
+                    <div style={{ float: "right" }}>
+                      <a
+                        onClick={() => {
+                          this.commentPost(post);
+                        }}
+                        href=""
+                      >
+                        {" "}
+                        Post{" "}
+                      </a>
+                    </div>
+                  </CardBody>
+                </Card>
+              ) : (
+                <Card
+                  style={{
+                    marginTop: "40px",
+                    marginBottom: "40px",
+                    maxHeight: "900px",
+                    height: "900px",
+                  }}
+                >
+                  <CardHeader>
+                    <img
+                      src="images/nature.jpg"
+                      style={{ width: 32, height: 32, borderRadius: 50 }}
+                    />
+                    <span style={{ width: 15, display: "inline-block" }}></span>
+                    {post.registeredUser.username}
+                  </CardHeader>
+                  <CardBody>
+                    <video
+                      controls
+                      onClick={() => {
+                        this.displayModalPost(post);
+                      }}
+                      style={{
+                        maxHeight: "530px",
+                        width: "100%",
+                        height: "100%",
+                      }}
+                      className="mb-3"
+                    >
+                      <source
+                        src={
+                          "data:video/mp4;base64," +
+                          this.props.homePageImages[index].fileContents
+                        }
+                        type="video/mp4"
+                      ></source>
+                    </video>
+                    <div>
+                      {post.hashTags.map(
+                        (hashTag) => hashTag.hashTagText + " "
+                      )}
+                    </div>
+                    {post.description}
+                    <br />
+                    {moment(post.timeStamp).format("DD/MM/YYYY HH:mm")}
+                    {Object.entries(post.location).length !== 0
+                      ? ", " +
+                        post.location.street +
+                        " " +
+                        post.location.cityName +
+                        ", " +
+                        post.location.country
+                      : ""}
+                    <a
+                      style={{ float: "right" }}
+                      className="mr-4"
+                      href="javascript:;"
+                    >
+                      Report
+                    </a>
+                    <br />
+                    <br />
+                    <FormControlLabel
+                      style={{ width: 24, height: 24 }}
+                      control={
+                        <Checkbox
+                          onClick={() => {
+                            this.likePost(post);
+                          }}
+                          icon={<FavoriteBorder />}
+                          checkedIcon={<Favorite />}
+                          name="checkedH"
+                        />
+                      }
+                    />
+                    <img
+                      style={{ width: 24, height: 24 }}
+                      onClick={() => {
+                        this.dislikePost(post);
+                      }}
+                      src="/images/dislike.png"
+                    />
+                    <span style={{ width: 15, display: "inline-block" }}></span>
+                    <img src="/images/chat.png" />
+                    <span style={{ width: 15, display: "inline-block" }}></span>
+                    <img src="/images/send.png" />
+                    <span style={{ width: 15, display: "inline-block" }}></span>
+                    <img
+                      style={{ width: 24, height: 24 }}
+                      src="/images/collection.png"
+                      onClick={() => {
+                        this.displayModalCollection(post);
+                      }}
+                    />
+                    <br />
+                    <br />
+                    Likes:{" "}
+                    <a href="javascript:;" className="mr-2">
+                      {post.likes.length}
+                    </a>
+                    Dislikes: <a href="javascript:;">{post.dislikes.length}</a>{" "}
+                    <br />
+                    <hr />
+                    {post.comments.map((comment) => (
+                      <div>
+                        {comment.registeredUser.username +
+                          ": " +
+                          comment.commentText}
+                        <br />
+                        <hr />
+                      </div>
+                    ))}
+                    <div style={{ float: "left" }}>
+                      <input
+                        name="commentText"
+                        value={this.state.commentText}
+                        onChange={this.handleChange}
+                        style={{ border: 0 }}
+                        type="text"
+                        placeholder="Add a comment..."
+                      />
+                    </div>
+                    <div style={{ float: "right" }}>
+                      <a
+                        onClick={() => {
+                          this.commentPost(post);
+                        }}
+                        href=""
+                      >
+                        {" "}
+                        Post{" "}
+                      </a>
+                    </div>
+                  </CardBody>
+                </Card>
+              )
+            )
+          )}
         </InfiniteScroll>
       </Layout>
     );
@@ -236,7 +391,7 @@ class HomePage extends Component {
         });
   };
 
-  async likePost() {
+  async likePost(post) {
     debugger;
     if (this.state.liked == false) {
       this.setState((prevState) => {
@@ -248,13 +403,22 @@ class HomePage extends Component {
       });
     }
 
-    await this.props.likePost({
-      id: this.props.post.id,
+    var success = false;
+    success = await this.props.likePost({
+      id: post.id,
       userId: sessionStorage.getItem("userId"),
     });
-    this.setState({
-      liked: !this.state.liked,
-    });
+    if (success === true) {
+      this.setState({
+        liked: !this.state.liked,
+      });
+      window.location.href = "http://localhost:3000/";
+    } else {
+      toast.configure();
+      toast.error("You have already liked this post!", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
   }
 
   async getAllImages(posts) {
@@ -269,7 +433,7 @@ class HomePage extends Component {
     await this.props.getAllImages(paths);
   }
 
-  async dislikePost() {
+  async dislikePost(post) {
     debugger;
     if (this.state.disliked == false) {
       this.setState((prevState) => {
@@ -281,22 +445,32 @@ class HomePage extends Component {
       });
     }
 
-    await this.props.dislikePost({
-      id: this.props.post.id,
+    var success = false;
+
+    success = await this.props.dislikePost({
+      id: post.id,
       userId: sessionStorage.getItem("userId"),
     });
-    this.setState({
-      disliked: !this.state.disliked,
-    });
+    if (success === true) {
+      this.setState({
+        disliked: !this.state.disliked,
+      });
+      window.location.href = "http://localhost:3000/";
+    } else {
+      toast.configure();
+      toast.error("You have already disliked this post!", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
   }
 
-  async commentPost() {
+  async commentPost(post) {
     const comment = {
       CommentText: this.state.commentText,
       RegisteredUser: { id: sessionStorage.getItem("userId") },
     };
     debugger;
-    await this.props.commentPost({ id: this.props.post.id, comment: comment });
+    await this.props.commentPost({ id: post.id, comment: comment });
     toast.configure();
     toast.success("Commented successfully!", {
       position: toast.POSITION.TOP_RIGHT,
@@ -328,12 +502,24 @@ class HomePage extends Component {
       });
     }, 1500);
   };
+  getAllUsersFromStories = () => {
+    debugger;
+    var users = [];
+    this.props.stories.forEach((story) => {
+      if (!users.some((e) => e.id === story.registeredUser.id)) {
+        users.push(story.registeredUser);
+      }
+    });
+    debugger;
+    return users;
+  };
 }
 
 const mapStateToProps = (state) => ({
   following: state.following,
   posts: state.posts,
-  loadedImages: state.loadedImages,
+  homePageImages: state.homePageImages,
+  stories: state.stories,
 });
 
 export default compose(
@@ -345,5 +531,6 @@ export default compose(
     likePost,
     dislikePost,
     commentPost,
+    getStories,
   })
 )(HomePage);

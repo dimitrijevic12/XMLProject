@@ -1,35 +1,47 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import { Profile } from "react-instagram-ui-kit";
-import { getUserById } from "../../actions/actionsUser";
+import { getUserById, loadImageProfile } from "../../actions/actionsUser";
 import { connect } from "react-redux";
 
-class ProfileHeader extends Component {
-  state = {
-    user: this.props.user,
-    postsCount: this.props.postsCount,
-  };
+function ProfileHeader(props) {
+  const user = props.user;
+  const postsCount = props.postsCount;
 
-  render() {
-    debugger;
-    if (this.props.user === undefined) return null;
-    return (
-      <Profile
-        bio={this.props.user.bio}
-        pictureSrc="/images/download.jfif"
-        username={this.props.user.username}
-        followersData={[
-          this.state.postsCount,
-          this.props.user.followers === undefined
-            ? 0
-            : this.props.user.followers.length,
-          this.props.user.following === undefined
-            ? 0
-            : this.props.user.following.length,
-        ]}
-        fullname={this.props.user.firstName + " " + this.props.user.lastName}
-      />
-    );
+  useEffect(() => {
+    props.loadImageProfile(props.user.profilePicturePath);
+  }, [props.user]);
+
+  debugger;
+  if (props.user === undefined) return null;
+  if (props.user.profilePicturePath !== "") {
+    if (props.profileImage === undefined) return null;
   }
+
+  return (
+    <Profile
+      bio={props.user.bio}
+      pictureSrc={
+        props.profileImage !== undefined
+          ? "data:image/jpg;base64," + props.profileImage
+          : "/images/user.png"
+      }
+      username={props.user.username}
+      followersData={[
+        postsCount,
+        props.user.followers === undefined ? 0 : props.user.followers.length,
+        props.user.following === undefined ? 0 : props.user.following.length,
+      ]}
+      fullname={props.user.firstName + " " + props.user.lastName}
+    />
+  );
 }
 
-export default ProfileHeader;
+const mapStateToProps = (state) => ({
+  registeredUser: state.registeredUser,
+  profileImage: state.profileImage,
+});
+
+export default connect(mapStateToProps, {
+  getUserById,
+  loadImageProfile,
+})(ProfileHeader);

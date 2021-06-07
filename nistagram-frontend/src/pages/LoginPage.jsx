@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
+import Header from "../components/Common/Header";
 
 class LoginPage extends Component {
   state = {
@@ -22,6 +23,9 @@ class LoginPage extends Component {
           backgroundImage: `url(${background})`,
         }}
       >
+        <div className="container">
+          <Header />
+        </div>
         <div id="wrapper">
           <div class="main-content">
             <div class="l-part">
@@ -52,7 +56,10 @@ class LoginPage extends Component {
           </div>
           <div class="sub-content">
             <div class="s-part">
-              Don't have an account?<a href="#">Sign up</a>
+              Don't have an account?
+              <a onClick={this.register.bind(this)} href="javascript:;">
+                Sign up
+              </a>
             </div>
           </div>
         </div>
@@ -71,6 +78,12 @@ class LoginPage extends Component {
           [name]: value,
         });
   };
+
+  register() {
+    this.props.history.replace({
+      pathname: "/registration",
+    });
+  }
 
   async login() {
     debugger;

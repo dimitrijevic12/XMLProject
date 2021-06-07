@@ -37,7 +37,7 @@ namespace StoryMicroservice.DataAccess.Implementation
 
         public IEnumerable<Core.Model.Location> GetAll()
         {
-            throw new NotImplementedException();
+            return locationFactory.CreateLocations(_locations.Find(location => true).ToList());
         }
 
         public Maybe<Core.Model.Location> GetById(Guid id)

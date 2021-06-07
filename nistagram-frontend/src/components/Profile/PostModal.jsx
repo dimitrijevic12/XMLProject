@@ -16,6 +16,7 @@ import {
   commentPost,
   loadImages,
 } from "../../actions/actions";
+import { loadImageProfile } from "../../actions/actionsUser";
 import { connect } from "react-redux";
 import TaggedUsersModal from "./TaggedUsersModal";
 import { toast } from "react-toastify";
@@ -38,6 +39,7 @@ class PostModal extends Component {
   async componentDidMount() {
     debugger;
     await this.props.getPost(this.props.postId);
+    await this.props.loadImageProfile(this.props.personPhoto);
     this.setState({
       likesCount: this.props.post.likes.length,
       dislikesCount: this.props.post.dislikes.length,
@@ -60,6 +62,11 @@ class PostModal extends Component {
       this.props.loadedImage == undefined
     ) {
       return null;
+    }
+    debugger;
+    var profileImage = "/images/user.png";
+    if (this.props.profileImage !== undefined) {
+      profileImage = this.props.profileImage;
     }
     const post = this.props.post;
     const loadedImage = this.props.loadedImage;
@@ -88,10 +95,18 @@ class PostModal extends Component {
               onShowChange={this.displayModalCollection.bind(this)}
             />
           ) : null}
-          <img
-            src={"data:image/jpg;base64," + loadedImage}
-            style={{ width: 32, height: 32, borderRadius: 50 }}
-          />
+          {profileImage === "/images/user.png" ? (
+            <img
+              src={profileImage}
+              style={{ width: 32, height: 32, borderRadius: 50 }}
+            />
+          ) : (
+            <img
+              src={"data:image/jpg;base64," + profileImage}
+              style={{ width: 32, height: 32, borderRadius: 50 }}
+            />
+          )}
+
           <span style={{ width: 15, display: "inline-block" }}></span>
           {this.props.person}
         </ModalHeader>
@@ -99,28 +114,69 @@ class PostModal extends Component {
           <div>
             {post.contentPath == undefined ? (
               <Slide easing="ease">
-                {loadedImages.map((f, i) => (
-                  <div className="each-slide">
-                    <img
-                      onClick={() => {
-                        this.displayModalPost();
-                      }}
-                      src={"data:image/jpg;base64," + loadedImages[i]}
-                      style={{ width: 800, height: 320 }}
-                      className="mb-3"
-                    />
-                  </div>
-                ))}
+                {loadedImages.map((f, i) =>
+                  loadedImages[i].contentType === "image/jpeg" ? (
+                    <div className="each-slide">
+                      <img
+                        onClick={() => {
+                          this.displayModalPost();
+                        }}
+                        src={
+                          loadedImages[i].contentType === "image/jpeg"
+                            ? "data:image/jpg;base64," +
+                              loadedImages[i].fileContents
+                            : "data:video/mp4;base64," +
+                              loadedImages[i].fileContents
+                        }
+                        style={{ width: 800, height: 320 }}
+                        className="mb-3"
+                      />
+                    </div>
+                  ) : (
+                    <div className="each-slide">
+                      <video
+                        controls
+                        onClick={() => {
+                          this.displayModalPost();
+                        }}
+                        style={{ width: 800, height: 320 }}
+                        className="mb-3"
+                      >
+                        <source
+                          src={
+                            "data:video/mp4;base64," +
+                            loadedImages[i].fileContents
+                          }
+                          type="video/mp4"
+                        ></source>
+                      </video>
+                    </div>
+                  )
+                )}
               </Slide>
-            ) : (
+            ) : loadedImage.contentType === "image/jpeg" ? (
               <img
                 onClick={() => {
                   this.displayModalPost();
                 }}
-                src={"data:image/jpg;base64," + loadedImage}
+                src={"data:image/jpg;base64," + loadedImage.fileContents}
                 style={{ width: 800, height: 320 }}
                 className="mb-3"
               />
+            ) : (
+              <video
+                controls
+                onClick={() => {
+                  this.displayModalPost();
+                }}
+                style={{ width: 800, height: 320 }}
+                className="mb-3"
+              >
+                <source
+                  src={"data:video/mp4;base64," + loadedImage.fileContents}
+                  type="video/mp4"
+                ></source>
+              </video>
             )}
             <div>
               {post.hashTags.map((hashTag) => hashTag.hashTagText + " ")}
@@ -184,7 +240,8 @@ class PostModal extends Component {
             <hr />
             {this.state.comments.map((comment) => (
               <div>
-                <img src="/images/user.png" /> {comment.commentText}
+                <img src="/images/user.png" />{" "}
+                {comment.registeredUser.username + ": " + comment.commentText}
                 <br />
                 <hr />
               </div>
@@ -309,6 +366,7 @@ const mapStateToProps = (state) => ({
   post: state.post,
   loadedImage: state.loadedImage,
   loadedImages: state.loadedImages,
+  profileImage: state.profileImage,
 });
 
 export default connect(mapStateToProps, {
@@ -318,4 +376,5 @@ export default connect(mapStateToProps, {
   dislikePost,
   commentPost,
   loadImages,
+  loadImageProfile,
 })(PostModal);

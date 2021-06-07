@@ -17,6 +17,7 @@ namespace UserMicroservice.Core.Model
         public bool IsPrivate { get; }
         public bool IsAcceptingMessages { get; }
         public bool IsAcceptingTags { get; }
+        public ProfileImagePath ProfileImagePath { get; }
         public IEnumerable<RegisteredUser> BlockedUsers { get; }
         public IEnumerable<RegisteredUser> BlockedByUsers { get; }
         public IEnumerable<RegisteredUser> MutedUsers { get; }
@@ -33,7 +34,7 @@ namespace UserMicroservice.Core.Model
         protected RegisteredUser(Guid id, Username username, EmailAddress emailAddress, FirstName firstName,
             LastName lastName, DateTime dateOfBirth, PhoneNumber phoneNumber,
             Gender gender, WebsiteAddress websiteAddress, Bio bio, bool isPrivate, bool isAcceptingMessages, bool isAcceptingTags, Password password,
-            IEnumerable<RegisteredUser> blockedUsers, IEnumerable<RegisteredUser> blockedByUsers,
+            ProfileImagePath profileImagePath, IEnumerable<RegisteredUser> blockedUsers, IEnumerable<RegisteredUser> blockedByUsers,
             IEnumerable<RegisteredUser> mutedUsers, IEnumerable<RegisteredUser> mutedByUsers,
             IEnumerable<RegisteredUser> following, IEnumerable<RegisteredUser> followers,
             IEnumerable<RegisteredUser> myCloseFriends, IEnumerable<RegisteredUser> closeFriendTo)
@@ -50,6 +51,7 @@ namespace UserMicroservice.Core.Model
             IsAcceptingMessages = isAcceptingMessages;
             IsAcceptingTags = isAcceptingTags;
             Password = password;
+            ProfileImagePath = profileImagePath;
             BlockedUsers = blockedUsers;
             BlockedByUsers = blockedByUsers;
             MutedUsers = mutedUsers;
@@ -63,7 +65,7 @@ namespace UserMicroservice.Core.Model
         public static Result<RegisteredUser> Create(Guid id, Username username, EmailAddress emailAddress, FirstName firstName,
             LastName lastName, DateTime dateOfBirth, PhoneNumber phoneNumber,
             Gender gender, WebsiteAddress websiteAddress, Bio bio, bool isPrivate, bool isAcceptingMessages, bool isAcceptingTags, Password password,
-            IEnumerable<RegisteredUser> blockedUsers, IEnumerable<RegisteredUser> blockedByUsers,
+            ProfileImagePath profileImagePath, IEnumerable<RegisteredUser> blockedUsers, IEnumerable<RegisteredUser> blockedByUsers,
             IEnumerable<RegisteredUser> mutedUsers, IEnumerable<RegisteredUser> mutedByUsers,
             IEnumerable<RegisteredUser> following, IEnumerable<RegisteredUser> followers,
             IEnumerable<RegisteredUser> myCloseFriends, IEnumerable<RegisteredUser> closeFriendTo)
@@ -71,7 +73,7 @@ namespace UserMicroservice.Core.Model
             return Result.Success(new RegisteredUser(id, username, emailAddress, firstName,
             lastName, dateOfBirth, phoneNumber,
             gender, websiteAddress, bio, isPrivate, isAcceptingMessages, isAcceptingTags, password,
-            blockedUsers, blockedByUsers,
+            profileImagePath, blockedUsers, blockedByUsers,
             mutedUsers, mutedByUsers,
             following, followers,
             myCloseFriends, closeFriendTo

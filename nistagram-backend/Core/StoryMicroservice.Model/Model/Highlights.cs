@@ -6,20 +6,24 @@ namespace StoryMicroservice.Core.Model
 {
     public class Highlights
     {
-        private readonly Guid id;
-        private readonly HighlightName highlightName;
-        private readonly IEnumerable<Story> stories;
+        public Guid Id { get; }
+        public HighlightName HighlightName { get; }
 
-        public Highlights(Guid id, HighlightName highlightName, IEnumerable<Story> stories)
+        public IEnumerable<Story> Stories { get; }
+
+        public RegisteredUser RegisteredUser { get; }
+
+        public Highlights(Guid id, HighlightName highlightName, IEnumerable<Story> stories, RegisteredUser registeredUser)
         {
-            this.id = id;
-            this.highlightName = highlightName;
-            this.stories = stories;
+            Id = id;
+            HighlightName = highlightName;
+            Stories = stories;
+            RegisteredUser = registeredUser;
         }
 
-        public static Result<Highlights> Create(Guid id, HighlightName highlightName, IEnumerable<Story> stories)
+        public static Result<Highlights> Create(Guid id, HighlightName highlightName, IEnumerable<Story> stories, RegisteredUser registeredUser)
         {
-            return Result.Success(new Highlights(id, highlightName, stories));
+            return Result.Success(new Highlights(id, highlightName, stories, registeredUser));
         }
     }
 }

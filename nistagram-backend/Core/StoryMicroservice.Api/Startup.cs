@@ -9,6 +9,9 @@ using StoryMicroservice.DataAccess.Implementation;
 using StoryMicroservice.Core.Interface.Repository;
 using StoryMicroservice.Core.Services;
 using StoryMicroservice.DataAccess.Factories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace StoryMicroservice.Api
 {
@@ -34,20 +37,50 @@ namespace StoryMicroservice.Api
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IStoryRepository, StoryRepository>();
             services.AddScoped<ILocationRepository, LocationRepository>();
+            services.AddScoped<IHighlightRepositry, HighlightRepository>();
             services.AddScoped<RegisteredUserFactory>();
             services.AddScoped<LocationFactory>();
             services.AddScoped<HashTagFactory>();
             services.AddScoped<StoryFactory>();
+            services.AddScoped<HighlightFactory>();
             services.Configure<StoryDatabaseSettings>(
             Configuration.GetSection(nameof(StoryDatabaseSettings)));
 
             services.AddSingleton<IStoryDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<StoryDatabaseSettings>>().Value);
+
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+          .AddJwtBearer(options =>
+          {
+              options.TokenValidationParameters = new TokenValidationParameters
+              {
+                  ValidateIssuer = true,
+                  ValidateAudience = true,
+                  ValidateLifetime = true,
+                  ValidateIssuerSigningKey = true,
+                  ValidIssuer = Configuration["Jwt:Issuer"],
+                  ValidAudience = Configuration["Jwt:Issuer"],
+                  IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+              };
+          });
+
+            services.AddControllersWithViews()
+             .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            services.AddAuthorization();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors("MyPolicy");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -56,7 +89,7 @@ namespace StoryMicroservice.Api
             }
 
             app.UseHttpsRedirection();
-
+            app.UseAuthentication();
             app.UseRouting();
 
             app.UseAuthorization();
