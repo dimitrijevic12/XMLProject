@@ -104,3 +104,8 @@ export const GET_ACTIVE_STORIES = "getActiveStories";
 export const GET_ACTIVE_STORIES_ERROR = "getActiveStoriesError";
 export const GET_ALL_IMAGES_FOR_SEARCH = "getAllImagesForSearch";
 export const GET_ALL_IMAGES_FOR_SEARCH_ERROR = "getAllImagesForSearchError";
+export const GET_ALL_IMAGES_FOR_PROFILE = "getAllImagesForProfile";
+export const GET_ALL_IMAGES_FOR_PROFILE_ERROR = "getAllImagesForProfileError";
+export const GET_ALL_IMAGES_FOR_COLLECTION = "getAllImagesForCollection";
+export const GET_ALL_IMAGES_FOR_COLLECTION_ERROR =
+  "getAllImagesForCollectionError";

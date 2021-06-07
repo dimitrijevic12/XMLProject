@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { getPostsByCollectionAndUser } from "../../actions/actions";
+import {
+  getPostsByCollectionAndUser,
+  getAllImagesForCollection,
+} from "../../actions/actions";
 import PostModal from "../../components/Profile/PostModal";
 import {
   Grid,
@@ -16,19 +19,41 @@ function PostsInCollection(props) {
   const [showPostModal, setShowPostModal] = useState(false);
   const [username, setUsername] = useState("");
   const initialUser = {};
-  const posts = props.posts;
+  const collectionPosts = props.collectionPosts;
 
   useEffect(() => {
     props.getPostsByCollectionAndUser(props.location.pathname.slice(12));
   }, [props.location.pathname]);
 
-  const Posts = () =>
-    posts.map((post) => (
+  useEffect(() => {
+    debugger;
+    if (props.collectionPosts !== undefined)
+      getAllImages(props.collectionPosts);
+  }, [props.collectionPosts]);
+
+  const getAllImages = async (collectionPosts) => {
+    const paths = [];
+    for (var i = 0; i < collectionPosts.length; i++) {
+      if (collectionPosts[i].contentPath === undefined) {
+        paths.push(collectionPosts[i].contentPaths[0]);
+      } else {
+        paths.push(collectionPosts[i].contentPath);
+      }
+    }
+    await props.getAllImagesForCollection(paths);
+  };
+
+  const Posts = () => {
+    if (props.collectionImages === undefined) {
+      return null;
+    }
+    return collectionPosts.map((post, i) => (
       <Photo
-        src={"/images/download.jfif"}
+        src={"data:image/jpg;base64," + props.collectionImages[i].fileContents}
         onClick={() => displayModalPost(post)}
       />
     ));
+  };
 
   const displayModalPost = (post) => {
     if (post != undefined) {
@@ -38,7 +63,7 @@ function PostsInCollection(props) {
     setShowPostModal(!showPostModal);
   };
 
-  if (props.posts === undefined) {
+  if (props.collectionPosts === undefined) {
     return null;
   }
 
@@ -64,10 +89,14 @@ function PostsInCollection(props) {
 }
 
 const mapStateToProps = (state) => ({
-  posts: state.posts,
+  collectionPosts: state.collectionPosts,
+  collectionImages: state.collectionImages,
 });
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, { getPostsByCollectionAndUser })
+  connect(mapStateToProps, {
+    getPostsByCollectionAndUser,
+    getAllImagesForCollection,
+  })
 )(PostsInCollection);

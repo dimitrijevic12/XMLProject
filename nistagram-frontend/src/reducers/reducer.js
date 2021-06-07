@@ -51,6 +51,8 @@ import {
   GET_STORIES_FOR_ARCHIVE,
   GET_ACTIVE_STORIES,
   GET_ALL_IMAGES_FOR_SEARCH,
+  GET_ALL_IMAGES_FOR_PROFILE,
+  GET_ALL_IMAGES_FOR_COLLECTION,
 } from "../types/types";
 
 const initialState = {
@@ -82,6 +84,10 @@ const initialState = {
   activeStories: [],
   explorePosts: [],
   searchImages: [],
+  profileImages: [],
+  collectionImages: [],
+  collectionPosts: [],
+  profilePosts: [],
 };
 
 function reducer(state = initialState, action) {
@@ -89,7 +95,7 @@ function reducer(state = initialState, action) {
     case GET_POSTS_BY_USER_ID:
       return {
         ...state,
-        posts: action.payload,
+        profilePosts: action.payload,
       };
     case REGISTER_USER:
       return {
@@ -190,7 +196,7 @@ function reducer(state = initialState, action) {
     case GET_POSTS_BY_COLLECTION_AND_USER:
       return {
         ...state,
-        posts: action.payload,
+        collectionPosts: action.payload,
       };
     case GET_FOLLOW_REQUESTS:
       return {
@@ -312,6 +318,16 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         profileImage: action.payload,
+      };
+    case GET_ALL_IMAGES_FOR_PROFILE:
+      return {
+        ...state,
+        profileImages: action.payload,
+      };
+    case GET_ALL_IMAGES_FOR_COLLECTION:
+      return {
+        ...state,
+        collectionImages: action.payload,
       };
     default:
       return state;

@@ -1,5 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { getPostsByUserId, getAllImages } from "../../actions/actions";
+import {
+  getPostsByUserId,
+  getAllImagesForProfile,
+} from "../../actions/actions";
 import PostModal from "../../components/Profile/PostModal";
 import OptionsButton from "./OptionsButton";
 import MyOptionsButton from "./MyOptionsButton";
@@ -30,17 +33,22 @@ function PublicProfile(props) {
   const [followingId, setFollowingId] = useState(0);
   const user = props.user;
   const initialUser = {};
-  const posts = props.posts;
+  const profilePosts = props.profilePosts;
   const highlights = props.highlights;
 
   useEffect(async () => {
     await props.getUserById(props.location.pathname.slice(9));
     await props.getPostsByUserId(props.location.pathname.slice(9));
-    props.getHighlights(props.location.pathname.slice(9));
-    props.getActiveStoriesForUser(props.location.pathname.slice(9));
-    props.getStoriesForUser();
-    props.loadImagesForArchive();
+    await props.getHighlights(props.location.pathname.slice(9));
+    await props.getActiveStoriesForUser(props.location.pathname.slice(9));
+    await props.getStoriesForUser();
+    await props.loadImagesForArchive();
   }, [props.location.pathname]);
+
+  useEffect(() => {
+    debugger;
+    if (props.profilePosts !== undefined) getAllImages(props.profilePosts);
+  }, [props.profilePosts]);
 
   const follow = () => {
     props.followProfile({
@@ -49,23 +57,20 @@ function PublicProfile(props) {
     });
   };
 
-  const GetAllImages = (posts) => {
-    const getAllImages = useCallback(async () => {
-      const paths = [];
-      for (var i = 0; i < props.posts.length; i++) {
-        if (props.posts[i].contentPath === undefined) {
-          paths.push(props.posts[i].contentPaths[0]);
-        } else {
-          paths.push(props.posts[i].contentPath);
-        }
+  const getAllImages = async (profilePosts) => {
+    const paths = [];
+    for (var i = 0; i < profilePosts.length; i++) {
+      if (profilePosts[i].contentPath === undefined) {
+        paths.push(profilePosts[i].contentPaths[0]);
+      } else {
+        paths.push(profilePosts[i].contentPath);
       }
-      await props.getAllImages(paths);
-    });
-    return props.homePageImages;
+    }
+    await props.getAllImagesForProfile(paths);
   };
 
   const Posts = () => {
-    if (posts.length === 0) {
+    if (profilePosts.length === 0) {
       return (
         <div className="text-center pt-5">
           <img src="/images/noposts.png" />
@@ -89,15 +94,33 @@ function PublicProfile(props) {
         }
       }
     }
-    console.log(props.homePageImages);
     debugger;
+    if (props.profileImages === undefined) {
+      return null;
+    }
     if (shouldDisplayPosts === true) {
-      return posts.map((post) => (
-        <Photo
-          src={"/images/download.jfif"}
-          onClick={() => displayModalPost(post)}
-        />
-      ));
+      return profilePosts.map((post, i) =>
+        props.profileImages[i].contentType === "image/jpeg" ? (
+          <Photo
+            src={"data:image/jpg;base64," + props.profileImages[i].fileContents}
+            onClick={() => displayModalPost(post)}
+          />
+        ) : (
+          <video
+            controls
+            onClick={() => displayModalPost(post)}
+            style={{ width: 400, height: 370 }}
+            className="mb-3"
+          >
+            <source
+              src={
+                "data:video/mp4;base64," + props.profileImages[i].fileContents
+              }
+              type="video/mp4"
+            ></source>
+          </video>
+        )
+      );
     } else {
       return (
         <div className="text-center pt-5">
@@ -118,7 +141,7 @@ function PublicProfile(props) {
   };
 
   if (
-    props.posts === undefined ||
+    props.profilePosts === undefined ||
     user === undefined ||
     props.highlights === undefined ||
     props.stories === null
@@ -169,7 +192,7 @@ function PublicProfile(props) {
       <ProfileHeader
         user={user}
         userid={user.id}
-        postsCount={posts.length}
+        postsCount={profilePosts.length}
         location={props.location.pathname.slice(9)}
       />
       <ProfileStoryCard
@@ -194,11 +217,11 @@ function PublicProfile(props) {
 }
 
 const mapStateToProps = (state) => ({
-  posts: state.posts,
+  profilePosts: state.profilePosts,
   user: state.registeredUser,
-  homePageImages: state.homePageImages,
   highlights: state.highlights,
   stories: state.activeStories,
+  profileImages: state.profileImages,
 });
 
 export default compose(
@@ -207,10 +230,10 @@ export default compose(
     getPostsByUserId,
     getUserById,
     followProfile,
-    getAllImages,
     getHighlights,
     getActiveStoriesForUser,
     getStoriesForUser,
     loadImagesForArchive,
+    getAllImagesForProfile,
   })
 )(PublicProfile);

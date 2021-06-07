@@ -104,135 +104,275 @@ class HomePage extends Component {
               <h4>No Posts Yet</h4>
             </div>
           ) : (
-            posts.map((post, index) => (
-              <Card
-                style={{
-                  marginTop: "40px",
-                  marginBottom: "40px",
-                  maxHeight: "900px",
-                  height: "900px",
-                }}
-              >
-                <CardHeader>
-                  <img
-                    src="images/nature.jpg"
-                    style={{ width: 32, height: 32, borderRadius: 50 }}
-                  />
-                  <span style={{ width: 15, display: "inline-block" }}></span>
-                  {post.registeredUser.username}
-                </CardHeader>
-                <CardBody>
-                  <img
-                    onClick={() => {
-                      this.displayModalPost(post);
-                    }}
-                    src={
-                      "data:image/jpg;base64," +
-                      this.props.homePageImages[index].fileContents
-                    }
-                    style={{
-                      maxHeight: "530px",
-                      width: "100%",
-                      height: "100%",
-                    }}
-                  />
-                  <div>
-                    {post.hashTags.map((hashTag) => hashTag.hashTagText + " ")}
-                  </div>
-                  {post.description}
-                  <br />
-                  {moment(post.timeStamp).format("DD/MM/YYYY HH:mm")}
-                  {Object.entries(post.location).length !== 0
-                    ? ", " +
-                      post.location.street +
-                      " " +
-                      post.location.cityName +
-                      ", " +
-                      post.location.country
-                    : ""}
-                  <a
-                    style={{ float: "right" }}
-                    className="mr-4"
-                    href="javascript:;"
-                  >
-                    Report
-                  </a>
-                  <br />
-                  <br />
-                  <FormControlLabel
-                    style={{ width: 24, height: 24 }}
-                    control={
-                      <Checkbox
-                        onClick={() => {
-                          this.likePost(post);
-                        }}
-                        icon={<FavoriteBorder />}
-                        checkedIcon={<Favorite />}
-                        name="checkedH"
-                      />
-                    }
-                  />
-                  <img
-                    style={{ width: 24, height: 24 }}
-                    onClick={() => {
-                      this.dislikePost(post);
-                    }}
-                    src="/images/dislike.png"
-                  />
-                  <span style={{ width: 15, display: "inline-block" }}></span>
-                  <img src="/images/chat.png" />
-                  <span style={{ width: 15, display: "inline-block" }}></span>
-                  <img src="/images/send.png" />
-                  <span style={{ width: 15, display: "inline-block" }}></span>
-                  <img
-                    style={{ width: 24, height: 24 }}
-                    src="/images/collection.png"
-                    onClick={() => {
-                      this.displayModalCollection(post);
-                    }}
-                  />
-                  <br />
-                  <br />
-                  Likes:{" "}
-                  <a href="javascript:;" className="mr-2">
-                    {post.likes.length}
-                  </a>
-                  Dislikes: <a href="javascript:;">{post.dislikes.length}</a>{" "}
-                  <br />
-                  <hr />
-                  {post.comments.map((comment) => (
-                    <div>
-                      {comment.registeredUser.username +
-                        ": " +
-                        comment.commentText}
-                      <br />
-                      <hr />
-                    </div>
-                  ))}
-                  <div style={{ float: "left" }}>
-                    <input
-                      name="commentText"
-                      value={this.state.commentText}
-                      onChange={this.handleChange}
-                      style={{ border: 0 }}
-                      type="text"
-                      placeholder="Add a comment..."
+            posts.map((post, index) =>
+              this.props.homePageImages[index].contentType === "image/jpeg" ? (
+                <Card
+                  style={{
+                    marginTop: "40px",
+                    marginBottom: "40px",
+                    maxHeight: "900px",
+                    height: "900px",
+                  }}
+                >
+                  <CardHeader>
+                    <img
+                      src="images/nature.jpg"
+                      style={{ width: 32, height: 32, borderRadius: 50 }}
                     />
-                  </div>
-                  <div style={{ float: "right" }}>
-                    <a
+                    <span style={{ width: 15, display: "inline-block" }}></span>
+                    {post.registeredUser.username}
+                  </CardHeader>
+                  <CardBody>
+                    <img
                       onClick={() => {
-                        this.commentPost(post);
+                        this.displayModalPost(post);
                       }}
-                      href=""
+                      src={
+                        "data:image/jpg;base64," +
+                        this.props.homePageImages[index].fileContents
+                      }
+                      style={{
+                        maxHeight: "530px",
+                        width: "100%",
+                        height: "100%",
+                      }}
+                    />
+                    <div>
+                      {post.hashTags.map(
+                        (hashTag) => hashTag.hashTagText + " "
+                      )}
+                    </div>
+                    {post.description}
+                    <br />
+                    {moment(post.timeStamp).format("DD/MM/YYYY HH:mm")}
+                    {Object.entries(post.location).length !== 0
+                      ? ", " +
+                        post.location.street +
+                        " " +
+                        post.location.cityName +
+                        ", " +
+                        post.location.country
+                      : ""}
+                    <a
+                      style={{ float: "right" }}
+                      className="mr-4"
+                      href="javascript:;"
                     >
-                      {" "}
-                      Post{" "}
+                      Report
                     </a>
-                  </div>
-                </CardBody>
-              </Card>
-            ))
+                    <br />
+                    <br />
+                    <FormControlLabel
+                      style={{ width: 24, height: 24 }}
+                      control={
+                        <Checkbox
+                          onClick={() => {
+                            this.likePost(post);
+                          }}
+                          icon={<FavoriteBorder />}
+                          checkedIcon={<Favorite />}
+                          name="checkedH"
+                        />
+                      }
+                    />
+                    <img
+                      style={{ width: 24, height: 24 }}
+                      onClick={() => {
+                        this.dislikePost(post);
+                      }}
+                      src="/images/dislike.png"
+                    />
+                    <span style={{ width: 15, display: "inline-block" }}></span>
+                    <img src="/images/chat.png" />
+                    <span style={{ width: 15, display: "inline-block" }}></span>
+                    <img src="/images/send.png" />
+                    <span style={{ width: 15, display: "inline-block" }}></span>
+                    <img
+                      style={{ width: 24, height: 24 }}
+                      src="/images/collection.png"
+                      onClick={() => {
+                        this.displayModalCollection(post);
+                      }}
+                    />
+                    <br />
+                    <br />
+                    Likes:{" "}
+                    <a href="javascript:;" className="mr-2">
+                      {post.likes.length}
+                    </a>
+                    Dislikes: <a href="javascript:;">{post.dislikes.length}</a>{" "}
+                    <br />
+                    <hr />
+                    {post.comments.map((comment) => (
+                      <div>
+                        {comment.registeredUser.username +
+                          ": " +
+                          comment.commentText}
+                        <br />
+                        <hr />
+                      </div>
+                    ))}
+                    <div style={{ float: "left" }}>
+                      <input
+                        name="commentText"
+                        value={this.state.commentText}
+                        onChange={this.handleChange}
+                        style={{ border: 0 }}
+                        type="text"
+                        placeholder="Add a comment..."
+                      />
+                    </div>
+                    <div style={{ float: "right" }}>
+                      <a
+                        onClick={() => {
+                          this.commentPost(post);
+                        }}
+                        href=""
+                      >
+                        {" "}
+                        Post{" "}
+                      </a>
+                    </div>
+                  </CardBody>
+                </Card>
+              ) : (
+                <Card
+                  style={{
+                    marginTop: "40px",
+                    marginBottom: "40px",
+                    maxHeight: "900px",
+                    height: "900px",
+                  }}
+                >
+                  <CardHeader>
+                    <img
+                      src="images/nature.jpg"
+                      style={{ width: 32, height: 32, borderRadius: 50 }}
+                    />
+                    <span style={{ width: 15, display: "inline-block" }}></span>
+                    {post.registeredUser.username}
+                  </CardHeader>
+                  <CardBody>
+                    <video
+                      controls
+                      onClick={() => {
+                        this.displayModalPost(post);
+                      }}
+                      style={{
+                        maxHeight: "530px",
+                        width: "100%",
+                        height: "100%",
+                      }}
+                      className="mb-3"
+                    >
+                      <source
+                        src={
+                          "data:video/mp4;base64," +
+                          this.props.homePageImages[index].fileContents
+                        }
+                        type="video/mp4"
+                      ></source>
+                    </video>
+                    <div>
+                      {post.hashTags.map(
+                        (hashTag) => hashTag.hashTagText + " "
+                      )}
+                    </div>
+                    {post.description}
+                    <br />
+                    {moment(post.timeStamp).format("DD/MM/YYYY HH:mm")}
+                    {Object.entries(post.location).length !== 0
+                      ? ", " +
+                        post.location.street +
+                        " " +
+                        post.location.cityName +
+                        ", " +
+                        post.location.country
+                      : ""}
+                    <a
+                      style={{ float: "right" }}
+                      className="mr-4"
+                      href="javascript:;"
+                    >
+                      Report
+                    </a>
+                    <br />
+                    <br />
+                    <FormControlLabel
+                      style={{ width: 24, height: 24 }}
+                      control={
+                        <Checkbox
+                          onClick={() => {
+                            this.likePost(post);
+                          }}
+                          icon={<FavoriteBorder />}
+                          checkedIcon={<Favorite />}
+                          name="checkedH"
+                        />
+                      }
+                    />
+                    <img
+                      style={{ width: 24, height: 24 }}
+                      onClick={() => {
+                        this.dislikePost(post);
+                      }}
+                      src="/images/dislike.png"
+                    />
+                    <span style={{ width: 15, display: "inline-block" }}></span>
+                    <img src="/images/chat.png" />
+                    <span style={{ width: 15, display: "inline-block" }}></span>
+                    <img src="/images/send.png" />
+                    <span style={{ width: 15, display: "inline-block" }}></span>
+                    <img
+                      style={{ width: 24, height: 24 }}
+                      src="/images/collection.png"
+                      onClick={() => {
+                        this.displayModalCollection(post);
+                      }}
+                    />
+                    <br />
+                    <br />
+                    Likes:{" "}
+                    <a href="javascript:;" className="mr-2">
+                      {post.likes.length}
+                    </a>
+                    Dislikes: <a href="javascript:;">{post.dislikes.length}</a>{" "}
+                    <br />
+                    <hr />
+                    {post.comments.map((comment) => (
+                      <div>
+                        {comment.registeredUser.username +
+                          ": " +
+                          comment.commentText}
+                        <br />
+                        <hr />
+                      </div>
+                    ))}
+                    <div style={{ float: "left" }}>
+                      <input
+                        name="commentText"
+                        value={this.state.commentText}
+                        onChange={this.handleChange}
+                        style={{ border: 0 }}
+                        type="text"
+                        placeholder="Add a comment..."
+                      />
+                    </div>
+                    <div style={{ float: "right" }}>
+                      <a
+                        onClick={() => {
+                          this.commentPost(post);
+                        }}
+                        href=""
+                      >
+                        {" "}
+                        Post{" "}
+                      </a>
+                    </div>
+                  </CardBody>
+                </Card>
+              )
+            )
           )}
         </InfiniteScroll>
       </Layout>

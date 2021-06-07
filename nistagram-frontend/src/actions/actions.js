@@ -46,6 +46,10 @@ import {
   CHANGE_PROFILE_PICTURE_POSTMICROSERVICE_ERROR,
   GET_ALL_IMAGES_FOR_SEARCH,
   GET_ALL_IMAGES_FOR_SEARCH_ERROR,
+  GET_ALL_IMAGES_FOR_PROFILE,
+  GET_ALL_IMAGES_FOR_PROFILE_ERROR,
+  GET_ALL_IMAGES_FOR_COLLECTION,
+  GET_ALL_IMAGES_FOR_COLLECTION_ERROR,
 } from "../types/types";
 import axios from "axios";
 
@@ -137,7 +141,7 @@ export const getPost = (id) => async (dispatch) => {
               .then(function (response2) {
                 dispatch({
                   type: LOAD_IMAGES,
-                  payload: response2.data.fileContents,
+                  payload: response2.data,
                 });
               });
           }
@@ -155,7 +159,7 @@ export const getPost = (id) => async (dispatch) => {
             .then(function (response2) {
               dispatch({
                 type: LOAD_IMAGE,
-                payload: response2.data.fileContents,
+                payload: response2.data,
               });
             });
         }
@@ -178,7 +182,7 @@ export const loadImage = (path) => async (dispatch) => {
     );
     dispatch({
       type: LOAD_IMAGE,
-      payload: response.data.fileContents,
+      payload: response.data,
     });
   } catch (e) {
     dispatch({
@@ -198,7 +202,7 @@ export const loadImages = (path) => async (dispatch) => {
     );
     dispatch({
       type: LOAD_IMAGES,
-      payload: response.data.fileContents,
+      payload: response.data,
     });
   } catch (e) {
     dispatch({
@@ -567,3 +571,49 @@ export const changeProfilePicturePostmicroservice =
       });
     }
   };
+
+export const getAllImagesForProfile = (posts) => async (dispatch) => {
+  try {
+    const response = await axios.post(
+      "https://localhost:44355/api/posts/images",
+      posts,
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
+    );
+    dispatch({
+      type: GET_ALL_IMAGES_FOR_PROFILE,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_ALL_IMAGES_FOR_PROFILE_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const getAllImagesForCollection = (posts) => async (dispatch) => {
+  try {
+    const response = await axios.post(
+      "https://localhost:44355/api/posts/images",
+      posts,
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
+    );
+    dispatch({
+      type: GET_ALL_IMAGES_FOR_COLLECTION,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_ALL_IMAGES_FOR_COLLECTION_ERROR,
+      payload: console.log(e),
+    });
+  }
+};

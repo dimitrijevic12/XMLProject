@@ -1,4 +1,5 @@
-﻿using PostMicroservice.Core.Interface.Repository;
+﻿using PostMicroservice.Core.DTOs;
+using PostMicroservice.Core.Interface.Repository;
 using PostMicroservice.Core.Model;
 using PostMicroservice.Core.Model.File;
 using System;
@@ -46,10 +47,11 @@ namespace PostMicroservice.Core.Services
             return _postRepository.GetBy(id, "", "", "", "", "");
         }
 
-        public byte[] GetImage(string path, string fileName)
+        public Content GetImage(string path, string fileName)
         {
+            var type = Path.GetExtension(fileName);
             path = path + "\\images\\" + fileName;
-            return File.ReadAllBytes(path);
+            return new Content() { Bytes = System.IO.File.ReadAllBytes(path), Type = type };
         }
 
         public string ImageToSave(string path, FileModel file)

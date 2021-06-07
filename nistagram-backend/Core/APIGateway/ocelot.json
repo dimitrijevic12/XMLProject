@@ -483,7 +483,8 @@
         }
       ],
       "UpstreamPathTemplate": "/api/highlights/{id}/stories"
-    }{
+    },
+    {
       "DownstreamPathTemplate": "/api/users/contents",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
