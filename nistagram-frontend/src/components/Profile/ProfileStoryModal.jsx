@@ -22,7 +22,6 @@ function ProfileStoryModal(props) {
 
   const timeSince = (date) => {
     var correctDate = new Date(Date.parse(date));
-    correctDate.setHours(correctDate.getHours() - 2);
     var seconds = Math.floor(
       (new Date() - new Date(Date.parse(correctDate))) / 1000
     );
