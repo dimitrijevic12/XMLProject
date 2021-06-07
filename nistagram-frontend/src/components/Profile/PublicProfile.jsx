@@ -31,6 +31,7 @@ function PublicProfile(props) {
   const [username, setUsername] = useState("");
   const [followedById, setFollowedById] = useState(0);
   const [followingId, setFollowingId] = useState(0);
+  const [shouldDisplayStories, setShouldDisplayStories] = useState(false);
   const user = props.user;
   const initialUser = {};
   const profilePosts = props.profilePosts;
@@ -91,6 +92,20 @@ function PublicProfile(props) {
         for (var i = 0; i < user.followers.length; i++) {
           if (user.followers[i].id === sessionStorage.getItem("userId")) {
             shouldDisplayPosts = true;
+            break;
+          }
+        }
+      }
+    }
+    if (props.location.pathname.slice(9) === sessionStorage.getItem("userId")) {
+      setShouldDisplayStories(true);
+    } else {
+      if (user.isPrivate === false) {
+        setShouldDisplayStories(true);
+      } else {
+        for (var i = 0; i < user.followers.length; i++) {
+          if (user.followers[i].id === sessionStorage.getItem("userId")) {
+            setShouldDisplayStories(true);
             break;
           }
         }
@@ -200,11 +215,13 @@ function PublicProfile(props) {
         postsCount={profilePosts.length}
         location={props.location.pathname.slice(9)}
       />
-      <ProfileStoryCard
-        user={props.user}
-        activeStories={props.stories}
-        highlights={props.highlights}
-      />
+      {shouldDisplayStories ? (
+        <ProfileStoryCard
+          user={props.user}
+          activeStories={props.stories}
+          highlights={props.highlights}
+        />
+      ) : null}
       {props.location.pathname.slice(9) === sessionStorage.getItem("userId") ? (
         ""
       ) : (
