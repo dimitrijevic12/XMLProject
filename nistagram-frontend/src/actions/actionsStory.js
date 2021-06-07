@@ -34,7 +34,7 @@ import axios from "axios";
 
 export const getStories = () => async (dispatch) => {
   try {
-    const response = await axios.get("https://localhost:44355/api/stories", {
+    const response = await axios.get("http://localhost:44355/api/stories", {
       params: {
         "following-id": sessionStorage.getItem("userId"),
         "last-24h": "true",
@@ -59,7 +59,7 @@ export const getStories = () => async (dispatch) => {
 export const getStoriesForUser = () => async (dispatch) => {
   debugger;
   try {
-    const response = await axios.get("https://localhost:44355/api/stories", {
+    const response = await axios.get("http://localhost:44355/api/stories", {
       params: {
         "story-owner-id": sessionStorage.getItem("userId"),
       },
@@ -84,7 +84,7 @@ export const getStoriesForUser = () => async (dispatch) => {
 export const getActiveStoriesForUser = (userId) => async (dispatch) => {
   debugger;
   try {
-    const response = await axios.get("https://localhost:44355/api/stories", {
+    const response = await axios.get("http://localhost:44355/api/stories", {
       params: {
         "story-owner-id": userId,
         "last-24h": "true",
@@ -111,7 +111,7 @@ export const addStoryToHighlight = (highlightId, story) => async (dispatch) => {
   debugger;
   try {
     const response = await axios.post(
-      `https://localhost:44355/api/highlights/${highlightId}/stories`,
+      `http://localhost:44355/api/highlights/${highlightId}/stories`,
       story,
       {
         headers: {
@@ -134,7 +134,7 @@ export const addStoryToHighlight = (highlightId, story) => async (dispatch) => {
 
 export const getStoriesForModal = (userid) => async (dispatch) => {
   try {
-    const response = await axios.get("https://localhost:44355/api/stories", {
+    const response = await axios.get("http://localhost:44355/api/stories", {
       params: {
         "story-owner-id": userid,
         "last-24h": "true",
@@ -160,7 +160,7 @@ export const loadImagesStory = (images) => async (dispatch) => {
   try {
     debugger;
     const response = await axios.post(
-      "https://localhost:44355/api/contents/images",
+      "http://localhost:44355/api/contents/images",
       images,
       {
         headers: {
@@ -185,7 +185,7 @@ export const loadImagesForArchive = (images) => async (dispatch) => {
   try {
     debugger;
     const response = await axios.post(
-      "https://localhost:44355/api/contents/images",
+      "http://localhost:44355/api/contents/images",
       images,
       {
         headers: {
@@ -210,7 +210,7 @@ export const loadProfileImagesStory = (images) => async (dispatch) => {
   debugger;
   try {
     const response = await axios.post(
-      "https://localhost:44355/api/contents/images",
+      "http://localhost:44355/api/contents/images",
       images,
       {
         headers: {
@@ -235,7 +235,7 @@ export const getTaggableForStory = () => async (dispatch) => {
   debugger;
   try {
     const response = await axios.get(
-      "https://localhost:44355/api/users-for-story",
+      "http://localhost:44355/api/users-for-story",
       {
         params: { "is-taggable": "true" },
         headers: {
@@ -261,7 +261,7 @@ export const getTaggableForStory = () => async (dispatch) => {
 export const getLocationsForStory = () => async (dispatch) => {
   try {
     const response = await axios.get(
-      "https://localhost:44355/api/locations-for-story",
+      "http://localhost:44355/api/locations-for-story",
       {
         headers: {
           "Access-Control-Allow-Origin": "",
@@ -284,7 +284,7 @@ export const getLocationsForStory = () => async (dispatch) => {
 export const saveStory = (story) => async (dispatch) => {
   try {
     const response = await axios.post(
-      "https://localhost:44355/api/stories",
+      "http://localhost:44355/api/stories",
       story,
       {
         headers: {
@@ -308,7 +308,7 @@ export const saveStory = (story) => async (dispatch) => {
 export const getUserForStory = () => async (dispatch) => {
   try {
     const response = await axios.get(
-      "https://localhost:44355/api/users-for-story/" +
+      "http://localhost:44355/api/users-for-story/" +
         sessionStorage.getItem("userId"),
       {
         Authorization: "Bearer " + sessionStorage.getItem("token"),
@@ -337,7 +337,7 @@ const createFileContents = (data) => {
 
 export const getHighlights = (userId) => async (dispatch) => {
   try {
-    const response = await axios.get("https://localhost:44355/api/highlights", {
+    const response = await axios.get("http://localhost:44355/api/highlights", {
       params: {
         "owner-id": userId,
       },
@@ -361,7 +361,7 @@ export const getHighlights = (userId) => async (dispatch) => {
 export const createHighlight = (highlight) => async (dispatch) => {
   try {
     const response = await axios.post(
-      "https://localhost:44355/api/highlights",
+      "http://localhost:44355/api/highlights",
       highlight,
       {
         headers: {

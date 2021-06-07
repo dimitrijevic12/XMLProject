@@ -203,15 +203,17 @@ class HomePage extends Component {
                     Dislikes: <a href="javascript:;">{post.dislikes.length}</a>{" "}
                     <br />
                     <hr />
-                    {post.comments.map((comment) => (
-                      <div>
-                        {comment.registeredUser.username +
-                          ": " +
-                          comment.commentText}
-                        <br />
-                        <hr />
-                      </div>
-                    ))}
+                    <div>
+                      {post.comments.map((comment) => (
+                        <div>
+                          {comment.registeredUser.username +
+                            ": " +
+                            comment.commentText}
+                          <br />
+                          <hr />
+                        </div>
+                      ))}
+                    </div>
                     <div style={{ float: "left" }}>
                       <input
                         name="commentText"

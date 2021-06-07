@@ -525,7 +525,7 @@ export const getAllImages = (posts) => async (dispatch) => {
 export const getAllImagesForSearch = (posts) => async (dispatch) => {
   try {
     const response = await axios.post(
-      "https://localhost:44355/api/posts/images",
+      "http://localhost:44355/api/posts/images",
       posts,
       {
         headers: {
@@ -550,7 +550,7 @@ export const changeProfilePicturePostmicroservice =
     try {
       debugger;
       const response = await axios.put(
-        "https://localhost:44355/api/post-microservice/users/" +
+        "http://localhost:44355/api/post-microservice/users/" +
           sessionStorage.getItem("userId") +
           "/profile-picture/" +
           picture,
@@ -575,7 +575,7 @@ export const changeProfilePicturePostmicroservice =
 export const getAllImagesForProfile = (posts) => async (dispatch) => {
   try {
     const response = await axios.post(
-      "https://localhost:44355/api/posts/images",
+      "http://localhost:44355/api/posts/images",
       posts,
       {
         headers: {
@@ -598,7 +598,7 @@ export const getAllImagesForProfile = (posts) => async (dispatch) => {
 export const getAllImagesForCollection = (posts) => async (dispatch) => {
   try {
     const response = await axios.post(
-      "https://localhost:44355/api/posts/images",
+      "http://localhost:44355/api/posts/images",
       posts,
       {
         headers: {

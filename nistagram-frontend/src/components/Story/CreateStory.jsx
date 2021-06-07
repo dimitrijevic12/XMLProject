@@ -303,11 +303,12 @@ class CreateStory extends Component {
       try {
         const res = await axios({
           method: "post",
-          url: "https://localhost:44355/api/contents",
+          url: "http://localhost:44355/api/contents",
           data: formData,
           headers: {
             "Content-Type": "multipart/form-data",
             "Access-Control-Allow-Origin": "*",
+            Authorization: "Bearer " + sessionStorage.getItem("token"),
           },
         })
           .then(function (response) {

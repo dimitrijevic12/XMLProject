@@ -88,6 +88,8 @@ namespace StoryMicroservice.Api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "StoryMicroservice.Api v1"));
             }
 
+            app.UseStaticFiles();
+
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseRouting();

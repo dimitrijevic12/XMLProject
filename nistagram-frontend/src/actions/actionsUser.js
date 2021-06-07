@@ -202,7 +202,7 @@ export const editUserForPost = (user) => async (dispatch) => {
 export const editUserForStory = (user) => async (dispatch) => {
   try {
     const response = await axios.put(
-      "https://localhost:44355/api/story-users/" +
+      "http://localhost:44355/api/story-users/" +
         sessionStorage.getItem("userId"),
       user,
       {
@@ -357,7 +357,7 @@ export const changeProfilePictureUsermicroservice =
     try {
       debugger;
       const response = await axios.put(
-        "https://localhost:44355/api/users/" +
+        "http://localhost:44355/api/users/" +
           sessionStorage.getItem("userId") +
           "/profile-picture/" +
           picture,
@@ -383,7 +383,7 @@ export const loadImageProfile = (path) => async (dispatch) => {
   try {
     debugger;
     const response = await axios.get(
-      "https://localhost:44355/api/users/contents/" + path,
+      "http://localhost:44355/api/users/contents/" + path,
       {
         headers: { "Access-Control-Allow-Origin": "*" },
       }

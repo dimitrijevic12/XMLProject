@@ -2,18 +2,19 @@ FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 WORKDIR /app
 EXPOSE 80
 
+VOLUME ["/wwwroot"]
+
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
 COPY ["StoryMicroservice.Api/StoryMicroservice.Api.csproj", "StoryMicroservice.Api/"]
 COPY ["StoryMicroservice.DataAccess/StoryMicroservice.DataAccess.csproj", "StoryMicroservice.DataAccess/"]
 COPY ["StoryMicroservice.Model/StoryMicroservice.Core.csproj", "StoryMicroservice.Model/"]
-RUN dotnet restore "StoryMicroservice.Api/StoryMicroservice.Api.csproj"
-COPY . .
-WORKDIR "/src/StoryMicroservice.Api"
-RUN dotnet build "StoryMicroservice.Api.csproj" -c Release -o /app
+COPY . ./
+
+RUN dotnet build "/src/StoryMicroservice.Api/StoryMicroservice.Api.csproj" -c Release -o /app
 
 FROM build AS publish
-RUN dotnet publish "StoryMicroservice.Api.csproj" -c Release -o /app
+RUN dotnet publish "/src/StoryMicroservice.Api/StoryMicroservice.Api.csproj" -c Release -o /app
 
 FROM base AS final
 WORKDIR /app

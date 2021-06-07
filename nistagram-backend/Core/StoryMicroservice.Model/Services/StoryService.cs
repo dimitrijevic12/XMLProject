@@ -33,7 +33,7 @@ namespace StoryMicroservice.Core.Services
         {
             try
             {
-                using (Stream stream = new FileStream(path + "\\images\\" + file.FileName, FileMode.Create))
+                using (Stream stream = new FileStream(path + "/images/" + file.FileName, FileMode.Create))
                 {
                     file.FormFile.CopyTo(stream);
                 }
@@ -48,7 +48,7 @@ namespace StoryMicroservice.Core.Services
         public Content GetImage(string path, string fileName)
         {
             var type = Path.GetExtension(fileName);
-            path = path + "\\images\\" + fileName;
+            path = path + "/images/" + fileName;
             return new Content() { Bytes = System.IO.File.ReadAllBytes(path), Type = type };
         }
     }

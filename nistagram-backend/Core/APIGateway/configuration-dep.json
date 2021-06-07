@@ -1,400 +1,521 @@
 {
-    "Routes": [
-      {
-        "DownstreamPathTemplate": "/api/users/edit",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "core_postmicroservice-api_1",
-            "Port": 80
-          }
-        ],
-        "UpstreamPathTemplate": "/api/users/editforpost"
-      },
-      {
-        "DownstreamPathTemplate": "/api/users/{id}",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "core_storymicroservice-api_1",
-            "Port": 80
-          }
-        ],
-        "UpstreamPathTemplate": "/api/story-users/{id}"
-      },
-      {
-        "DownstreamPathTemplate": "/api/users/follow",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "core_usermicroservice-api_1",
-            "Port": 80
-          }
-        ],
-        "UpstreamPathTemplate": "/api/users/follow"
-      },
-      {
-        "DownstreamPathTemplate": "/api/users/followprivate",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "core_usermicroservice-api_1",
-            "Port": 80
-          }
-        ],
-        "UpstreamPathTemplate": "/api/users/followprivate"
-      },
-      {
-        "DownstreamPathTemplate": "/api/users/handlerequest",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "core_usermicroservice-api_1",
-            "Port": 80
-          }
-        ],
-        "UpstreamPathTemplate": "/api/users/handlerequest"
-      },
-      {
-        "DownstreamPathTemplate": "/api/posts/users/{id}",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "core_postmicroservice-api_1",
-            "Port": 80
-          }
-        ],
-        "UpstreamPathTemplate": "/api/posts/users/{id}"
-      },
-      {
-        "DownstreamPathTemplate": "/api/users?isTaggable={isTaggable}",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "core_postmicroservice-api_1",
-            "Port": 80
-          }
-        ],
-        "UpstreamPathTemplate": "/api/users?isTaggable={isTaggable}"
-      },
-      {
-        "DownstreamPathTemplate": "/api/users",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "core_usermicroservice-api_1",
-            "Port": 80
-          }
-        ],
-        "UpstreamPathTemplate": "/api/users"
-      },
-      {
-        "DownstreamPathTemplate": "/api/users/{id}",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "core_usermicroservice-api_1",
-            "Port": 80
-          }
-        ],
-        "UpstreamPathTemplate": "/api/users/{id}"
-      },
-      {
-        "DownstreamPathTemplate": "/api/users/edit",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "core_usermicroservice-api_1",
-            "Port": 80
-          }
-        ],
-        "UpstreamPathTemplate": "/api/users/edit"
-      },
-      {
-        "DownstreamPathTemplate": "/api/users",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "core_postmicroservice-api_1",
-            "Port": 80
-          }
-        ],
-        "UpstreamPathTemplate": "/api/usersforpost"
-      },
-      {
-        "DownstreamPathTemplate": "/api/posts/{id}",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "core_postmicroservice-api_1",
-            "Port": 80
-          }
-        ],
-        "UpstreamPathTemplate": "/api/posts/{id}"
-      },
-      {
-        "DownstreamPathTemplate": "/api/hashtags?text={text}",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "core_postmicroservice-api_1",
-            "Port": 80
-          }
-        ],
-        "UpstreamPathTemplate": "/api/hashtags?text={text}"
-      },
-      {
-        "DownstreamPathTemplate": "/api/locations?text={text}",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "core_postmicroservice-api_1",
-            "Port": 80
-          }
-        ],
-        "UpstreamPathTemplate": "/api/locations?text={text}"
-      },
-      {
-        "DownstreamPathTemplate": "/api/posts/images",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "core_postmicroservice-api_1",
-            "Port": 80
-          }
-        ],
-        "UpstreamPathTemplate": "/api/posts/images"
-      },
-      {
-        "DownstreamPathTemplate": "/api/posts/contents/{fileName}",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "core_postmicroservice-api_1",
-            "Port": 80
-          }
-        ],
-        "UpstreamPathTemplate": "/api/posts/contents/{fileName}"
-      },
-      {
-        "DownstreamPathTemplate": "/api/posts?{everything}",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "core_postmicroservice-api_1",
-            "Port": 80
-          }
-        ],
-        "UpstreamPathTemplate": "/api/posts?{everything}"
-      },
-      {
-        "DownstreamPathTemplate": "/api/posts/",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "core_postmicroservice-api_1",
-            "Port": 80
-          }
-        ],
-        "UpstreamPathTemplate": "/api/posts/"
-      },
-      {
-        "DownstreamPathTemplate": "/api/users/login",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "core_usermicroservice-api_1",
-            "Port": 80
-          }
-        ],
-        "UpstreamPathTemplate": "/api/users/login"
-      },
-      {
-        "DownstreamPathTemplate": "/api/posts/contents",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "core_postmicroservice-api_1",
-            "Port": 80
-          }
-        ],
-        "UpstreamPathTemplate": "/api/posts/contents"
-      },
-      {
-        "DownstreamPathTemplate": "/api/locations",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "core_postmicroservice-api_1",
-            "Port": 80
-          }
-        ],
-        "UpstreamPathTemplate": "/api/locations"
-      },
-      {
-        "DownstreamPathTemplate": "/api/users?{everything}",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "core_postmicroservice-api_1",
-            "Port": 80
-          }
-        ],
-        "UpstreamPathTemplate": "/api/users?{everything}"
-      },
-      {
-        "DownstreamPathTemplate": "/api/posts/{id}/users/{userId}/likes",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "core_postmicroservice-api_1",
-            "Port": 80
-          }
-        ],
-        "UpstreamPathTemplate": "/api/posts/{id}/users/{userId}/likes"
-      },
-      {
-        "DownstreamPathTemplate": "/api/posts/{id}/users/{userId}/dislikes",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "core_postmicroservice-api_1",
-            "Port": 80
-          }
-        ],
-        "UpstreamPathTemplate": "/api/posts/{id}/users/{userId}/dislikes"
-      },
-      {
-        "DownstreamPathTemplate": "/api/posts/{id}/comments",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "core_postmicroservice-api_1",
-            "Port": 80
-          }
-        ],
-        "UpstreamPathTemplate": "/api/posts/{id}/comments"
-      },
-      {
-        "DownstreamPathTemplate": "/api/users",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "core_storymicroservice-api_1",
-            "Port": 80
-          }
-        ],
-        "UpstreamPathTemplate": "/api/usersforstory"
-      },
-      {
-        "DownstreamPathTemplate": "/api/stories",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "core_storymicroservice-api_1",
-            "Port": 80
-          }
-        ],
-        "UpstreamPathTemplate": "/api/stories"
-      },
-      {
-        "DownstreamPathTemplate": "/api/contents",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "core_storymicroservice-api_1",
-            "Port": 80
-          }
-        ],
-        "UpstreamPathTemplate": "/api/contents"
-      },
-      {
-        "DownstreamPathTemplate": "/api/stories?{everything}",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "core_storymicroservice-api_1",
-            "Port": 80
-          }
-        ],
-        "UpstreamPathTemplate": "/api/stories?{everything}"
-      },
-      {
-        "DownstreamPathTemplate": "/api/collections?userId={userId}",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "core_postmicroservice-api_1",
-            "Port": 80
-          }
-        ],
-        "UpstreamPathTemplate": "/api/collections?userId={userId}"
-      },
-      {
-        "DownstreamPathTemplate": "/api/collections",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "core_postmicroservice-api_1",
-            "Port": 80
-          }
-        ],
-        "UpstreamPathTemplate": "/api/collections"
-      },
-      {
-        "DownstreamPathTemplate": "/api/collections/{id}/posts/{postId}",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "core_postmicroservice-api_1",
-            "Port": 80
-          }
-        ],
-        "UpstreamPathTemplate": "/api/collections/{id}/posts/{postId}"
-      },
-      {
-        "DownstreamPathTemplate": "/api/posts/collections/{collectionId}/users/{userId}",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "core_postmicroservice-api_1",
-            "Port": 80
-          }
-        ],
-        "UpstreamPathTemplate": "/api/posts/collections/{collectionId}/users/{userId}"
-      },
-      {
-        "DownstreamPathTemplate": "/api/users/{userId}/followRequests",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "core_usermicroservice-api_1",
-            "Port": 80
-          }
-        ],
-        "UpstreamPathTemplate": "/api/users/{userId}/followRequests"
-      },
-      {
-        "DownstreamPathTemplate": "/api/users/{userId}/following",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "core_usermicroservice-api_1",
-            "Port": 80
-          }
-        ],
-        "UpstreamPathTemplate": "/api/users/{userId}/following"
-      },
-      {
-        "DownstreamPathTemplate": "/api/posts/following",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "core_postmicroservice-api_1",
-            "Port": 80
-          }
-        ],
-        "UpstreamPathTemplate": "/api/posts/following"
-      }
-    ]
-  }
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/users/edit",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_postmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/editforpost"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_storymicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/story-users/{id}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/follow",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_usermicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/follow"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/followprivate",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_usermicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/followprivate"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/handlerequest",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_usermicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/handlerequest"
+    },
+    {
+      "DownstreamPathTemplate": "/api/posts/users/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_postmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/posts/users/{id}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users?isTaggable={isTaggable}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_postmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users?isTaggable={isTaggable}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_usermicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_usermicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/{id}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/edit",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_usermicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/edit"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_postmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/usersforpost"
+    },
+    {
+      "DownstreamPathTemplate": "/api/posts/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_postmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/posts/{id}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/hashtags?text={text}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_postmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/hashtags?text={text}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/locations?text={text}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_postmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/locations?text={text}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/posts/images",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_postmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/posts/images"
+    },
+    {
+      "DownstreamPathTemplate": "/api/posts/contents/{fileName}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_postmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/posts/contents/{fileName}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/posts?{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_postmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/posts?{everything}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/posts/",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_postmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/posts/"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/login",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_usermicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/login"
+    },
+    {
+      "DownstreamPathTemplate": "/api/posts/contents",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_postmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/posts/contents"
+    },
+    {
+      "DownstreamPathTemplate": "/api/locations",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_postmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/locations"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users?{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_postmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users?{everything}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/posts/{id}/users/{userId}/likes",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_postmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/posts/{id}/users/{userId}/likes"
+    },
+    {
+      "DownstreamPathTemplate": "/api/posts/{id}/users/{userId}/dislikes",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_postmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/posts/{id}/users/{userId}/dislikes"
+    },
+    {
+      "DownstreamPathTemplate": "/api/posts/{id}/comments",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_postmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/posts/{id}/comments"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_storymicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/usersforstory"
+    },
+    {
+      "DownstreamPathTemplate": "/api/stories",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_storymicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/stories"
+    },
+    {
+      "DownstreamPathTemplate": "/api/contents",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_storymicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/contents"
+    },
+    {
+      "DownstreamPathTemplate": "/api/contents/images",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_storymicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/contents/images"
+    },
+    {
+      "DownstreamPathTemplate": "/api/contents/{fileName}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_storymicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/contents/{fileName}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/stories?{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_storymicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/stories?{everything}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/collections?userId={userId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_postmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/collections?userId={userId}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/collections",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_postmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/collections"
+    },
+    {
+      "DownstreamPathTemplate": "/api/collections/{id}/posts/{postId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_postmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/collections/{id}/posts/{postId}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/posts/collections/{collectionId}/users/{userId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_postmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/posts/collections/{collectionId}/users/{userId}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/{userId}/followRequests",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_usermicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/{userId}/followRequests"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/{userId}/following",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_usermicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/{userId}/following"
+    },
+    {
+      "DownstreamPathTemplate": "/api/posts/following",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_postmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/posts/following"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_storymicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users-for-story/{id}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users?{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_storymicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users-for-story?{everything}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/locations",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_storymicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/locations-for-story"
+    },
+    {
+      "DownstreamPathTemplate": "/api/highlights",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_storymicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/highlights"
+    },
+    {
+      "DownstreamPathTemplate": "/api/highlights?{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_storymicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/highlights?{everything}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/highlights/{id}/stories",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_storymicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/highlights/{id}/stories"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/contents",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_usermicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/contents"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/{id}/profile-picture/{image}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_usermicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/{id}/profile-picture/{image}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/{id}/profile-picture/{image}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_postmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/post-microservice/users/{id}/profile-picture/{image}"
+    }
+  ]
+}
