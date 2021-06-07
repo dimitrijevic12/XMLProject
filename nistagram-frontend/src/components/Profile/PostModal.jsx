@@ -238,14 +238,16 @@ class PostModal extends Component {
             Dislikes: <a href="javascript:;">{this.state.dislikesCount}</a>{" "}
             <br />
             <hr />
-            {this.state.comments.map((comment) => (
-              <div>
-                <img src="/images/user.png" />{" "}
-                {comment.registeredUser.username + ": " + comment.commentText}
-                <br />
-                <hr />
-              </div>
-            ))}
+            <div style={{ overflow: "scroll" }}>
+              {this.state.comments.map((comment) => (
+                <div>
+                  <img src="/images/user.png" />{" "}
+                  {comment.registeredUser.username + ": " + comment.commentText}
+                  <br />
+                  <hr />
+                </div>
+              ))}
+            </div>
             <div style={{ float: "left" }}>
               <input
                 name="commentText"

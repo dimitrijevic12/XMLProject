@@ -13,13 +13,13 @@ class StoryList extends Component {
 
   render() {
     debugger;
-    if (this.props.profileImages === undefined) return null;
+    if (this.props.storyProfileImages === undefined) return null;
     return (
       <div className="story-wrapper">
         <Story first={true} item={{}} i={0} />
         {this.props.items.map((item, i) => (
           <Story
-            profileImage={this.props.profileImages[i]}
+            profileImage={this.props.storyProfileImages[i]}
             item={item}
             first={false}
           />
@@ -38,7 +38,7 @@ class StoryList extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  profileImages: state.storyProfileImages,
+  storyProfileImages: state.storyProfileImages,
 });
 
 export default connect(mapStateToProps, { loadProfileImagesStory })(StoryList);

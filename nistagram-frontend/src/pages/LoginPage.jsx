@@ -94,9 +94,7 @@ class LoginPage extends Component {
     });
 
     if (successful === true) {
-      this.props.history.replace({
-        pathname: "/",
-      });
+      window.location = "/";
     } else {
       toast.configure();
       toast.error("Unsuccessful login!", {
