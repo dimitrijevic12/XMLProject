@@ -51,11 +51,13 @@ namespace UserMicroservice.Core.Services
 
         public User FindUser(String username, String password)
         {
-            if (_adminRepository.GetByUsername(username).HasValue)
+            var admin = _adminRepository.GetByUsername(username);
+            if (admin.HasValue && admin.Value.Password.ToString().Equals(password))
             {
                 return _adminRepository.GetByUsername(username).Value;
             }
-            if (_userRepository.GetByUsername(username).HasNoValue) return null;
+            var user = _userRepository.GetByUsername(username);
+            if (user.HasNoValue || !user.Value.Password.ToString().Equals(password)) return null;
             return _userRepository.GetRoleByUsername(username).Value;
         }
 

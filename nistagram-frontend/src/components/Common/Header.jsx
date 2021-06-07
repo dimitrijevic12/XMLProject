@@ -8,7 +8,7 @@ class Header extends Component {
   render() {
     return (
       <header className="pt-4">
-        <b>Ništagram</b>
+        <img height="50" src="/images/nistagram-logo.PNG" />
         <span style={{ width: 300, display: "inline-block" }}></span>
         <span style={{ width: 300, display: "inline-block" }}>
           <SearchBar></SearchBar>
