@@ -40,7 +40,6 @@ namespace StoryMicroservice.Api.Controllers
             return Ok(fileContentResult);
         }
 
-        [Authorize(Roles = "RegisteredUser")]
         [HttpPost("images")]
         public IActionResult GetImages(List<string> contentPaths)
         {

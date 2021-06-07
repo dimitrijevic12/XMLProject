@@ -1,11 +1,9 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Mvc;
 using StoryMicroservice.Core.Interface.Repository;
-using StoryMicroservice.Core.Model;
 using StoryMicroservice.Core.Services;
 using StoryMicroservice.DataAccess.Factories;
 using System;
-using System.Collections.Generic;
 using System.Web.Http;
 using HttpGetAttribute = Microsoft.AspNetCore.Mvc.HttpGetAttribute;
 using HttpPostAttribute = System.Web.Http.HttpPostAttribute;
@@ -44,6 +42,7 @@ namespace StoryMicroservice.Api.Controllers
             return Ok(storyFactory.CreateStories(_storyRepository.GetBy(storyOwnerId, followingId, last24h)));
         }
 
+        [Authorize(Roles = "RegisteredUser")]
         [HttpPost]
         public IActionResult Create(Story story)
         {

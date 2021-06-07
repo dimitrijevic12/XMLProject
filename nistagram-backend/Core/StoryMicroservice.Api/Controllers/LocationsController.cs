@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using StoryMicroservice.Core.Interface.Repository;
 using StoryMicroservice.DataAccess.Factories;
 using System;
@@ -21,6 +22,7 @@ namespace StoryMicroservice.Api.Controllers
             this.locationFactory = locationFactory;
         }
 
+        [Authorize(Roles = "RegisteredUser")]
         public IActionResult GetAll()
         {
             return Ok(locationFactory.CreateLocations(_locationRepository.GetAll()));
