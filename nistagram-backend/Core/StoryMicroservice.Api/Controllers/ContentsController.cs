@@ -23,7 +23,7 @@ namespace StoryMicroservice.Api.Controllers
             _env = env;
         }
 
-        //[Authorize(Roles = "RegisteredUser")]
+        [Authorize(Roles = "RegisteredUser")]
         [HttpPost]
         public IActionResult SaveImg([FromForm] FileModel file)
         {
