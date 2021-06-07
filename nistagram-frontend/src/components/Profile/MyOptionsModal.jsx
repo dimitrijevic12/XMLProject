@@ -21,6 +21,7 @@ class MyOptionsModal extends Component {
   }
 
   render() {
+    debugger;
     return (
       <Modal
         style={{
@@ -58,6 +59,7 @@ class MyOptionsModal extends Component {
           </button>
           <hr />
           <button
+            disabled={this.props.allStories.length === 0}
             onClick={() =>
               this.displayModalProfileStory(sessionStorage.getItem("userId"))
             }

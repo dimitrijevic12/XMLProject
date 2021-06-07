@@ -39,7 +39,10 @@ export const getStories = () => async (dispatch) => {
         "following-id": sessionStorage.getItem("userId"),
         "last-24h": "true",
       },
-      headers: { "Access-Control-Allow-Origin": "" },
+      headers: {
+        "Access-Control-Allow-Origin": "",
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
+      },
     });
     dispatch({
       type: GET_STORIES,
@@ -60,7 +63,10 @@ export const getStoriesForUser = () => async (dispatch) => {
       params: {
         "story-owner-id": sessionStorage.getItem("userId"),
       },
-      headers: { "Access-Control-Allow-Origin": "" },
+      headers: {
+        "Access-Control-Allow-Origin": "",
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
+      },
     });
     debugger;
     dispatch({
@@ -83,8 +89,12 @@ export const getActiveStoriesForUser = (userId) => async (dispatch) => {
         "story-owner-id": userId,
         "last-24h": "true",
       },
-      headers: { "Access-Control-Allow-Origin": "" },
+      headers: {
+        "Access-Control-Allow-Origin": "",
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
+      },
     });
+    debugger;
     dispatch({
       type: GET_ACTIVE_STORIES,
       payload: response.data,
@@ -104,7 +114,10 @@ export const addStoryToHighlight = (highlightId, story) => async (dispatch) => {
       `https://localhost:44355/api/highlights/${highlightId}/stories`,
       story,
       {
-        headers: { "Access-Control-Allow-Origin": "" },
+        headers: {
+          "Access-Control-Allow-Origin": "",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
       }
     );
     dispatch({
@@ -126,7 +139,10 @@ export const getStoriesForModal = (userid) => async (dispatch) => {
         "story-owner-id": userid,
         "last-24h": "true",
       },
-      headers: { "Access-Control-Allow-Origin": "" },
+      headers: {
+        "Access-Control-Allow-Origin": "",
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
+      },
     });
     dispatch({
       type: GET_STORIES_FOR_MODAL,
@@ -142,6 +158,7 @@ export const getStoriesForModal = (userid) => async (dispatch) => {
 
 export const loadImagesStory = (images) => async (dispatch) => {
   try {
+    debugger;
     const response = await axios.post(
       "https://localhost:44355/api/contents/images",
       images,
@@ -166,6 +183,7 @@ export const loadImagesStory = (images) => async (dispatch) => {
 
 export const loadImagesForArchive = (images) => async (dispatch) => {
   try {
+    debugger;
     const response = await axios.post(
       "https://localhost:44355/api/contents/images",
       images,
@@ -214,20 +232,25 @@ export const loadProfileImagesStory = (images) => async (dispatch) => {
 };
 
 export const getTaggableForStory = () => async (dispatch) => {
+  debugger;
   try {
     const response = await axios.get(
       "https://localhost:44355/api/users-for-story",
       {
         params: { "is-taggable": "true" },
-        headers: { "Access-Control-Allow-Origin": "" },
-        Authorization: "Bearer " + sessionStorage.getItem("token"),
+        headers: {
+          "Access-Control-Allow-Origin": "",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
       }
     );
+    debugger;
     dispatch({
       type: GET_TAGGABLE_USERS_FOR_STORY,
       payload: response.data,
     });
   } catch (e) {
+    debugger;
     dispatch({
       type: GET_TAGGABLE_USERS_FOR_STORY_ERROR,
       payload: console.log(e),
@@ -240,8 +263,10 @@ export const getLocationsForStory = () => async (dispatch) => {
     const response = await axios.get(
       "https://localhost:44355/api/locations-for-story",
       {
-        headers: { "Access-Control-Allow-Origin": "" },
-        Authorization: "Bearer " + sessionStorage.getItem("token"),
+        headers: {
+          "Access-Control-Allow-Origin": "",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
       }
     );
     dispatch({

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using StoryMicroservice.Core.Model.FileModel;
 using StoryMicroservice.Core.Services;
@@ -22,6 +23,7 @@ namespace StoryMicroservice.Api.Controllers
             _env = env;
         }
 
+        //[Authorize(Roles = "RegisteredUser")]
         [HttpPost]
         public IActionResult SaveImg([FromForm] FileModel file)
         {

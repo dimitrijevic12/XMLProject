@@ -42,11 +42,6 @@ class ProfileStory extends Component {
             paddingRight: "51px",
             backgroundPosition: "center",
           }}
-          key={
-            this.props.first === true
-              ? this.props.activeStories[0].id
-              : this.props.highlight.id
-          }
           onClick={() => {
             debugger;
             if (this.props.first === true) this.displayModalProfileStory(0);

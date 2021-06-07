@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StoryMicroservice.Core.DTOs;
 using StoryMicroservice.Core.Interface.Repository;
@@ -34,6 +35,7 @@ namespace StoryMicroservice.Api.Controllers
             return Ok(highlightFactory.CreateHighlights(_highlightRepository.GetBy(ownerId)));
         }
 
+        [Authorize(Roles = "RegisteredUser")]
         [HttpPost]
         public IActionResult Save(Highlights highlight)
         {
@@ -44,6 +46,7 @@ namespace StoryMicroservice.Api.Controllers
             return Created(this.Request.Path + "/" + highlight.Id, "");
         }
 
+        [Authorize(Roles = "RegisteredUser")]
         [HttpPost("{id}/stories")]
         public IActionResult AddStory([FromRoute] string id, Core.DTOs.Story story)
         {
