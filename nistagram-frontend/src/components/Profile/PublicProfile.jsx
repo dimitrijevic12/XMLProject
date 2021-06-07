@@ -38,7 +38,8 @@ function PublicProfile(props) {
     props.getPostsByUserId(props.location.pathname.slice(9));
     props.getHighlights(props.location.pathname.slice(9));
     props.getActiveStoriesForUser(props.location.pathname.slice(9));
-    props.getStoriesForUser();
+    if (sessionStorage.getItem("userId") === props.location.pathname.slice(9))
+      props.getStoriesForUser();
     props.loadImagesForArchive();
   }, [props.location.pathname]);
 
