@@ -19,8 +19,4 @@
     <ProjectReference Include="..\PostMicroservice.Model\PostMicroservice.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\images\" />
-  </ItemGroup>
-
 </Project>

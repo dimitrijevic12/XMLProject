@@ -16,11 +16,23 @@ class NavigationBar extends Component {
     const NavBar = () => {
       return (
         <React.Fragment>
-          <NavLink exact to="/">
+          <NavLink
+            exact
+            to="/"
+            onClick={() => {
+              window.location = "/";
+            }}
+          >
             <img src="/images/home.png" />
           </NavLink>
           <span style={{ width: 25, display: "inline-block" }}></span>
-          <NavLink exact to="/post">
+          <NavLink
+            exact
+            to="/post"
+            onClick={() => {
+              window.location = "/post";
+            }}
+          >
             <img src="/images/addpost.png" />
           </NavLink>
           <span style={{ width: 25, display: "inline-block" }}></span>
@@ -28,11 +40,23 @@ class NavigationBar extends Component {
             <img src="/images/send.png" />
           </NavLink>
           <span style={{ width: 25, display: "inline-block" }}></span>
-          <NavLink exact to="/requests">
+          <NavLink
+            exact
+            to="/requests"
+            onClick={() => {
+              window.location = "/requests";
+            }}
+          >
             <img src="/images/heart.png" />
           </NavLink>
           <span style={{ width: 25, display: "inline-block" }}></span>
-          <NavLink exact to={"/profile/" + sessionStorage.getItem("userId")}>
+          <NavLink
+            exact
+            to={"/profile/" + sessionStorage.getItem("userId")}
+            onClick={() => {
+              window.location = "/profile/" + sessionStorage.getItem("userId");
+            }}
+          >
             <img
               src="/images/user.png"
               style={{ width: 24, height: 24, borderRadius: 50 }}
@@ -42,7 +66,14 @@ class NavigationBar extends Component {
             <DropdownToggle nav caret></DropdownToggle>
             <DropdownMenu right>
               <DropdownItem>
-                <NavLink to="/edit">Edit profile</NavLink>
+                <NavLink
+                  to="/edit"
+                  onClick={() => {
+                    window.location = "/edit";
+                  }}
+                >
+                  Edit profile
+                </NavLink>
               </DropdownItem>
               <DropdownItem divider />
               <DropdownItem>
