@@ -63,8 +63,10 @@ class PostModal extends Component {
     ) {
       return null;
     }
-    if (this.props.profileImage === undefined) {
-      return null;
+    debugger;
+    var profileImage = "/images/user.png";
+    if (this.props.profileImage !== undefined) {
+      profileImage = this.props.profileImage;
     }
     const post = this.props.post;
     const loadedImage = this.props.loadedImage;
@@ -93,10 +95,18 @@ class PostModal extends Component {
               onShowChange={this.displayModalCollection.bind(this)}
             />
           ) : null}
-          <img
-            src={"data:image/jpg;base64," + this.props.profileImage}
-            style={{ width: 32, height: 32, borderRadius: 50 }}
-          />
+          {profileImage === "/images/user.png" ? (
+            <img
+              src={profileImage}
+              style={{ width: 32, height: 32, borderRadius: 50 }}
+            />
+          ) : (
+            <img
+              src={"data:image/jpg;base64," + profileImage}
+              style={{ width: 32, height: 32, borderRadius: 50 }}
+            />
+          )}
+
           <span style={{ width: 15, display: "inline-block" }}></span>
           {this.props.person}
         </ModalHeader>
