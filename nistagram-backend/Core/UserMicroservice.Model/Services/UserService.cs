@@ -117,7 +117,7 @@ namespace UserMicroservice.Core.Services
         public Result HandleFollowRequest(Guid id, Guid followedById, Guid followingId, String type, Boolean is_approved, Guid newId)
         {
             _userRepository.HandleFollowRequest(id, type, is_approved);
-            if (is_approved && type == "approv")
+            if (is_approved && type == "approve")
             {
                 _userRepository.Follow(newId, followedById, followingId);
                 return Result.Success();

@@ -24,6 +24,8 @@ import {
   loadImagesForArchive,
 } from "../../actions/actionsStory";
 import ProfileStoryCard from "./ProfileStoryCard";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function PublicProfile(props) {
   const [postId, setPostId] = useState("");
@@ -58,6 +60,7 @@ function PublicProfile(props) {
       FollowedById: sessionStorage.getItem("userId"),
       FollowingId: props.location.pathname.slice(9),
     });
+    window.location = "/profile/" + props.location.pathname.slice(9);
   };
 
   const getAllImages = async (profilePosts) => {
