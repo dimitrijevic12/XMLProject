@@ -26,13 +26,13 @@ function ProfileProfileStoryList(props) {
     return images;
   };
 
-  if (props.profileImages === undefined || props.highlights === undefined)
+  if (props.storyProfileImages === undefined || props.highlights === undefined)
     return null;
   debugger;
   var activeStoriesLength = props.activeStories.length > 0 ? 1 : 0;
   if (
     activeStoriesLength + props.highlights.length >
-    props.profileImages.length
+    props.storyProfileImages.length
   ) {
     return null;
   }
@@ -45,7 +45,7 @@ function ProfileProfileStoryList(props) {
           user={props.user}
           first={true}
           activeStories={props.activeStories}
-          profileImage={props.profileImages[0].fileContents}
+          profileImage={props.storyProfileImages[0].fileContents}
           highlights={props.highlights}
           i={0}
         />
@@ -53,7 +53,7 @@ function ProfileProfileStoryList(props) {
 
       {props.highlights.map((highlight, i) => (
         <ProfileStory
-          profileImage={props.profileImages[i + 1].fileContents}
+          profileImage={props.storyProfileImages[i + 1].fileContents}
           highlight={highlight}
           first={false}
         />
@@ -63,7 +63,7 @@ function ProfileProfileStoryList(props) {
 }
 
 const mapStateToProps = (state) => ({
-  profileImages: state.storyProfileImages,
+  storyProfileImages: state.storyProfileImages,
 });
 
 export default compose(

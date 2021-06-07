@@ -129,7 +129,7 @@ function PublicProfile(props) {
           <video
             controls
             onClick={() => displayModalPost(post)}
-            style={{ width: 400, height: 370 }}
+            style={{ width: 367, height: 370 }}
             className="mb-3"
           >
             <source

@@ -308,6 +308,7 @@ class CreateStory extends Component {
           headers: {
             "Content-Type": "multipart/form-data",
             "Access-Control-Allow-Origin": "*",
+            Authorization: "Bearer " + sessionStorage.getItem("token"),
           },
         })
           .then(function (response) {

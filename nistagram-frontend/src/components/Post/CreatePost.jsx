@@ -14,6 +14,7 @@ class CreatePost extends Component {
     file: null,
     fileName: "",
     fileUrl: null,
+    fileType: "",
     description: "",
     location: undefined,
     locations: [],
@@ -60,10 +61,16 @@ class CreatePost extends Component {
           <div className="d-inline-flex w-50">
             <div class="form-group w-100 pr-5">
               <input type="file" onChange={this.choosePost} multiple />
-              <img
-                src={this.state.fileUrl}
-                style={{ width: 500, height: 300 }}
-              />
+              {this.state.fileType === "video/mp4" ? (
+                <video width="500" height="300" controls>
+                  <source src={this.state.fileUrl} type="video/mp4" />
+                </video>
+              ) : (
+                <img
+                  src={this.state.fileUrl}
+                  style={{ width: 500, height: 300 }}
+                />
+              )}
             </div>
           </div>
           <div className="d-inline-flex w-50">
@@ -190,9 +197,7 @@ class CreatePost extends Component {
       HashTags: hashTagsObjects,
       Taggedusers: this.state.taggedUsers,
     });
-    this.props.history.replace({
-      pathname: "/profile/" + sessionStorage.getItem("userId"),
-    });
+    window.location = "/profile/" + sessionStorage.getItem("userId");
   }
 
   handleChangeUser = (e) => {
@@ -215,6 +220,7 @@ class CreatePost extends Component {
     this.setState({
       fileUrl: URL.createObjectURL(event.target.files[0]),
       fileUrls: result,
+      fileType: files[0].type,
     });
 
     var contentPaths = [];
@@ -236,6 +242,7 @@ class CreatePost extends Component {
           headers: {
             "Content-Type": "multipart/form-data",
             "Access-Control-Allow-Origin": "*",
+            Authorization: "Bearer " + sessionStorage.getItem("token"),
           },
         })
           .then(function (response) {

@@ -203,15 +203,23 @@ class HomePage extends Component {
                     Dislikes: <a href="javascript:;">{post.dislikes.length}</a>{" "}
                     <br />
                     <hr />
-                    {post.comments.map((comment) => (
-                      <div>
-                        {comment.registeredUser.username +
-                          ": " +
-                          comment.commentText}
-                        <br />
-                        <hr />
-                      </div>
-                    ))}
+                    <div
+                      style={{
+                        overflow: "scroll",
+                        height: 50,
+                        maxHeight: 50,
+                      }}
+                    >
+                      {post.comments.map((comment) => (
+                        <div>
+                          {comment.registeredUser.username +
+                            ": " +
+                            comment.commentText}
+                          <br />
+                          <hr />
+                        </div>
+                      ))}
+                    </div>
                     <div style={{ float: "left" }}>
                       <input
                         name="commentText"
@@ -339,15 +347,17 @@ class HomePage extends Component {
                     Dislikes: <a href="javascript:;">{post.dislikes.length}</a>{" "}
                     <br />
                     <hr />
-                    {post.comments.map((comment) => (
-                      <div>
-                        {comment.registeredUser.username +
-                          ": " +
-                          comment.commentText}
-                        <br />
-                        <hr />
-                      </div>
-                    ))}
+                    <div style={{ overflow: "scroll" }}>
+                      {post.comments.map((comment) => (
+                        <div>
+                          {comment.registeredUser.username +
+                            ": " +
+                            comment.commentText}
+                          <br />
+                          <hr />
+                        </div>
+                      ))}
+                    </div>
                     <div style={{ float: "left" }}>
                       <input
                         name="commentText"

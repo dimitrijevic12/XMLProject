@@ -79,9 +79,7 @@ class CollectionsMenu extends Component {
   }
 
   view(f) {
-    this.props.history.replace({
-      pathname: "/collection/" + f.id,
-    });
+    window.location = "/collection/" + f.id;
   }
 }
 
