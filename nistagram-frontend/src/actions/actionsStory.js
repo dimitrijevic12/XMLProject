@@ -341,8 +341,10 @@ export const getHighlights = (userId) => async (dispatch) => {
       params: {
         "owner-id": userId,
       },
-      headers: { "Access-Control-Allow-Origin": "" },
-      Authorization: "Bearer " + sessionStorage.getItem("token"),
+      headers: {
+        "Access-Control-Allow-Origin": "",
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
+      },
     });
     dispatch({
       type: GET_HIGHLIGHTS,
@@ -362,8 +364,10 @@ export const createHighlight = (highlight) => async (dispatch) => {
       "https://localhost:44355/api/highlights",
       highlight,
       {
-        headers: { "Access-Control-Allow-Origin": "" },
-        Authorization: "Bearer " + sessionStorage.getItem("token"),
+        headers: {
+          "Access-Control-Allow-Origin": "",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
       }
     );
     dispatch({

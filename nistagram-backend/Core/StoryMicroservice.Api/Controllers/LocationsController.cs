@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using StoryMicroservice.Core.Interface.Repository;
 using StoryMicroservice.DataAccess.Factories;
 
@@ -17,7 +18,7 @@ namespace StoryMicroservice.Api.Controllers
             this.locationFactory = locationFactory;
         }
 
-        //[Authorize(Roles = "RegisteredUser")]
+        [Authorize(Roles = "RegisteredUser")]
         [HttpGet]
         public IActionResult GetAll()
         {
