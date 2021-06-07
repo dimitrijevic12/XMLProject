@@ -15,8 +15,4 @@
 		<ProjectReference Include="..\StoryMicroservice.DataAccess\StoryMicroservice.DataAccess.csproj" />
 		<ProjectReference Include="..\StoryMicroservice.Model\StoryMicroservice.Core.csproj" />
 	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="wwwroot\images\" />
-	</ItemGroup>
 </Project>

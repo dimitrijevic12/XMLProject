@@ -100,6 +100,9 @@ function PublicProfile(props) {
     if (props.profileImages === undefined) {
       return null;
     }
+    if (props.profileImages.length === 0) {
+      return null;
+    }
     if (shouldDisplayPosts === true) {
       return profilePosts.map((post, i) =>
         props.profileImages[i].contentType === "image/jpeg" ? (
