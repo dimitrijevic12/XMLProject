@@ -109,3 +109,5 @@ export const GET_ALL_IMAGES_FOR_PROFILE_ERROR = "getAllImagesForProfileError";
 export const GET_ALL_IMAGES_FOR_COLLECTION = "getAllImagesForCollection";
 export const GET_ALL_IMAGES_FOR_COLLECTION_ERROR =
   "getAllImagesForCollectionError";
+export const CREATE_NEW_COLLECTION = "createNewCollection";
+export const CREATE_NEW_COLLECTION_ERROR = "createNewCollectionError";

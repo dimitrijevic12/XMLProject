@@ -65,13 +65,18 @@ class HomePage extends Component {
       return null;
     }
 
-    const posts = this.props.posts;
-
     if (this.props.homePageImages === undefined) {
       return null;
     }
 
     var users = this.getAllUsersFromStories();
+
+    var posts = [...this.props.posts];
+    posts.sort(function compare(a, b) {
+      var dateA = new Date(a.timeStamp);
+      var dateB = new Date(b.timeStamp);
+      return dateB - dateA;
+    });
 
     debugger;
     return (

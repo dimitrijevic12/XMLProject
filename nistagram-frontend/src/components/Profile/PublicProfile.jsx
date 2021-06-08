@@ -76,15 +76,6 @@ function PublicProfile(props) {
   };
 
   const Posts = () => {
-    if (profilePosts.length === 0) {
-      return (
-        <div className="text-center pt-5">
-          <img src="/images/noposts.png" />
-          <br />
-          <h4>No Posts Yet</h4>
-        </div>
-      );
-    }
     var shouldDisplayPosts = false;
     if (props.location.pathname.slice(9) === sessionStorage.getItem("userId")) {
       shouldDisplayPosts = true;
@@ -114,6 +105,26 @@ function PublicProfile(props) {
         }
       }
     }
+    if (shouldDisplayPosts === true) {
+      if (profilePosts.length === 0) {
+        return (
+          <div className="text-center pt-5">
+            <img src="/images/noposts.png" />
+            <br />
+            <h4>No Posts Yet</h4>
+          </div>
+        );
+      }
+    } else {
+      return (
+        <div className="text-center pt-5">
+          <img src="/images/padlock.png" />
+          <br />
+          <h4>This Account Is Private</h4>
+        </div>
+      );
+    }
+
     debugger;
     if (props.profileImages === undefined) {
       return null;
