@@ -42,7 +42,8 @@ namespace PostMicroservice.Api.Controllers
             Guid id = Guid.NewGuid();
             if (_collectionRepository.Save(Collection.Create(id, collectionName.Value,
                    new List<Post>(), registeredUser).Value) == null) return BadRequest();
-            return Created(this.Request.Path + "/" + id, "");
+            collection.Id = id;
+            return Ok(collection);
         }
 
         [Authorize(Roles = "RegisteredUser")]

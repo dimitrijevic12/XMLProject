@@ -113,3 +113,5 @@ export const ADD_CLOSE_FRIEND = "addCloseFriend";
 export const ADD_CLOSE_FRIEND_ERROR = "addCloseFriendError";
 export const ADD_CLOSE_FRIEND_STORY = "addCloseFriendStory";
 export const ADD_CLOSE_FRIEND_STORY_ERROR = "addCloseFriendStoryError";
+export const CREATE_NEW_COLLECTION = "createNewCollection";
+export const CREATE_NEW_COLLECTION_ERROR = "createNewCollectionError";

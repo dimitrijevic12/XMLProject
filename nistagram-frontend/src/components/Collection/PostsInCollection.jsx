@@ -47,12 +47,30 @@ function PostsInCollection(props) {
     if (props.collectionImages === undefined) {
       return null;
     }
-    return collectionPosts.map((post, i) => (
-      <Photo
-        src={"data:image/jpg;base64," + props.collectionImages[i].fileContents}
-        onClick={() => displayModalPost(post)}
-      />
-    ));
+    return collectionPosts.map((post, i) =>
+      props.collectionImages[i].contentType === "image/jpeg" ? (
+        <Photo
+          src={
+            "data:image/jpg;base64," + props.collectionImages[i].fileContents
+          }
+          onClick={() => displayModalPost(post)}
+        />
+      ) : (
+        <video
+          controls
+          onClick={() => displayModalPost(post)}
+          style={{ width: 367, height: 370 }}
+          className="mb-3"
+        >
+          <source
+            src={
+              "data:video/mp4;base64," + props.collectionImages[i].fileContents
+            }
+            type="video/mp4"
+          ></source>
+        </video>
+      )
+    );
   };
 
   const displayModalPost = (post) => {

@@ -5,9 +5,12 @@ import { Table } from "reactstrap";
 import { Card } from "reactstrap";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
+import CreateCollectionModal from "./CreateCollectionModal";
 
 class CollectionsMenu extends Component {
-  state = {};
+  state = {
+    showCreateCollectionModal: false,
+  };
 
   componentDidMount() {
     debugger;
@@ -22,6 +25,12 @@ class CollectionsMenu extends Component {
     const collections = this.props.collections;
     return (
       <div>
+        {this.state.showCreateCollectionModal ? (
+          <CreateCollectionModal
+            show={this.state.showCreateCollectionModal}
+            onShowChange={this.displayModalPost.bind(this)}
+          />
+        ) : null}
         <div className="wrap bg-white pt-3 pb-3" style={{ height: "100vh" }}>
           <div style={{ marginTop: "40px" }} id="appointmentTable">
             <div className="text-center">
@@ -29,6 +38,16 @@ class CollectionsMenu extends Component {
                 style={{ width: 48, height: 48 }}
                 src="/images/collection.png"
               />
+            </div>
+            <div style={{ width: 200, maxWidth: 200, float: "right" }}>
+              <button
+                className="btn btn-primary"
+                onClick={() => {
+                  this.displayModalPost();
+                }}
+              >
+                Create new collection
+              </button>
             </div>
 
             <Card
@@ -80,6 +99,12 @@ class CollectionsMenu extends Component {
 
   view(f) {
     window.location = "/collection/" + f.id;
+  }
+
+  displayModalPost() {
+    this.setState({
+      showCreateCollectionModal: !this.state.showCreateCollectionModal,
+    });
   }
 }
 
