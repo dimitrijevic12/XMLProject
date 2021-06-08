@@ -148,7 +148,8 @@ function ProfileStoryModal(props) {
               </button>
             </div>
             <div className="story-footer-collections">
-              {props.isActiveStories ? (
+              {props.isActiveStories &&
+              props.user.id === sessionStorage.getItem("userId") ? (
                 <button
                   className="btn btn-sm btn-primary"
                   onClick={() => displayCollectionsModal(story)}

@@ -50,6 +50,8 @@ import {
   GET_ALL_IMAGES_FOR_PROFILE_ERROR,
   GET_ALL_IMAGES_FOR_COLLECTION,
   GET_ALL_IMAGES_FOR_COLLECTION_ERROR,
+  ADD_CLOSE_FRIEND,
+  ADD_CLOSE_FRIEND_ERROR,
 } from "../types/types";
 import axios from "axios";
 

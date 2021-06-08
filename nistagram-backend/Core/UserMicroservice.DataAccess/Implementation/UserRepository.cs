@@ -233,6 +233,24 @@ namespace UserMicroservice.DataAccess.Implementation
             ExecuteQuery(query, parameters);
         }
 
+        public void AddCloseFriend(Guid id, Guid userId, Guid closeFriendId)
+        {
+            StringBuilder queryBuilder = new StringBuilder("INSERT INTO dbo.CloseFriends ");
+            queryBuilder.Append("(id, my_close_friend_id, close_friend_to_id) ");
+            queryBuilder.Append("VALUES (@id, @close_friend_id, @user_id);");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = id },
+                 new SqlParameter("@user_id", SqlDbType.UniqueIdentifier) { Value = userId },
+                 new SqlParameter("@close_friend_id", SqlDbType.UniqueIdentifier) { Value = closeFriendId }
+             };
+
+            ExecuteQuery(query, parameters);
+        }
+
         public void FollowPrivate(Guid id, Guid requests_follow_id, Guid recieves_follow_id)
         {
             StringBuilder queryBuilder = new StringBuilder("INSERT INTO dbo.FollowRequest ");

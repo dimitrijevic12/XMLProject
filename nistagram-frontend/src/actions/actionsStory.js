@@ -29,6 +29,8 @@ import {
   GET_STORIES_FOR_ARCHIVE_ERROR,
   GET_ACTIVE_STORIES,
   GET_ACTIVE_STORIES_ERROR,
+  ADD_CLOSE_FRIEND_STORY,
+  ADD_CLOSE_FRIEND_STORY_ERROR,
 } from "../types/types";
 import axios from "axios";
 
@@ -44,6 +46,7 @@ export const getStories = () => async (dispatch) => {
         Authorization: "Bearer " + sessionStorage.getItem("token"),
       },
     });
+    debugger;
     dispatch({
       type: GET_STORIES,
       payload: response.data,
@@ -87,6 +90,7 @@ export const getActiveStoriesForUser = (userId) => async (dispatch) => {
     const response = await axios.get("https://localhost:44355/api/stories", {
       params: {
         "story-owner-id": userId,
+        "following-id": sessionStorage.getItem("userId"),
         "last-24h": "true",
       },
       headers: {
@@ -132,11 +136,12 @@ export const addStoryToHighlight = (highlightId, story) => async (dispatch) => {
   }
 };
 
-export const getStoriesForModal = (userid) => async (dispatch) => {
+export const getStoriesForModal = (ownerId, userid) => async (dispatch) => {
   try {
     const response = await axios.get("https://localhost:44355/api/stories", {
       params: {
-        "story-owner-id": userid,
+        "story-owner-id": ownerId,
+        "following-id": userid,
         "last-24h": "true",
       },
       headers: {
@@ -327,14 +332,6 @@ export const getUserForStory = () => async (dispatch) => {
   }
 };
 
-const createFileContents = (data) => {
-  var contents = [];
-  data.forEach((element) => {
-    contents.push(element.fileContents);
-  });
-  return contents;
-};
-
 export const getHighlights = (userId) => async (dispatch) => {
   try {
     const response = await axios.get("https://localhost:44355/api/highlights", {
@@ -377,6 +374,31 @@ export const createHighlight = (highlight) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: CREATE_HIGHLIGHT_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const addCloseFriendStory = (userId) => async (dispatch) => {
+  try {
+    const response = await axios.put(
+      `https://localhost:44355/api/story-microservice/users/${sessionStorage.getItem(
+        "userId"
+      )}/close-friends/${userId}`,
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      }
+    );
+    dispatch({
+      type: ADD_CLOSE_FRIEND_STORY,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: ADD_CLOSE_FRIEND_STORY_ERROR,
       payload: console.log(e),
     });
   }

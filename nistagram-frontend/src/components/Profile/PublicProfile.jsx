@@ -33,7 +33,7 @@ function PublicProfile(props) {
   const [username, setUsername] = useState("");
   const [followedById, setFollowedById] = useState(0);
   const [followingId, setFollowingId] = useState(0);
-  const [shouldDisplayStories, setShouldDisplayStories] = useState(false);
+  //const [shouldDisplayStories, setShouldDisplayStories] = useState(false);
   const user = props.user;
   const initialUser = {};
   const profilePosts = props.profilePosts;
@@ -55,8 +55,8 @@ function PublicProfile(props) {
     if (props.profilePosts !== undefined) getAllImages(props.profilePosts);
   }, [props.profilePosts]);
 
-  const follow = () => {
-    props.followProfile({
+  const follow = async () => {
+    await props.followProfile({
       FollowedById: sessionStorage.getItem("userId"),
       FollowingId: props.location.pathname.slice(9),
     });
@@ -100,21 +100,6 @@ function PublicProfile(props) {
         }
       }
     }
-    if (props.location.pathname.slice(9) === sessionStorage.getItem("userId")) {
-      setShouldDisplayStories(true);
-    } else {
-      if (user.isPrivate === false) {
-        setShouldDisplayStories(true);
-      } else {
-        for (var i = 0; i < user.followers.length; i++) {
-          if (user.followers[i].id === sessionStorage.getItem("userId")) {
-            setShouldDisplayStories(true);
-            break;
-          }
-        }
-      }
-    }
-    debugger;
     if (props.profileImages === undefined) {
       return null;
     }
@@ -196,6 +181,28 @@ function PublicProfile(props) {
     }
   };
 
+  var shouldDisplayStories = false;
+  const displayStories = () => {
+    if (props.location.pathname.slice(9) === sessionStorage.getItem("userId")) {
+      shouldDisplayStories = true;
+    } else {
+      if (user.isPrivate === false) {
+        shouldDisplayStories = true;
+      } else {
+        for (var i = 0; i < user.followers.length; i++) {
+          if (user.followers[i].id === sessionStorage.getItem("userId")) {
+            shouldDisplayStories = true;
+            break;
+          }
+        }
+      }
+    }
+  };
+
+  if (user !== undefined) {
+    displayStories();
+  }
+
   return (
     <div>
       {showPostModal ? (
@@ -210,7 +217,7 @@ function PublicProfile(props) {
       {props.location.pathname.slice(9) === sessionStorage.getItem("userId") ? (
         <MyOptionsButton />
       ) : (
-        <OptionsButton />
+        <OptionsButton user={user} />
       )}
       <ProfileHeader
         user={user}

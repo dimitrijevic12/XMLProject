@@ -47,6 +47,7 @@ namespace StoryMicroservice.Core.Services
 
         public Content GetImage(string path, string fileName)
         {
+            if (String.IsNullOrWhiteSpace(fileName)) fileName = "iconfinder_00-ELASTOFONT-STORE-READY_user-circle_2703062.png";
             var type = Path.GetExtension(fileName);
             path = path + "\\images\\" + fileName;
             return new Content() { Bytes = System.IO.File.ReadAllBytes(path), Type = type };

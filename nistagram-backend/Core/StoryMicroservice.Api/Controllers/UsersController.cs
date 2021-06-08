@@ -77,5 +77,12 @@ namespace StoryMicroservice.Api.Controllers
         {
             return Ok(userFactory.Create(_userRepository.GetById(id).Value));
         }
+
+        [HttpPut("{userId}/close-friends/{closeFriendId}")]
+        public IActionResult AddCloseFriend([FromRoute] string userId, [FromRoute] string closeFriendId)
+        {
+            if (userService.AddCloseFriend(userId, closeFriendId).IsFailure) return BadRequest();
+            return NoContent();
+        }
     }
 }

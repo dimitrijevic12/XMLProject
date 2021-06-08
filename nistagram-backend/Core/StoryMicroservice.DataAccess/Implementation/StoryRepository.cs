@@ -66,7 +66,7 @@ namespace StoryMicroservice.DataAccess.Implementation
             List<Core.Model.Story> stories = new List<Core.Model.Story>();
             if (!String.IsNullOrWhiteSpace(storyOwnerId))
                 stories.AddRange(storyFactory.CreateStories(_stories.Find(story => story.RegisteredUser.Id.Equals(storyOwnerId)).ToList()));
-            if (!String.IsNullOrWhiteSpace(followingId))
+            if (!String.IsNullOrWhiteSpace(followingId) && String.IsNullOrWhiteSpace(storyOwnerId))
             {
                 var user = _userRepository.GetById(new Guid(followingId)).Value;
                 var followingUsers = userFactory.CreateIds(user.Following);
@@ -87,13 +87,14 @@ namespace StoryMicroservice.DataAccess.Implementation
                 var expiredStories = storyFactory.CreateStories(_stories.Find(story => story.TimeStamp < DateTime.Now.AddDays(-1)).ToList());
                 foreach (var story in expiredStories) stories.Remove(story);
                 var tempStories = new List<Core.Model.Story>(stories);
-                if (!String.IsNullOrWhiteSpace(followingId))
+                if (!String.IsNullOrWhiteSpace(followingId) && !followingId.Equals(storyOwnerId))
                 {
                     foreach (var story in tempStories) if (story.GetType().Name == "CloseFriendStory"
                        && !userFactory.CreateIds(story.RegisteredUser.MyCloseFriends).Contains(followingId))
                             stories.Remove(story);
                 }
                 tempStories = new List<Core.Model.Story>(stories);
+                tempStories = tempStories.Distinct().ToList();
                 foreach (var story in tempStories) if (userFactory.CreateIds(story.RegisteredUser.BlockedUsers).Contains(followingId) ||
                         userFactory.CreateIds(story.RegisteredUser.BlockedByUsers).Contains(followingId))
                         stories.Remove(story);

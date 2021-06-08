@@ -17,7 +17,10 @@ class StoryModal extends Component {
   };
 
   async componentDidMount() {
-    await this.props.getStoriesForModal(this.props.user);
+    await this.props.getStoriesForModal(
+      this.props.user,
+      sessionStorage.getItem("userId")
+    );
     await this.props.loadImagesStory(this.createImagesList(this.props.stories));
   }
 
