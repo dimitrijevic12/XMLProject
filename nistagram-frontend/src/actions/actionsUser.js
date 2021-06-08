@@ -406,7 +406,7 @@ export const loadImageProfile = (path) => async (dispatch) => {
 export const addCloseFriend = (userId) => async (dispatch) => {
   try {
     const response = await axios.put(
-      `https://localhost:44355/api/users/${sessionStorage.getItem(
+      `http://localhost:44355/api/users/${sessionStorage.getItem(
         "userId"
       )}/close-friends/${userId}`,
       {

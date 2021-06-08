@@ -382,7 +382,7 @@ export const createHighlight = (highlight) => async (dispatch) => {
 export const addCloseFriendStory = (userId) => async (dispatch) => {
   try {
     const response = await axios.put(
-      `https://localhost:44355/api/story-microservice/users/${sessionStorage.getItem(
+      `http://localhost:44355/api/story-microservice/users/${sessionStorage.getItem(
         "userId"
       )}/close-friends/${userId}`,
       {

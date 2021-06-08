@@ -12,6 +12,7 @@ class Story extends Component {
   };
 
   render() {
+    debugger;
     if (this.props.profileImage === undefined && this.props.first === false)
       return null;
     return (

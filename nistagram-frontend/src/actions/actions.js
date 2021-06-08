@@ -623,7 +623,7 @@ export const getAllImagesForCollection = (posts) => async (dispatch) => {
 export const createNewCollection = (collection) => async (dispatch) => {
   try {
     const response = await axios.post(
-      "https://localhost:44355/api/collections",
+      "http://localhost:44355/api/collections",
       collection,
       {
         headers: {

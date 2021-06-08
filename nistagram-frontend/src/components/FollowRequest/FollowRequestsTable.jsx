@@ -39,7 +39,7 @@ class FollowRequestsTable extends Component {
                 <thead>
                   <tr>
                     <th style={{ textAlign: "center" }}>Request by</th>
-                    <th style={{ textAlign: "center" }}>Accpet</th>
+                    <th style={{ textAlign: "center" }}>Accept</th>
                     <th style={{ textAlign: "center" }}>Reject</th>
                   </tr>
                 </thead>

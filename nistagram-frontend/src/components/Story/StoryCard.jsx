@@ -12,6 +12,7 @@ class StoryCard extends Component {
     items,
   };
   render() {
+    debugger;
     return (
       <Card>
         <CardBody style={{ zIndex: "0" }}>
