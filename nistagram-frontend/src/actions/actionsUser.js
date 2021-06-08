@@ -25,6 +25,8 @@ import {
   CHANGE_PROFILE_PICTURE_USERMICROSERVICE_ERROR,
   LOAD_IMAGE_PROFILE,
   LOAD_IMAGE_PROFILE_ERROR,
+  ADD_CLOSE_FRIEND,
+  ADD_CLOSE_FRIEND_ERROR,
 } from "../types/types";
 import axios from "axios";
 
@@ -396,6 +398,31 @@ export const loadImageProfile = (path) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: LOAD_IMAGE_PROFILE_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const addCloseFriend = (userId) => async (dispatch) => {
+  try {
+    const response = await axios.put(
+      `https://localhost:44355/api/users/${sessionStorage.getItem(
+        "userId"
+      )}/close-friends/${userId}`,
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      }
+    );
+    dispatch({
+      type: ADD_CLOSE_FRIEND,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: ADD_CLOSE_FRIEND_ERROR,
       payload: console.log(e),
     });
   }

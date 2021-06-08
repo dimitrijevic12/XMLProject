@@ -44,7 +44,8 @@ class ProfileStory extends Component {
           }}
           onClick={() => {
             debugger;
-            if (this.props.first === true) this.displayModalProfileStory(0);
+            if (this.props.first === true)
+              this.displayModalProfileStory(this.props.user.id);
             else this.displayModalProfileStory(this.props.highlight.id);
           }}
         />

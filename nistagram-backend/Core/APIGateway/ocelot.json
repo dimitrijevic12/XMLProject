@@ -516,6 +516,28 @@
         }
       ],
       "UpstreamPathTemplate": "/api/post-microservice/users/{id}/profile-picture/{image}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/{id}/close-friends/{closeFriendId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "44313",
+          "Port": 44333
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/{id}/close-friends/{closeFriendId}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/{id}/close-friends/{closeFriendId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 9587
+        }
+      ],
+      "UpstreamPathTemplate": "/api/story-microservice/users/{id}/close-friends/{closeFriendId}"
     }
   ],
   "GlobalConfiguration": {

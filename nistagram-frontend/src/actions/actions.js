@@ -50,6 +50,8 @@ import {
   GET_ALL_IMAGES_FOR_PROFILE_ERROR,
   GET_ALL_IMAGES_FOR_COLLECTION,
   GET_ALL_IMAGES_FOR_COLLECTION_ERROR,
+  CREATE_NEW_COLLECTION,
+  CREATE_NEW_COLLECTION_ERROR,
 } from "../types/types";
 import axios from "axios";
 
@@ -613,6 +615,30 @@ export const getAllImagesForCollection = (posts) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: GET_ALL_IMAGES_FOR_COLLECTION_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const createNewCollection = (collection) => async (dispatch) => {
+  try {
+    const response = await axios.post(
+      "https://localhost:44355/api/collections",
+      collection,
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      }
+    );
+    dispatch({
+      type: CREATE_NEW_COLLECTION,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: CREATE_NEW_COLLECTION_ERROR,
       payload: console.log(e),
     });
   }

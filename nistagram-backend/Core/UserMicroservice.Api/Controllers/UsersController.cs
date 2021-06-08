@@ -225,5 +225,12 @@ namespace UserMicroservice.Api.Controllers
             _userRepository.AddProfilePicture(id, image);
             return Ok();
         }
+
+        [HttpPut("{userId}/close-friends/{closeFriendId}")]
+        public IActionResult AddCloseFriend([FromRoute] string userId, [FromRoute] string closeFriendId)
+        {
+            if (userService.AddCloseFriend(Guid.NewGuid(), new Guid(userId), new Guid(closeFriendId)).IsFailure) return BadRequest();
+            return NoContent();
+        }
     }
 }

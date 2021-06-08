@@ -53,6 +53,7 @@ import {
   GET_ALL_IMAGES_FOR_SEARCH,
   GET_ALL_IMAGES_FOR_PROFILE,
   GET_ALL_IMAGES_FOR_COLLECTION,
+  CREATE_NEW_COLLECTION,
 } from "../types/types";
 
 const initialState = {
@@ -328,6 +329,11 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         collectionImages: action.payload,
+      };
+    case CREATE_NEW_COLLECTION:
+      return {
+        ...state,
+        collections: state.collections.concat(action.payload),
       };
     default:
       return state;

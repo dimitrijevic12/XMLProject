@@ -139,9 +139,10 @@ namespace PostMicroservice.DataAccess.Implementation
 
         public IEnumerable<Post> GetBy(Guid id, string hashTag, string country, string city, string street, string access)
         {
-            StringBuilder queryBuilder = new StringBuilder("SELECT p.id, p.timestamp, p.description, " +
-                "p.type, l.id, l.street, l.city_name, l.country, r.id, r.username, r.first_name, " +
-                "r.last_name, r.profilePicturePath, r.isPrivate, r.isAcceptingTags, c.content_path ");
+            StringBuilder queryBuilder = new StringBuilder("SELECT p.id, MAX(p.timestamp), MAX(p.description), " +
+                "MAX(p.type), MAX(l.id), MAX(l.street), MAX(l.city_name), MAX(l.country), MAX(r.id), " +
+                "MAX(r.username), MAX(r.first_name), MAX(r.last_name), MAX(r.profilePicturePath), " +
+                "cast(max(cast(r.isPrivate as int)) as bit), cast(max(cast(r.isAcceptingTags as int)) as bit), MAX(c.content_path) ");
             queryBuilder.Append("FROM dbo.Post AS p, dbo.Location AS l, dbo.RegisteredUser AS r, " +
                 "dbo.Content AS c, dbo.HashTags AS h ");
             queryBuilder.Append("WHERE p.location_id=l.id AND p.registered_user_id=r.id AND p.id=c.post_id AND h.post_id = p.id ");
@@ -200,7 +201,7 @@ namespace PostMicroservice.DataAccess.Implementation
                 }
             }
 
-            queryBuilder.Append("ORDER BY p.timestamp DESC");
+            queryBuilder.Append("GROUP BY p.id ORDER BY MAX(p.timestamp) DESC; ");
 
             string query = queryBuilder.ToString();
 
@@ -540,13 +541,16 @@ namespace PostMicroservice.DataAccess.Implementation
 
         public IEnumerable<Post> GetByUserId(Guid id)
         {
-            StringBuilder queryBuilder = new StringBuilder("SELECT p.id, p.timestamp, p.description, " +
-                "p.type, l.id, l.city_name, l.street, l.country, r.id, r.username, r.first_name, " +
-                "r.last_name, r.profilePicturePath, r.isPrivate, r.isAcceptingTags, c.content_path ");
+            StringBuilder queryBuilder = new StringBuilder("SELECT p.id, MAX(p.timestamp), MAX(p.description), " +
+                 "MAX(p.type), MAX(l.id), MAX(l.street), MAX(l.city_name), MAX(l.country), MAX(r.id), " +
+                 "MAX(r.username), MAX(r.first_name), MAX(r.last_name), MAX(r.profilePicturePath), " +
+                 "cast(max(cast(r.isPrivate as int)) as bit), cast(max(cast(r.isAcceptingTags as int)) as bit), MAX(c.content_path) ");
             queryBuilder.Append("FROM dbo.Post AS p, dbo.Location AS l, dbo.RegisteredUser AS r, " +
                 "dbo.Content AS c ");
             queryBuilder.Append("WHERE p.location_id=l.id AND p.registered_user_id=r.id AND p.id=c.post_id " +
-                "AND p.registered_user_id = @Id;");
+                "AND p.registered_user_id = @Id ");
+            queryBuilder.Append("GROUP BY p.id " +
+                "ORDER BY MAX(p.timestamp) DESC; ");
 
             string query = queryBuilder.ToString();
 
@@ -565,15 +569,16 @@ namespace PostMicroservice.DataAccess.Implementation
 
         public IEnumerable<Post> GetByCollectionAndUser(Guid collectionId, Guid userId)
         {
-            StringBuilder queryBuilder = new StringBuilder("SELECT p.id, p.timestamp," +
-                " p.description, p.type, l.id, l.street, l.city_name, l.country, r.id, r.username, " +
-                "r.first_name, r.last_name, r.profilePicturePath, r.isPrivate, r.isAcceptingTags, " +
-                "con.content_path  ");
+            StringBuilder queryBuilder = new StringBuilder("SELECT p.id, MAX(p.timestamp), MAX(p.description), " +
+                "MAX(p.type), MAX(l.id), MAX(l.street), MAX(l.city_name), MAX(l.country), MAX(r.id), " +
+                "MAX(r.username), MAX(r.first_name), MAX(r.last_name), MAX(r.profilePicturePath), " +
+                "cast(max(cast(r.isPrivate as int)) as bit), cast(max(cast(r.isAcceptingTags as int)) as bit), MAX(con.content_path) ");
             queryBuilder.Append("FROM dbo.Collection as c, dbo.CollectionContent as cc, dbo.Post as p, " +
                 "dbo.Location AS l, dbo.RegisteredUser AS r, dbo.Content AS con ");
             queryBuilder.Append("WHERE c.id = cc.collection_id and cc.post_id = p.id and " +
                 "p.location_id = l.id AND p.registered_user_id = r.id AND p.id = con.post_id " +
-                "AND c.id = @Id AND c.registered_user_id = @UserId;");
+                "AND c.id = @Id AND c.registered_user_id = @UserId ");
+            queryBuilder.Append("GROUP BY p.id; ");
 
             string query = queryBuilder.ToString();
 

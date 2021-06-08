@@ -30,5 +30,25 @@ namespace StoryMicroservice.Core.Services
             _userRepository.Edit(id, registeredUser);
             return Result.Success(registeredUser);
         }
+
+        public Result AddCloseFriend(string id, string closeFriendId)
+        {
+            var closeFriend = _userRepository.GetById(new Guid(closeFriendId)).Value;
+            var user = _userRepository.GetById(new Guid(id)).Value;
+            if (user.MyCloseFriends.Contains(closeFriend))
+                return Result.Failure("Users is already a close friend.");
+            var closeFriends = new List<Core.Model.RegisteredUser>(user.MyCloseFriends);
+            closeFriends.Add(closeFriend);
+            var closeFriendsTo = new List<Core.Model.RegisteredUser>(closeFriend.CloseFriendTo);
+            closeFriendsTo.Add(user);
+            _userRepository.Edit(closeFriendId, Core.Model.RegisteredUser.Create(closeFriend.Id, closeFriend.Username, closeFriend.FirstName,
+                closeFriend.LastName, closeFriend.IsPrivate, closeFriend.IsAcceptingTags, closeFriend.ProfilePicturePath,
+                closeFriend.BlockedByUsers, closeFriend.BlockedByUsers, closeFriend.Following,
+                closeFriend.Followers, closeFriend.MyCloseFriends, closeFriendsTo).Value);
+            _userRepository.Edit(id, Core.Model.RegisteredUser.Create(user.Id, user.Username, user.FirstName, user.LastName, user.IsPrivate,
+                user.IsAcceptingTags, user.ProfilePicturePath, user.BlockedByUsers, user.BlockedByUsers, user.Following,
+                user.Followers, closeFriends, user.CloseFriendTo).Value);
+            return Result.Success("User successfully added to close friends");
+        }
     }
 }

@@ -117,7 +117,7 @@ namespace UserMicroservice.Core.Services
         public Result HandleFollowRequest(Guid id, Guid followedById, Guid followingId, String type, Boolean is_approved, Guid newId)
         {
             _userRepository.HandleFollowRequest(id, type, is_approved);
-            if (is_approved && type == "approv")
+            if (is_approved && type == "approve")
             {
                 _userRepository.Follow(newId, followedById, followingId);
                 return Result.Success();
@@ -145,6 +145,16 @@ namespace UserMicroservice.Core.Services
             {
                 return null;
             }
+        }
+
+        public Result AddCloseFriend(Guid id, Guid userId, Guid closeFriendId)
+        {
+            var user = _userRepository.GetById(userId);
+            var closeFriend = _userRepository.GetById(closeFriendId);
+            if ((user.HasNoValue) || (closeFriend.HasNoValue)) return Result.Failure("There is no user with that id");
+            if (user.Value.MyCloseFriends.Contains(closeFriend.Value)) return Result.Failure("User is already a close friend");
+            _userRepository.AddCloseFriend(id, userId, closeFriendId);
+            return Result.Success("User successfully added to close friends");
         }
     }
 }

@@ -24,6 +24,8 @@ import {
   loadImagesForArchive,
 } from "../../actions/actionsStory";
 import ProfileStoryCard from "./ProfileStoryCard";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function PublicProfile(props) {
   const [postId, setPostId] = useState("");
@@ -31,7 +33,7 @@ function PublicProfile(props) {
   const [username, setUsername] = useState("");
   const [followedById, setFollowedById] = useState(0);
   const [followingId, setFollowingId] = useState(0);
-  const [shouldDisplayStories, setShouldDisplayStories] = useState(false);
+  //const [shouldDisplayStories, setShouldDisplayStories] = useState(false);
   const user = props.user;
   const initialUser = {};
   const profilePosts = props.profilePosts;
@@ -53,11 +55,12 @@ function PublicProfile(props) {
     if (props.profilePosts !== undefined) getAllImages(props.profilePosts);
   }, [props.profilePosts]);
 
-  const follow = () => {
-    props.followProfile({
+  const follow = async () => {
+    await props.followProfile({
       FollowedById: sessionStorage.getItem("userId"),
       FollowingId: props.location.pathname.slice(9),
     });
+    window.location = "/profile/" + props.location.pathname.slice(9);
   };
 
   const getAllImages = async (profilePosts) => {
@@ -73,15 +76,6 @@ function PublicProfile(props) {
   };
 
   const Posts = () => {
-    if (profilePosts.length === 0) {
-      return (
-        <div className="text-center pt-5">
-          <img src="/images/noposts.png" />
-          <br />
-          <h4>No Posts Yet</h4>
-        </div>
-      );
-    }
     var shouldDisplayPosts = false;
     if (props.location.pathname.slice(9) === sessionStorage.getItem("userId")) {
       shouldDisplayPosts = true;
@@ -97,21 +91,6 @@ function PublicProfile(props) {
         }
       }
     }
-    if (props.location.pathname.slice(9) === sessionStorage.getItem("userId")) {
-      setShouldDisplayStories(true);
-    } else {
-      if (user.isPrivate === false) {
-        setShouldDisplayStories(true);
-      } else {
-        for (var i = 0; i < user.followers.length; i++) {
-          if (user.followers[i].id === sessionStorage.getItem("userId")) {
-            setShouldDisplayStories(true);
-            break;
-          }
-        }
-      }
-    }
-    debugger;
     if (props.profileImages === undefined) {
       return null;
     }
@@ -193,6 +172,28 @@ function PublicProfile(props) {
     }
   };
 
+  var shouldDisplayStories = false;
+  const displayStories = () => {
+    if (props.location.pathname.slice(9) === sessionStorage.getItem("userId")) {
+      shouldDisplayStories = true;
+    } else {
+      if (user.isPrivate === false) {
+        shouldDisplayStories = true;
+      } else {
+        for (var i = 0; i < user.followers.length; i++) {
+          if (user.followers[i].id === sessionStorage.getItem("userId")) {
+            shouldDisplayStories = true;
+            break;
+          }
+        }
+      }
+    }
+  };
+
+  if (user !== undefined) {
+    displayStories();
+  }
+
   return (
     <div>
       {showPostModal ? (
@@ -207,7 +208,7 @@ function PublicProfile(props) {
       {props.location.pathname.slice(9) === sessionStorage.getItem("userId") ? (
         <MyOptionsButton />
       ) : (
-        <OptionsButton />
+        <OptionsButton user={user} />
       )}
       <ProfileHeader
         user={user}

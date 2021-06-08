@@ -109,3 +109,9 @@ export const GET_ALL_IMAGES_FOR_PROFILE_ERROR = "getAllImagesForProfileError";
 export const GET_ALL_IMAGES_FOR_COLLECTION = "getAllImagesForCollection";
 export const GET_ALL_IMAGES_FOR_COLLECTION_ERROR =
   "getAllImagesForCollectionError";
+export const ADD_CLOSE_FRIEND = "addCloseFriend";
+export const ADD_CLOSE_FRIEND_ERROR = "addCloseFriendError";
+export const ADD_CLOSE_FRIEND_STORY = "addCloseFriendStory";
+export const ADD_CLOSE_FRIEND_STORY_ERROR = "addCloseFriendStoryError";
+export const CREATE_NEW_COLLECTION = "createNewCollection";
+export const CREATE_NEW_COLLECTION_ERROR = "createNewCollectionError";

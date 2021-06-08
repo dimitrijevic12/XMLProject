@@ -6,12 +6,14 @@ class OptionsButton extends Component {
     showOptionsModal: false,
   };
   render() {
+    debugger;
     return (
       <div>
         {this.state.showOptionsModal ? (
           <OptionsModal
             show={this.state.showOptionsModal}
             onShowChange={this.displayModalOptions.bind(this)}
+            user={this.props.user}
           />
         ) : null}
         <button
