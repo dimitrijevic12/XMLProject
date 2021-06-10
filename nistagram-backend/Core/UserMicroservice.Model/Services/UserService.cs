@@ -90,11 +90,6 @@ namespace UserMicroservice.Core.Services
             throw new NotImplementedException();
         }
 
-        public RegisteredUser GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public RegisteredUser Save(RegisteredUser obj)
         {
             throw new NotImplementedException();

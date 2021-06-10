@@ -5,23 +5,30 @@ namespace UserMicroservice.Core.Model
 {
     public class VerificationRequest
     {
-        private readonly bool isApproved;
-        private readonly DocumentImagePath documentImagePath;
-        private readonly Guid id;
-        private readonly RegisteredUser registeredUser;
+        public Guid Id { get; }
+        public RegisteredUser RegisteredUser { get; }
+        public VerificationRequestFirstName FirstName { get; }
+        public VerificationRequestLastName LastName { get; }
+        public Categories Category { get; }
+        public DocumentImagePath DocumentImagePath { get; }
+        public bool IsApproved { get; }
 
-        private VerificationRequest(Guid id, DocumentImagePath documentImagePath, bool isApproved, RegisteredUser registeredUser)
+        private VerificationRequest(Guid id, RegisteredUser registeredUser, VerificationRequestFirstName firstName, VerificationRequestLastName lastName,
+            Categories category, DocumentImagePath documentImagePath, bool isApproved)
         {
-            this.id = id;
-            this.documentImagePath = documentImagePath;
-            this.isApproved = isApproved;
-            this.registeredUser = registeredUser;
+            Id = id;
+            RegisteredUser = registeredUser;
+            FirstName = firstName;
+            LastName = lastName;
+            Category = category;
+            DocumentImagePath = documentImagePath;
+            IsApproved = isApproved;
         }
 
-        public static Result<VerificationRequest> Create(Guid id, DocumentImagePath documentImagePath,
-            bool isApproved, RegisteredUser registeredUser)
+        public static Result<VerificationRequest> Create(Guid id, RegisteredUser registeredUser, VerificationRequestFirstName firstName,
+            VerificationRequestLastName lastName, Categories category, DocumentImagePath documentImagePath, bool isApproved)
         {
-            return Result.Success(new VerificationRequest(id, documentImagePath, isApproved, registeredUser));
+            return Result.Success(new VerificationRequest(id, registeredUser, firstName, lastName, category, documentImagePath, isApproved));
         }
     }
 }
