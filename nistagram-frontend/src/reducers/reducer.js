@@ -54,6 +54,8 @@ import {
   GET_ALL_IMAGES_FOR_PROFILE,
   GET_ALL_IMAGES_FOR_COLLECTION,
   CREATE_NEW_COLLECTION,
+  GET_LIKED_POSTS,
+  GET_DISLIKED_POSTS,
 } from "../types/types";
 
 const initialState = {
@@ -89,6 +91,8 @@ const initialState = {
   collectionImages: [],
   collectionPosts: [],
   profilePosts: [],
+  likedPosts: [],
+  dislikedPosts: [],
 };
 
 function reducer(state = initialState, action) {
@@ -334,6 +338,16 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         collections: state.collections.concat(action.payload),
+      };
+    case GET_LIKED_POSTS:
+      return {
+        ...state,
+        likedPosts: action.payload,
+      };
+    case GET_DISLIKED_POSTS:
+      return {
+        ...state,
+        dislikedPosts: action.payload,
       };
     default:
       return state;

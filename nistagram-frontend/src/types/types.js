@@ -115,3 +115,7 @@ export const ADD_CLOSE_FRIEND_STORY = "addCloseFriendStory";
 export const ADD_CLOSE_FRIEND_STORY_ERROR = "addCloseFriendStoryError";
 export const CREATE_NEW_COLLECTION = "createNewCollection";
 export const CREATE_NEW_COLLECTION_ERROR = "createNewCollectionError";
+export const GET_LIKED_POSTS = "getLikedPosts";
+export const GET_LIKED_POSTS_ERROR = "getLikedPostsError";
+export const GET_DISLIKED_POSTS = "getDislikedPosts";
+export const GET_DISLIKED_POSTS_ERROR = "getDislikedPostsError";

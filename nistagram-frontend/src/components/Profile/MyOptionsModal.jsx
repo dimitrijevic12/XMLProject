@@ -87,6 +87,32 @@ class MyOptionsModal extends Component {
             <label>Change profile picture</label>
           </button>
           <hr />
+          <button
+            onClick={() => this.likedPosts()}
+            style={{
+              height: "100%",
+              width: "100%",
+              alignSelf: "stretch",
+              float: "center",
+            }}
+            className="btn btn-block btn-md mb-2"
+          >
+            <label>Liked posts</label>
+          </button>
+          <hr />
+          <button
+            onClick={() => this.dislikedPosts()}
+            style={{
+              height: "100%",
+              width: "100%",
+              alignSelf: "stretch",
+              float: "center",
+            }}
+            className="btn btn-block btn-md mb-2"
+          >
+            <label>Disliked posts</label>
+          </button>
+          <hr />
         </ModalBody>
       </Modal>
     );
@@ -101,6 +127,18 @@ class MyOptionsModal extends Component {
   edit() {
     this.props.history.replace({
       pathname: "/change-profile-picture",
+    });
+  }
+
+  likedPosts() {
+    this.props.history.replace({
+      pathname: "/liked",
+    });
+  }
+
+  dislikedPosts() {
+    this.props.history.replace({
+      pathname: "/disliked",
     });
   }
 
