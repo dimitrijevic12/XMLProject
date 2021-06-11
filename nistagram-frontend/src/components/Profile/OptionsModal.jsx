@@ -77,9 +77,9 @@ class OptionsModal extends Component {
         break;
       }
     }
-    for (var i = 0; i < this.props.user.closeFriendTo.length; i++) {
+    for (var i = 0; i < this.props.user.followers.length; i++) {
       if (
-        this.props.user.closeFriendTo[i].id === sessionStorage.getItem("userId")
+        this.props.user.followers[i].id === sessionStorage.getItem("userId")
       ) {
         follower = true;
         break;

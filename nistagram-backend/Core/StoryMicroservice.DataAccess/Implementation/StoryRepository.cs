@@ -89,9 +89,13 @@ namespace StoryMicroservice.DataAccess.Implementation
                 var tempStories = new List<Core.Model.Story>(stories);
                 if (!String.IsNullOrWhiteSpace(followingId) && !followingId.Equals(storyOwnerId))
                 {
-                    foreach (var story in tempStories) if (story.GetType().Name == "CloseFriendStory"
-                       && !userFactory.CreateIds(story.RegisteredUser.MyCloseFriends).Contains(followingId))
+                    foreach (var story in tempStories)
+                    {
+                        var user = _userRepository.GetById(story.RegisteredUser.Id).Value;
+                        if (story.GetType().Name == "CloseFriendStory"
+                         && !userFactory.CreateIds(user.MyCloseFriends).Contains(followingId))
                             stories.Remove(story);
+                    }
                 }
                 tempStories = new List<Core.Model.Story>(stories);
                 tempStories = tempStories.Distinct().ToList();
