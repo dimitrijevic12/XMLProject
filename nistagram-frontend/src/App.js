@@ -22,6 +22,7 @@ import PostsInCollectionPage from "./pages/PostsInCollectionPage";
 import FollowRequestPage from "./pages/FollowRequestsPage";
 import CreateStoryPage from "./pages/CreateStoryPage";
 import ChangeProfilePicturePage from "./pages/ChangeProfilePicturePage";
+import SendVerificationRequestPage from "./pages/SendVerificationRequestPage";
 
 function App() {
   return (
@@ -77,6 +78,11 @@ function App() {
             exact
             path="/requests"
             component={FollowRequestPage}
+          />
+          <ProtectedRoute
+            exact
+            path="/sendVerificationRequest"
+            component={SendVerificationRequestPage}
           />
           <Route exact path="/change-profile-picture">
             <ChangeProfilePicturePage />

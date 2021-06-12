@@ -87,6 +87,20 @@ class MyOptionsModal extends Component {
             <label>Change profile picture</label>
           </button>
           <hr />
+          <button
+            style={{
+              height: "100%",
+              width: "100%",
+              alignSelf: "stretch",
+              float: "center",
+            }}
+            className="btn btn-block btn-md mb-2"
+            onClick={() => {
+              window.location = "/sendVerificationRequest";
+            }}
+          >
+            <label>Send verification request</label>
+          </button>
         </ModalBody>
       </Modal>
     );

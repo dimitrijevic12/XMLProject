@@ -27,6 +27,8 @@ import {
   LOAD_IMAGE_PROFILE_ERROR,
   ADD_CLOSE_FRIEND,
   ADD_CLOSE_FRIEND_ERROR,
+  SEND_VERIFICATION_REQUEST,
+  SEND_VERIFICATION_REQUEST_ERROR,
 } from "../types/types";
 import axios from "axios";
 
@@ -426,6 +428,31 @@ export const addCloseFriend = (userId) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: ADD_CLOSE_FRIEND_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const sendVerificationRequest = (request) => async (dispatch) => {
+  debugger;
+  try {
+    const response = await axios.post(
+      `https://localhost:44313/api/VerificationRequests`,
+      request,
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      }
+    );
+    dispatch({
+      type: SEND_VERIFICATION_REQUEST,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: SEND_VERIFICATION_REQUEST_ERROR,
       payload: console.log(e),
     });
   }

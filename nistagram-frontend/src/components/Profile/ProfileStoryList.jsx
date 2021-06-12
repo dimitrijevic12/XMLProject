@@ -36,7 +36,7 @@ function ProfileProfileStoryList(props) {
   ) {
     return null;
   }
-
+  debugger;
   return (
     <div className="story-wrapper">
       {props.activeStories === undefined ||

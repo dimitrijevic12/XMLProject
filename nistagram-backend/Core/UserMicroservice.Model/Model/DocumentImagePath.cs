@@ -25,6 +25,11 @@ namespace UserMicroservice.Core.Model
             yield return path;
         }
 
+        public override string ToString()
+        {
+            return this.path.ToString();
+        }
+
         public static implicit operator string(DocumentImagePath DocumentImagePath) => DocumentImagePath.path;
     }
 }
