@@ -22,12 +22,14 @@ import TaggedUsersModal from "./TaggedUsersModal";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ChooseCollectionModal from "../Collection/ChooseCollectionModal";
+import ReportModal from "../Report/ReportModal";
 
 class PostModal extends Component {
   state = {
     showPostModal: this.props.show,
     showTaggedModal: false,
     showChooseCollectionModal: false,
+    showReportModal: false,
     likesCount: 0,
     dislikesCount: 0,
     liked: false,
@@ -93,6 +95,15 @@ class PostModal extends Component {
               show={this.state.showChooseCollectionModal}
               postId={post.id}
               onShowChange={this.displayModalCollection.bind(this)}
+            />
+          ) : null}
+          {this.state.showReportModal ? (
+            <ReportModal
+              show={this.state.showReportModal}
+              contentId={post.id}
+              type="post"
+              registeredUser={post.registeredUser}
+              onShowChange={this.displayModalReport.bind(this)}
             />
           ) : null}
           {profileImage === "/images/user.png" ? (
@@ -192,7 +203,14 @@ class PostModal extends Component {
                 ", " +
                 post.location.country
               : ""}
-            <a style={{ float: "right" }} className="mr-4" href="javascript:;">
+            <a
+              style={{ float: "right" }}
+              className="mr-4"
+              href="javascript:;"
+              onClick={() => {
+                this.displayModalReport();
+              }}
+            >
               Report
             </a>
             <br />
@@ -353,6 +371,13 @@ class PostModal extends Component {
     debugger;
     this.setState({
       showTaggedModal: !this.state.showTaggedModal,
+    });
+  }
+
+  displayModalReport() {
+    debugger;
+    this.setState({
+      showReportModal: !this.state.showReportModal,
     });
   }
 

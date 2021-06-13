@@ -56,6 +56,9 @@ import {
   CREATE_NEW_COLLECTION,
   GET_FOLLOWING_WITHOUT_MUTED,
   GET_FOLLOWING_WITHOUT_MUTED_ERROR,
+  GET_LIKED_POSTS,
+  GET_DISLIKED_POSTS,
+  REPORT_CONTENT,
 } from "../types/types";
 
 const initialState = {
@@ -91,6 +94,8 @@ const initialState = {
   collectionImages: [],
   collectionPosts: [],
   profilePosts: [],
+  likedPosts: [],
+  dislikedPosts: [],
 };
 
 function reducer(state = initialState, action) {
@@ -341,6 +346,20 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         collections: state.collections.concat(action.payload),
+      };
+    case GET_LIKED_POSTS:
+      return {
+        ...state,
+        likedPosts: action.payload,
+      };
+    case GET_DISLIKED_POSTS:
+      return {
+        ...state,
+        dislikedPosts: action.payload,
+      };
+    case REPORT_CONTENT:
+      return {
+        ...state,
       };
     default:
       return state;

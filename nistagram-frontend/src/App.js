@@ -22,6 +22,8 @@ import PostsInCollectionPage from "./pages/PostsInCollectionPage";
 import FollowRequestPage from "./pages/FollowRequestsPage";
 import CreateStoryPage from "./pages/CreateStoryPage";
 import ChangeProfilePicturePage from "./pages/ChangeProfilePicturePage";
+import LikedPostsPage from "./pages/LikedPostsPage";
+import DislikedPostsPage from "./pages/DislikedPostsPage";
 
 function App() {
   return (
@@ -77,6 +79,12 @@ function App() {
             exact
             path="/requests"
             component={FollowRequestPage}
+          />
+          <ProtectedRoute exact path="/liked" component={LikedPostsPage} />
+          <ProtectedRoute
+            exact
+            path="/disliked"
+            component={DislikedPostsPage}
           />
           <Route exact path="/change-profile-picture">
             <ChangeProfilePicturePage />

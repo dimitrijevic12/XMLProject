@@ -582,6 +582,39 @@
         }
       ],
       "UpstreamPathTemplate": "/api/story-microservice/users/{id}/close-friends/{closeFriendId}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/posts/liked/{userId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44333
+        }
+      ],
+      "UpstreamPathTemplate": "/api/posts/liked/{userId}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/posts/disliked/{userId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44333
+        }
+      ],
+      "UpstreamPathTemplate": "/api/posts/disliked/{userId}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/reports",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44382
+        }
+      ],
+      "UpstreamPathTemplate": "/api/reports"
     }
   ],
   "GlobalConfiguration": {

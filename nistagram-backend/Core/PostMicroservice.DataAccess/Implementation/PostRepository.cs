@@ -605,5 +605,59 @@ namespace PostMicroservice.DataAccess.Implementation
             }
             return posts;
         }
+
+        public IEnumerable<Post> GetLikedByUser(Guid id)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT p.id, MAX(p.timestamp), MAX(p.description), " +
+                 "MAX(p.type), MAX(l.id), MAX(l.street), MAX(l.city_name), MAX(l.country), MAX(r.id), " +
+                 "MAX(r.username), MAX(r.first_name), MAX(r.last_name), MAX(r.profilePicturePath), " +
+                 "cast(max(cast(r.isPrivate as int)) as bit), cast(max(cast(r.isAcceptingTags as int)) as bit), MAX(c.content_path) ");
+            queryBuilder.Append("FROM dbo.Post AS p, dbo.Location AS l, dbo.RegisteredUser AS r, " +
+                "dbo.Content AS c, dbo.Likes as likes ");
+            queryBuilder.Append("WHERE p.location_id=l.id AND p.registered_user_id=r.id AND p.id=c.post_id " +
+                "AND p.id = likes.post_id AND likes.registered_user_id = @Id ");
+            queryBuilder.Append("GROUP BY p.id; ");
+
+            string query = queryBuilder.ToString();
+
+            SqlParameter parameterId = new SqlParameter("@Id", SqlDbType.UniqueIdentifier) { Value = id };
+
+            List<SqlParameter> parameters = new List<SqlParameter>() { parameterId };
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            return (from DataRow dataRow in dataTable.Rows
+                    select (Post)_target.ConvertSqlWithAttributes(dataRow, GetLikesForPost((Guid)dataRow[0]),
+                    GetDislikesForPost((Guid)dataRow[0]), GetHashTagsForPost((Guid)dataRow[0]),
+                    GetCommentsForPost((Guid)dataRow[0]), GetTaggedPeopleForPost((Guid)dataRow[0]),
+                    GetContentsPathForPost((Guid)dataRow[0]))).ToList();
+        }
+
+        public IEnumerable<Post> GetDislikedByUser(Guid id)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT p.id, MAX(p.timestamp), MAX(p.description), " +
+                 "MAX(p.type), MAX(l.id), MAX(l.street), MAX(l.city_name), MAX(l.country), MAX(r.id), " +
+                 "MAX(r.username), MAX(r.first_name), MAX(r.last_name), MAX(r.profilePicturePath), " +
+                 "cast(max(cast(r.isPrivate as int)) as bit), cast(max(cast(r.isAcceptingTags as int)) as bit), MAX(c.content_path) ");
+            queryBuilder.Append("FROM dbo.Post AS p, dbo.Location AS l, dbo.RegisteredUser AS r, " +
+                "dbo.Content AS c, dbo.Dislikes as dislikes ");
+            queryBuilder.Append("WHERE p.location_id=l.id AND p.registered_user_id=r.id AND p.id=c.post_id " +
+                "AND p.id = dislikes.post_id AND dislikes.registered_user_id = @Id ");
+            queryBuilder.Append("GROUP BY p.id; ");
+
+            string query = queryBuilder.ToString();
+
+            SqlParameter parameterId = new SqlParameter("@Id", SqlDbType.UniqueIdentifier) { Value = id };
+
+            List<SqlParameter> parameters = new List<SqlParameter>() { parameterId };
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            return (from DataRow dataRow in dataTable.Rows
+                    select (Post)_target.ConvertSqlWithAttributes(dataRow, GetLikesForPost((Guid)dataRow[0]),
+                    GetDislikesForPost((Guid)dataRow[0]), GetHashTagsForPost((Guid)dataRow[0]),
+                    GetCommentsForPost((Guid)dataRow[0]), GetTaggedPeopleForPost((Guid)dataRow[0]),
+                    GetContentsPathForPost((Guid)dataRow[0]))).ToList();
+        }
     }
 }

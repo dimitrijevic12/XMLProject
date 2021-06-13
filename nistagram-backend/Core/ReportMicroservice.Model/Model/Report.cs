@@ -5,22 +5,26 @@ namespace ReportMicroservice.Core.Model
 {
     public class Report
     {
-        private readonly Guid id;
-        private readonly DateTime timestamp;
-        private readonly ReportReason reportReason;
-        private readonly Content content;
+        public Guid Id { get; }
+        public DateTime TimeStamp { get; }
+        public ReportReason ReportReason { get; }
+        public RegisteredUser RegisteredUser { get; }
+        public Content Content { get; }
 
-        private Report(Guid id, DateTime timestamp, ReportReason reportReason, Content content)
+        private Report(Guid id, DateTime timestamp, ReportReason reportReason, RegisteredUser registeredUser,
+            Content content)
         {
-            this.id = id;
-            this.timestamp = timestamp;
-            this.reportReason = reportReason;
-            this.content = content;
+            Id = id;
+            TimeStamp = timestamp;
+            ReportReason = reportReason;
+            RegisteredUser = registeredUser;
+            Content = content;
         }
 
-        public static Result<Report> Create(Guid id, DateTime timestamp, ReportReason reportReason, Content content)
+        public static Result<Report> Create(Guid id, DateTime timestamp, ReportReason reportReason,
+            RegisteredUser registeredUser, Content content)
         {
-            return Result.Success(new Report(id, timestamp, reportReason, content));
+            return Result.Success(new Report(id, timestamp, reportReason, registeredUser, content));
         }
     }
 }

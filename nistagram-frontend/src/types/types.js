@@ -121,6 +121,9 @@ export const MUTE_PROFILE = "muteProfile";
 export const MUTE_PROFILE_ERROR = "muteProfileError";
 export const BLOCK_PROFILE = "blockProfile";
 export const BLOCK_PROFILE_ERROR = "blockProfileError";
-
-
-
+export const GET_LIKED_POSTS = "getLikedPosts";
+export const GET_LIKED_POSTS_ERROR = "getLikedPostsError";
+export const GET_DISLIKED_POSTS = "getDislikedPosts";
+export const GET_DISLIKED_POSTS_ERROR = "getDislikedPostsError";
+export const REPORT_CONTENT = "reportContent";
+export const REPORT_CONTENT_ERROR = "reportContentError";

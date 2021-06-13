@@ -236,5 +236,43 @@ namespace PostMicroservice.Api.Controllers
             }
             return Ok(toReturn);
         }
+
+        [HttpGet("liked/{userId}")]
+        public IActionResult GetLikedByUser(Guid userId)
+        {
+            List<Post> posts = _postRepository.GetLikedByUser(userId).ToList();
+            List<DTOs.Post> toReturn = new List<DTOs.Post>();
+            foreach (Post post in posts)
+            {
+                if (post.GetType().Name.Equals("PostSingle"))
+                {
+                    toReturn.Add(postSingleFactory.Create((PostSingle)post));
+                }
+                else
+                {
+                    toReturn.Add(postAlbumFactory.Create((PostAlbum)post));
+                }
+            }
+            return Ok(toReturn);
+        }
+
+        [HttpGet("disliked/{userId}")]
+        public IActionResult GetDislikedByUser(Guid userId)
+        {
+            List<Post> posts = _postRepository.GetDislikedByUser(userId).ToList();
+            List<DTOs.Post> toReturn = new List<DTOs.Post>();
+            foreach (Post post in posts)
+            {
+                if (post.GetType().Name.Equals("PostSingle"))
+                {
+                    toReturn.Add(postSingleFactory.Create((PostSingle)post));
+                }
+                else
+                {
+                    toReturn.Add(postAlbumFactory.Create((PostAlbum)post));
+                }
+            }
+            return Ok(toReturn);
+        }
     }
 }
