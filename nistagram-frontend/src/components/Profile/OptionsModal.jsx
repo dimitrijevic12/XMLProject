@@ -118,6 +118,7 @@ class OptionsModal extends Component {
       "MutedById": sessionStorage.getItem("userId"),
       "MutingId": this.props.user.id
     })
+    window.location = "/profile/" + this.props.user.id;
   }
 
   async block() {
@@ -125,6 +126,7 @@ class OptionsModal extends Component {
       "BlockedById": sessionStorage.getItem("userId"),
       "BlockingId": this.props.user.id
     })
+    window.location = "/profile/" + this.props.user.id;
   }
 
   toggle() {
