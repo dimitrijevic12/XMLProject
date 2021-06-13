@@ -53,7 +53,7 @@ class MyOptionsModal extends Component {
               alignSelf: "stretch",
               float: "center",
             }}
-            className="btn btn-block btn-md mb-2"
+            className="btn btn-block btn-primary btn-md mb-2"
           >
             <label>Collections</label>
           </button>
@@ -69,7 +69,7 @@ class MyOptionsModal extends Component {
               alignSelf: "stretch",
               float: "center",
             }}
-            className="btn btn-block btn-md mb-2"
+            className="btn btn-block btn-primary btn-md mb-2"
           >
             <label>Archive</label>
           </button>
@@ -82,7 +82,7 @@ class MyOptionsModal extends Component {
               alignSelf: "stretch",
               float: "center",
             }}
-            className="btn btn-block btn-md mb-2"
+            className="btn btn-block btn-primary btn-md mb-2"
           >
             <label>Change profile picture</label>
           </button>
@@ -94,7 +94,7 @@ class MyOptionsModal extends Component {
               alignSelf: "stretch",
               float: "center",
             }}
-            className="btn btn-block btn-md mb-2"
+            className="btn btn-block btn-primary btn-md mb-2"
             onClick={() => {
               window.location = "/sendVerificationRequest";
             }}

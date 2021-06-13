@@ -29,7 +29,7 @@ class OptionsModal extends Component {
               alignSelf: "stretch",
               float: "center",
             }}
-            className="btn btn-block btn-md mb-2"
+            className="btn btn-block btn-primary btn-md mb-2"
           >
             <label>Block this user</label>
           </button>
@@ -42,7 +42,7 @@ class OptionsModal extends Component {
               alignSelf: "stretch",
               float: "center",
             }}
-            className="btn btn-block btn-md mb-2"
+            className="btn btn-block btn-primary btn-md mb-2"
           >
             <label>Mute this user</label>
           </button>
@@ -54,7 +54,7 @@ class OptionsModal extends Component {
               alignSelf: "stretch",
               float: "center",
             }}
-            className="btn btn-block btn-md mb-2"
+            className="btn btn-block btn-primary btn-md mb-2"
           >
             <label>Report this user</label>
           </button>

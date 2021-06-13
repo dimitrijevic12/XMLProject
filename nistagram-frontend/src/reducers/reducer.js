@@ -54,6 +54,7 @@ import {
   GET_ALL_IMAGES_FOR_PROFILE,
   GET_ALL_IMAGES_FOR_COLLECTION,
   CREATE_NEW_COLLECTION,
+  GET_UNAPPROVED_VERIFICATION_REQUESTS,
 } from "../types/types";
 
 const initialState = {
@@ -89,6 +90,7 @@ const initialState = {
   collectionImages: [],
   collectionPosts: [],
   profilePosts: [],
+  unapprovedVerificationRequests: [],
 };
 
 function reducer(state = initialState, action) {
@@ -334,6 +336,11 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         collections: state.collections.concat(action.payload),
+      };
+    case GET_UNAPPROVED_VERIFICATION_REQUESTS:
+      return {
+        ...state,
+        unapprovedVerificationRequests: action.payload,
       };
     default:
       return state;

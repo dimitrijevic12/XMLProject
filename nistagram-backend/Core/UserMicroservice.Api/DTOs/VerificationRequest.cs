@@ -8,7 +8,7 @@ namespace UserMicroservice.Api.DTOs
     public class VerificationRequest
     {
         public Guid Id { get; set; }
-        public Guid RegisteredUserId { get; set; }
+        public RegisteredUser RegisteredUser { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Category { get; set; }

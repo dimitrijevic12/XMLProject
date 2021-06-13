@@ -23,6 +23,7 @@ import FollowRequestPage from "./pages/FollowRequestsPage";
 import CreateStoryPage from "./pages/CreateStoryPage";
 import ChangeProfilePicturePage from "./pages/ChangeProfilePicturePage";
 import SendVerificationRequestPage from "./pages/SendVerificationRequestPage";
+import ViewVerificationRequestPage from "./pages/ViewVerificationRequestPage";
 
 function App() {
   return (
@@ -94,6 +95,10 @@ function App() {
           <ProtectedRoute
             path="/collection/:collectionId"
             component={PostsInCollectionPage}
+          />
+          <ProtectedRoute
+            path="/viewVerificationRequests"
+            component={ViewVerificationRequestPage}
           />
           <ProtectedRoute exact path="/" component={HomePage} />
         </Switch>

@@ -9,5 +9,6 @@ namespace UserMicroservice.Core.Interface.Repository
 {
     public interface IVerificationRequestRepository : IRepository<VerificationRequest>
     {
+        public IEnumerable<VerificationRequest> GetBy(string isApproved);
     }
 }

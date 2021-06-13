@@ -29,6 +29,8 @@ import {
   ADD_CLOSE_FRIEND_ERROR,
   SEND_VERIFICATION_REQUEST,
   SEND_VERIFICATION_REQUEST_ERROR,
+  GET_UNAPPROVED_VERIFICATION_REQUESTS,
+  GET_UNAPPROVED_VERIFICATION_REQUESTS_ERROR,
 } from "../types/types";
 import axios from "axios";
 
@@ -437,7 +439,7 @@ export const sendVerificationRequest = (request) => async (dispatch) => {
   debugger;
   try {
     const response = await axios.post(
-      `https://localhost:44313/api/VerificationRequests`,
+      `https://localhost:44355/api/VerificationRequests`,
       request,
       {
         headers: {
@@ -453,6 +455,31 @@ export const sendVerificationRequest = (request) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: SEND_VERIFICATION_REQUEST_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const getUnapprovedVerificationRequests = () => async (dispatch) => {
+  debugger;
+  try {
+    const response = await axios.get(
+      `https://localhost:44355/api/VerificationRequests`,
+      {
+        params: { "is-approved": "false" },
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      }
+    );
+    dispatch({
+      type: GET_UNAPPROVED_VERIFICATION_REQUESTS,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_UNAPPROVED_VERIFICATION_REQUESTS_ERROR,
       payload: console.log(e),
     });
   }

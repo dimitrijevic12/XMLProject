@@ -117,3 +117,7 @@ export const CREATE_NEW_COLLECTION = "createNewCollection";
 export const CREATE_NEW_COLLECTION_ERROR = "createNewCollectionError";
 export const SEND_VERIFICATION_REQUEST = "sendVerificationRequest";
 export const SEND_VERIFICATION_REQUEST_ERROR = "sendVerificationRequestError";
+export const GET_UNAPPROVED_VERIFICATION_REQUESTS =
+  "getUnapprovedVerificationRequests";
+export const GET_UNAPPROVED_VERIFICATION_REQUESTS_ERROR =
+  "getUnapprovedVerificationRequestsError";

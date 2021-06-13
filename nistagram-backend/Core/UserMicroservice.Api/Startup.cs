@@ -42,6 +42,7 @@ namespace UserMicroservice.Api
             services.AddScoped<RegisterUserFactory>();
             services.AddScoped<RegisteredUserFactory>();
             services.AddScoped<FollowRequestFactory>();
+            services.AddScoped<VerificationRequestFactory>();
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {
