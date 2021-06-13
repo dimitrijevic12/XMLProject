@@ -56,6 +56,7 @@ import {
   CREATE_NEW_COLLECTION,
   GET_LIKED_POSTS,
   GET_DISLIKED_POSTS,
+  REPORT_CONTENT,
 } from "../types/types";
 
 const initialState = {
@@ -348,6 +349,10 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         dislikedPosts: action.payload,
+      };
+    case REPORT_CONTENT:
+      return {
+        ...state,
       };
     default:
       return state;

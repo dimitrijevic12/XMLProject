@@ -560,6 +560,17 @@
         }
       ],
       "UpstreamPathTemplate": "/api/posts/disliked/{userId}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/reports",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44382
+        }
+      ],
+      "UpstreamPathTemplate": "/api/reports"
     }
   ],
   "GlobalConfiguration": {
