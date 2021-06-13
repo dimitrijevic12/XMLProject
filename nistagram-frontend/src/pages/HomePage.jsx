@@ -5,7 +5,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { Card, CardBody, CardHeader } from "reactstrap";
 import { Checkbox, FormControlLabel } from "@material-ui/core";
 import { Favorite, FavoriteBorder } from "@material-ui/icons";
-import { getFollowing } from "../actions/actionsUser";
+import { getFollowing, getFollowingWithoutMuted } from "../actions/actionsUser";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
 import { connect } from "react-redux";
@@ -43,7 +43,7 @@ class HomePage extends Component {
 
   async componentDidMount() {
     debugger;
-    await this.props.getFollowing();
+    await this.props.getFollowingWithoutMuted();
     await this.props.getPostsForFollowing(this.props.following);
     await this.props.getStories();
     var posts = [...this.props.posts];
@@ -547,5 +547,6 @@ export default compose(
     dislikePost,
     commentPost,
     getStories,
+    getFollowingWithoutMuted,
   })
 )(HomePage);

@@ -29,8 +29,9 @@ class EditProfile extends Component {
     followers: [],
     myCloseFriends: [],
     closeFriendTo: [],
-    isPrivate : false,
-    IsAcceptingTags : false
+    isPrivate: false,
+    isAcceptingMessages: false,
+    isAcceptingTags: false
   };
 
   componentDidMount() {
@@ -38,6 +39,7 @@ class EditProfile extends Component {
   }
 
   changeState = (loggedUser) => {
+    debugger;
     this.setState({
         id: loggedUser.id,
         firstName: loggedUser.firstName,
@@ -59,7 +61,8 @@ class EditProfile extends Component {
         closeFriendTo: loggedUser.closeFriendTo,
         myCloseFriends: loggedUser.myCloseFriends,
         isPrivate: loggedUser.isPrivate,
-        IsAcceptingTags: loggedUser.isAcceptingTags
+        isAcceptingTags: loggedUser.isAcceptingTags,
+        isAcceptingMessages: loggedUser.isAcceptingMessages
     })
   }
 
@@ -223,7 +226,20 @@ class EditProfile extends Component {
                     placeholder="Enter biography"
                   ></textarea>
                 </div>
-              </div>           
+              </div> 
+              <div className="d-inline-flex w-50">
+                <div class="form-group w-100 pr-5">
+                <br/>
+                  <label className="mr-1" for="lastName">Private profile:</label>
+                  <input  type="checkbox" id="isPrivate" name="isPrivate" checked={this.state.isPrivate} onChange={this.handleChangeCheckboxPrivate}/>
+                  <br/>
+                  <label  className="mr-1"  for="lastName">Accepting messages:</label>
+                  <input  type="checkbox" id="isAcceptingMessages" name="isAcceptingMessages" checked={this.state.isAcceptingMessages} onChange={this.handleChangeCheckboxMessages}/>
+                  <br/>
+                  <label  className="mr-1"  for="lastName">Accepting tags:</label>
+                  <input  type="checkbox" id="isAcceptingTags" name="isAcceptingTags" checked={this.state.isAcceptingTags} onChange={this.handleChangeCheckboxTags}/>
+                </div>
+              </div>          
             </div>
             <div className="mt-5 pb-5">
               <button onClick={this.edit.bind(this)} className="btn btn-lg btn-primary btn-block">
@@ -254,6 +270,28 @@ class EditProfile extends Component {
     });
   };
 
+  handleChangeCheckboxPrivate = (e) => {
+    debugger;
+    this.setState({
+      isPrivate : !this.state.isPrivate
+    })
+    var test = this.state.isPrivate
+  }
+
+  handleChangeCheckboxMessages = (e) => {
+    debugger;
+    this.setState({
+      isAcceptingMessages : !this.state.isAcceptingMessages
+    })
+  }
+
+  handleChangeCheckboxTags = (e) => {
+    debugger;
+    this.setState({
+      isAcceptingTags : !this.state.isAcceptingTags
+    })
+  }
+
   async edit() {
     debugger;
     var successful = false;
@@ -263,14 +301,15 @@ class EditProfile extends Component {
       "FirstName" : this.state.firstName,
       "LastName" : this.state.lastName,
       "IsPrivate" : this.state.isPrivate,
-      "IsAcceptingTags" : this.state.IsAcceptingTags,
+      "IsAcceptingTags" : this.state.isAcceptingTags,
+      "IsAcceptingMessages" : this.state.isAcceptingMessages,
       "ProfilePicturePath" : this.state.profilePicturePath,
       "BlockedUsers" : this.state.blockedUsers,
       "BlockedByUsers" : this.state.blockedByUsers,
       "Following" : this.state.following,
       "Followers" : this.state.followers,
       "MyCloseFriends": this.state.myCloseFriends,
-      "CloseFriendTo" : this.state.closeFriendTo
+      "CloseFriendTo" : this.state.closeFriendTo  
     })   
 
     successful = await this.props.editUserForPost({ 
@@ -283,7 +322,10 @@ class EditProfile extends Component {
       "PhoneNumber" : this.state.phoneNumber,
       "Gender" : this.state.gender,
       "WebsiteAddress" : this.state.webSite,
-      "Bio" : this.state.bio
+      "Bio" : this.state.bio,
+      "IsPrivate" : this.state.isPrivate,
+      "IsAcceptingTags" : this.state.isAcceptingTags,
+      "IsAcceptingMessages" : this.state.IsAcceptingMessages,
     })   
     successful = await  this.props.editUser({ 
       "Id" : this.state.id,  
@@ -295,7 +337,10 @@ class EditProfile extends Component {
       "PhoneNumber" : this.state.phoneNumber,
       "Gender" : this.state.gender,
       "WebsiteAddress" : this.state.webSite,
-      "Bio" : this.state.bio
+      "Bio" : this.state.bio,
+      "IsPrivate" : this.state.isPrivate,
+      "IsAcceptingTags" : this.state.isAcceptingTags,
+      "IsAcceptingMessages" : this.state.isAcceptingMessages,
     })    
     
     if (successful === true) {

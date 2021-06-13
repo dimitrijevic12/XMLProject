@@ -54,6 +54,8 @@ import {
   GET_ALL_IMAGES_FOR_PROFILE,
   GET_ALL_IMAGES_FOR_COLLECTION,
   CREATE_NEW_COLLECTION,
+  GET_FOLLOWING_WITHOUT_MUTED,
+  GET_FOLLOWING_WITHOUT_MUTED_ERROR,
 } from "../types/types";
 
 const initialState = {
@@ -213,6 +215,11 @@ function reducer(state = initialState, action) {
         ],
       };
     case GET_FOLLOWING:
+      return {
+        ...state,
+        following: action.payload,
+      };
+    case GET_FOLLOWING_WITHOUT_MUTED:
       return {
         ...state,
         following: action.payload,

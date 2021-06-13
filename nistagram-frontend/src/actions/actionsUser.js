@@ -27,6 +27,12 @@ import {
   LOAD_IMAGE_PROFILE_ERROR,
   ADD_CLOSE_FRIEND,
   ADD_CLOSE_FRIEND_ERROR,
+  GET_FOLLOWING_WITHOUT_MUTED,
+  GET_FOLLOWING_WITHOUT_MUTED_ERROR,
+  MUTE_PROFILE,
+  MUTE_PROFILE_ERROR,
+  BLOCK_PROFILE,
+  BLOCK_PROFILE_ERROR
 } from "../types/types";
 import axios from "axios";
 
@@ -231,6 +237,7 @@ export const getUsersByName = (name) => async (dispatch) => {
   try {
     const response = await axios.get("https://localhost:44355/api/users?", {
       params: {
+        id : sessionStorage.getItem("userId"),
         name: name,
         access: "public",
       },
@@ -251,7 +258,27 @@ export const getUsersByName = (name) => async (dispatch) => {
 export const getUserById = (id) => async (dispatch) => {
   try {
     const response = await axios.get(
-      "https://localhost:44355/api/users/" + id,
+      "https://localhost:44355/api/users/"+sessionStorage.getItem("userId")+ "/logged/" + id + "/user",
+      {
+        headers: { "Access-Control-Allow-Origin": "" },
+      }
+    );
+    dispatch({
+      type: GET_USER_BY_ID,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_USER_BY_ID_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const getUserByIdWithoutBlocked = (id) => async (dispatch) => {
+  try {
+    const response = await axios.get(
+      "https://localhost:44355/api/users/"+sessionStorage.getItem("userId")+ "/logged/" + id + "/user",
       {
         headers: { "Access-Control-Allow-Origin": "" },
       }
@@ -357,6 +384,28 @@ export const getFollowing = () => async (dispatch) => {
   }
 };
 
+export const getFollowingWithoutMuted = () => async (dispatch) => {
+  try {
+    const response = await axios.get(
+      "https://localhost:44355/api/users/" +
+        sessionStorage.getItem("userId") +
+        "/following-without-muted",
+      {
+        headers: { "Access-Control-Allow-Origin": "" },
+      }
+    );
+    dispatch({
+      type: GET_FOLLOWING_WITHOUT_MUTED,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_FOLLOWING_WITHOUT_MUTED_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
 export const changeProfilePictureUsermicroservice =
   (picture) => async (dispatch) => {
     try {
@@ -426,6 +475,54 @@ export const addCloseFriend = (userId) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: ADD_CLOSE_FRIEND_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const muteProfile = (mute) => async (dispatch) => {
+  try {
+    const response = await axios.post(
+      "https://localhost:44355/api/users/mute",
+      mute,
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      }
+    );
+    dispatch({
+      type: MUTE_PROFILE,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: MUTE_PROFILE_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const blockProfile = (block) => async (dispatch) => {
+  try {
+    const response = await axios.post(
+      "https://localhost:44355/api/users/block",
+      block,
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      }
+    );
+    dispatch({
+      type: BLOCK_PROFILE,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: BLOCK_PROFILE_ERROR,
       payload: console.log(e),
     });
   }

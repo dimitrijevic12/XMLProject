@@ -106,6 +106,14 @@ namespace UserMicroservice.Api.Controllers
             return Ok(registerUserFactory.Create(user));
         }
 
+        [HttpGet("{loggedId}/logged/{userId}/user")]
+        public IActionResult GetByIdWithoutBlocked([FromRoute] Guid loggedId, [FromRoute] Guid userId)
+        {
+            Core.Model.RegisteredUser user = userService.GetUserByIdWithoutBlocked(loggedId, userId);
+            if (user == null) return BadRequest();
+            return Ok(registerUserFactory.Create(user));
+        }
+
         [HttpPut("edit")]
         public IActionResult Edit(DTOs.RegisteredUser dto)
         {
@@ -137,9 +145,9 @@ namespace UserMicroservice.Api.Controllers
                                           gender.Value,
                                           websiteAddress.Value,
                                           bio.Value,
-                                          true,
-                                          true,
-                                          true,
+                                          dto.IsPrivate,
+                                          dto.IsAcceptingMessages,
+                                          dto.IsAcceptingTags,
                                           password.Value,
                                           ProfileImagePath.Create("").Value,
                                           new List<Core.Model.RegisteredUser>(),
@@ -231,6 +239,29 @@ namespace UserMicroservice.Api.Controllers
         {
             if (userService.AddCloseFriend(Guid.NewGuid(), new Guid(userId), new Guid(closeFriendId)).IsFailure) return BadRequest();
             return NoContent();
+        }
+
+        [HttpPost("mute")]
+        public IActionResult Mute(Mute mute)
+        {
+            Guid id = Guid.NewGuid();
+            if (userService.Mute(id, mute.MutedById, mute.MutingId).IsFailure) return BadRequest();
+            return Created(this.Request.Path + id, "");
+        }
+
+        [HttpGet("{userId}/following-without-muted")]
+        public IActionResult GetFollowersWithoutMuted(Guid userId)
+        {
+            return Ok(_userRepository.GetFollowingWithoutMuted(userId)
+               .Select(follower => registerUserFactory.Create(follower)));
+        }
+
+        [HttpPost("block")]
+        public IActionResult Block(Block block)
+        {
+            Guid id = Guid.NewGuid();
+            if (userService.Block(id, block.BlockedById, block.BlockingId).IsFailure) return BadRequest();
+            return Created(this.Request.Path + id, "");
         }
     }
 }

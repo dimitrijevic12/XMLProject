@@ -33,5 +33,19 @@ namespace UserMicroservice.Core.Interface.Repository
         public void AddProfilePicture(Guid id, string image);
 
         public void AddCloseFriend(Guid id, Guid userId, Guid closeFriendId);
+
+        public IEnumerable<RegisteredUser> GetFollowingWithoutMuted(Guid id);
+
+        public void Mute(Guid id, Guid mutedById, Guid mutingId);
+
+        public void Block(Guid id, Guid blockedById, Guid blockingId);
+
+        public void DeleteFollows(Guid blockedById, Guid blockingId);
+
+        public void DeleteFollowRequests(Guid blockedById, Guid blockingId);
+
+        public Maybe<RegisteredUser> GetByIdWithoutBlocked(Guid loggedId, Guid userId);
+
+        public IEnumerable<RegisteredUser> GetByWithoutBlocked(Guid loggedId, string name, string access);
     }
 }

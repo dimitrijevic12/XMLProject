@@ -70,7 +70,7 @@ namespace PostMicroservice.DataAccess.Implementation
         public RegisteredUser Edit(RegisteredUser registeredUser)
         {
             StringBuilder queryBuilder = new StringBuilder("UPDATE dbo.RegisteredUser ");
-            queryBuilder.Append("SET username = @username,  first_name = @first_name, last_name = @last_name ");
+            queryBuilder.Append("SET username = @username,  first_name = @first_name, last_name = @last_name, isPrivate = @is_private, isAcceptingTags = @is_accepting_tags ");
             queryBuilder.Append("WHERE id = @id;");
 
             string query = queryBuilder.ToString();
@@ -80,7 +80,9 @@ namespace PostMicroservice.DataAccess.Implementation
                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = registeredUser.Id },
                  new SqlParameter("@username", SqlDbType.NVarChar) { Value = registeredUser.Username.ToString() },
                  new SqlParameter("@first_name", SqlDbType.NVarChar) { Value = registeredUser.FirstName.ToString() },
-                 new SqlParameter("@last_name", SqlDbType.NVarChar) { Value = registeredUser.LastName.ToString() }
+                 new SqlParameter("@last_name", SqlDbType.NVarChar) { Value = registeredUser.LastName.ToString() },
+                 new SqlParameter("@is_private", SqlDbType.Bit) { Value = registeredUser.IsPrivate },
+                 new SqlParameter("@is_accepting_tags", SqlDbType.Bit) { Value = registeredUser.IsAcceptingTags }
             };
 
             ExecuteQuery(query, parameters);

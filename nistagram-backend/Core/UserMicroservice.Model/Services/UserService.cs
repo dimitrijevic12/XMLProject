@@ -49,6 +49,12 @@ namespace UserMicroservice.Core.Services
             return _userRepository.GetById(id).Value;
         }
 
+        public RegisteredUser GetUserByIdWithoutBlocked(Guid loggedId, Guid userId)
+        {
+            if (_userRepository.GetByIdWithoutBlocked(loggedId, userId).HasNoValue) return null;
+            return _userRepository.GetByIdWithoutBlocked(loggedId, userId).Value;
+        }
+
         public User FindUser(String username, String password)
         {
             var admin = _adminRepository.GetByUsername(username);
@@ -155,6 +161,28 @@ namespace UserMicroservice.Core.Services
             if (user.Value.MyCloseFriends.Contains(closeFriend.Value)) return Result.Failure("User is already a close friend");
             _userRepository.AddCloseFriend(id, userId, closeFriendId);
             return Result.Success("User successfully added to close friends");
+        }
+
+        public Result Mute(Guid id, Guid mutedById, Guid mutingId)
+        {
+            var user = _userRepository.GetById(mutedById);
+            var mutedUser = _userRepository.GetById(mutingId);
+            if ((user.HasNoValue) || (mutedUser.HasNoValue)) return Result.Failure("There is no user with that id");
+            if (user.Value.MutedUsers.Contains(mutedUser.Value)) return Result.Failure("User is already a muted");
+            _userRepository.Mute(id, mutedById, mutingId);
+            return Result.Success("User is successfully muted");
+        }
+
+        public Result Block(Guid id, Guid blockedById, Guid blockingId)
+        {
+            var user = _userRepository.GetById(blockedById);
+            var blockedUser = _userRepository.GetById(blockingId);
+            if ((user.HasNoValue) || (blockedUser.HasNoValue)) return Result.Failure("There is no user with that id");
+            if (user.Value.BlockedUsers.Contains(blockedUser.Value)) return Result.Failure("User is already a blocked");
+            _userRepository.Block(id, blockedById, blockingId);
+            _userRepository.DeleteFollows(blockedById, blockingId);
+            _userRepository.DeleteFollowRequests(blockedById, blockingId);
+            return Result.Success("User is successfully blocked");
         }
     }
 }

@@ -115,3 +115,12 @@ export const ADD_CLOSE_FRIEND_STORY = "addCloseFriendStory";
 export const ADD_CLOSE_FRIEND_STORY_ERROR = "addCloseFriendStoryError";
 export const CREATE_NEW_COLLECTION = "createNewCollection";
 export const CREATE_NEW_COLLECTION_ERROR = "createNewCollectionError";
+export const GET_FOLLOWING_WITHOUT_MUTED = "getFollowingWithoutMuted";
+export const GET_FOLLOWING_WITHOUT_MUTED_ERROR = "getFollowingWithoutMutedError";
+export const MUTE_PROFILE = "muteProfile";
+export const MUTE_PROFILE_ERROR = "muteProfileError";
+export const BLOCK_PROFILE = "blockProfile";
+export const BLOCK_PROFILE_ERROR = "blockProfileError";
+
+
+

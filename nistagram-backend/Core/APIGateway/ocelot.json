@@ -12,6 +12,28 @@
       "UpstreamPathTemplate": "/api/users/editforpost"
     },
     {
+      "DownstreamPathTemplate": "/api/users/mute",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44313
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/mute"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/block",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44313
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/block"
+    },
+    {
       "DownstreamPathTemplate": "/api/users/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -54,6 +76,17 @@
         }
       ],
       "UpstreamPathTemplate": "/api/users/handlerequest"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/{loggedId}/logged/{userId}/user",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44313
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/{loggedId}/logged/{userId}/user"
     },
     {
       "DownstreamPathTemplate": "/api/posts/users/{id}",
@@ -406,6 +439,17 @@
         }
       ],
       "UpstreamPathTemplate": "/api/users/{userId}/following"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/{userId}/following-without-muted",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44313
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/{userId}/following-without-muted"
     },
     {
       "DownstreamPathTemplate": "/api/posts/following",
