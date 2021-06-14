@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using CSharpFunctionalExtensions;
+using Microsoft.Extensions.Configuration;
 using PostMicroservice.Core.Interface.Repository;
 using PostMicroservice.Core.Model;
 using PostMicroservice.DataAccess.Adaptee;
@@ -37,7 +38,7 @@ namespace PostMicroservice.DataAccess.Implementation
                     select (Location)_locationTarget.ConvertSql(dataRow)).ToList();
         }
 
-        public Location GetById(Guid id)
+        public Maybe<Location> GetById(Guid id)
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT l.id, l.street, l.city_name, l.country ");
             queryBuilder.Append("FROM dbo.Location AS l ");

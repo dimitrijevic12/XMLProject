@@ -10,6 +10,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 using System.Linq;
+using CSharpFunctionalExtensions;
 
 namespace PostMicroservice.DataAccess.Implementation
 {
@@ -26,7 +27,7 @@ namespace PostMicroservice.DataAccess.Implementation
             throw new NotImplementedException();
         }
 
-        public RegisteredUser GetById(Guid id)
+        public Maybe<RegisteredUser> GetById(Guid id)
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT * ");
             queryBuilder.Append("FROM dbo.RegisteredUser ");
@@ -38,9 +39,14 @@ namespace PostMicroservice.DataAccess.Implementation
 
             List<SqlParameter> parameters = new List<SqlParameter>() { parameterId };
 
-            return (RegisteredUser)_registeredUserTarget.ConvertSql(
-                ExecuteQuery(query, parameters).Rows[0]
-            );
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            if (dataTable.Rows.Count > 0)
+            {
+                return (RegisteredUser)_registeredUserTarget.ConvertSql(
+                dataTable.Rows[0]);
+            }
+            return Maybe<RegisteredUser>.None;
         }
 
         public RegisteredUser Save(RegisteredUser registeredUser)
@@ -125,6 +131,28 @@ namespace PostMicroservice.DataAccess.Implementation
              };
 
             ExecuteQuery(query, parameters);
+        }
+
+        public Maybe<RegisteredUser> GetByUsername(string username)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT * ");
+            queryBuilder.Append("FROM dbo.RegisteredUser ");
+            queryBuilder.Append("WHERE username = @Username;");
+
+            string query = queryBuilder.ToString();
+
+            SqlParameter parameterUsername = new SqlParameter("@Username", SqlDbType.NVarChar) { Value = username };
+
+            List<SqlParameter> parameters = new List<SqlParameter>() { parameterUsername };
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            if (dataTable.Rows.Count > 0)
+            {
+                return (RegisteredUser)_registeredUserTarget.ConvertSql(
+                dataTable.Rows[0]);
+            }
+            return Maybe<RegisteredUser>.None;
         }
     }
 }

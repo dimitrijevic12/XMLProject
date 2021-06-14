@@ -1,6 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
+using EasyNetQ;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Shared.Contracts;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -21,20 +23,65 @@ namespace UserMicroservice.Core.Services
         private readonly IUserRepository _userRepository;
         private readonly IAdminRepository _adminRepository;
         private IConfiguration _config;
+        private readonly IBus _bus;
 
-        public UserService(IUserRepository userRepository, IAdminRepository adminRepository, IConfiguration config)
+        public UserService(IUserRepository userRepository, IAdminRepository adminRepository, IConfiguration config, IBus bus)
         {
             _userRepository = userRepository;
             _adminRepository = adminRepository;
             _config = config;
+            _bus = bus;
         }
 
-        public Result Create(RegisteredUser registeredUser)
+        public async Task<Result> CreateRegistrationAsync(RegisteredUser registeredUser)
+        {
+            var result = Create(registeredUser);
+            if (result.IsFailure) return Result.Failure(result.Error);
+            await _bus.PubSub.PublishAsync(new UserRegisteredEvent
+            {
+                Id = registeredUser.Id,
+                Username = registeredUser.Username,
+                FirstName = registeredUser.FirstName,
+                LastName = registeredUser.LastName,
+                ProfileImagePath = registeredUser.ProfileImagePath,
+                IsPrivate = registeredUser.IsPrivate,
+                IsAcceptingTags = registeredUser.IsAcceptingTags,
+                Followers = Convert(registeredUser.Followers),
+                Following = Convert(registeredUser.Following)
+            });
+            return Result.Success(registeredUser);
+        }
+
+        private IEnumerable<UserRegisteredEvent> Convert(IEnumerable<RegisteredUser> users)
+        {
+            return users.Select(registeredUser => new UserRegisteredEvent
+            {
+                Id = registeredUser.Id,
+                Username = registeredUser.Username,
+                FirstName = registeredUser.FirstName,
+                LastName = registeredUser.LastName,
+                ProfileImagePath = registeredUser.ProfileImagePath
+            }).ToList();
+        }
+
+        private Result Create(RegisteredUser registeredUser)
         {
             if (_userRepository.GetById(registeredUser.Id).HasValue) return Result.Failure("User with that id already exist");
             if (_userRepository.GetByUsername(registeredUser.Username).HasValue) return Result.Failure("User with that username already exist");
             _userRepository.Save(registeredUser);
             return Result.Success(registeredUser);
+        }
+
+        public Task CompleteRegistrationAsync(Guid registeredUserId)
+        {
+            return Task.CompletedTask;
+        }
+
+        public Task RejectRegistrationAsync(Guid registeredUserId, string reason)
+        {
+            _userRepository.Delete(registeredUserId);
+
+            return Task.CompletedTask;
         }
 
         public Result Edit(RegisteredUser registeredUser)

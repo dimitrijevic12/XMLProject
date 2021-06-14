@@ -40,7 +40,7 @@ namespace UserMicroservice.Api.Controllers
 
         //[Authorize(Roles = "ApprovedAgent")]
         [HttpPost]
-        public IActionResult RegisterUser(DTOs.RegisteredUser dto)
+        public async Task<IActionResult> RegisterUser(DTOs.RegisteredUser dto)
         {
             Guid id = Guid.NewGuid();
 
@@ -57,30 +57,32 @@ namespace UserMicroservice.Api.Controllers
             Result result = Result.Combine(username, emailAddress, firstName, lastName, phoneNumber, gender, websiteAddress, bio, password);
             if (result.IsFailure) return BadRequest();
 
-            if (userService.Create(Core.Model.RegisteredUser
-                                       .Create(id,
-                                          username.Value,
-                                          emailAddress.Value,
-                                          firstName.Value,
-                                          lastName.Value,
-                                          dto.DateOfBirth,
-                                          phoneNumber.Value,
-                                          gender.Value,
-                                          websiteAddress.Value,
-                                          bio.Value,
-                                          dto.IsPrivate,
-                                          dto.IsAcceptingMessages,
-                                          dto.IsAcceptingTags,
-                                          password.Value,
-                                          ProfileImagePath.Create("").Value,
-                                          new List<Core.Model.RegisteredUser>(),
-                                          new List<Core.Model.RegisteredUser>(),
-                                          new List<Core.Model.RegisteredUser>(),
-                                          new List<Core.Model.RegisteredUser>(),
-                                          new List<Core.Model.RegisteredUser>(),
-                                          new List<Core.Model.RegisteredUser>(),
-                                          new List<Core.Model.RegisteredUser>(),
-                                          new List<Core.Model.RegisteredUser>()).Value).IsFailure) return BadRequest();
+            Result registrationResult = await userService.CreateRegistrationAsync(Core.Model.RegisteredUser
+                               .Create(id,
+                                  username.Value,
+                                  emailAddress.Value,
+                                  firstName.Value,
+                                  lastName.Value,
+                                  dto.DateOfBirth,
+                                  phoneNumber.Value,
+                                  gender.Value,
+                                  websiteAddress.Value,
+                                  bio.Value,
+                                  dto.IsPrivate,
+                                  dto.IsAcceptingMessages,
+                                  dto.IsAcceptingTags,
+                                  password.Value,
+                                  ProfileImagePath.Create("").Value,
+                                  new List<Core.Model.RegisteredUser>(),
+                                  new List<Core.Model.RegisteredUser>(),
+                                  new List<Core.Model.RegisteredUser>(),
+                                  new List<Core.Model.RegisteredUser>(),
+                                  new List<Core.Model.RegisteredUser>(),
+                                  new List<Core.Model.RegisteredUser>(),
+                                  new List<Core.Model.RegisteredUser>(),
+                                  new List<Core.Model.RegisteredUser>()).Value);
+
+            if (registrationResult.IsFailure) return BadRequest();
             dto.Id = id;
             return Ok(/*this.Request.Path + id, ""*/ dto);
         }

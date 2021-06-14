@@ -28,7 +28,7 @@ namespace PostMicroservice.DataAccess.Implementation
             throw new NotImplementedException();
         }
 
-        public Collection GetById(Guid id)
+        public Maybe<Collection> GetById(Guid id)
         {
             throw new NotImplementedException();
         }

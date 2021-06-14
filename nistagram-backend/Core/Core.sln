@@ -59,7 +59,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotificationMicroservice.Da
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StoryMicroservice.DataAccess", "StoryMicroservice.DataAccess\StoryMicroservice.DataAccess.csproj", "{DC82C225-DDE7-4D03-905D-9A533F9B3673}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIGateway", "APIGateway\APIGateway.csproj", "{ECA25C99-5AEE-4FB3-8F17-7F65167CEA18}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APIGateway", "APIGateway\APIGateway.csproj", "{ECA25C99-5AEE-4FB3-8F17-7F65167CEA18}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.Contracts", "Shared.Contracts\Shared.Contracts.csproj", "{80B0DCC4-1182-4D3C-8056-EF3B5260863B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -155,6 +157,10 @@ Global
 		{ECA25C99-5AEE-4FB3-8F17-7F65167CEA18}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECA25C99-5AEE-4FB3-8F17-7F65167CEA18}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ECA25C99-5AEE-4FB3-8F17-7F65167CEA18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80B0DCC4-1182-4D3C-8056-EF3B5260863B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80B0DCC4-1182-4D3C-8056-EF3B5260863B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80B0DCC4-1182-4D3C-8056-EF3B5260863B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80B0DCC4-1182-4D3C-8056-EF3B5260863B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

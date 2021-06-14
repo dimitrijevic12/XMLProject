@@ -42,7 +42,7 @@ namespace PostMicroservice.Api.Controllers
         [HttpGet("{id}")]
         public IActionResult GetById(Guid id)
         {
-            Post post = _postRepository.GetById(id);
+            Post post = _postRepository.GetById(id).Value;
             if (post.GetType().Name.Equals("PostSingle"))
             {
                 return Ok(postSingleFactory.Create((PostSingle)post));

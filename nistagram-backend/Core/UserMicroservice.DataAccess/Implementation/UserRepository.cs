@@ -24,9 +24,19 @@ namespace UserMicroservice.DataAccess.Implementation
         {
         }
 
-        public RegisteredUser Delete(RegisteredUser obj)
+        public void Delete(Guid id)
         {
-            throw new NotImplementedException();
+            StringBuilder queryBuilder = new StringBuilder("DELETE FROM dbo.RegisteredUser ");
+            queryBuilder.Append("WHERE id = @id ");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = id },
+             };
+
+            ExecuteQuery(query, parameters);
         }
 
         public RegisteredUser Edit(RegisteredUser registeredUser)
@@ -753,7 +763,8 @@ namespace UserMicroservice.DataAccess.Implementation
         public void DeleteFollowRequests(Guid blockedById, Guid blockingId)
         {
             StringBuilder queryBuilder = new StringBuilder("DELETE FROM dbo.FollowRequest ");
-            queryBuilder.Append("WHERE (requests_follow_id = @blocked_by_id AND recieves_follow_id = @blocking_id) OR (requests_follow_id = @blocking_id AND recieves_follow_id = @blocked_by_id);");
+            queryBuilder.Append("WHERE (requests_follow_id = @blocked_by_id AND recieves_follow_id = @blocking_id) OR " +
+                "(requests_follow_id = @blocking_id AND recieves_follow_id = @blocked_by_id);");
 
             string query = queryBuilder.ToString();
 

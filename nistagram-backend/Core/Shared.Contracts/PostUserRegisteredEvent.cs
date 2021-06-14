@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace StoryMicroservice.Core.DTOs
+namespace Shared.Contracts
 {
-    public class RegisteredUser
+    public class PostUserRegisteredEvent
     {
         public string Id { get; set; }
         public string ProfilePicturePath { get; set; }

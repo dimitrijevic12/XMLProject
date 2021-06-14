@@ -38,7 +38,7 @@ namespace PostMicroservice.Api.Controllers
         {
             Result<CollectionName> collectionName = CollectionName.Create(collection.CollectionName);
             Result result = Result.Combine(collectionName);
-            RegisteredUser registeredUser = _userRepository.GetById(collection.RegisteredUser.Id);
+            RegisteredUser registeredUser = _userRepository.GetById(collection.RegisteredUser.Id).Value;
             Guid id = Guid.NewGuid();
             if (_collectionRepository.Save(Collection.Create(id, collectionName.Value,
                    new List<Post>(), registeredUser).Value) == null) return BadRequest();

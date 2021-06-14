@@ -23,7 +23,7 @@ namespace UserMicroservice.DataAccess.Implementation
         {
         }
 
-        public Admin Delete(Admin obj)
+        public void Delete(Guid id)
         {
             throw new NotImplementedException();
         }

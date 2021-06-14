@@ -10,6 +10,7 @@ using System.Text;
 using System.Linq;
 using PostMicroservice.Core.Interface.Repository;
 using System;
+using CSharpFunctionalExtensions;
 
 namespace PostMicroservice.DataAccess.Implementation
 {
@@ -47,7 +48,7 @@ namespace PostMicroservice.DataAccess.Implementation
                     GetContentsPathForPost((Guid)dataRow[0]))).ToList();
         }
 
-        public Post GetById(Guid id)
+        public Maybe<Post> GetById(Guid id)
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT p.id, p.timestamp, p.description, " +
                 "p.type, l.id, l.street, l.city_name, l.country, r.id, r.username, r.first_name, " +
