@@ -1,15 +1,14 @@
 ﻿using EasyNetQ;
 using EasyNetQ.AutoSubscribe;
 using Shared.Contracts;
+using StoryMicroservice.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using UserMicroservice.Core.Services;
 
-namespace UserMicroservice.Api.Consumers
+namespace StoryMicroservice.Api.Consumers
 {
     public class UnsuccessfulPostUserRegistrationEventConsumer : IConsumeAsync<UnsuccessfulPostUserRegistrationEvent>
     {
@@ -25,6 +24,10 @@ namespace UserMicroservice.Api.Consumers
         public async Task ConsumeAsync(UnsuccessfulPostUserRegistrationEvent message, CancellationToken cancellationToken = default)
         {
             await userService.RejectRegistrationAsync(message.Id, "Unsuccessful registration error!");
+            await _bus.PubSub.PublishAsync(new UnsuccessfulStoryUserRegistrationEvent
+            {
+                Id = message.Id,
+            });
         }
     }
 }

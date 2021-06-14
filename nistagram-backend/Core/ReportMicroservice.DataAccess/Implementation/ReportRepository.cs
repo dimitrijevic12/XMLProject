@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using CSharpFunctionalExtensions;
+using Microsoft.Extensions.Configuration;
 using ReportMicroservice.Core.Interface.Repository;
 using ReportMicroservice.Core.Model;
 using System;
@@ -20,7 +21,7 @@ namespace ReportMicroservice.DataAccess.Implementation
             throw new NotImplementedException();
         }
 
-        public Report GetById(Guid id)
+        public Maybe<Report> GetById(Guid id)
         {
             throw new NotImplementedException();
         }
@@ -53,7 +54,7 @@ namespace ReportMicroservice.DataAccess.Implementation
             throw new NotImplementedException();
         }
 
-        public Report Delete(Report report)
+        public void Delete(Guid id)
         {
             throw new NotImplementedException();
         }

@@ -6,14 +6,18 @@ namespace Shared.Contracts
 {
     public class UserRegisteredEvent
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
+        public string ProfilePicturePath { get; set; }
         public string Username { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string ProfileImagePath { get; set; }
-        public Boolean IsPrivate { get; set; }
-        public Boolean IsAcceptingTags { get; set; }
-        public IEnumerable<UserRegisteredEvent> Following { get; set; }
-        public IEnumerable<UserRegisteredEvent> Followers { get; set; }
+        public bool IsPrivate { get; set; }
+        public bool IsAcceptingTags { get; set; }
+        public List<string> BlockedUsers { get; set; }
+        public List<string> BlockedByUsers { get; set; }
+        public List<string> Following { get; set; }
+        public List<string> Followers { get; set; }
+        public List<string> MyCloseFriends { get; set; }
+        public List<string> CloseFriendTo { get; set; }
     }
 }

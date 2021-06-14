@@ -133,7 +133,7 @@ namespace PostMicroservice.DataAccess.Implementation
             throw new System.NotImplementedException();
         }
 
-        public Post Delete(Post post)
+        public void Delete(Guid id)
         {
             throw new System.NotImplementedException();
         }

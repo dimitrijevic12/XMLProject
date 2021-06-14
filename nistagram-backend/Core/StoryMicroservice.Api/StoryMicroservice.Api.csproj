@@ -13,6 +13,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\Shared.Contracts\Shared.Contracts.csproj" />
 		<ProjectReference Include="..\StoryMicroservice.DataAccess\StoryMicroservice.DataAccess.csproj" />
 		<ProjectReference Include="..\StoryMicroservice.Model\StoryMicroservice.Core.csproj" />
 	</ItemGroup>

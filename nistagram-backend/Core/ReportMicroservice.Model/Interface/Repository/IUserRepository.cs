@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using ReportMicroservice.Core.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,16 +8,8 @@ using System.Threading.Tasks;
 
 namespace ReportMicroservice.Core.Interface.Repository
 {
-    public interface IRepository<T>
+    public interface IUserRepository : IRepository<RegisteredUser>
     {
-        IEnumerable<T> GetAll();
-
-        Maybe<T> GetById(Guid id);
-
-        T Save(T obj);
-
-        T Edit(T obj);
-
-        void Delete(Guid id);
+        public Maybe<RegisteredUser> GetByUsername(String username);
     }
 }

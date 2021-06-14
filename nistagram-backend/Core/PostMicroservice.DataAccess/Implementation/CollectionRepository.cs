@@ -71,7 +71,7 @@ namespace PostMicroservice.DataAccess.Implementation
             return collection;
         }
 
-        public Collection Delete(Collection collection)
+        public void Delete(Guid id)
         {
             throw new NotImplementedException();
         }

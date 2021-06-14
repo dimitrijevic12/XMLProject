@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace StoryMicroservice.Api
+namespace ReportMicroservice.Api
 {
     public class Worker : BackgroundService
     {

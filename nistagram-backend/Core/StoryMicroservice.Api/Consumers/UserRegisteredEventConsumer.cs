@@ -1,25 +1,27 @@
 ﻿using EasyNetQ;
 using EasyNetQ.AutoSubscribe;
-using PostMicroservice.Core.Model;
-using PostMicroservice.Core.Services;
 using Shared.Contracts;
+using StoryMicroservice.Core.Interface.Repository;
+using StoryMicroservice.Core.Model;
+using StoryMicroservice.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PostMicroservice.Api.Consumes
+namespace StoryMicroservice.Api.Consumers
 {
     public class UserRegisteredEventConsumer : IConsumeAsync<UserRegisteredEvent>
     {
         private readonly UserService userService;
+        private readonly IUserRepository _userRepository;
         private readonly IBus _bus;
 
-        public UserRegisteredEventConsumer(UserService userService, IBus bus)
+        public UserRegisteredEventConsumer(UserService userService, IBus bus, IUserRepository userRepository)
         {
             this.userService = userService;
+            _userRepository = userRepository;
             _bus = bus;
         }
 
@@ -28,30 +30,40 @@ namespace PostMicroservice.Api.Consumes
             var result = await userService.CreateRegistrationAsync(Convert(message));
             if (result.IsSuccess)
             {
-                await _bus.PubSub.PublishAsync(new PostUserRegisteredEvent
+                await _bus.PubSub.PublishAsync(new StoryUserRegisteredEvent
                 {
-                    Id = message.Id.ToString(),
+                    Id = new Guid(message.Id),
                     Username = message.Username,
                     FirstName = message.FirstName,
                     LastName = message.LastName,
                     IsPrivate = message.IsPrivate,
                     IsAcceptingTags = message.IsAcceptingTags,
-                    ProfilePicturePath = message.ProfileImagePath.ToString(),
-                    BlockedByUsers = new List<string>(),
-                    BlockedUsers = new List<string>(),
-                    Following = CreateIds(message.Following),
-                    Followers = CreateIds(message.Followers),
-                    MyCloseFriends = new List<string>(),
-                    CloseFriendTo = new List<string>(),
+                    ProfileImagePath = message.ProfilePicturePath.ToString(),
+                    Following = Convert(_userRepository.GetUsersById(message.Following)),
+                    Followers = Convert(_userRepository.GetUsersById(message.Followers)),
                 });
             }
             else
             {
-                await _bus.PubSub.PublishAsync(new UnsuccessfulPostUserRegistrationEvent
+                await _bus.PubSub.PublishAsync(new UnsuccessfulStoryUserRegistrationEvent
                 {
-                    Id = message.Id,
+                    Id = new Guid(message.Id),
                 });
             }
+        }
+
+        private IEnumerable<StoryUserRegisteredEvent> Convert(IEnumerable<Core.Model.RegisteredUser> users)
+        {
+            return users.Select(registeredUser => new StoryUserRegisteredEvent
+            {
+                Id = registeredUser.Id,
+                Username = registeredUser.Username,
+                FirstName = registeredUser.FirstName,
+                LastName = registeredUser.LastName,
+                ProfileImagePath = registeredUser.ProfilePicturePath,
+                IsPrivate = registeredUser.IsPrivate,
+                IsAcceptingTags = registeredUser.IsAcceptingTags,
+            }).ToList();
         }
 
         public List<string> CreateIds(IEnumerable<UserRegisteredEvent> registeredUsers)
@@ -62,13 +74,15 @@ namespace PostMicroservice.Api.Consumes
 
         private RegisteredUser Convert(UserRegisteredEvent message)
         {
-            return RegisteredUser.Create(message.Id,
+            return RegisteredUser.Create(new Guid(message.Id),
                                            Username.Create(message.Username).Value,
                                            FirstName.Create(message.FirstName).Value,
                                            LastName.Create(message.LastName).Value,
-                                           ProfileImagePath.Create(message.ProfileImagePath).Value,
                                            message.IsPrivate,
                                            message.IsAcceptingTags,
+                                           ContentPath.Create(message.ProfilePicturePath).Value,
+                                           new List<RegisteredUser>(),
+                                           new List<RegisteredUser>(),
                                            new List<RegisteredUser>(),
                                            new List<RegisteredUser>(),
                                            new List<RegisteredUser>(),

@@ -57,7 +57,8 @@ namespace UserMicroservice.Api
             services.AddScoped<RegisteredUserFactory>();
             services.AddScoped<FollowRequestFactory>();
 
-            services.AddScoped<UnsuccessfulPostUserRegistrationEventConsumer>();
+            services.AddScoped<UnsuccessfulStoryUserRegistrationEventConsumer>();
+            services.AddScoped<UserRegistrationCompletedEventConsumer>();
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {

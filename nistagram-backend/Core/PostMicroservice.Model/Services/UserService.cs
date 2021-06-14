@@ -51,6 +51,13 @@ namespace PostMicroservice.Core.Services
             return Result.Success(registeredUser);
         }
 
+        public Task RejectRegistrationAsync(Guid registeredUserId, string reason)
+        {
+            _userRepository.Delete(registeredUserId);
+
+            return Task.CompletedTask;
+        }
+
         public Result Edit(RegisteredUser registeredUser)
         {
             _userRepository.Edit(registeredUser);

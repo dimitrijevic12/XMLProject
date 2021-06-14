@@ -11,20 +11,20 @@ using UserMicroservice.Core.Services;
 
 namespace UserMicroservice.Api.Consumers
 {
-    public class PostUserRegistrationCompletedEventConsumer : IConsumeAsync<UserRegisteredEvent>
+    public class UnsuccessfulStoryUserRegistrationEventConsumer : IConsumeAsync<UnsuccessfulStoryUserRegistrationEvent>
     {
         private readonly UserService userService;
         private readonly IBus _bus;
 
-        public PostUserRegistrationCompletedEventConsumer(UserService userService, IBus bus)
+        public UnsuccessfulStoryUserRegistrationEventConsumer(UserService userService, IBus bus)
         {
             this.userService = userService;
             _bus = bus;
         }
 
-        public async Task ConsumeAsync(UserRegisteredEvent message, CancellationToken cancellationToken = default)
+        public async Task ConsumeAsync(UnsuccessfulStoryUserRegistrationEvent message, CancellationToken cancellationToken = default)
         {
-            await userService.CompleteRegistrationAsync(message.Id);
+            await userService.RejectRegistrationAsync(message.Id, "Unsuccessful registration error!");
         }
     }
 }

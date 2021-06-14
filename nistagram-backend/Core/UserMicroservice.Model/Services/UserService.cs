@@ -39,29 +39,23 @@ namespace UserMicroservice.Core.Services
             if (result.IsFailure) return Result.Failure(result.Error);
             await _bus.PubSub.PublishAsync(new UserRegisteredEvent
             {
-                Id = registeredUser.Id,
+                Id = registeredUser.Id.ToString(),
                 Username = registeredUser.Username,
                 FirstName = registeredUser.FirstName,
                 LastName = registeredUser.LastName,
-                ProfileImagePath = registeredUser.ProfileImagePath,
+                ProfilePicturePath = registeredUser.ProfileImagePath,
                 IsPrivate = registeredUser.IsPrivate,
                 IsAcceptingTags = registeredUser.IsAcceptingTags,
-                Followers = Convert(registeredUser.Followers),
-                Following = Convert(registeredUser.Following)
+                Followers = CreateIds(registeredUser.Followers),
+                Following = CreateIds(registeredUser.Following)
             });
             return Result.Success(registeredUser);
         }
 
-        private IEnumerable<UserRegisteredEvent> Convert(IEnumerable<RegisteredUser> users)
+        public List<string> CreateIds(IEnumerable<Core.Model.RegisteredUser> registeredUsers)
         {
-            return users.Select(registeredUser => new UserRegisteredEvent
-            {
-                Id = registeredUser.Id,
-                Username = registeredUser.Username,
-                FirstName = registeredUser.FirstName,
-                LastName = registeredUser.LastName,
-                ProfileImagePath = registeredUser.ProfileImagePath
-            }).ToList();
+            var test = registeredUsers.Select(registeredUser => registeredUser.Id.ToString()).ToList();
+            return test;
         }
 
         private Result Create(RegisteredUser registeredUser)

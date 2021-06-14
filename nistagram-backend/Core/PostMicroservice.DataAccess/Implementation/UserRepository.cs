@@ -96,9 +96,19 @@ namespace PostMicroservice.DataAccess.Implementation
             return registeredUser;
         }
 
-        public RegisteredUser Delete(RegisteredUser obj)
+        public void Delete(Guid id)
         {
-            throw new NotImplementedException();
+            StringBuilder queryBuilder = new StringBuilder("DELETE FROM dbo.RegisteredUser ");
+            queryBuilder.Append("WHERE id = @id ");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = id },
+             };
+
+            ExecuteQuery(query, parameters);
         }
 
         public IEnumerable<RegisteredUser> GetTaggable()

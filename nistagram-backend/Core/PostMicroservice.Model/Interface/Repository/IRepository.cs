@@ -14,6 +14,6 @@ namespace PostMicroservice.Core.Interface.Repository
 
         T Edit(T obj);
 
-        T Delete(T obj);
+        void Delete(Guid id);
     }
 }

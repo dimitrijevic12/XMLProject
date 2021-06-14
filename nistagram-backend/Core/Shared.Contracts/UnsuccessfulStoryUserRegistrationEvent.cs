@@ -4,9 +4,8 @@ using System.Text;
 
 namespace Shared.Contracts
 {
-    public class PostUserRegisteredEvent
+    public class UnsuccessfulStoryUserRegistrationEvent
     {
         public Guid Id { get; set; }
-        public string Username { get; set; }
     }
 }

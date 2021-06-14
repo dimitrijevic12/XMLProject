@@ -70,7 +70,7 @@ namespace PostMicroservice.DataAccess.Implementation
             throw new NotImplementedException();
         }
 
-        public Location Delete(Location obj)
+        public void Delete(Guid id)
         {
             throw new NotImplementedException();
         }
