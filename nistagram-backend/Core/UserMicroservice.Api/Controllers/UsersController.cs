@@ -131,13 +131,7 @@ namespace UserMicroservice.Api.Controllers
 
             Result result = Result.Combine(username, emailAddress, firstName, lastName, phoneNumber, gender, websiteAddress, bio, password);
             if (result.IsFailure) return BadRequest(result.Error);
-            string test = _userRepository.GetById(dto.Id).Value.Username;
-            string test2 = _userRepository.GetById(dto.Id).Value.Username.ToString();
-            if (!_userRepository.GetById(dto.Id).Value.Username.ToString().Equals(dto.Username))
-            {
-                if (_userRepository.GetByUsername(dto.Username).HasValue) return BadRequest();
-            }
-            return Ok(userService.Edit((Core.Model.RegisteredUser.Create(dto.Id,
+            Result userResult = userService.Edit((Core.Model.RegisteredUser.Create(dto.Id,
                                           username.Value,
                                           emailAddress.Value,
                                           firstName.Value,
@@ -159,7 +153,10 @@ namespace UserMicroservice.Api.Controllers
                                           new List<Core.Model.RegisteredUser>(),
                                           new List<Core.Model.RegisteredUser>(),
                                           new List<Core.Model.RegisteredUser>(),
-                                          new List<Core.Model.RegisteredUser>()).Value)));
+                                          new List<Core.Model.RegisteredUser>()).Value));
+
+            if (userResult.IsFailure) return BadRequest();
+            return Ok(userResult);
         }
 
         [HttpGet]

@@ -78,8 +78,50 @@ namespace UserMicroservice.Core.Services
             return Task.CompletedTask;
         }
 
+        public async Task<Result> EditAsync(RegisteredUser registeredUser)
+        {
+            var oldUser = _userRepository.GetById(registeredUser.Id).Value;
+            var result = Edit(registeredUser);
+            if (result.IsFailure) return Result.Failure(result.Error);
+            await _bus.PubSub.PublishAsync(new UserEditEvent
+            {
+                Id = registeredUser.Id.ToString(),
+                Username = registeredUser.Username,
+                FirstName = registeredUser.FirstName,
+                LastName = registeredUser.LastName,
+                ProfilePicturePath = registeredUser.ProfileImagePath,
+                IsPrivate = registeredUser.IsPrivate,
+                IsAcceptingTags = registeredUser.IsAcceptingTags,
+                Followers = CreateIds(registeredUser.Followers),
+                Following = CreateIds(registeredUser.Following),
+                BlockedUsers = CreateIds(registeredUser.Followers),
+                BlockedByUsers = CreateIds(registeredUser.Following),
+                MyCloseFriends = CreateIds(registeredUser.Followers),
+                CloseFriendTo = CreateIds(registeredUser.Following),
+
+                //old
+                OldUsername = oldUser.Username,
+                OldFirstName = oldUser.FirstName,
+                OldLastName = oldUser.LastName,
+                OldProfilePicturePath = oldUser.ProfileImagePath,
+                OldIsPrivate = oldUser.IsPrivate,
+                OldIsAcceptingTags = oldUser.IsAcceptingTags,
+                OldFollowers = CreateIds(oldUser.Followers),
+                OldFollowing = CreateIds(oldUser.Following),
+                OldBlockedUsers = CreateIds(oldUser.Followers),
+                OldBlockedByUsers = CreateIds(oldUser.Following),
+                OldMyCloseFriends = CreateIds(oldUser.Followers),
+                OldCloseFriendTo = CreateIds(oldUser.Following),
+            });
+            return Result.Success(registeredUser);
+        }
+
         public Result Edit(RegisteredUser registeredUser)
         {
+            if (!_userRepository.GetById(registeredUser.Id).Value.Username.ToString().Equals(registeredUser.Username))
+            {
+                if (_userRepository.GetByUsername(registeredUser.Username).HasValue) return Result.Failure("There is already user with that username");
+            }
             _userRepository.Edit(registeredUser);
             return Result.Success(registeredUser);
         }

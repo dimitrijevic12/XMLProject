@@ -39,18 +39,6 @@ namespace UserMicroservice.Core.Services
                 verificationRequest.RegisteredUser.CloseFriendTo, Category.Create(verificationRequest.Category.ToString()).Value);
             result = _userService.EditVerifiedUser(verifiedUser.Value);
             if (result.IsFailure) return Result.Failure(result.Error);
-            /*await _bus.PubSub.PublishAsync(new UserRegisteredEvent
-            {
-                Id = registeredUser.Id.ToString(),
-                Username = registeredUser.Username,
-                FirstName = registeredUser.FirstName,
-                LastName = registeredUser.LastName,
-                ProfilePicturePath = registeredUser.ProfileImagePath,
-                IsPrivate = registeredUser.IsPrivate,
-                IsAcceptingTags = registeredUser.IsAcceptingTags,
-                Followers = CreateIds(registeredUser.Followers),
-                Following = CreateIds(registeredUser.Following)
-            });*/
             return Result.Success(verifiedUser);
         }
 
