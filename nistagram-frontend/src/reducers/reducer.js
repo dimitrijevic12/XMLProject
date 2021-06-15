@@ -55,6 +55,11 @@ import {
   GET_ALL_IMAGES_FOR_COLLECTION,
   CREATE_NEW_COLLECTION,
   GET_UNAPPROVED_VERIFICATION_REQUESTS,
+  GET_FOLLOWING_WITHOUT_MUTED,
+  GET_FOLLOWING_WITHOUT_MUTED_ERROR,
+  GET_LIKED_POSTS,
+  GET_DISLIKED_POSTS,
+  REPORT_CONTENT,
 } from "../types/types";
 
 const initialState = {
@@ -91,6 +96,8 @@ const initialState = {
   collectionPosts: [],
   profilePosts: [],
   unapprovedVerificationRequests: [],
+  likedPosts: [],
+  dislikedPosts: [],
 };
 
 function reducer(state = initialState, action) {
@@ -219,6 +226,11 @@ function reducer(state = initialState, action) {
         ...state,
         following: action.payload,
       };
+    case GET_FOLLOWING_WITHOUT_MUTED:
+      return {
+        ...state,
+        following: action.payload,
+      };
     case GET_POSTS_FOR_FOLLOWING:
       return {
         ...state,
@@ -341,6 +353,20 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         unapprovedVerificationRequests: action.payload,
+      };
+    case GET_LIKED_POSTS:
+      return {
+        ...state,
+        likedPosts: action.payload,
+      };
+    case GET_DISLIKED_POSTS:
+      return {
+        ...state,
+        dislikedPosts: action.payload,
+      };
+    case REPORT_CONTENT:
+      return {
+        ...state,
       };
     default:
       return state;

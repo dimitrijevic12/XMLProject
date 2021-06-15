@@ -1,4 +1,5 @@
-﻿using StoryMicroservice.Core.DTOs;
+﻿using CSharpFunctionalExtensions;
+using StoryMicroservice.Core.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,7 @@ namespace StoryMicroservice.Core.Interface.Repository
         public IEnumerable<Core.Model.RegisteredUser> GetUsersByDTO(List<RegisteredUser> users);
 
         public IEnumerable<Core.Model.RegisteredUser> GetBy(string isTaggable);
+
+        public Maybe<Core.Model.RegisteredUser> GetByUsername(string username);
     }
 }

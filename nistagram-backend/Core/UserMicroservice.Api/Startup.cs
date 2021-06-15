@@ -1,3 +1,5 @@
+using EasyNetQ;
+using EasyNetQ.AutoSubscribe;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -6,7 +8,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 using System.Text;
+using UserMicroservice.Api.Consumers;
 using UserMicroservice.Api.Factories;
 using UserMicroservice.Core.Interface.Repository;
 using UserMicroservice.Core.Services;
@@ -34,6 +38,18 @@ namespace UserMicroservice.Api
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "UserMicroservice.Api", Version = "v1" });
             });
 
+            var bus = RabbitHutch.CreateBus(Configuration["RabbitMQ:ConnectionString"]);
+            services.AddSingleton<IBus>(bus);
+            services.AddSingleton<MessageDispatcher>();
+
+            services.AddSingleton<AutoSubscriber>(_ =>
+            {
+                return new AutoSubscriber(_.GetRequiredService<IBus>(), Assembly.GetExecutingAssembly().GetName().Name)
+                {
+                    AutoSubscriberMessageDispatcher = _.GetRequiredService<MessageDispatcher>()
+                };
+            });
+
             services.AddScoped<UserService>();
             services.AddScoped<VerificationRequestService>();
             services.AddScoped<IUserRepository, UserRepository>();
@@ -43,6 +59,9 @@ namespace UserMicroservice.Api
             services.AddScoped<RegisteredUserFactory>();
             services.AddScoped<FollowRequestFactory>();
             services.AddScoped<VerificationRequestFactory>();
+
+            services.AddScoped<UnsuccessfulStoryUserRegistrationEventConsumer>();
+            services.AddScoped<UserRegistrationCompletedEventConsumer>();
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {
@@ -68,6 +87,7 @@ namespace UserMicroservice.Api
             services.AddControllersWithViews()
              .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddAuthorization();
+            services.AddHostedService<Worker>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

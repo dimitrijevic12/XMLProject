@@ -25,7 +25,7 @@ namespace StoryMicroservice.DataAccess.Implementation
             this.locationFactory = locationFactory;
         }
 
-        public void Delete(Core.Model.Location obj)
+        public void Delete(Guid id)
         {
             throw new NotImplementedException();
         }

@@ -30,7 +30,7 @@ namespace StoryMicroservice.DataAccess.Implementation
             this.storyFactory = storyFactory;
         }
 
-        public void Delete(Core.Model.Highlights obj)
+        public void Delete(Guid id)
         {
             throw new NotImplementedException();
         }

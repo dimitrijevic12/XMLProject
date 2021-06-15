@@ -10,6 +10,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 using System.Linq;
+using CSharpFunctionalExtensions;
 
 namespace PostMicroservice.DataAccess.Implementation
 {
@@ -26,7 +27,7 @@ namespace PostMicroservice.DataAccess.Implementation
             throw new NotImplementedException();
         }
 
-        public RegisteredUser GetById(Guid id)
+        public Maybe<RegisteredUser> GetById(Guid id)
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT * ");
             queryBuilder.Append("FROM dbo.RegisteredUser ");
@@ -38,9 +39,14 @@ namespace PostMicroservice.DataAccess.Implementation
 
             List<SqlParameter> parameters = new List<SqlParameter>() { parameterId };
 
-            return (RegisteredUser)_registeredUserTarget.ConvertSql(
-                ExecuteQuery(query, parameters).Rows[0]
-            );
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            if (dataTable.Rows.Count > 0)
+            {
+                return (RegisteredUser)_registeredUserTarget.ConvertSql(
+                dataTable.Rows[0]);
+            }
+            return Maybe<RegisteredUser>.None;
         }
 
         public RegisteredUser Save(RegisteredUser registeredUser)
@@ -70,7 +76,7 @@ namespace PostMicroservice.DataAccess.Implementation
         public RegisteredUser Edit(RegisteredUser registeredUser)
         {
             StringBuilder queryBuilder = new StringBuilder("UPDATE dbo.RegisteredUser ");
-            queryBuilder.Append("SET username = @username,  first_name = @first_name, last_name = @last_name ");
+            queryBuilder.Append("SET username = @username,  first_name = @first_name, last_name = @last_name, isPrivate = @is_private, isAcceptingTags = @is_accepting_tags ");
             queryBuilder.Append("WHERE id = @id;");
 
             string query = queryBuilder.ToString();
@@ -80,7 +86,9 @@ namespace PostMicroservice.DataAccess.Implementation
                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = registeredUser.Id },
                  new SqlParameter("@username", SqlDbType.NVarChar) { Value = registeredUser.Username.ToString() },
                  new SqlParameter("@first_name", SqlDbType.NVarChar) { Value = registeredUser.FirstName.ToString() },
-                 new SqlParameter("@last_name", SqlDbType.NVarChar) { Value = registeredUser.LastName.ToString() }
+                 new SqlParameter("@last_name", SqlDbType.NVarChar) { Value = registeredUser.LastName.ToString() },
+                 new SqlParameter("@is_private", SqlDbType.Bit) { Value = registeredUser.IsPrivate },
+                 new SqlParameter("@is_accepting_tags", SqlDbType.Bit) { Value = registeredUser.IsAcceptingTags }
             };
 
             ExecuteQuery(query, parameters);
@@ -88,9 +96,19 @@ namespace PostMicroservice.DataAccess.Implementation
             return registeredUser;
         }
 
-        public RegisteredUser Delete(RegisteredUser obj)
+        public void Delete(Guid id)
         {
-            throw new NotImplementedException();
+            StringBuilder queryBuilder = new StringBuilder("DELETE FROM dbo.RegisteredUser ");
+            queryBuilder.Append("WHERE id = @id ");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = id },
+             };
+
+            ExecuteQuery(query, parameters);
         }
 
         public IEnumerable<RegisteredUser> GetTaggable()
@@ -123,6 +141,28 @@ namespace PostMicroservice.DataAccess.Implementation
              };
 
             ExecuteQuery(query, parameters);
+        }
+
+        public Maybe<RegisteredUser> GetByUsername(string username)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT * ");
+            queryBuilder.Append("FROM dbo.RegisteredUser ");
+            queryBuilder.Append("WHERE username = @Username;");
+
+            string query = queryBuilder.ToString();
+
+            SqlParameter parameterUsername = new SqlParameter("@Username", SqlDbType.NVarChar) { Value = username };
+
+            List<SqlParameter> parameters = new List<SqlParameter>() { parameterUsername };
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            if (dataTable.Rows.Count > 0)
+            {
+                return (RegisteredUser)_registeredUserTarget.ConvertSql(
+                dataTable.Rows[0]);
+            }
+            return Maybe<RegisteredUser>.None;
         }
     }
 }

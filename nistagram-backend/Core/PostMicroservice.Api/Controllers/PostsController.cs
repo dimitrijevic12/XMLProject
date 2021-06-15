@@ -42,7 +42,7 @@ namespace PostMicroservice.Api.Controllers
         [HttpGet("{id}")]
         public IActionResult GetById(Guid id)
         {
-            Post post = _postRepository.GetById(id);
+            Post post = _postRepository.GetById(id).Value;
             if (post.GetType().Name.Equals("PostSingle"))
             {
                 return Ok(postSingleFactory.Create((PostSingle)post));
@@ -222,6 +222,44 @@ namespace PostMicroservice.Api.Controllers
             List<RegisteredUser> users = (registeredUsers.Select(registeredUser =>
                 userService.GetById(registeredUser.Id))).ToList();
             List<Post> posts = _postRepository.GetForFollowing(users).ToList();
+            List<DTOs.Post> toReturn = new List<DTOs.Post>();
+            foreach (Post post in posts)
+            {
+                if (post.GetType().Name.Equals("PostSingle"))
+                {
+                    toReturn.Add(postSingleFactory.Create((PostSingle)post));
+                }
+                else
+                {
+                    toReturn.Add(postAlbumFactory.Create((PostAlbum)post));
+                }
+            }
+            return Ok(toReturn);
+        }
+
+        [HttpGet("liked/{userId}")]
+        public IActionResult GetLikedByUser(Guid userId)
+        {
+            List<Post> posts = _postRepository.GetLikedByUser(userId).ToList();
+            List<DTOs.Post> toReturn = new List<DTOs.Post>();
+            foreach (Post post in posts)
+            {
+                if (post.GetType().Name.Equals("PostSingle"))
+                {
+                    toReturn.Add(postSingleFactory.Create((PostSingle)post));
+                }
+                else
+                {
+                    toReturn.Add(postAlbumFactory.Create((PostAlbum)post));
+                }
+            }
+            return Ok(toReturn);
+        }
+
+        [HttpGet("disliked/{userId}")]
+        public IActionResult GetDislikedByUser(Guid userId)
+        {
+            List<Post> posts = _postRepository.GetDislikedByUser(userId).ToList();
             List<DTOs.Post> toReturn = new List<DTOs.Post>();
             foreach (Post post in posts)
             {

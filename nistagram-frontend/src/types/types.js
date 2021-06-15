@@ -121,3 +121,15 @@ export const GET_UNAPPROVED_VERIFICATION_REQUESTS =
   "getUnapprovedVerificationRequests";
 export const GET_UNAPPROVED_VERIFICATION_REQUESTS_ERROR =
   "getUnapprovedVerificationRequestsError";
+export const GET_FOLLOWING_WITHOUT_MUTED = "getFollowingWithoutMuted";
+export const GET_FOLLOWING_WITHOUT_MUTED_ERROR = "getFollowingWithoutMutedError";
+export const MUTE_PROFILE = "muteProfile";
+export const MUTE_PROFILE_ERROR = "muteProfileError";
+export const BLOCK_PROFILE = "blockProfile";
+export const BLOCK_PROFILE_ERROR = "blockProfileError";
+export const GET_LIKED_POSTS = "getLikedPosts";
+export const GET_LIKED_POSTS_ERROR = "getLikedPostsError";
+export const GET_DISLIKED_POSTS = "getDislikedPosts";
+export const GET_DISLIKED_POSTS_ERROR = "getDislikedPostsError";
+export const REPORT_CONTENT = "reportContent";
+export const REPORT_CONTENT_ERROR = "reportContentError";

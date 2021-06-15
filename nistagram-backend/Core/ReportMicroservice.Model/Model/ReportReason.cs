@@ -25,6 +25,11 @@ namespace ReportMicroservice.Core.Model
             yield return reason;
         }
 
+        public override string ToString()
+        {
+            return this.reason;
+        }
+
         public static implicit operator string(ReportReason reportReason) => reportReason.reason;
     }
 }

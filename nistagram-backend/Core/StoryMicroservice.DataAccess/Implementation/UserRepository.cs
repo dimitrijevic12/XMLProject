@@ -23,9 +23,9 @@ namespace StoryMicroservice.DataAccess.Implementation
             this.userFactory = userFactory;
         }
 
-        public void Delete(Core.Model.RegisteredUser obj)
+        public void Delete(Guid id)
         {
-            throw new NotImplementedException();
+            _users.DeleteOne(user => user.Id.Equals(id.ToString()));
         }
 
         public Core.Model.RegisteredUser Edit(string id, Core.Model.RegisteredUser userIn)
@@ -81,6 +81,20 @@ namespace StoryMicroservice.DataAccess.Implementation
                 }
             }
             return result;
+        }
+
+        public Maybe<Core.Model.RegisteredUser> GetByUsername(string username)
+        {
+            var userDTO = _users.Find<RegisteredUser>(user => user.Username.Equals(username)).FirstOrDefault();
+            if (userDTO == null) return Maybe<Core.Model.RegisteredUser>.None;
+            var blockedByUsers = GetUsersById(userDTO.BlockedByUsers);
+            var blockedUsers = GetUsersById(userDTO.BlockedUsers);
+            var followers = GetUsersById(userDTO.Followers);
+            var following = GetUsersById(userDTO.Following);
+            var closeFriendTo = GetUsersById(userDTO.CloseFriendTo);
+            var myCloseFriends = GetUsersById(userDTO.MyCloseFriends);
+            return userFactory.Create(userDTO,
+                blockedUsers, blockedByUsers, followers, following, closeFriendTo, myCloseFriends);
         }
     }
 }

@@ -24,7 +24,7 @@ namespace PostMicroservice.Core.Services
 
         public Post GetById(Guid id)
         {
-            return _postRepository.GetById(id);
+            return _postRepository.GetById(id).Value;
         }
 
         public Post Save(Post post)

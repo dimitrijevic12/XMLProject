@@ -5,13 +5,13 @@ namespace ReportMicroservice.Core.Model
 {
     public class RegisteredUser
     {
-        private readonly Guid id;
-        private readonly Username username;
+        public Guid Id { get; }
+        public Username Username { get; }
 
         private RegisteredUser(Guid id, Username username)
         {
-            this.id = id;
-            this.username = username;
+            Id = id;
+            Username = username;
         }
 
         public static Result<RegisteredUser> Create(Guid id, Username username)

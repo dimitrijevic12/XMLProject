@@ -1,6 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
+using EasyNetQ;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Shared.Contracts;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -21,20 +23,59 @@ namespace UserMicroservice.Core.Services
         private readonly IUserRepository _userRepository;
         private readonly IAdminRepository _adminRepository;
         private IConfiguration _config;
+        private readonly IBus _bus;
 
-        public UserService(IUserRepository userRepository, IAdminRepository adminRepository, IConfiguration config)
+        public UserService(IUserRepository userRepository, IAdminRepository adminRepository, IConfiguration config, IBus bus)
         {
             _userRepository = userRepository;
             _adminRepository = adminRepository;
             _config = config;
+            _bus = bus;
         }
 
-        public Result Create(RegisteredUser registeredUser)
+        public async Task<Result> CreateRegistrationAsync(RegisteredUser registeredUser)
+        {
+            var result = Create(registeredUser);
+            if (result.IsFailure) return Result.Failure(result.Error);
+            await _bus.PubSub.PublishAsync(new UserRegisteredEvent
+            {
+                Id = registeredUser.Id.ToString(),
+                Username = registeredUser.Username,
+                FirstName = registeredUser.FirstName,
+                LastName = registeredUser.LastName,
+                ProfilePicturePath = registeredUser.ProfileImagePath,
+                IsPrivate = registeredUser.IsPrivate,
+                IsAcceptingTags = registeredUser.IsAcceptingTags,
+                Followers = CreateIds(registeredUser.Followers),
+                Following = CreateIds(registeredUser.Following)
+            });
+            return Result.Success(registeredUser);
+        }
+
+        public List<string> CreateIds(IEnumerable<Core.Model.RegisteredUser> registeredUsers)
+        {
+            var test = registeredUsers.Select(registeredUser => registeredUser.Id.ToString()).ToList();
+            return test;
+        }
+
+        private Result Create(RegisteredUser registeredUser)
         {
             if (_userRepository.GetById(registeredUser.Id).HasValue) return Result.Failure("User with that id already exist");
             if (_userRepository.GetByUsername(registeredUser.Username).HasValue) return Result.Failure("User with that username already exist");
             _userRepository.Save(registeredUser);
             return Result.Success(registeredUser);
+        }
+
+        public Task CompleteRegistrationAsync(Guid registeredUserId)
+        {
+            return Task.CompletedTask;
+        }
+
+        public Task RejectRegistrationAsync(Guid registeredUserId, string reason)
+        {
+            _userRepository.Delete(registeredUserId);
+
+            return Task.CompletedTask;
         }
 
         public Result Edit(RegisteredUser registeredUser)
@@ -47,6 +88,12 @@ namespace UserMicroservice.Core.Services
         {
             if (_userRepository.GetById(id).HasNoValue) return null;
             return _userRepository.GetById(id).Value;
+        }
+
+        public RegisteredUser GetUserByIdWithoutBlocked(Guid loggedId, Guid userId)
+        {
+            if (_userRepository.GetByIdWithoutBlocked(loggedId, userId).HasNoValue) return null;
+            return _userRepository.GetByIdWithoutBlocked(loggedId, userId).Value;
         }
 
         public User FindUser(String username, String password)
@@ -150,6 +197,28 @@ namespace UserMicroservice.Core.Services
             if (user.Value.MyCloseFriends.Contains(closeFriend.Value)) return Result.Failure("User is already a close friend");
             _userRepository.AddCloseFriend(id, userId, closeFriendId);
             return Result.Success("User successfully added to close friends");
+        }
+
+        public Result Mute(Guid id, Guid mutedById, Guid mutingId)
+        {
+            var user = _userRepository.GetById(mutedById);
+            var mutedUser = _userRepository.GetById(mutingId);
+            if ((user.HasNoValue) || (mutedUser.HasNoValue)) return Result.Failure("There is no user with that id");
+            if (user.Value.MutedUsers.Contains(mutedUser.Value)) return Result.Failure("User is already a muted");
+            _userRepository.Mute(id, mutedById, mutingId);
+            return Result.Success("User is successfully muted");
+        }
+
+        public Result Block(Guid id, Guid blockedById, Guid blockingId)
+        {
+            var user = _userRepository.GetById(blockedById);
+            var blockedUser = _userRepository.GetById(blockingId);
+            if ((user.HasNoValue) || (blockedUser.HasNoValue)) return Result.Failure("There is no user with that id");
+            if (user.Value.BlockedUsers.Contains(blockedUser.Value)) return Result.Failure("User is already a blocked");
+            _userRepository.Block(id, blockedById, blockingId);
+            _userRepository.DeleteFollows(blockedById, blockingId);
+            _userRepository.DeleteFollowRequests(blockedById, blockingId);
+            return Result.Success("User is successfully blocked");
         }
     }
 }

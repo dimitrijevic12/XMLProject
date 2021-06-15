@@ -56,9 +56,9 @@ namespace StoryMicroservice.DataAccess.Implementation
             return storyIn;
         }
 
-        public void Delete(Core.Model.Story storyIn)
+        public void Delete(Guid id)
         {
-            _stories.DeleteOne(story => story.Id.Equals(storyIn.Id));
+            _stories.DeleteOne(story => story.Id.Equals(id.ToString()));
         }
 
         public IEnumerable<Core.Model.Story> GetBy(string storyOwnerId, string followingId, string last24h)

@@ -24,6 +24,8 @@ import CreateStoryPage from "./pages/CreateStoryPage";
 import ChangeProfilePicturePage from "./pages/ChangeProfilePicturePage";
 import SendVerificationRequestPage from "./pages/SendVerificationRequestPage";
 import ViewVerificationRequestPage from "./pages/ViewVerificationRequestPage";
+import LikedPostsPage from "./pages/LikedPostsPage";
+import DislikedPostsPage from "./pages/DislikedPostsPage";
 
 function App() {
   return (
@@ -83,7 +85,12 @@ function App() {
           <ProtectedRoute
             exact
             path="/sendVerificationRequest"
-            component={SendVerificationRequestPage}
+            component={SendVerificationRequestPage}/>
+          <ProtectedRoute exact path="/liked" component={LikedPostsPage} />
+          <ProtectedRoute
+            exact
+            path="/disliked"
+            component={DislikedPostsPage}
           />
           <Route exact path="/change-profile-picture">
             <ChangeProfilePicturePage />

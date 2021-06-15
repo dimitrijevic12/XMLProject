@@ -21,7 +21,7 @@ namespace PostMicroservice.Core.Services
 
         public Location GetById(Guid id)
         {
-            return _locationRepository.GetById(id);
+            return _locationRepository.GetById(id).Value;
         }
     }
 }
