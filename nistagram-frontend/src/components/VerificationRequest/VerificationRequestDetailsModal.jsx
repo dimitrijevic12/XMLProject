@@ -1,7 +1,10 @@
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { loadImageProfile } from "../../actions/actionsUser";
+import {
+  loadImageProfile,
+  deleteVerificationRequest,
+} from "../../actions/actionsUser";
 import { textAlign } from "@material-ui/system";
 
 class VerificationRequestDetailsModal extends Component {
@@ -74,7 +77,12 @@ class VerificationRequestDetailsModal extends Component {
               <button className="btn btn-lg btn-success w-25 float-left">
                 Accept
               </button>
-              <button className="btn btn-lg btn-danger w-25 float-right">
+              <button
+                className="btn btn-lg btn-danger w-25 float-right"
+                onClick={() => {
+                  this.rejectRequest();
+                }}
+              >
                 Reject
               </button>
             </div>
@@ -82,6 +90,11 @@ class VerificationRequestDetailsModal extends Component {
         </ModalBody>
       </Modal>
     );
+  }
+
+  async rejectRequest() {
+    await this.props.deleteVerificationRequest(this.props.verificationRequest);
+    this.toggle();
   }
 
   toggle() {
@@ -93,6 +106,7 @@ class VerificationRequestDetailsModal extends Component {
 
 const mapStateToProps = (state) => ({ image: state.profileImage });
 
-export default connect(mapStateToProps, { loadImageProfile })(
-  VerificationRequestDetailsModal
-);
+export default connect(mapStateToProps, {
+  loadImageProfile,
+  deleteVerificationRequest,
+})(VerificationRequestDetailsModal);

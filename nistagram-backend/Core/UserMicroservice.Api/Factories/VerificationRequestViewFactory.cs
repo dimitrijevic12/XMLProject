@@ -6,18 +6,18 @@ using UserMicroservice.Api.DTOs;
 
 namespace UserMicroservice.Api.Factories
 {
-    public class VerificationRequestFactory
+    public class VerificationRequestViewFactory
     {
         private readonly RegisteredUserFactory registeredUserFactory = new RegisteredUserFactory();
 
-        public VerificationRequest Create(Core.Model.VerificationRequest verificationRequest)
+        public VerificationRequestView Create(Core.Model.VerificationRequest verificationRequest)
         {
-            return new VerificationRequest()
+            return new VerificationRequestView()
             {
                 Id = verificationRequest.Id,
                 FirstName = verificationRequest.FirstName,
                 LastName = verificationRequest.LastName,
-                RegisteredUserId = verificationRequest.RegisteredUser.Id,
+                RegisteredUser = registeredUserFactory.Create(verificationRequest.RegisteredUser),
                 Category = verificationRequest.Category.ToString(),
                 DocumentImagePath = verificationRequest.DocumentImagePath,
                 IsApproved = verificationRequest.IsApproved

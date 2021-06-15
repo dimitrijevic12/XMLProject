@@ -616,7 +616,7 @@
       ],
       "UpstreamPathTemplate": "/api/reports"
     },
-     {
+    {
       "DownstreamPathTemplate": "/api/verificationrequests",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
@@ -637,6 +637,17 @@
         }
       ],
       "UpstreamPathTemplate": "/api/verificationrequests?{everything}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/verificationrequests/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44313
+        }
+      ],
+      "UpstreamPathTemplate": "/api/verificationrequests/{id}"
     }
   ],
   "GlobalConfiguration": {

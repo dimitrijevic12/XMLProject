@@ -36,7 +36,9 @@ import {
   MUTE_PROFILE,
   MUTE_PROFILE_ERROR,
   BLOCK_PROFILE,
-  BLOCK_PROFILE_ERROR
+  BLOCK_PROFILE_ERROR,
+  DELETE_VERIFICATION_REQUEST,
+  DELETE_VERIFICATION_REQUEST_ERROR,
 } from "../types/types";
 import axios from "axios";
 
@@ -241,7 +243,7 @@ export const getUsersByName = (name) => async (dispatch) => {
   try {
     const response = await axios.get("https://localhost:44355/api/users?", {
       params: {
-        id : sessionStorage.getItem("userId"),
+        id: sessionStorage.getItem("userId"),
         name: name,
         access: "public",
       },
@@ -262,7 +264,11 @@ export const getUsersByName = (name) => async (dispatch) => {
 export const getUserById = (id) => async (dispatch) => {
   try {
     const response = await axios.get(
-      "https://localhost:44355/api/users/"+sessionStorage.getItem("userId")+ "/logged/" + id + "/user",
+      "https://localhost:44355/api/users/" +
+        sessionStorage.getItem("userId") +
+        "/logged/" +
+        id +
+        "/user",
       {
         headers: { "Access-Control-Allow-Origin": "" },
       }
@@ -282,7 +288,11 @@ export const getUserById = (id) => async (dispatch) => {
 export const getUserByIdWithoutBlocked = (id) => async (dispatch) => {
   try {
     const response = await axios.get(
-      "https://localhost:44355/api/users/"+sessionStorage.getItem("userId")+ "/logged/" + id + "/user",
+      "https://localhost:44355/api/users/" +
+        sessionStorage.getItem("userId") +
+        "/logged/" +
+        id +
+        "/user",
       {
         headers: { "Access-Control-Allow-Origin": "" },
       }
@@ -577,6 +587,30 @@ export const getUnapprovedVerificationRequests = () => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: GET_UNAPPROVED_VERIFICATION_REQUESTS_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const deleteVerificationRequest = (request) => async (dispatch) => {
+  debugger;
+  try {
+    const response = await axios.delete(
+      `https://localhost:44355/api/VerificationRequests/${request.id}`,
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      }
+    );
+    dispatch({
+      type: DELETE_VERIFICATION_REQUEST,
+      payload: request,
+    });
+  } catch (e) {
+    dispatch({
+      type: DELETE_VERIFICATION_REQUEST_ERROR,
       payload: console.log(e),
     });
   }

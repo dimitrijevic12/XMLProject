@@ -60,6 +60,7 @@ import {
   GET_LIKED_POSTS,
   GET_DISLIKED_POSTS,
   REPORT_CONTENT,
+  DELETE_VERIFICATION_REQUEST,
 } from "../types/types";
 
 const initialState = {
@@ -367,6 +368,14 @@ function reducer(state = initialState, action) {
     case REPORT_CONTENT:
       return {
         ...state,
+      };
+    case DELETE_VERIFICATION_REQUEST:
+      return {
+        ...state,
+        unapprovedVerificationRequests:
+          state.unapprovedVerificationRequests.filter(
+            (request) => action.payload !== request
+          ),
       };
     default:
       return state;

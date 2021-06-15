@@ -23,9 +23,19 @@ namespace UserMicroservice.DataAccess.Implementation
         {
         }
 
-        public VerificationRequest Delete(VerificationRequest obj)
+        public void Delete(Guid id)
         {
-            throw new NotImplementedException();
+            StringBuilder queryBuilder = new StringBuilder("DELETE FROM dbo.VerificationRequest ");
+            queryBuilder.Append("WHERE id = @id ");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = id },
+             };
+
+            ExecuteQuery(query, parameters);
         }
 
         public VerificationRequest Edit(VerificationRequest obj)
@@ -40,7 +50,22 @@ namespace UserMicroservice.DataAccess.Implementation
 
         public Maybe<VerificationRequest> GetById(Guid id)
         {
-            throw new NotImplementedException();
+            StringBuilder queryBuilder = new StringBuilder("SELECT v.id, r.id, r.username, r.email, r.first_name, r.last_name," +
+                " r.date_of_birth, r.phone_number, r.gender, r.website_address, r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type," +
+                " r.category, r.password, v.first_name, v.last_name, v.category, v.document_image_path, v.is_approved ");
+            queryBuilder.Append("FROM dbo.VerificationRequest as v, dbo.RegisteredUser as r ");
+            queryBuilder.Append("WHERE r.id = v.registered_user_id AND v.id = @Id");
+
+            List<SqlParameter> parameters = new List<SqlParameter>();
+
+            SqlParameter parameterId = new SqlParameter("@Id", SqlDbType.UniqueIdentifier)
+            { Value = id };
+            parameters.Add(parameterId);
+            string query = queryBuilder.ToString();
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            return ((VerificationRequest)_verificationRequestTarget.ConvertSql(dataTable.Rows[0]));
         }
 
         public VerificationRequest Save(VerificationRequest verificationRequest)

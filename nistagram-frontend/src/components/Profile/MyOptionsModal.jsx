@@ -95,7 +95,7 @@ class MyOptionsModal extends Component {
               alignSelf: "stretch",
               float: "center",
             }}
-            className="btn btn-block btn-md mb-2"
+            className="btn btn-block btn-primary btn-md mb-2"
           >
             <label>Liked posts</label>
           </button>
@@ -108,7 +108,7 @@ class MyOptionsModal extends Component {
               alignSelf: "stretch",
               float: "center",
             }}
-            className="btn btn-block btn-md mb-2"
+            className="btn btn-block btn-primary btn-md mb-2"
           >
             <label>Disliked posts</label>
           </button>

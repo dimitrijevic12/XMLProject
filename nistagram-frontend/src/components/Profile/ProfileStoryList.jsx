@@ -53,7 +53,11 @@ function ProfileProfileStoryList(props) {
 
       {props.highlights.map((highlight, i) => (
         <ProfileStory
-          profileImage={props.storyProfileImages[i + 1].fileContents}
+          profileImage={
+            props.storyProfileImages[
+              props.activeStories.length === 0 ? i : i + 1
+            ].fileContents
+          }
           highlight={highlight}
           first={false}
         />

@@ -19,16 +19,19 @@ namespace UserMicroservice.Api.Controllers
     {
         private readonly VerificationRequestService _verificationRequestService;
         private readonly VerificationRequestFactory _verificationRequestFactory;
+        private readonly VerificationRequestViewFactory _verificationRequestViewFactory;
         private readonly IUserRepository _userRepository;
         private readonly IVerificationRequestRepository _verificationRequestRepository;
 
         public VerificationRequestsController(VerificationRequestService verificationRequestService, IUserRepository userRepository,
-            IVerificationRequestRepository verificationRequestRepository, VerificationRequestFactory verificationRequestFactory)
+            IVerificationRequestRepository verificationRequestRepository, VerificationRequestFactory verificationRequestFactory,
+            VerificationRequestViewFactory verificationRequestViewFactory)
         {
             _verificationRequestService = verificationRequestService;
             _userRepository = userRepository;
             _verificationRequestRepository = verificationRequestRepository;
             _verificationRequestFactory = verificationRequestFactory;
+            _verificationRequestViewFactory = verificationRequestViewFactory;
         }
 
         [Authorize(Roles = "RegisteredUser")]
@@ -43,7 +46,7 @@ namespace UserMicroservice.Api.Controllers
             Result result = Result.Combine(firstName, lastName, documentImagePath);
             if (result.IsFailure) return BadRequest(result.Error);
 
-            Maybe<RegisteredUser> user = _userRepository.GetById(verificationRequest.RegisteredUser.Id);
+            Maybe<RegisteredUser> user = _userRepository.GetById(verificationRequest.RegisteredUserId);
             if (user.HasNoValue) return BadRequest("Registered user doesn't exist.");
 
             if (_verificationRequestService.Create(VerificationRequest.Create(id, user.Value, firstName.Value, lastName.Value,
@@ -59,7 +62,24 @@ namespace UserMicroservice.Api.Controllers
             if (Request.Query.Count == 0) return BadRequest();
             if (String.IsNullOrEmpty(isApproved)) return BadRequest();
             return Ok(_verificationRequestRepository.GetBy(isApproved)
-                .Select(verificationRequest => _verificationRequestFactory.Create(verificationRequest)));
+                .Select(verificationRequest => _verificationRequestViewFactory.Create(verificationRequest)));
+        }
+
+        [HttpPut]
+        public IActionResult Update([FromQuery(Name = "is-approved")] string isApproved)
+        {
+            if (Request.Query.Count == 0) return BadRequest();
+            if (String.IsNullOrEmpty(isApproved)) return BadRequest();
+            return Ok(_verificationRequestRepository.GetBy(isApproved)
+                .Select(verificationRequest => _verificationRequestViewFactory.Create(verificationRequest)));
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(Guid id)
+        {
+            var result = _verificationRequestService.Delete(id);
+            if (result.IsFailure) return BadRequest(result.Error);
+            return NoContent();
         }
     }
 }
