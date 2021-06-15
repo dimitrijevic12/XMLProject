@@ -42,7 +42,9 @@ namespace UserMicroservice.DataAccess.Implementation
         public RegisteredUser Edit(RegisteredUser registeredUser)
         {
             StringBuilder queryBuilder = new StringBuilder("UPDATE dbo.RegisteredUser ");
-            queryBuilder.Append("SET username = @username, email = @email, first_name = @first_name, last_name = @last_name, date_of_birth = @date_of_birth, phone_number = @phone_number, gender = @gender, website_address = @website_address, bio = @bio, is_private = @is_private, is_accepting_messages = @is_accepting_messages, is_accepting_tags = @is_accepting_tags ");
+            queryBuilder.Append("SET username = @username, email = @email, first_name = @first_name, last_name = @last_name, date_of_birth = @date_of_birth," +
+                " phone_number = @phone_number, gender = @gender, website_address = @website_address, bio = @bio, is_private = @is_private," +
+                " is_accepting_messages = @is_accepting_messages, is_accepting_tags = @is_accepting_tags ");
             queryBuilder.Append("WHERE id = @id;");
 
             string query = queryBuilder.ToString();
@@ -62,6 +64,40 @@ namespace UserMicroservice.DataAccess.Implementation
                  new SqlParameter("@is_private", SqlDbType.Bit) { Value = registeredUser.IsPrivate },
                  new SqlParameter("@is_accepting_messages", SqlDbType.Bit) { Value = registeredUser.IsAcceptingMessages },
                  new SqlParameter("@is_accepting_tags", SqlDbType.Bit) { Value = registeredUser.IsAcceptingTags },
+            };
+
+            ExecuteQuery(query, parameters);
+
+            return registeredUser;
+        }
+
+        public RegisteredUser EditVerifiedUser(VerifiedUser registeredUser)
+        {
+            StringBuilder queryBuilder = new StringBuilder("UPDATE dbo.RegisteredUser ");
+            queryBuilder.Append("SET username = @username, email = @email, first_name = @first_name, last_name = @last_name, date_of_birth = @date_of_birth," +
+                " phone_number = @phone_number, gender = @gender, website_address = @website_address, bio = @bio, is_private = @is_private," +
+                " is_accepting_messages = @is_accepting_messages, is_accepting_tags = @is_accepting_tags, type = @type, category = @category ");
+            queryBuilder.Append("WHERE id = @id;");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+            {
+                new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = registeredUser.Id },
+                 new SqlParameter("@username", SqlDbType.NVarChar) { Value = registeredUser.Username.ToString() },
+                 new SqlParameter("@email", SqlDbType.NVarChar) { Value = registeredUser.EmailAddress.ToString() },
+                 new SqlParameter("@first_name", SqlDbType.NVarChar) { Value = registeredUser.FirstName.ToString() },
+                 new SqlParameter("@last_name", SqlDbType.NVarChar) { Value = registeredUser.LastName.ToString() },
+                 new SqlParameter("@date_of_birth", SqlDbType.NVarChar) { Value = registeredUser.DateOfBirth.ToString() },
+                 new SqlParameter("@phone_number", SqlDbType.NVarChar) { Value = registeredUser.PhoneNumber.ToString() },
+                 new SqlParameter("@gender", SqlDbType.NVarChar) { Value = registeredUser.Gender.ToString() },
+                 new SqlParameter("@website_address", SqlDbType.NVarChar) { Value = registeredUser.WebsiteAddress.ToString() },
+                 new SqlParameter("@bio", SqlDbType.NVarChar) { Value = registeredUser.Bio.ToString() },
+                 new SqlParameter("@is_private", SqlDbType.Bit) { Value = registeredUser.IsPrivate },
+                 new SqlParameter("@is_accepting_messages", SqlDbType.Bit) { Value = registeredUser.IsAcceptingMessages },
+                 new SqlParameter("@is_accepting_tags", SqlDbType.Bit) { Value = registeredUser.IsAcceptingTags },
+                 new SqlParameter("@category", SqlDbType.NVarChar) { Value = registeredUser.Category.ToString() },
+                 new SqlParameter("@type", SqlDbType.NVarChar) { Value = registeredUser.GetType().Name },
             };
 
             ExecuteQuery(query, parameters);

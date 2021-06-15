@@ -65,13 +65,26 @@ namespace UserMicroservice.Api.Controllers
                 .Select(verificationRequest => _verificationRequestViewFactory.Create(verificationRequest)));
         }
 
-        [HttpPut]
-        public IActionResult Update([FromQuery(Name = "is-approved")] string isApproved)
+        [HttpPut("{id}")]
+        public IActionResult Update([FromRoute] Guid id, [FromBody] DTOs.VerificationRequest verificationRequest)
         {
-            if (Request.Query.Count == 0) return BadRequest();
-            if (String.IsNullOrEmpty(isApproved)) return BadRequest();
-            return Ok(_verificationRequestRepository.GetBy(isApproved)
-                .Select(verificationRequest => _verificationRequestViewFactory.Create(verificationRequest)));
+            Result<VerificationRequestFirstName> firstName = VerificationRequestFirstName.Create(verificationRequest.FirstName);
+            Result<VerificationRequestLastName> lastName = VerificationRequestLastName.Create(verificationRequest.LastName);
+            Result<DocumentImagePath> documentImagePath = DocumentImagePath.Create(verificationRequest.DocumentImagePath);
+            Result<Category> category = Category.Create(verificationRequest.Category);
+            if (!Enum.IsDefined(typeof(Categories), verificationRequest.Category)) return BadRequest("Category doesn't exist.");
+            Result result = Result.Combine(firstName, lastName, documentImagePath);
+            if (result.IsFailure) return BadRequest(result.Error);
+
+            Maybe<RegisteredUser> user = _userRepository.GetById(verificationRequest.RegisteredUserId);
+            if (user.HasNoValue) return BadRequest("Registered user doesn't exist.");
+
+            var editResult = _verificationRequestService.VerifyUserAsync(VerificationRequest.Create(verificationRequest.Id, user.Value,
+                firstName.Value, lastName.Value, (Categories)Enum.Parse(typeof(Categories), verificationRequest.Category),
+                documentImagePath.Value, verificationRequest.IsApproved).Value);
+            if (editResult.Result.IsFailure) return BadRequest(editResult.Result.Error);
+
+            return NoContent();
         }
 
         [HttpDelete("{id}")]

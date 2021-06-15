@@ -25,6 +25,11 @@ namespace UserMicroservice.Core.Model
             yield return name;
         }
 
+        public override string ToString()
+        {
+            return name.ToString();
+        }
+
         public static implicit operator string(Category category) => category.name;
     }
 }

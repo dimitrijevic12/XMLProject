@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import {
   loadImageProfile,
   deleteVerificationRequest,
+  verifyUser,
 } from "../../actions/actionsUser";
 import { textAlign } from "@material-ui/system";
 
@@ -74,7 +75,12 @@ class VerificationRequestDetailsModal extends Component {
               </div>
             </div>
             <div className="mt-5 pb-5 ml-5 mr-5">
-              <button className="btn btn-lg btn-success w-25 float-left">
+              <button
+                className="btn btn-lg btn-success w-25 float-left"
+                onClick={() => {
+                  this.verifyUser();
+                }}
+              >
                 Accept
               </button>
               <button
@@ -97,6 +103,11 @@ class VerificationRequestDetailsModal extends Component {
     this.toggle();
   }
 
+  async verifyUser() {
+    await this.props.verifyUser(this.props.verificationRequest);
+    this.toggle();
+  }
+
   toggle() {
     debugger;
     this.setState({ showModal: false });
@@ -109,4 +120,5 @@ const mapStateToProps = (state) => ({ image: state.profileImage });
 export default connect(mapStateToProps, {
   loadImageProfile,
   deleteVerificationRequest,
+  verifyUser,
 })(VerificationRequestDetailsModal);

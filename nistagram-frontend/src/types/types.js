@@ -137,3 +137,5 @@ export const REPORT_CONTENT_ERROR = "reportContentError";
 export const DELETE_VERIFICATION_REQUEST = "deleteVerificationRequest";
 export const DELETE_VERIFICATION_REQUEST_ERROR =
   "deleteVerificationRequestError";
+export const VERIFY_USER = "verifyUser";
+export const VERIFY_USER_ERROR = "verifyUserError";

@@ -84,6 +84,12 @@ namespace UserMicroservice.Core.Services
             return Result.Success(registeredUser);
         }
 
+        public Result EditVerifiedUser(VerifiedUser verifiedUser)
+        {
+            _userRepository.EditVerifiedUser(verifiedUser);
+            return Result.Success(verifiedUser);
+        }
+
         public RegisteredUser GetUserById(Guid id)
         {
             if (_userRepository.GetById(id).HasNoValue) return null;

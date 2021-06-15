@@ -38,9 +38,29 @@ namespace UserMicroservice.DataAccess.Implementation
             ExecuteQuery(query, parameters);
         }
 
-        public VerificationRequest Edit(VerificationRequest obj)
+        public VerificationRequest Edit(VerificationRequest verificationRequest)
         {
-            throw new NotImplementedException();
+            StringBuilder queryBuilder = new StringBuilder("UPDATE dbo.VerificationRequest ");
+            queryBuilder.Append("SET id = @Id, registered_user_id = @RegisteredUserId, first_name = @FirstName, last_name = @LastName," +
+                " category = @Category, document_image_path = @DocumentImagePath, is_approved = @IsApproved ");
+            queryBuilder.Append("WHERE id = @id;");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+            {
+                 new SqlParameter("@Id", SqlDbType.UniqueIdentifier) { Value = verificationRequest.Id },
+                 new SqlParameter("@RegisteredUserId", SqlDbType.UniqueIdentifier) { Value = verificationRequest.RegisteredUser.Id },
+                 new SqlParameter("@FirstName", SqlDbType.NVarChar) { Value = verificationRequest.FirstName.ToString() },
+                 new SqlParameter("@LastName", SqlDbType.NVarChar) { Value = verificationRequest.LastName.ToString() },
+                 new SqlParameter("@Category", SqlDbType.NVarChar) { Value = verificationRequest.Category.ToString() },
+                 new SqlParameter("@DocumentImagePath", SqlDbType.NVarChar) { Value = verificationRequest.DocumentImagePath.ToString() },
+                 new SqlParameter("@IsApproved", SqlDbType.NVarChar) { Value = verificationRequest.IsApproved.ToString() },
+            };
+
+            ExecuteQuery(query, parameters);
+
+            return verificationRequest;
         }
 
         public IEnumerable<VerificationRequest> GetAll()

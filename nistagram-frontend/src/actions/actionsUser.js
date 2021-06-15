@@ -39,6 +39,8 @@ import {
   BLOCK_PROFILE_ERROR,
   DELETE_VERIFICATION_REQUEST,
   DELETE_VERIFICATION_REQUEST_ERROR,
+  VERIFY_USER,
+  VERIFY_USER_ERROR,
 } from "../types/types";
 import axios from "axios";
 
@@ -611,6 +613,32 @@ export const deleteVerificationRequest = (request) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: DELETE_VERIFICATION_REQUEST_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const verifyUser = (request) => async (dispatch) => {
+  debugger;
+  request.registeredUserId = request.registeredUser.id;
+  try {
+    const response = await axios.put(
+      `https://localhost:44355/api/VerificationRequests/${request.id}`,
+      request,
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      }
+    );
+    dispatch({
+      type: VERIFY_USER,
+      payload: request,
+    });
+  } catch (e) {
+    dispatch({
+      type: VERIFY_USER_ERROR,
       payload: console.log(e),
     });
   }

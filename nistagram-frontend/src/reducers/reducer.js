@@ -61,6 +61,7 @@ import {
   GET_DISLIKED_POSTS,
   REPORT_CONTENT,
   DELETE_VERIFICATION_REQUEST,
+  VERIFY_USER,
 } from "../types/types";
 
 const initialState = {
@@ -375,6 +376,14 @@ function reducer(state = initialState, action) {
         unapprovedVerificationRequests:
           state.unapprovedVerificationRequests.filter(
             (request) => action.payload !== request
+          ),
+      };
+    case VERIFY_USER:
+      return {
+        ...state,
+        unapprovedVerificationRequests:
+          state.unapprovedVerificationRequests.filter(
+            (request) => action.payload.id !== request.id
           ),
       };
     default:
