@@ -5,18 +5,22 @@ namespace NotificationMicroservice.Core.Model
 {
     public class Notification
     {
-        private readonly Guid id;
-        private readonly DateTime timestamp;
+        public Guid Id { get; }
+        public DateTime TimeStamp { get; }
+        public Content Content { get; }
+        public RegisteredUser RegisteredUser { get; }
 
-        private Notification(Guid id, DateTime timestamp)
+        private Notification(Guid id, DateTime timestamp, Content content, RegisteredUser registeredUser)
         {
-            this.id = id;
-            this.timestamp = timestamp;
+            Id = id;
+            TimeStamp = timestamp;
+            Content = content;
+            RegisteredUser = registeredUser;
         }
 
-        public static Result<Notification> Create(Guid id, DateTime timestamp)
+        public static Result<Notification> Create(Guid id, DateTime timestamp, Content content, RegisteredUser registeredUser)
         {
-            return Result.Success(new Notification(id, timestamp));
+            return Result.Success(new Notification(id, timestamp, content, registeredUser));
         }
     }
 }

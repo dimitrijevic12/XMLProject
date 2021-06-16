@@ -62,6 +62,10 @@ import {
   REPORT_CONTENT,
   DELETE_VERIFICATION_REQUEST,
   VERIFY_USER,
+  GET_USER_NOTIFICATION_SETTINGS,
+  EDIT_NOTIFICATION_SETTINGS,
+  CREATE_NOTIFICATION,
+  GET_NOTIFICATIONS_FOR_FOLLOWING,
 } from "../types/types";
 
 const initialState = {
@@ -100,6 +104,9 @@ const initialState = {
   unapprovedVerificationRequests: [],
   likedPosts: [],
   dislikedPosts: [],
+  userNotificationSettings: {},
+  commentId: 0,
+  notificationsForFollowing: [],
 };
 
 function reducer(state = initialState, action) {
@@ -173,8 +180,10 @@ function reducer(state = initialState, action) {
         ...state,
       };
     case COMMENT_POST:
+      debugger;
       return {
         ...state,
+        commentId: action.payload,
       };
     case CLEAR_IMAGES:
       return {
@@ -284,6 +293,7 @@ function reducer(state = initialState, action) {
         locations: action.payload,
       };
     case SAVE_STORY:
+      debugger;
       return {
         ...state,
         story: action.payload,
@@ -385,6 +395,25 @@ function reducer(state = initialState, action) {
           state.unapprovedVerificationRequests.filter(
             (request) => action.payload.id !== request.id
           ),
+      };
+    case GET_USER_NOTIFICATION_SETTINGS:
+      return {
+        ...state,
+        userNotificationSettings: action.payload,
+      };
+    case EDIT_NOTIFICATION_SETTINGS:
+      return {
+        ...state,
+        userNotificationSettings: action.payload,
+      };
+    case CREATE_NOTIFICATION:
+      return {
+        ...state,
+      };
+    case GET_NOTIFICATIONS_FOR_FOLLOWING:
+      return {
+        ...state,
+        notificationsForFollowing: action.payload,
       };
     default:
       return state;

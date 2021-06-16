@@ -1,39 +1,32 @@
 ﻿using CSharpFunctionalExtensions;
-using System.Collections.Generic;
+using System;
 
 namespace NotificationMicroservice.Core.Model
 {
-    public class NotificationOptions : ValueObject
+    public class NotificationOptions
     {
-        private readonly bool isNotifiedByFollowRequests;
-        private readonly bool isNotifiedByMessages;
-        private readonly bool isNotifiedByPosts;
-        private readonly bool isNotifiedByStories;
-        private readonly bool isNotifiedByComments;
+        public Guid Id { get; }
+        public bool IsNotifiedByFollowRequests { get; }
+        public bool IsNotifiedByMessages { get; }
+        public bool IsNotifiedByPosts { get; }
+        public bool IsNotifiedByStories { get; }
+        public bool IsNotifiedByComments { get; }
 
-        private NotificationOptions(bool isNotifiedByFollowRequests, bool isNotifiedByMessages,
+        private NotificationOptions(Guid id, bool isNotifiedByFollowRequests, bool isNotifiedByMessages,
             bool isNotifiedByPosts, bool isNotifiedByStories, bool isNotifiedByComments)
         {
-            this.isNotifiedByFollowRequests = isNotifiedByFollowRequests;
-            this.isNotifiedByMessages = isNotifiedByMessages;
-            this.isNotifiedByPosts = isNotifiedByPosts;
-            this.isNotifiedByStories = isNotifiedByStories;
-            this.isNotifiedByComments = isNotifiedByComments;
+            Id = id;
+            IsNotifiedByFollowRequests = isNotifiedByFollowRequests;
+            IsNotifiedByMessages = isNotifiedByMessages;
+            IsNotifiedByPosts = isNotifiedByPosts;
+            IsNotifiedByStories = isNotifiedByStories;
+            IsNotifiedByComments = isNotifiedByComments;
         }
 
-        public static Result<NotificationOptions> Create(bool isNotifiedByFollowRequests, bool isNotifiedByMessages, bool isNotifiedByPosts, bool isNotifiedByStories, bool isNotifiedByComments)
+        public static Result<NotificationOptions> Create(Guid id, bool isNotifiedByFollowRequests, bool isNotifiedByMessages, bool isNotifiedByPosts, bool isNotifiedByStories, bool isNotifiedByComments)
         {
-            return Result.Success(new NotificationOptions(isNotifiedByFollowRequests, isNotifiedByMessages, isNotifiedByPosts,
+            return Result.Success(new NotificationOptions(id, isNotifiedByFollowRequests, isNotifiedByMessages, isNotifiedByPosts,
               isNotifiedByStories, isNotifiedByComments));
-        }
-
-        protected override IEnumerable<object> GetEqualityComponents()
-        {
-            yield return isNotifiedByFollowRequests;
-            yield return isNotifiedByMessages;
-            yield return isNotifiedByPosts;
-            yield return isNotifiedByStories;
-            yield return isNotifiedByComments;
         }
     }
 }

@@ -22,6 +22,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ChooseCollectionModal from "../components/Collection/ChooseCollectionModal";
 import TaggedUsersModal from "../components/Profile/TaggedUsersModal";
+import { createNotification } from "../actions/actionsNotification";
 
 const style = {
   height: 30,
@@ -480,15 +481,21 @@ class HomePage extends Component {
   }
 
   async commentPost(post) {
+    this.sendNotification();
     const comment = {
       CommentText: this.state.commentText,
       RegisteredUser: { id: sessionStorage.getItem("userId") },
     };
     debugger;
     await this.props.commentPost({ id: post.id, comment: comment });
-    toast.configure();
-    toast.success("Commented successfully!", {
-      position: toast.POSITION.TOP_RIGHT,
+  }
+
+  sendNotification() {
+    debugger;
+    this.props.createNotification({
+      Type: "Comment",
+      ContentId: "12345678-1234-1234-1234-123456789123",
+      RegisteredUser: { id: sessionStorage.getItem("userId") },
     });
   }
 
@@ -535,6 +542,7 @@ const mapStateToProps = (state) => ({
   posts: state.posts,
   homePageImages: state.homePageImages,
   stories: state.stories,
+  commentId: state.commentId,
 });
 
 export default compose(
@@ -548,5 +556,6 @@ export default compose(
     commentPost,
     getStories,
     getFollowingWithoutMuted,
+    createNotification,
   })
 )(HomePage);

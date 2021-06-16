@@ -141,7 +141,8 @@ namespace PostMicroservice.Api.Controllers
                 new List<Comment>(), location, taggedUsers, hashTags,
                 contentPaths).Value) == null) return BadRequest();
             }
-            return Created(this.Request.Path + "/" + id, "");
+            post.Id = id;
+            return Ok(post);
         }
 
         [Authorize(Roles = "RegisteredUser")]
@@ -163,7 +164,7 @@ namespace PostMicroservice.Api.Controllers
         }
 
         [Authorize(Roles = "RegisteredUser")]
-        [HttpPost("{id}/comments"), ProducesResponseType(StatusCodes.Status204NoContent)]
+        [HttpPost("{id}/comments")]
         public IActionResult CommentPost([FromRoute] Guid id, [FromBody] DTOs.Comment comment)
         {
             Result<DateTime> timeStamp = DateTime.Now;
@@ -174,7 +175,7 @@ namespace PostMicroservice.Api.Controllers
             Guid commentId = Guid.NewGuid();
             _postService.CommentPost(id, Comment.Create(commentId, timeStamp.Value, commentText.Value, registeredUser,
                 new List<RegisteredUser>()).Value);
-            return NoContent();
+            return Ok(commentId);
         }
 
         [HttpGet("users/{id}")]

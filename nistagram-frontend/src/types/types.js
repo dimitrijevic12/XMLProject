@@ -139,3 +139,13 @@ export const DELETE_VERIFICATION_REQUEST_ERROR =
   "deleteVerificationRequestError";
 export const VERIFY_USER = "verifyUser";
 export const VERIFY_USER_ERROR = "verifyUserError";
+export const GET_USER_NOTIFICATION_SETTINGS = "getUserNotificationSettings";
+export const GET_USER_NOTIFICATION_SETTINGS_ERROR =
+  "getUserNotificationSettingsError";
+export const EDIT_NOTIFICATION_SETTINGS = "editNotificationSettings";
+export const EDIT_NOTIFICATION_SETTINGS_ERROR = "editNotificationSettingsError";
+export const CREATE_NOTIFICATION = "createNotification";
+export const CREATE_NOTIFICATION_ERROR = "createNotificationError";
+export const GET_NOTIFICATIONS_FOR_FOLLOWING = "getNotificationsForFollowing";
+export const GET_NOTIFICATIONS_FOR_FOLLOWING_ERROR =
+  "getNotificationsForFollowingError";

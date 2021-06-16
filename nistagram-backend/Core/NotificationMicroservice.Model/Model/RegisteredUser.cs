@@ -5,20 +5,24 @@ namespace NotificationMicroservice.Core.Model
 {
     public class RegisteredUser
     {
-        private readonly Guid id;
-        private readonly Username username;
-        private readonly NotificationOptions notificationOptions;
+        public Guid Id { get; }
+        public Username Username { get; }
+        public NotificationOptions NotificationOptions { get; }
+        public ProfilePicturePath ProfilePicturePath { get; }
 
-        private RegisteredUser(Guid id, Username username, NotificationOptions notificationOptions)
+        private RegisteredUser(Guid id, Username username, NotificationOptions notificationOptions,
+            ProfilePicturePath profilePicturePath)
         {
-            this.id = id;
-            this.username = username;
-            this.notificationOptions = notificationOptions;
+            Id = id;
+            Username = username;
+            NotificationOptions = notificationOptions;
+            ProfilePicturePath = profilePicturePath;
         }
 
-        public static Result<RegisteredUser> Create(Guid id, Username username, NotificationOptions notificationOptions)
+        public static Result<RegisteredUser> Create(Guid id, Username username,
+            NotificationOptions notificationOptions, ProfilePicturePath profilePicturePath)
         {
-            return Result.Success(new RegisteredUser(id, username, notificationOptions));
+            return Result.Success(new RegisteredUser(id, username, notificationOptions, profilePicturePath));
         }
     }
 }
