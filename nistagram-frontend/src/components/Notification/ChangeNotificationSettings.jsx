@@ -150,6 +150,7 @@ class ChangeNotificationSettings extends Component {
       ProfilePicturePath:
         this.props.userNotificationSettings.profilePicturePath,
     });
+    window.location = "/profile/" + sessionStorage.getItem("userId");
   }
 }
 

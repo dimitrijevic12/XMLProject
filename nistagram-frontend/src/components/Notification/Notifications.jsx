@@ -12,6 +12,12 @@ import {
   getNotificationsForFollowing,
   getUserNotificationSettings,
 } from "../../actions/actionsNotification";
+import {
+  NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
+import "react-notifications/lib/notifications.css";
+import moment from "moment";
 
 class Notifications extends Component {
   state = {};
@@ -23,6 +29,22 @@ class Notifications extends Component {
       LoggedUser: this.props.userNotificationSettings,
       RegisteredUsers: this.props.following,
     });
+    var notificationsForFollowing = [...this.props.notificationsForFollowing];
+    notificationsForFollowing.sort(function compare(a, b) {
+      var dateA = new Date(a.timeStamp);
+      var dateB = new Date(b.timeStamp);
+      return dateA - dateB;
+    });
+    notificationsForFollowing.forEach((element) =>
+      NotificationManager.success(
+        element.type === "Post"
+          ? element.registeredUser.username + " Has Created New Post!"
+          : element.type === "Story"
+          ? element.registeredUser.username + " Has Created New Story!"
+          : element.registeredUser.username + " Has Commented On Post!",
+        element.type
+      )
+    );
   }
   render() {
     if (this.props.following === undefined) {
@@ -37,12 +59,19 @@ class Notifications extends Component {
       return null;
     }
 
+    var notificationsForFollowing = [...this.props.notificationsForFollowing];
+    notificationsForFollowing.sort(function compare(a, b) {
+      var dateA = new Date(a.timeStamp);
+      var dateB = new Date(b.timeStamp);
+      return dateA - dateB;
+    });
+
+    debugger;
     return (
       <div>
         <div className="wrap bg-white pt-3 pb-3" style={{ height: "100vh" }}>
           <div style={{ marginTop: "40px" }} id="appointmentTable">
             <h2>Notifications</h2>
-
             <Card
               className="mt-5"
               style={{
@@ -57,7 +86,7 @@ class Notifications extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {this.props.notificationsForFollowing.map((f) => (
+                  {notificationsForFollowing.map((f) => (
                     <tr>
                       <td
                         className="pl-4 pt-4 pb-4"
@@ -65,19 +94,21 @@ class Notifications extends Component {
                       >
                         {f.registeredUser.username + " "}
                         {f.type === "Post"
-                          ? "created new Post!"
+                          ? " Has Created New Post!"
                           : f.type === "Story"
-                          ? "created new Story!"
+                          ? " Has Created New Story!"
                           : f.type === "Comment"
-                          ? "has commented on post!"
+                          ? " Has Commented On Post!"
                           : ""}
                       </td>
+                      <td>{moment(f.timeStamp).format("DD/MM/YYYY HH:mm")}</td>
                     </tr>
                   ))}
                 </tbody>
               </Table>
             </Card>
           </div>
+          <NotificationContainer />
         </div>
       </div>
     );
