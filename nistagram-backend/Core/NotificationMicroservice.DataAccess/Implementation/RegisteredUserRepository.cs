@@ -50,9 +50,50 @@ namespace NotificationMicroservice.DataAccess.Implementation
             return Maybe<RegisteredUser>.None;
         }
 
-        public RegisteredUser Save(RegisteredUser obj)
+        public RegisteredUser Save(RegisteredUser registeredUser)
         {
-            throw new NotImplementedException();
+            CreateNotificationsOptions(registeredUser.Id);
+
+            StringBuilder queryBuilder = new StringBuilder("INSERT INTO dbo.RegisteredUser ");
+            queryBuilder.Append("(id, username, notification_options_id, profilePicturePath) ");
+            queryBuilder.Append("VALUES (@id, @username, @notification_options_id, @profilePicturePath);");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = registeredUser.Id },
+                 new SqlParameter("@username", SqlDbType.NVarChar) { Value = registeredUser.Username.ToString() },
+                 new SqlParameter("@notification_options_id", SqlDbType.UniqueIdentifier) { Value = registeredUser.Id },
+                 new SqlParameter("@profilePicturePath", SqlDbType.NVarChar) { Value = registeredUser.ProfilePicturePath.ToString() },
+             };
+
+            ExecuteQuery(query, parameters);
+
+            return registeredUser;
+        }
+
+        private void CreateNotificationsOptions(Guid id)
+        {
+            StringBuilder queryBuilder = new StringBuilder("INSERT INTO dbo.NotificationOptions ");
+            queryBuilder.Append("(id, is_notified_by_follow_requests, is_notified_by_messages, is_notified_by_posts, " +
+                "is_notified_by_stories, is_notified_by_comments) ");
+            queryBuilder.Append("VALUES (@id, @is_notified_by_follow_requests, @is_notified_by_messages, " +
+                "@is_notified_by_posts, @is_notified_by_stories, @is_notified_by_comments);");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = id },
+                 new SqlParameter("@is_notified_by_follow_requests", SqlDbType.Bit) { Value = true },
+                 new SqlParameter("@is_notified_by_messages", SqlDbType.Bit) { Value = true },
+                 new SqlParameter("@is_notified_by_posts", SqlDbType.Bit) { Value = true },
+                 new SqlParameter("@is_notified_by_stories", SqlDbType.Bit) { Value = true },
+                 new SqlParameter("@is_notified_by_comments", SqlDbType.Bit) { Value = true },
+             };
+
+            ExecuteQuery(query, parameters);
         }
 
         public RegisteredUser Edit(RegisteredUser registeredUser)
@@ -88,6 +129,30 @@ namespace NotificationMicroservice.DataAccess.Implementation
         public void Delete(Guid id)
         {
             throw new NotImplementedException();
+        }
+
+        public Maybe<RegisteredUser> GetByUsername(string username)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT r.id, r.username, r.profilePicturePath, " +
+                "n.id, n.is_notified_by_follow_requests, n.is_notified_by_messages, n.is_notified_by_posts, " +
+                "n.is_notified_by_stories, n.is_notified_by_comments ");
+            queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.NotificationOptions AS n ");
+            queryBuilder.Append("WHERE r.notification_options_id = n.id AND r.username = @Username;");
+
+            string query = queryBuilder.ToString();
+
+            SqlParameter parameterUsername = new SqlParameter("@Username", SqlDbType.NVarChar) { Value = username };
+
+            List<SqlParameter> parameters = new List<SqlParameter>() { parameterUsername };
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            if (dataTable.Rows.Count > 0)
+            {
+                return (RegisteredUser)_registeredUserTarget.ConvertSql(
+                dataTable.Rows[0]);
+            }
+            return Maybe<RegisteredUser>.None;
         }
     }
 }

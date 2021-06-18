@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NotificationMicroservice.Api.Factories;
 using NotificationMicroservice.Core.Interface.Repository;
+using NotificationMicroservice.Core.Services;
 using NotificationMicroservice.DataAccess.Implementation;
 using System.Text;
 
@@ -38,6 +39,7 @@ namespace NotificationMicroservice.Api
             services.AddScoped<NotificationOptionsFactory>();
             services.AddScoped<INotificationRepository, NotificationRepository>();
             services.AddScoped<NotificationFactory>();
+            services.AddScoped<RegisteredUserService>();
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {
