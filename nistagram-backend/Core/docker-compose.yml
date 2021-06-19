@@ -10,6 +10,16 @@ services:
     ports:
       - "1433:1433"
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: "rabbitmq"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/mnesia
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+
   usermicroservice-api:
     image: xmldockerid/usermicroserviceapi:latest
     restart: on-failure
@@ -40,6 +50,28 @@ services:
       dockerfile: Dockerfile.StoryMicroservice
     ports:
       - "8082:80"
+
+  notificationmicroservice-api:
+    image: xmldockerid/notificationmicroserviceapi:latest
+    restart: on-failure
+    build:
+      context: .
+      dockerfile: Dockerfile.NotificationMicroservice
+    depends_on:
+      - ms-sql-server
+    ports:
+      - "44348:80"
+
+  reportmicroservice-api:
+    image: xmldockerid/reportmicroserviceapi:latest
+    restart: on-failure
+    build:
+      context: .
+      dockerfile: Dockerfile.ReportMicroservice
+    depends_on:
+      - ms-sql-server
+    ports:
+      - "44382:80"
 
   apigateway:
     image: xmldockerid/apigateway:latest

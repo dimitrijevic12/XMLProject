@@ -651,7 +651,7 @@ export const createNewCollection = (collection) => async (dispatch) => {
 export const getLikedPosts = () => async (dispatch) => {
   try {
     const response = await axios.get(
-      "https://localhost:44355/api/posts/liked/" +
+      "http://localhost:44355/api/posts/liked/" +
         sessionStorage.getItem("userId"),
       {
         headers: {
@@ -675,7 +675,7 @@ export const getLikedPosts = () => async (dispatch) => {
 export const getDislikedPosts = () => async (dispatch) => {
   try {
     const response = await axios.get(
-      "https://localhost:44355/api/posts/disliked/" +
+      "http://localhost:44355/api/posts/disliked/" +
         sessionStorage.getItem("userId"),
       {
         headers: {

@@ -14,7 +14,7 @@ export const getUserNotificationSettings = (report) => async (dispatch) => {
   debugger;
   try {
     const response = await axios.get(
-      "https://localhost:44355/api/notification-microservice/users/" +
+      "http://localhost:44355/api/notification-microservice/users/" +
         sessionStorage.getItem("userId"),
       {
         headers: {
@@ -39,7 +39,7 @@ export const editNotificationSettings = (user) => async (dispatch) => {
   debugger;
   try {
     const response = await axios.put(
-      "https://localhost:44355/api/notification-microservice/users",
+      "http://localhost:44355/api/notification-microservice/users",
       user,
       {
         headers: {
@@ -65,7 +65,7 @@ export const createNotification = (notification) => async (dispatch) => {
   debugger;
   try {
     const response = await axios.post(
-      "https://localhost:44355/api/notifications",
+      "http://localhost:44355/api/notifications",
       notification,
       {
         headers: {
@@ -92,7 +92,7 @@ export const getNotificationsForFollowing =
     debugger;
     try {
       const response = await axios.post(
-        "https://localhost:44355/api/notifications/following",
+        "http://localhost:44355/api/notifications/following",
         notificationUsers,
         {
           headers: {

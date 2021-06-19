@@ -12,6 +12,28 @@
       "UpstreamPathTemplate": "/api/users/editforpost"
     },
     {
+      "DownstreamPathTemplate": "/api/users/mute",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_usermicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/mute"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/block",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_usermicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/block"
+    },
+    {
       "DownstreamPathTemplate": "/api/users/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -54,6 +76,17 @@
         }
       ],
       "UpstreamPathTemplate": "/api/users/handlerequest"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/{loggedId}/logged/{userId}/user",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_usermicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/{loggedId}/logged/{userId}/user"
     },
     {
       "DownstreamPathTemplate": "/api/posts/users/{id}",
@@ -408,6 +441,17 @@
       "UpstreamPathTemplate": "/api/users/{userId}/following"
     },
     {
+      "DownstreamPathTemplate": "/api/users/{userId}/following-without-muted",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_usermicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/{userId}/following-without-muted"
+    },
+    {
       "DownstreamPathTemplate": "/api/posts/following",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -538,6 +582,119 @@
         }
       ],
       "UpstreamPathTemplate": "/api/story-microservice/users/{id}/close-friends/{closeFriendId}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/posts/liked/{userId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_postmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/posts/liked/{userId}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/posts/disliked/{userId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_postmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/posts/disliked/{userId}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/reports",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_reportmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/reports"
+    },
+    {
+      "DownstreamPathTemplate": "/api/verificationrequests",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_usermicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/verificationrequests"
+    },
+    {
+      "DownstreamPathTemplate": "/api/verificationrequests?{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_usermicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/verificationrequests?{everything}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/verificationrequests/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_usermicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/verificationrequests/{id}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_notificationmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/notification-microservice/users/{id}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_notificationmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/notification-microservice/users"
+    },
+    {
+      "DownstreamPathTemplate": "/api/notifications",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_notificationmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/notifications"
+    },
+    {
+      "DownstreamPathTemplate": "/api/notifications/following",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_notificationmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/notifications/following"
     }
-  ]
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:37101"
+  }
 }

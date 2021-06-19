@@ -1,7 +1,9 @@
 USE [master]
 GO
-/****** Object:  Database [userdb]    Script Date: 5/27/2021 1:30:25 PM ******/
+/****** Object:  Database [userdb]    Script Date: 6/19/2021 4:36:20 PM ******/
 CREATE DATABASE [userdb]
+GO
+ALTER DATABASE [userdb] SET COMPATIBILITY_LEVEL = 130
 GO
 IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
 begin
@@ -66,13 +68,21 @@ ALTER DATABASE [userdb] SET TARGET_RECOVERY_TIME = 60 SECONDS
 GO
 ALTER DATABASE [userdb] SET DELAYED_DURABILITY = DISABLED 
 GO
-EXEC sys.sp_db_vardecimal_storage_format N'userdb', N'ON'
-GO
 ALTER DATABASE [userdb] SET QUERY_STORE = OFF
 GO
 USE [userdb]
 GO
-/****** Object:  Table [dbo].[Admin]    Script Date: 5/27/2021 1:30:25 PM ******/
+ALTER DATABASE SCOPED CONFIGURATION SET LEGACY_CARDINALITY_ESTIMATION = OFF;
+GO
+ALTER DATABASE SCOPED CONFIGURATION SET MAXDOP = 0;
+GO
+ALTER DATABASE SCOPED CONFIGURATION SET PARAMETER_SNIFFING = ON;
+GO
+ALTER DATABASE SCOPED CONFIGURATION SET QUERY_OPTIMIZER_HOTFIXES = OFF;
+GO
+USE [userdb]
+GO
+/****** Object:  Table [dbo].[Admin]    Script Date: 6/19/2021 4:36:20 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -81,13 +91,14 @@ CREATE TABLE [dbo].[Admin](
 	[id] [uniqueidentifier] NOT NULL,
 	[username] [nvarchar](50) NOT NULL,
 	[email] [nvarchar](254) NOT NULL,
+	[password] [varchar](50) NULL,
  CONSTRAINT [PK_Admin] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[AgentRequest]    Script Date: 5/27/2021 1:30:25 PM ******/
+/****** Object:  Table [dbo].[AgentRequest]    Script Date: 6/19/2021 4:36:20 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -102,7 +113,7 @@ CREATE TABLE [dbo].[AgentRequest](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Blocks]    Script Date: 5/27/2021 1:30:25 PM ******/
+/****** Object:  Table [dbo].[Blocks]    Script Date: 6/19/2021 4:36:20 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -117,7 +128,7 @@ CREATE TABLE [dbo].[Blocks](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[CloseFriends]    Script Date: 5/27/2021 1:30:25 PM ******/
+/****** Object:  Table [dbo].[CloseFriends]    Script Date: 6/19/2021 4:36:20 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -132,7 +143,7 @@ CREATE TABLE [dbo].[CloseFriends](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[FollowRequest]    Script Date: 5/27/2021 1:30:25 PM ******/
+/****** Object:  Table [dbo].[FollowRequest]    Script Date: 6/19/2021 4:36:20 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -150,7 +161,7 @@ CREATE TABLE [dbo].[FollowRequest](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Follows]    Script Date: 5/27/2021 1:30:25 PM ******/
+/****** Object:  Table [dbo].[Follows]    Script Date: 6/19/2021 4:36:20 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -165,7 +176,7 @@ CREATE TABLE [dbo].[Follows](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Mutes]    Script Date: 5/27/2021 1:30:25 PM ******/
+/****** Object:  Table [dbo].[Mutes]    Script Date: 6/19/2021 4:36:20 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -180,7 +191,7 @@ CREATE TABLE [dbo].[Mutes](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[RegisteredUser]    Script Date: 5/27/2021 1:30:25 PM ******/
+/****** Object:  Table [dbo].[RegisteredUser]    Script Date: 6/19/2021 4:36:20 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -199,8 +210,8 @@ CREATE TABLE [dbo].[RegisteredUser](
 	[is_private] [bit] NOT NULL,
 	[is_accepting_messages] [bit] NOT NULL,
 	[is_accepting_tags] [bit] NOT NULL,
-	[type] [nvarchar](10) NOT NULL,
-	[category] [nvarchar](20) NULL,
+	[type] [nvarchar](20) NOT NULL,
+	[category] [nvarchar](30) NOT NULL,
 	[password] [nvarchar](256) NOT NULL,
 	[profilePicturePath] [nvarchar](250) NULL,
  CONSTRAINT [PK_RegisteredUser] PRIMARY KEY CLUSTERED 
@@ -209,7 +220,7 @@ CREATE TABLE [dbo].[RegisteredUser](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[VerificationRequest]    Script Date: 5/27/2021 1:30:25 PM ******/
+/****** Object:  Table [dbo].[VerificationRequest]    Script Date: 6/19/2021 4:36:20 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -219,6 +230,9 @@ CREATE TABLE [dbo].[VerificationRequest](
 	[document_image_path] [nvarchar](200) NOT NULL,
 	[is_approved] [bit] NOT NULL,
 	[registered_user_id] [uniqueidentifier] NOT NULL,
+	[first_name] [nvarchar](50) NOT NULL,
+	[last_name] [nvarchar](50) NOT NULL,
+	[category] [nvarchar](30) NOT NULL,
  CONSTRAINT [PK_VerificationRequest] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC

@@ -147,7 +147,7 @@ class SendVerificationRequest extends Component {
       try {
         const res = await axios({
           method: "post",
-          url: "https://localhost:44355/api/users/contents",
+          url: "http://localhost:44355/api/users/contents",
           data: formData,
           headers: {
             "Content-Type": "multipart/form-data",

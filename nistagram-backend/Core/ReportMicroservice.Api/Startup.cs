@@ -19,16 +19,23 @@ namespace ReportMicroservice.Api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment currentEnvironment)
         {
             Configuration = configuration;
+            CurrentEnvironment = currentEnvironment;
         }
 
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment CurrentEnvironment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var server = Configuration["DBServer"] ?? "core_ms-sql-server_1";
+            var port = Configuration["DBPort"] ?? "1433";
+            var user = Configuration["DBUser"] ?? "sa";
+            var password = Configuration["DBPassword"] ?? "1Secure*Password1";
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

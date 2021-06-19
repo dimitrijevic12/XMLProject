@@ -60,6 +60,7 @@ export const userRegistration = (user) => async (dispatch) => {
       type: REGISTER_USER,
       payload: response.data,
     });
+    return true;
   } catch (e) {
     dispatch({
       type: REGISTER_USER_ERROR,
@@ -266,7 +267,7 @@ export const getUsersByName = (name) => async (dispatch) => {
 export const getUserById = (id) => async (dispatch) => {
   try {
     const response = await axios.get(
-      "https://localhost:44355/api/users/" +
+      "http://localhost:44355/api/users/" +
         sessionStorage.getItem("userId") +
         "/logged/" +
         id +
@@ -290,7 +291,7 @@ export const getUserById = (id) => async (dispatch) => {
 export const getUserByIdWithoutBlocked = (id) => async (dispatch) => {
   try {
     const response = await axios.get(
-      "https://localhost:44355/api/users/" +
+      "http://localhost:44355/api/users/" +
         sessionStorage.getItem("userId") +
         "/logged/" +
         id +
@@ -403,7 +404,7 @@ export const getFollowing = () => async (dispatch) => {
 export const getFollowingWithoutMuted = () => async (dispatch) => {
   try {
     const response = await axios.get(
-      "https://localhost:44355/api/users/" +
+      "http://localhost:44355/api/users/" +
         sessionStorage.getItem("userId") +
         "/following-without-muted",
       {
@@ -499,7 +500,7 @@ export const addCloseFriend = (userId) => async (dispatch) => {
 export const muteProfile = (mute) => async (dispatch) => {
   try {
     const response = await axios.post(
-      "https://localhost:44355/api/users/mute",
+      "http://localhost:44355/api/users/mute",
       mute,
       {
         headers: {
@@ -523,7 +524,7 @@ export const muteProfile = (mute) => async (dispatch) => {
 export const blockProfile = (block) => async (dispatch) => {
   try {
     const response = await axios.post(
-      "https://localhost:44355/api/users/block",
+      "http://localhost:44355/api/users/block",
       block,
       {
         headers: {
@@ -548,7 +549,7 @@ export const sendVerificationRequest = (request) => async (dispatch) => {
   debugger;
   try {
     const response = await axios.post(
-      `https://localhost:44355/api/VerificationRequests`,
+      `http://localhost:44355/api/VerificationRequests`,
       request,
       {
         headers: {
@@ -573,7 +574,7 @@ export const getUnapprovedVerificationRequests = () => async (dispatch) => {
   debugger;
   try {
     const response = await axios.get(
-      `https://localhost:44355/api/VerificationRequests`,
+      `http://localhost:44355/api/VerificationRequests`,
       {
         params: { "is-approved": "false" },
         headers: {
@@ -598,7 +599,7 @@ export const deleteVerificationRequest = (request) => async (dispatch) => {
   debugger;
   try {
     const response = await axios.delete(
-      `https://localhost:44355/api/VerificationRequests/${request.id}`,
+      `http://localhost:44355/api/VerificationRequests/${request.id}`,
       {
         headers: {
           "Access-Control-Allow-Origin": "*",
@@ -623,7 +624,7 @@ export const verifyUser = (request) => async (dispatch) => {
   request.registeredUserId = request.registeredUser.id;
   try {
     const response = await axios.put(
-      `https://localhost:44355/api/VerificationRequests/${request.id}`,
+      `http://localhost:44355/api/VerificationRequests/${request.id}`,
       request,
       {
         headers: {

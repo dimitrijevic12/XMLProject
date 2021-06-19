@@ -9,6 +9,7 @@ WORKDIR /src
 COPY ["PostMicroservice.Api/PostMicroservice.Api.csproj", "PostMicroservice.Api/"]
 COPY ["PostMicroservice.DataAccess/PostMicroservice.DataAccess.csproj", "PostMicroservice.DataAccess/"]
 COPY ["PostMicroservice.Model/PostMicroservice.Core.csproj", "PostMicroservice.Model/"]
+COPY ["Shared.Contracts/Shared.Contracts.csproj", "Shared.Contracts/"]
 COPY . ./
 
 RUN dotnet build "/src/PostMicroservice.Api/PostMicroservice.Api.csproj" -c Release -o /app

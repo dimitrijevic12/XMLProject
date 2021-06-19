@@ -5,5 +5,9 @@ sleep 90s
 # Note: make sure that your password matches what is in the Dockerfile
 /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 1Secure*Password1 -d master -i UserMicroserviceDB.sql
 /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 1Secure*Password1 -d master -i PostMicroserviceDB.sql
+/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 1Secure*Password1 -d master -i NotificationMicroserviceDB.sql
+/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 1Secure*Password1 -d master -i ReportMicroserviceDB.sql
 /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 1Secure*Password1 -d master -i UserMicroserviceDBData.sql
 /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 1Secure*Password1 -d master -i PostMicroserviceDBData.sql
+/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 1Secure*Password1 -d master -i NotificationMicroserviceDBData.sql
+/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 1Secure*Password1 -d master -i ReportMicroserviceDBData.sql

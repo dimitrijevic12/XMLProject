@@ -5,7 +5,7 @@ export const reportContent = (report) => async (dispatch) => {
   debugger;
   try {
     const response = await axios.post(
-      "https://localhost:44355/api/reports",
+      "http://localhost:44355/api/reports",
       report,
       {
         headers: {
