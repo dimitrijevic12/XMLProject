@@ -135,7 +135,7 @@ namespace UserMicroservice.DataAccess.Implementation
             return Maybe<RegisteredUser>.None;
         }
 
-        private Boolean isBlocked(Guid loggedId, Guid userId)
+        private Boolean IsBlocked(Guid loggedId, Guid userId)
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT * ");
             queryBuilder.Append("FROM dbo.Blocks ");
@@ -156,7 +156,7 @@ namespace UserMicroservice.DataAccess.Implementation
 
         public Maybe<RegisteredUser> GetByIdWithoutBlocked(Guid loggedId, Guid userId)
         {
-            if (isBlocked(loggedId, userId)) return Maybe<RegisteredUser>.None;
+            if (IsBlocked(loggedId, userId)) return Maybe<RegisteredUser>.None;
             StringBuilder queryBuilder = new StringBuilder("SELECT * ");
             queryBuilder.Append("FROM dbo.RegisteredUser ");
             queryBuilder.Append("WHERE id = @Id;");
@@ -549,8 +549,30 @@ namespace UserMicroservice.DataAccess.Implementation
                     new List<RegisteredUser>(), new List<RegisteredUser>())).ToList();
         }
 
+        private Boolean DoesHaveMuted(Guid userId)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT * ");
+            queryBuilder.Append("FROM dbo.Mutes ");
+            queryBuilder.Append("WHERE muted_by_id = @userId;");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+            {
+                new SqlParameter("@userId", SqlDbType.UniqueIdentifier) { Value = userId }
+            };
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            return dataTable.Rows.Count > 0;
+        }
+
         public IEnumerable<RegisteredUser> GetFollowingWithoutMuted(Guid id)
         {
+            if (!DoesHaveMuted(id))
+            {
+                return GetFollowing(id);
+            }
             StringBuilder queryBuilder = new StringBuilder("SELECT r.id, MAX(r.username), MAX(r.email), " +
                 "MAX(r.first_name), MAX(r.last_name), MAX(r.date_of_birth), MAX(r.phone_number), MAX(r.gender), MAX(r.website_address), " +
                 "MAX(r.bio), cast(max(cast(r.is_private as int)) as bit), cast(max(cast(r.is_accepting_messages as int)) as bit), " +
@@ -558,7 +580,8 @@ namespace UserMicroservice.DataAccess.Implementation
                 "MAX(r.type), MAX(r.category), MAX(r.password), MAX(r.profilePicturePath)  ");
             queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.RegisteredUser AS r2, dbo.Mutes AS m, " +
                 "dbo.Follows as f ");
-            queryBuilder.Append("WHERE f.following_id=r.id AND f.followed_by_id=r2.id AND NOT (f.followed_by_id = m.muted_by_id AND f.following_id = m.muting_id) " +
+            queryBuilder.Append("WHERE f.following_id=r.id AND f.followed_by_id=r2.id " +
+                "AND f.followed_by_id NOT IN (SELECT m2.muted_by_id FROM  dbo.Mutes AS m2 WHERE m2.muting_id = f.following_id) " +
                 "AND f.followed_by_id = @Id ");
             queryBuilder.Append("GROUP BY r.id; ");
 

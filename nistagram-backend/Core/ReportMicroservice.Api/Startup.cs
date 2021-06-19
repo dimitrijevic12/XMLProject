@@ -50,7 +50,9 @@ namespace ReportMicroservice.Api
             services.AddScoped<IReportRepository, ReportRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<UserService>();
+
             services.AddScoped<PostUserRegisteredEventConsumer>();
+            services.AddScoped<UnsuccessfulNotificationUserRegistrationEventConsumer>();
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {

@@ -1,6 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using NotificationMicroservice.Core.Interface.Repository;
 using NotificationMicroservice.Core.Model;
+using System.Threading.Tasks;
 
 namespace NotificationMicroservice.Core.Services
 {
@@ -11,6 +12,12 @@ namespace NotificationMicroservice.Core.Services
         public RegisteredUserService(IRegisteredUserRepository userRepository)
         {
             _userRepository = userRepository;
+        }
+
+        public async Task<Result> CreateRegistrationAsync(RegisteredUser registeredUser)
+        {
+            var result = Create(registeredUser);
+            return result;
         }
 
         public Result Create(RegisteredUser registeredUser)

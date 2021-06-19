@@ -30,9 +30,10 @@ namespace ReportMicroservice.Api.Consumers
             var result = await userService.CreateRegistrationAsync(Convert(message));
             if (result.IsSuccess)
             {
-                await _bus.PubSub.PublishAsync(new UserRegistrationCompletedEvent
+                await _bus.PubSub.PublishAsync(new ReportUserRegisteredEvent
                 {
                     Id = message.Id,
+                    Username = message.Username
                 });
             }
             else
