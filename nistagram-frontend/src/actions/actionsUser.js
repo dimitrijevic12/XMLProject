@@ -27,6 +27,20 @@ import {
   LOAD_IMAGE_PROFILE_ERROR,
   ADD_CLOSE_FRIEND,
   ADD_CLOSE_FRIEND_ERROR,
+  SEND_VERIFICATION_REQUEST,
+  SEND_VERIFICATION_REQUEST_ERROR,
+  GET_UNAPPROVED_VERIFICATION_REQUESTS,
+  GET_UNAPPROVED_VERIFICATION_REQUESTS_ERROR,
+  GET_FOLLOWING_WITHOUT_MUTED,
+  GET_FOLLOWING_WITHOUT_MUTED_ERROR,
+  MUTE_PROFILE,
+  MUTE_PROFILE_ERROR,
+  BLOCK_PROFILE,
+  BLOCK_PROFILE_ERROR,
+  DELETE_VERIFICATION_REQUEST,
+  DELETE_VERIFICATION_REQUEST_ERROR,
+  VERIFY_USER,
+  VERIFY_USER_ERROR,
 } from "../types/types";
 import axios from "axios";
 
@@ -231,6 +245,7 @@ export const getUsersByName = (name) => async (dispatch) => {
   try {
     const response = await axios.get("http://localhost:44355/api/users?", {
       params: {
+        id: sessionStorage.getItem("userId"),
         name: name,
         access: "public",
       },
@@ -250,9 +265,40 @@ export const getUsersByName = (name) => async (dispatch) => {
 
 export const getUserById = (id) => async (dispatch) => {
   try {
-    const response = await axios.get("http://localhost:44355/api/users/" + id, {
-      headers: { "Access-Control-Allow-Origin": "" },
+    const response = await axios.get(
+      "https://localhost:44355/api/users/" +
+        sessionStorage.getItem("userId") +
+        "/logged/" +
+        id +
+        "/user",
+      {
+        headers: { "Access-Control-Allow-Origin": "" },
+      }
+    );
+    dispatch({
+      type: GET_USER_BY_ID,
+      payload: response.data,
     });
+  } catch (e) {
+    dispatch({
+      type: GET_USER_BY_ID_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const getUserByIdWithoutBlocked = (id) => async (dispatch) => {
+  try {
+    const response = await axios.get(
+      "https://localhost:44355/api/users/" +
+        sessionStorage.getItem("userId") +
+        "/logged/" +
+        id +
+        "/user",
+      {
+        headers: { "Access-Control-Allow-Origin": "" },
+      }
+    );
     dispatch({
       type: GET_USER_BY_ID,
       payload: response.data,
@@ -354,6 +400,28 @@ export const getFollowing = () => async (dispatch) => {
   }
 };
 
+export const getFollowingWithoutMuted = () => async (dispatch) => {
+  try {
+    const response = await axios.get(
+      "https://localhost:44355/api/users/" +
+        sessionStorage.getItem("userId") +
+        "/following-without-muted",
+      {
+        headers: { "Access-Control-Allow-Origin": "" },
+      }
+    );
+    dispatch({
+      type: GET_FOLLOWING_WITHOUT_MUTED,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_FOLLOWING_WITHOUT_MUTED_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
 export const changeProfilePictureUsermicroservice =
   (picture) => async (dispatch) => {
     try {
@@ -423,6 +491,154 @@ export const addCloseFriend = (userId) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: ADD_CLOSE_FRIEND_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const muteProfile = (mute) => async (dispatch) => {
+  try {
+    const response = await axios.post(
+      "https://localhost:44355/api/users/mute",
+      mute,
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      }
+    );
+    dispatch({
+      type: MUTE_PROFILE,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: MUTE_PROFILE_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const blockProfile = (block) => async (dispatch) => {
+  try {
+    const response = await axios.post(
+      "https://localhost:44355/api/users/block",
+      block,
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      }
+    );
+    dispatch({
+      type: BLOCK_PROFILE,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: BLOCK_PROFILE_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const sendVerificationRequest = (request) => async (dispatch) => {
+  debugger;
+  try {
+    const response = await axios.post(
+      `https://localhost:44355/api/VerificationRequests`,
+      request,
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      }
+    );
+    dispatch({
+      type: SEND_VERIFICATION_REQUEST,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: SEND_VERIFICATION_REQUEST_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const getUnapprovedVerificationRequests = () => async (dispatch) => {
+  debugger;
+  try {
+    const response = await axios.get(
+      `https://localhost:44355/api/VerificationRequests`,
+      {
+        params: { "is-approved": "false" },
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      }
+    );
+    dispatch({
+      type: GET_UNAPPROVED_VERIFICATION_REQUESTS,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_UNAPPROVED_VERIFICATION_REQUESTS_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const deleteVerificationRequest = (request) => async (dispatch) => {
+  debugger;
+  try {
+    const response = await axios.delete(
+      `https://localhost:44355/api/VerificationRequests/${request.id}`,
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      }
+    );
+    dispatch({
+      type: DELETE_VERIFICATION_REQUEST,
+      payload: request,
+    });
+  } catch (e) {
+    dispatch({
+      type: DELETE_VERIFICATION_REQUEST_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const verifyUser = (request) => async (dispatch) => {
+  debugger;
+  request.registeredUserId = request.registeredUser.id;
+  try {
+    const response = await axios.put(
+      `https://localhost:44355/api/VerificationRequests/${request.id}`,
+      request,
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      }
+    );
+    dispatch({
+      type: VERIFY_USER,
+      payload: request,
+    });
+  } catch (e) {
+    dispatch({
+      type: VERIFY_USER_ERROR,
       payload: console.log(e),
     });
   }

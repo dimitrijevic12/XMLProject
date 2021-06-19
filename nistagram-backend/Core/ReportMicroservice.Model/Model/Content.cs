@@ -4,11 +4,11 @@ namespace ReportMicroservice.Core.Model
 {
     public abstract class Content
     {
-        private readonly Guid id;
+        public Guid Id { get; }
 
         public Content(Guid id)
         {
-            this.id = id;
+            Id = id;
         }
     }
 }

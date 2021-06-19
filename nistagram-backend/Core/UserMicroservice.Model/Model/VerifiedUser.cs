@@ -6,7 +6,7 @@ namespace UserMicroservice.Core.Model
 {
     public class VerifiedUser : RegisteredUser
     {
-        private readonly Category category;
+        public Category Category { get; }
 
         private VerifiedUser(Guid id, Username username, EmailAddress emailAddress, FirstName firstName,
             LastName lastName, DateTime dateOfBirth, PhoneNumber phoneNumber,
@@ -19,7 +19,7 @@ namespace UserMicroservice.Core.Model
                   bio, isPrivate, isAcceptingMessages, isAcceptingTags, password, profileImagePath, blockedUsers, blockedByUsers,
                   mutedUsers, mutedByUsers, following, followers, myCloseFriends, closeFriendTo)
         {
-            this.category = category;
+            Category = category;
         }
 
         public static Result<VerifiedUser> Create(Guid id, Username username, EmailAddress emailAddress, FirstName firstName,

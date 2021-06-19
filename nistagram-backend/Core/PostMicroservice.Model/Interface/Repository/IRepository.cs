@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CSharpFunctionalExtensions;
+using System;
 using System.Collections.Generic;
 
 namespace PostMicroservice.Core.Interface.Repository
@@ -7,12 +8,12 @@ namespace PostMicroservice.Core.Interface.Repository
     {
         IEnumerable<T> GetAll();
 
-        T GetById(Guid id);
+        Maybe<T> GetById(Guid id);
 
         T Save(T obj);
 
         T Edit(T obj);
 
-        T Delete(T obj);
+        void Delete(Guid id);
     }
 }

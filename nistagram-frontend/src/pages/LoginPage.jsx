@@ -49,7 +49,7 @@ class LoginPage extends Component {
               <input
                 type="button"
                 value="Log in"
-                class="btn"
+                class="btn btn-primary"
                 onClick={this.login.bind(this)}
               />
             </div>
@@ -93,7 +93,9 @@ class LoginPage extends Component {
       Password: this.state.password,
     });
 
-    if (successful === true) {
+    if (successful === true && sessionStorage.getItem("role") === "Admin") {
+      window.location = "/viewVerificationRequests";
+    } else if (successful === true) {
       window.location = "/";
     } else {
       toast.configure();

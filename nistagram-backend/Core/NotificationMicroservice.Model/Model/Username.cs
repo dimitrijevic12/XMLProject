@@ -25,6 +25,11 @@ namespace NotificationMicroservice.Core.Model
             yield return name;
         }
 
+        public override string ToString()
+        {
+            return this.name;
+        }
+
         public static implicit operator string(Username username) => username.name;
     }
 }

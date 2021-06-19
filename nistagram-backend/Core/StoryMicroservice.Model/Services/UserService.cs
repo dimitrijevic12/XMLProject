@@ -1,4 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
+using EasyNetQ;
+using Shared.Contracts;
 using StoryMicroservice.Core.Interface.Repository;
 using StoryMicroservice.Core.Model;
 using System;
@@ -12,15 +14,30 @@ namespace StoryMicroservice.Core.Services
     public class UserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IBus _bus;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, IBus bus)
         {
             _userRepository = userRepository;
+            _bus = bus;
+        }
+
+        public async Task<Result> CreateRegistrationAsync(RegisteredUser registeredUser)
+        {
+            return Create(registeredUser);
+        }
+
+        public Task RejectRegistrationAsync(Guid registeredUserId, string reason)
+        {
+            _userRepository.Delete(registeredUserId);
+
+            return Task.CompletedTask;
         }
 
         public Result Create(RegisteredUser registeredUser)
         {
             if (_userRepository.GetById(registeredUser.Id).HasValue) return Result.Failure("Users with that Id already exists.");
+            if (_userRepository.GetByUsername(registeredUser.Username).HasValue) return Result.Failure("Users with that username already exists.");
             _userRepository.Save(registeredUser);
             return Result.Success(registeredUser);
         }

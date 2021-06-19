@@ -53,7 +53,7 @@ class MyOptionsModal extends Component {
               alignSelf: "stretch",
               float: "center",
             }}
-            className="btn btn-block btn-md mb-2"
+            className="btn btn-block btn-primary btn-md mb-2"
           >
             <label>Collections</label>
           </button>
@@ -69,7 +69,7 @@ class MyOptionsModal extends Component {
               alignSelf: "stretch",
               float: "center",
             }}
-            className="btn btn-block btn-md mb-2"
+            className="btn btn-block btn-primary btn-md mb-2"
           >
             <label>Archive</label>
           </button>
@@ -82,11 +82,64 @@ class MyOptionsModal extends Component {
               alignSelf: "stretch",
               float: "center",
             }}
-            className="btn btn-block btn-md mb-2"
+            className="btn btn-block btn-primary btn-md mb-2"
           >
             <label>Change profile picture</label>
           </button>
           <hr />
+          <button
+            onClick={() => this.changeNotificationOptions()}
+            style={{
+              height: "100%",
+              width: "100%",
+              alignSelf: "stretch",
+              float: "center",
+            }}
+            className="btn btn-block btn-primary btn-md mb-2"
+          >
+            <label>Change notification options</label>
+          </button>
+          <hr />
+          <button
+            onClick={() => this.likedPosts()}
+            style={{
+              height: "100%",
+              width: "100%",
+              alignSelf: "stretch",
+              float: "center",
+            }}
+            className="btn btn-block btn-primary btn-md mb-2"
+          >
+            <label>Liked posts</label>
+          </button>
+          <hr />
+          <button
+            onClick={() => this.dislikedPosts()}
+            style={{
+              height: "100%",
+              width: "100%",
+              alignSelf: "stretch",
+              float: "center",
+            }}
+            className="btn btn-block btn-primary btn-md mb-2"
+          >
+            <label>Disliked posts</label>
+          </button>
+          <hr />
+          <button
+            style={{
+              height: "100%",
+              width: "100%",
+              alignSelf: "stretch",
+              float: "center",
+            }}
+            className="btn btn-block btn-primary btn-md mb-2"
+            onClick={() => {
+              window.location = "/sendVerificationRequest";
+            }}
+          >
+            <label>Send verification request</label>
+          </button>
         </ModalBody>
       </Modal>
     );
@@ -101,6 +154,22 @@ class MyOptionsModal extends Component {
   edit() {
     this.props.history.replace({
       pathname: "/change-profile-picture",
+    });
+  }
+
+  changeNotificationOptions() {
+    window.location = "/change-notification-settings";
+  }
+
+  likedPosts() {
+    this.props.history.replace({
+      pathname: "/liked",
+    });
+  }
+
+  dislikedPosts() {
+    this.props.history.replace({
+      pathname: "/disliked",
     });
   }
 

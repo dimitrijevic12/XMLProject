@@ -54,6 +54,18 @@ import {
   GET_ALL_IMAGES_FOR_PROFILE,
   GET_ALL_IMAGES_FOR_COLLECTION,
   CREATE_NEW_COLLECTION,
+  GET_UNAPPROVED_VERIFICATION_REQUESTS,
+  GET_FOLLOWING_WITHOUT_MUTED,
+  GET_FOLLOWING_WITHOUT_MUTED_ERROR,
+  GET_LIKED_POSTS,
+  GET_DISLIKED_POSTS,
+  REPORT_CONTENT,
+  DELETE_VERIFICATION_REQUEST,
+  VERIFY_USER,
+  GET_USER_NOTIFICATION_SETTINGS,
+  EDIT_NOTIFICATION_SETTINGS,
+  CREATE_NOTIFICATION,
+  GET_NOTIFICATIONS_FOR_FOLLOWING,
 } from "../types/types";
 
 const initialState = {
@@ -89,6 +101,12 @@ const initialState = {
   collectionImages: [],
   collectionPosts: [],
   profilePosts: [],
+  unapprovedVerificationRequests: [],
+  likedPosts: [],
+  dislikedPosts: [],
+  userNotificationSettings: {},
+  commentId: 0,
+  notificationsForFollowing: [],
 };
 
 function reducer(state = initialState, action) {
@@ -162,8 +180,10 @@ function reducer(state = initialState, action) {
         ...state,
       };
     case COMMENT_POST:
+      debugger;
       return {
         ...state,
+        commentId: action.payload,
       };
     case CLEAR_IMAGES:
       return {
@@ -213,6 +233,11 @@ function reducer(state = initialState, action) {
         ],
       };
     case GET_FOLLOWING:
+      return {
+        ...state,
+        following: action.payload,
+      };
+    case GET_FOLLOWING_WITHOUT_MUTED:
       return {
         ...state,
         following: action.payload,
@@ -268,6 +293,7 @@ function reducer(state = initialState, action) {
         locations: action.payload,
       };
     case SAVE_STORY:
+      debugger;
       return {
         ...state,
         story: action.payload,
@@ -334,6 +360,60 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         collections: state.collections.concat(action.payload),
+      };
+    case GET_UNAPPROVED_VERIFICATION_REQUESTS:
+      return {
+        ...state,
+        unapprovedVerificationRequests: action.payload,
+      };
+    case GET_LIKED_POSTS:
+      return {
+        ...state,
+        likedPosts: action.payload,
+      };
+    case GET_DISLIKED_POSTS:
+      return {
+        ...state,
+        dislikedPosts: action.payload,
+      };
+    case REPORT_CONTENT:
+      return {
+        ...state,
+      };
+    case DELETE_VERIFICATION_REQUEST:
+      return {
+        ...state,
+        unapprovedVerificationRequests:
+          state.unapprovedVerificationRequests.filter(
+            (request) => action.payload !== request
+          ),
+      };
+    case VERIFY_USER:
+      return {
+        ...state,
+        unapprovedVerificationRequests:
+          state.unapprovedVerificationRequests.filter(
+            (request) => action.payload.id !== request.id
+          ),
+      };
+    case GET_USER_NOTIFICATION_SETTINGS:
+      return {
+        ...state,
+        userNotificationSettings: action.payload,
+      };
+    case EDIT_NOTIFICATION_SETTINGS:
+      return {
+        ...state,
+        userNotificationSettings: action.payload,
+      };
+    case CREATE_NOTIFICATION:
+      return {
+        ...state,
+      };
+    case GET_NOTIFICATIONS_FOR_FOLLOWING:
+      return {
+        ...state,
+        notificationsForFollowing: action.payload,
       };
     default:
       return state;

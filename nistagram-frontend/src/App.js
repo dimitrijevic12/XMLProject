@@ -22,6 +22,12 @@ import PostsInCollectionPage from "./pages/PostsInCollectionPage";
 import FollowRequestPage from "./pages/FollowRequestsPage";
 import CreateStoryPage from "./pages/CreateStoryPage";
 import ChangeProfilePicturePage from "./pages/ChangeProfilePicturePage";
+import SendVerificationRequestPage from "./pages/SendVerificationRequestPage";
+import ViewVerificationRequestPage from "./pages/ViewVerificationRequestPage";
+import LikedPostsPage from "./pages/LikedPostsPage";
+import DislikedPostsPage from "./pages/DislikedPostsPage";
+import ChangeNotificationSettingsPage from "./pages/ChangeNotificationSettingsPage";
+import NotificationsPage from "./pages/NotificationsPage";
 
 function App() {
   return (
@@ -78,9 +84,29 @@ function App() {
             path="/requests"
             component={FollowRequestPage}
           />
+          <ProtectedRoute
+            exact
+            path="/sendVerificationRequest"
+            component={SendVerificationRequestPage}
+          />
+          <ProtectedRoute exact path="/liked" component={LikedPostsPage} />
+          <ProtectedRoute
+            exact
+            path="/disliked"
+            component={DislikedPostsPage}
+          />
           <Route exact path="/change-profile-picture">
             <ChangeProfilePicturePage />
           </Route>
+          <ProtectedRoute
+            path="/change-notification-settings"
+            component={ChangeNotificationSettingsPage}
+          />
+          <ProtectedRoute
+            exact
+            path="/notifications"
+            component={NotificationsPage}
+          />
           <Route path="/explore/:search">
             <Explore />
           </Route>
@@ -88,6 +114,10 @@ function App() {
           <ProtectedRoute
             path="/collection/:collectionId"
             component={PostsInCollectionPage}
+          />
+          <ProtectedRoute
+            path="/viewVerificationRequests"
+            component={ViewVerificationRequestPage}
           />
           <ProtectedRoute exact path="/" component={HomePage} />
         </Switch>

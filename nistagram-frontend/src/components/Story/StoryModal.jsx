@@ -8,12 +8,15 @@ import {
 import { connect } from "react-redux";
 import "../../css/story.css";
 import TaggedUsersStoryModal from "./TaggedUsersStoryModal";
+import ReportModal from "../Report/ReportModal";
 
 class StoryModal extends Component {
   state = {
     showStoryModal: this.props.show,
     showTaggedUsersModal: false,
+    showReportModal: false,
     users: [],
+    story: {},
   };
 
   async componentDidMount() {
@@ -80,6 +83,14 @@ class StoryModal extends Component {
                   Tagged users:
                 </button>
               </div>
+              <div className="story-footer-collections">
+                <button
+                  className="btn btn-sm btn-primary"
+                  onClick={() => this.displayModalReport(story)}
+                >
+                  Report
+                </button>
+              </div>
             </div>
           );
         },
@@ -105,6 +116,15 @@ class StoryModal extends Component {
             show={this.state.showTaggedUsersModal}
             taggedUsers={this.state.users}
             onShowChange={this.displayModalStory.bind(this)}
+          />
+        ) : null}
+        {this.state.showReportModal ? (
+          <ReportModal
+            show={this.state.showReportModal}
+            contentId={this.state.story.id}
+            type="story"
+            registeredUser={this.state.story.registeredUser}
+            onShowChange={this.displayModalReport.bind(this)}
           />
         ) : null}
         <ModalBody
@@ -177,6 +197,14 @@ class StoryModal extends Component {
     debugger;
     this.setState({ showPostModal: false });
     this.props.onShowChange();
+  }
+
+  displayModalReport(story) {
+    debugger;
+    this.setState({
+      story: story,
+      showReportModal: !this.state.showReportModal,
+    });
   }
 
   displayModalStory(users) {

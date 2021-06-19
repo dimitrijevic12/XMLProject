@@ -115,3 +115,37 @@ export const ADD_CLOSE_FRIEND_STORY = "addCloseFriendStory";
 export const ADD_CLOSE_FRIEND_STORY_ERROR = "addCloseFriendStoryError";
 export const CREATE_NEW_COLLECTION = "createNewCollection";
 export const CREATE_NEW_COLLECTION_ERROR = "createNewCollectionError";
+export const SEND_VERIFICATION_REQUEST = "sendVerificationRequest";
+export const SEND_VERIFICATION_REQUEST_ERROR = "sendVerificationRequestError";
+export const GET_UNAPPROVED_VERIFICATION_REQUESTS =
+  "getUnapprovedVerificationRequests";
+export const GET_UNAPPROVED_VERIFICATION_REQUESTS_ERROR =
+  "getUnapprovedVerificationRequestsError";
+export const GET_FOLLOWING_WITHOUT_MUTED = "getFollowingWithoutMuted";
+export const GET_FOLLOWING_WITHOUT_MUTED_ERROR =
+  "getFollowingWithoutMutedError";
+export const MUTE_PROFILE = "muteProfile";
+export const MUTE_PROFILE_ERROR = "muteProfileError";
+export const BLOCK_PROFILE = "blockProfile";
+export const BLOCK_PROFILE_ERROR = "blockProfileError";
+export const GET_LIKED_POSTS = "getLikedPosts";
+export const GET_LIKED_POSTS_ERROR = "getLikedPostsError";
+export const GET_DISLIKED_POSTS = "getDislikedPosts";
+export const GET_DISLIKED_POSTS_ERROR = "getDislikedPostsError";
+export const REPORT_CONTENT = "reportContent";
+export const REPORT_CONTENT_ERROR = "reportContentError";
+export const DELETE_VERIFICATION_REQUEST = "deleteVerificationRequest";
+export const DELETE_VERIFICATION_REQUEST_ERROR =
+  "deleteVerificationRequestError";
+export const VERIFY_USER = "verifyUser";
+export const VERIFY_USER_ERROR = "verifyUserError";
+export const GET_USER_NOTIFICATION_SETTINGS = "getUserNotificationSettings";
+export const GET_USER_NOTIFICATION_SETTINGS_ERROR =
+  "getUserNotificationSettingsError";
+export const EDIT_NOTIFICATION_SETTINGS = "editNotificationSettings";
+export const EDIT_NOTIFICATION_SETTINGS_ERROR = "editNotificationSettingsError";
+export const CREATE_NOTIFICATION = "createNotification";
+export const CREATE_NOTIFICATION_ERROR = "createNotificationError";
+export const GET_NOTIFICATIONS_FOR_FOLLOWING = "getNotificationsForFollowing";
+export const GET_NOTIFICATIONS_FOR_FOLLOWING_ERROR =
+  "getNotificationsForFollowingError";

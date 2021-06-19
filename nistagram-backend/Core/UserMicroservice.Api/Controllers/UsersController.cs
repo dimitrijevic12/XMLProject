@@ -40,7 +40,7 @@ namespace UserMicroservice.Api.Controllers
 
         //[Authorize(Roles = "ApprovedAgent")]
         [HttpPost]
-        public IActionResult RegisterUser(DTOs.RegisteredUser dto)
+        public async Task<IActionResult> RegisterUser(DTOs.RegisteredUser dto)
         {
             Guid id = Guid.NewGuid();
 
@@ -57,30 +57,32 @@ namespace UserMicroservice.Api.Controllers
             Result result = Result.Combine(username, emailAddress, firstName, lastName, phoneNumber, gender, websiteAddress, bio, password);
             if (result.IsFailure) return BadRequest();
 
-            if (userService.Create(Core.Model.RegisteredUser
-                                       .Create(id,
-                                          username.Value,
-                                          emailAddress.Value,
-                                          firstName.Value,
-                                          lastName.Value,
-                                          dto.DateOfBirth,
-                                          phoneNumber.Value,
-                                          gender.Value,
-                                          websiteAddress.Value,
-                                          bio.Value,
-                                          dto.IsPrivate,
-                                          dto.IsAcceptingMessages,
-                                          dto.IsAcceptingTags,
-                                          password.Value,
-                                          ProfileImagePath.Create("").Value,
-                                          new List<Core.Model.RegisteredUser>(),
-                                          new List<Core.Model.RegisteredUser>(),
-                                          new List<Core.Model.RegisteredUser>(),
-                                          new List<Core.Model.RegisteredUser>(),
-                                          new List<Core.Model.RegisteredUser>(),
-                                          new List<Core.Model.RegisteredUser>(),
-                                          new List<Core.Model.RegisteredUser>(),
-                                          new List<Core.Model.RegisteredUser>()).Value).IsFailure) return BadRequest();
+            Result registrationResult = await userService.CreateRegistrationAsync(Core.Model.RegisteredUser
+                               .Create(id,
+                                  username.Value,
+                                  emailAddress.Value,
+                                  firstName.Value,
+                                  lastName.Value,
+                                  dto.DateOfBirth,
+                                  phoneNumber.Value,
+                                  gender.Value,
+                                  websiteAddress.Value,
+                                  bio.Value,
+                                  dto.IsPrivate,
+                                  dto.IsAcceptingMessages,
+                                  dto.IsAcceptingTags,
+                                  password.Value,
+                                  ProfileImagePath.Create("").Value,
+                                  new List<Core.Model.RegisteredUser>(),
+                                  new List<Core.Model.RegisteredUser>(),
+                                  new List<Core.Model.RegisteredUser>(),
+                                  new List<Core.Model.RegisteredUser>(),
+                                  new List<Core.Model.RegisteredUser>(),
+                                  new List<Core.Model.RegisteredUser>(),
+                                  new List<Core.Model.RegisteredUser>(),
+                                  new List<Core.Model.RegisteredUser>()).Value);
+
+            if (registrationResult.IsFailure) return BadRequest();
             dto.Id = id;
             return Ok(/*this.Request.Path + id, ""*/ dto);
         }
@@ -102,6 +104,14 @@ namespace UserMicroservice.Api.Controllers
         public IActionResult GetById(Guid idUser)
         {
             Core.Model.RegisteredUser user = userService.GetUserById(idUser);
+            if (user == null) return BadRequest();
+            return Ok(registerUserFactory.Create(user));
+        }
+
+        [HttpGet("{loggedId}/logged/{userId}/user")]
+        public IActionResult GetByIdWithoutBlocked([FromRoute] Guid loggedId, [FromRoute] Guid userId)
+        {
+            Core.Model.RegisteredUser user = userService.GetUserByIdWithoutBlocked(loggedId, userId);
             if (user == null) return BadRequest();
             return Ok(registerUserFactory.Create(user));
         }
@@ -137,9 +147,9 @@ namespace UserMicroservice.Api.Controllers
                                           gender.Value,
                                           websiteAddress.Value,
                                           bio.Value,
-                                          true,
-                                          true,
-                                          true,
+                                          dto.IsPrivate,
+                                          dto.IsAcceptingMessages,
+                                          dto.IsAcceptingTags,
                                           password.Value,
                                           ProfileImagePath.Create("").Value,
                                           new List<Core.Model.RegisteredUser>(),
@@ -231,6 +241,29 @@ namespace UserMicroservice.Api.Controllers
         {
             if (userService.AddCloseFriend(Guid.NewGuid(), new Guid(userId), new Guid(closeFriendId)).IsFailure) return BadRequest();
             return NoContent();
+        }
+
+        [HttpPost("mute")]
+        public IActionResult Mute(Mute mute)
+        {
+            Guid id = Guid.NewGuid();
+            if (userService.Mute(id, mute.MutedById, mute.MutingId).IsFailure) return BadRequest();
+            return Created(this.Request.Path + id, "");
+        }
+
+        [HttpGet("{userId}/following-without-muted")]
+        public IActionResult GetFollowersWithoutMuted(Guid userId)
+        {
+            return Ok(_userRepository.GetFollowingWithoutMuted(userId)
+               .Select(follower => registerUserFactory.Create(follower)));
+        }
+
+        [HttpPost("block")]
+        public IActionResult Block(Block block)
+        {
+            Guid id = Guid.NewGuid();
+            if (userService.Block(id, block.BlockedById, block.BlockingId).IsFailure) return BadRequest();
+            return Created(this.Request.Path + id, "");
         }
     }
 }

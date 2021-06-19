@@ -12,6 +12,10 @@ using StoryMicroservice.DataAccess.Factories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using EasyNetQ;
+using EasyNetQ.AutoSubscribe;
+using System.Reflection;
+using StoryMicroservice.Api.Consumers;
 
 namespace StoryMicroservice.Api
 {
@@ -32,6 +36,19 @@ namespace StoryMicroservice.Api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "StoryMicroservice.Api", Version = "v1" });
             });
+
+            var bus = RabbitHutch.CreateBus(Configuration["RabbitMQ:ConnectionString"]);
+            services.AddSingleton<IBus>(bus);
+            services.AddSingleton<MessageDispatcher>();
+
+            services.AddSingleton<AutoSubscriber>(_ =>
+            {
+                return new AutoSubscriber(_.GetRequiredService<IBus>(), Assembly.GetExecutingAssembly().GetName().Name)
+                {
+                    AutoSubscriberMessageDispatcher = _.GetRequiredService<MessageDispatcher>()
+                };
+            });
+
             services.AddScoped<UserService>();
             services.AddScoped<StoryService>();
             services.AddScoped<IUserRepository, UserRepository>();
@@ -45,6 +62,9 @@ namespace StoryMicroservice.Api
             services.AddScoped<HighlightFactory>();
             services.Configure<StoryDatabaseSettings>(
             Configuration.GetSection(nameof(StoryDatabaseSettings)));
+
+            services.AddScoped<UnsuccessfulPostUserRegistrationEventConsumer>();
+            services.AddScoped<UserRegisteredEventConsumer>();
 
             services.AddSingleton<IStoryDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<StoryDatabaseSettings>>().Value);
@@ -74,6 +94,7 @@ namespace StoryMicroservice.Api
             services.AddControllersWithViews()
              .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddAuthorization();
+            services.AddHostedService<Worker>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

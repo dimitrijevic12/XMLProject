@@ -42,7 +42,7 @@ namespace PostMicroservice.Api.Controllers
         [HttpGet("{id}")]
         public IActionResult GetById(Guid id)
         {
-            Post post = _postRepository.GetById(id);
+            Post post = _postRepository.GetById(id).Value;
             if (post.GetType().Name.Equals("PostSingle"))
             {
                 return Ok(postSingleFactory.Create((PostSingle)post));
@@ -141,7 +141,8 @@ namespace PostMicroservice.Api.Controllers
                 new List<Comment>(), location, taggedUsers, hashTags,
                 contentPaths).Value) == null) return BadRequest();
             }
-            return Created(this.Request.Path + "/" + id, "");
+            post.Id = id;
+            return Ok(post);
         }
 
         [Authorize(Roles = "RegisteredUser")]
@@ -163,7 +164,7 @@ namespace PostMicroservice.Api.Controllers
         }
 
         [Authorize(Roles = "RegisteredUser")]
-        [HttpPost("{id}/comments"), ProducesResponseType(StatusCodes.Status204NoContent)]
+        [HttpPost("{id}/comments")]
         public IActionResult CommentPost([FromRoute] Guid id, [FromBody] DTOs.Comment comment)
         {
             Result<DateTime> timeStamp = DateTime.Now;
@@ -174,7 +175,7 @@ namespace PostMicroservice.Api.Controllers
             Guid commentId = Guid.NewGuid();
             _postService.CommentPost(id, Comment.Create(commentId, timeStamp.Value, commentText.Value, registeredUser,
                 new List<RegisteredUser>()).Value);
-            return NoContent();
+            return Ok(commentId);
         }
 
         [HttpGet("users/{id}")]
@@ -222,6 +223,44 @@ namespace PostMicroservice.Api.Controllers
             List<RegisteredUser> users = (registeredUsers.Select(registeredUser =>
                 userService.GetById(registeredUser.Id))).ToList();
             List<Post> posts = _postRepository.GetForFollowing(users).ToList();
+            List<DTOs.Post> toReturn = new List<DTOs.Post>();
+            foreach (Post post in posts)
+            {
+                if (post.GetType().Name.Equals("PostSingle"))
+                {
+                    toReturn.Add(postSingleFactory.Create((PostSingle)post));
+                }
+                else
+                {
+                    toReturn.Add(postAlbumFactory.Create((PostAlbum)post));
+                }
+            }
+            return Ok(toReturn);
+        }
+
+        [HttpGet("liked/{userId}")]
+        public IActionResult GetLikedByUser(Guid userId)
+        {
+            List<Post> posts = _postRepository.GetLikedByUser(userId).ToList();
+            List<DTOs.Post> toReturn = new List<DTOs.Post>();
+            foreach (Post post in posts)
+            {
+                if (post.GetType().Name.Equals("PostSingle"))
+                {
+                    toReturn.Add(postSingleFactory.Create((PostSingle)post));
+                }
+                else
+                {
+                    toReturn.Add(postAlbumFactory.Create((PostAlbum)post));
+                }
+            }
+            return Ok(toReturn);
+        }
+
+        [HttpGet("disliked/{userId}")]
+        public IActionResult GetDislikedByUser(Guid userId)
+        {
+            List<Post> posts = _postRepository.GetDislikedByUser(userId).ToList();
             List<DTOs.Post> toReturn = new List<DTOs.Post>();
             foreach (Post post in posts)
             {

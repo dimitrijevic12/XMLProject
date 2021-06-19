@@ -52,6 +52,10 @@ import {
   GET_ALL_IMAGES_FOR_COLLECTION_ERROR,
   CREATE_NEW_COLLECTION,
   CREATE_NEW_COLLECTION_ERROR,
+  GET_LIKED_POSTS,
+  GET_LIKED_POSTS_ERROR,
+  GET_DISLIKED_POSTS,
+  GET_DISLIKED_POSTS_ERROR,
 } from "../types/types";
 import axios from "axios";
 
@@ -639,6 +643,54 @@ export const createNewCollection = (collection) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: CREATE_NEW_COLLECTION_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const getLikedPosts = () => async (dispatch) => {
+  try {
+    const response = await axios.get(
+      "https://localhost:44355/api/posts/liked/" +
+        sessionStorage.getItem("userId"),
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      }
+    );
+    dispatch({
+      type: GET_LIKED_POSTS,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_LIKED_POSTS_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const getDislikedPosts = () => async (dispatch) => {
+  try {
+    const response = await axios.get(
+      "https://localhost:44355/api/posts/disliked/" +
+        sessionStorage.getItem("userId"),
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      }
+    );
+    dispatch({
+      type: GET_DISLIKED_POSTS,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_DISLIKED_POSTS_ERROR,
       payload: console.log(e),
     });
   }

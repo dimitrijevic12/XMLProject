@@ -3,7 +3,7 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { connect } from "react-redux";
 import { addCloseFriendStory } from "../../actions/actionsStory";
-import { addCloseFriend } from "../../actions/actionsUser";
+import { addCloseFriend, muteProfile, blockProfile } from "../../actions/actionsUser";
 
 class OptionsModal extends Component {
   state = {
@@ -23,13 +23,14 @@ class OptionsModal extends Component {
         <ModalHeader toggle={this.toggle.bind(this)}></ModalHeader>
         <ModalBody>
           <button
+          onClick={() => this.block()}
             style={{
               height: "100%",
               width: "100%",
               alignSelf: "stretch",
               float: "center",
             }}
-            className="btn btn-block btn-md mb-2"
+            className="btn btn-block btn-primary btn-md mb-2"
           >
             <label>Block this user</label>
           </button>
@@ -42,7 +43,7 @@ class OptionsModal extends Component {
               alignSelf: "stretch",
               float: "center",
             }}
-            className="btn btn-block btn-md mb-2"
+            className="btn btn-block btn-primary btn-md mb-2"
           >
             <label>Mute this user</label>
           </button>
@@ -54,7 +55,7 @@ class OptionsModal extends Component {
               alignSelf: "stretch",
               float: "center",
             }}
-            className="btn btn-block btn-md mb-2"
+            className="btn btn-block btn-primary btn-md mb-2"
           >
             <label>Report this user</label>
           </button>
@@ -112,8 +113,20 @@ class OptionsModal extends Component {
     window.location = "/profile/" + this.props.user.id;
   }
 
-  mute() {
-    alert("mute");
+  async mute() {
+    await this.props.muteProfile({
+      "MutedById": sessionStorage.getItem("userId"),
+      "MutingId": this.props.user.id
+    })
+    window.location = "/profile/" + this.props.user.id;
+  }
+
+  async block() {
+    await this.props.blockProfile({
+      "BlockedById": sessionStorage.getItem("userId"),
+      "BlockingId": this.props.user.id
+    })
+    window.location = "/profile/" + this.props.user.id;
   }
 
   toggle() {
@@ -128,4 +141,6 @@ const mapStateToProps = () => {};
 export default connect(mapStateToProps, {
   addCloseFriendStory,
   addCloseFriend,
+  muteProfile,
+  blockProfile,
 })(OptionsModal);

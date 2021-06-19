@@ -52,6 +52,19 @@ class NavigationBar extends Component {
           <span style={{ width: 25, display: "inline-block" }}></span>
           <NavLink
             exact
+            to={"/notifications"}
+            onClick={() => {
+              window.location = "/notifications";
+            }}
+          >
+            <img
+              src="/images/bell.png"
+              style={{ width: 24, height: 24, borderRadius: 50 }}
+            />
+          </NavLink>
+          <span style={{ width: 25, display: "inline-block" }}></span>
+          <NavLink
+            exact
             to={"/profile/" + sessionStorage.getItem("userId")}
             onClick={() => {
               window.location = "/profile/" + sessionStorage.getItem("userId");

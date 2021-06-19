@@ -22,12 +22,15 @@ import TaggedUsersModal from "./TaggedUsersModal";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ChooseCollectionModal from "../Collection/ChooseCollectionModal";
+import ReportModal from "../Report/ReportModal";
+import { createNotification } from "../../actions/actionsNotification";
 
 class PostModal extends Component {
   state = {
     showPostModal: this.props.show,
     showTaggedModal: false,
     showChooseCollectionModal: false,
+    showReportModal: false,
     likesCount: 0,
     dislikesCount: 0,
     liked: false,
@@ -93,6 +96,15 @@ class PostModal extends Component {
               show={this.state.showChooseCollectionModal}
               postId={post.id}
               onShowChange={this.displayModalCollection.bind(this)}
+            />
+          ) : null}
+          {this.state.showReportModal ? (
+            <ReportModal
+              show={this.state.showReportModal}
+              contentId={post.id}
+              type="post"
+              registeredUser={post.registeredUser}
+              onShowChange={this.displayModalReport.bind(this)}
             />
           ) : null}
           {profileImage === "/images/user.png" ? (
@@ -192,7 +204,14 @@ class PostModal extends Component {
                 ", " +
                 post.location.country
               : ""}
-            <a style={{ float: "right" }} className="mr-4" href="javascript:;">
+            <a
+              style={{ float: "right" }}
+              className="mr-4"
+              href="javascript:;"
+              onClick={() => {
+                this.displayModalReport();
+              }}
+            >
               Report
             </a>
             <br />
@@ -336,7 +355,17 @@ class PostModal extends Component {
       RegisteredUser: { id: sessionStorage.getItem("userId") },
     };
     debugger;
-    await this.props.commentPost({ id: this.props.post.id, comment: comment });
+    await this.props
+      .commentPost({ id: this.props.post.id, comment: comment })
+      .then(async function (response) {
+        debugger;
+        await this.props.createNotification({
+          Type: "Comment",
+          ContentId: "12345678-1234-1234-1234-123456789123",
+          RegisteredUser: { id: sessionStorage.getItem("userId") },
+        });
+      });
+
     toast.configure();
     toast.success("Commented successfully!", {
       position: toast.POSITION.TOP_RIGHT,
@@ -356,6 +385,13 @@ class PostModal extends Component {
     });
   }
 
+  displayModalReport() {
+    debugger;
+    this.setState({
+      showReportModal: !this.state.showReportModal,
+    });
+  }
+
   displayModalCollection() {
     debugger;
     this.setState({
@@ -369,6 +405,7 @@ const mapStateToProps = (state) => ({
   loadedImage: state.loadedImage,
   loadedImages: state.loadedImages,
   profileImage: state.profileImage,
+  commentId: state.commentId,
 });
 
 export default connect(mapStateToProps, {
@@ -379,4 +416,5 @@ export default connect(mapStateToProps, {
   commentPost,
   loadImages,
   loadImageProfile,
+  createNotification,
 })(PostModal);
