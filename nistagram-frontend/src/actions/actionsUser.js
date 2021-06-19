@@ -60,6 +60,7 @@ export const userRegistration = (user) => async (dispatch) => {
       type: REGISTER_USER,
       payload: response.data,
     });
+    return true;
   } catch (e) {
     dispatch({
       type: REGISTER_USER_ERROR,

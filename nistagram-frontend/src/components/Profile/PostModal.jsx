@@ -350,25 +350,25 @@ class PostModal extends Component {
   }
 
   async commentPost() {
+    this.sendNotification();
     const comment = {
       CommentText: this.state.commentText,
       RegisteredUser: { id: sessionStorage.getItem("userId") },
     };
     debugger;
-    await this.props
-      .commentPost({ id: this.props.post.id, comment: comment })
-      .then(async function (response) {
-        debugger;
-        await this.props.createNotification({
-          Type: "Comment",
-          ContentId: "12345678-1234-1234-1234-123456789123",
-          RegisteredUser: { id: sessionStorage.getItem("userId") },
-        });
-      });
-
+    await this.props.commentPost({ id: this.props.post.id, comment: comment });
     toast.configure();
     toast.success("Commented successfully!", {
       position: toast.POSITION.TOP_RIGHT,
+    });
+  }
+
+  sendNotification() {
+    debugger;
+    this.props.createNotification({
+      Type: "Comment",
+      ContentId: "12345678-1234-1234-1234-123456789123",
+      RegisteredUser: { id: sessionStorage.getItem("userId") },
     });
   }
 
