@@ -85,7 +85,12 @@ namespace UserMicroservice.DataAccess.Implementation
 
             DataTable dataTable = ExecuteQuery(query, parameters);
 
-            return ((VerificationRequest)_verificationRequestTarget.ConvertSql(dataTable.Rows[0]));
+            if (dataTable.Rows.Count > 0)
+            {
+                return ((VerificationRequest)_verificationRequestTarget.ConvertSql(dataTable.Rows[0]));
+            }
+
+            return Maybe<VerificationRequest>.None;
         }
 
         public VerificationRequest Save(VerificationRequest verificationRequest)
