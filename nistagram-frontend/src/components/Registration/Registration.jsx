@@ -1,7 +1,11 @@
 import React, { Component } from "react";
-import { userRegistration, userRegistrationForPost, userRegistrationForStory } from "../../actions/actionsUser"
+import {
+  userRegistration,
+  userRegistrationForPost,
+  userRegistrationForStory,
+} from "../../actions/actionsUser";
 import DatePicker from "react-datepicker";
-import { connect } from "react-redux"
+import { connect } from "react-redux";
 import { toast } from "react-toastify";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
@@ -71,7 +75,7 @@ class Registration extends Component {
               </div>
             </div>
             <div className="mt-5">
-            <div className="d-inline-flex w-50">
+              <div className="d-inline-flex w-50">
                 <div class="form-group w-100 pr-5">
                   <label for="firstName">Username:</label>
                   <input
@@ -133,7 +137,7 @@ class Registration extends Component {
               </div>
             </div>
             <div className="mt-5">
-            <div className="d-inline-flex w-50">
+              <div className="d-inline-flex w-50">
                 <div class="form-group w-100 pr-5">
                   <label for="lastName">Web site:</label>
                   <input
@@ -210,20 +214,45 @@ class Registration extends Component {
               </div>
               <div className="d-inline-flex w-50">
                 <div class="form-group w-100 pr-5">
-                <br/>
-                  <label className="mr-1" for="lastName">Private profile:</label>
-                  <input  type="checkbox" id="isPrivate" name="isPrivate" onChange={this.handleChangeCheckboxPrivate}/>
-                  <br/>
-                  <label  className="mr-1"  for="lastName">Accepting messages:</label>
-                  <input  type="checkbox" id="isAcceptingMessages" name="isAcceptingMessages" onChange={this.handleChangeCheckboxMessages}/>
-                  <br/>
-                  <label  className="mr-1"  for="lastName">Accepting tags:</label>
-                  <input  type="checkbox" id="isAcceptingTags" name="isAcceptingTags" onChange={this.handleChangeCheckboxTags}/>
+                  <br />
+                  <label className="mr-1" for="lastName">
+                    Private profile:
+                  </label>
+                  <input
+                    type="checkbox"
+                    id="isPrivate"
+                    name="isPrivate"
+                    onChange={this.handleChangeCheckboxPrivate}
+                  />
+                  <br />
+                  <label className="mr-1" for="lastName">
+                    Accepting messages:
+                  </label>
+                  <input
+                    type="checkbox"
+                    id="isAcceptingMessages"
+                    name="isAcceptingMessages"
+                    onChange={this.handleChangeCheckboxMessages}
+                  />
+                  <br />
+                  <label className="mr-1" for="lastName">
+                    Accepting tags:
+                  </label>
+                  <input
+                    type="checkbox"
+                    id="isAcceptingTags"
+                    name="isAcceptingTags"
+                    onChange={this.handleChangeCheckboxTags}
+                  />
                 </div>
               </div>
             </div>
             <div className="mt-5 pb-5">
-              <button  disabled={this.state.password != this.state.repeatPassword }className="btn btn-lg btn-primary btn-block" onClick={this.register.bind(this)}>
+              <button
+                disabled={this.state.password != this.state.repeatPassword}
+                className="btn btn-lg btn-primary btn-block"
+                onClick={this.register.bind(this)}
+              >
                 Register
               </button>
             </div>
@@ -231,9 +260,6 @@ class Registration extends Component {
         </main>
       </React.Fragment>
     );
-
-      
-
   }
 
   handleChange = (event) => {
@@ -250,21 +276,21 @@ class Registration extends Component {
 
   handleChangeCheckboxPrivate = (e) => {
     this.setState({
-      isPrivate : !this.state.isPrivate
-    })
-  }
+      isPrivate: !this.state.isPrivate,
+    });
+  };
 
   handleChangeCheckboxMessages = (e) => {
     this.setState({
-      isAcceptingMessages : !this.state.isAcceptingMessages
-    })
-  }
+      isAcceptingMessages: !this.state.isAcceptingMessages,
+    });
+  };
 
   handleChangeCheckboxTags = (e) => {
     this.setState({
-      isAcceptingTags : !this.state.isAcceptingTags
-    })
-  }
+      isAcceptingTags: !this.state.isAcceptingTags,
+    });
+  };
 
   handleChangeDate = (e) => {
     this.setState({
@@ -275,21 +301,23 @@ class Registration extends Component {
   async register() {
     debugger;
     var successful = false;
-     await this.props.userRegistration({ "Username" : this.state.username,
-      "EmailAddress" : this.state.email,
-      "FirstName" : this.state.firstName,
-      "LastName" : this.state.lastName,
-      "DateOfBirth" : this.state.dateOfBirth,
-      "PhoneNumber" : this.state.phoneNumber,
-      "Gender" : this.state.gender,
-      "WebsiteAddress" : this.state.webSite,
-      "Bio" : this.state.bio,
-      "IsPrivate" : this.state.isPrivate,
-      "IsAcceptingMessages" : this.state.isAcceptingMessages,
-      "IsAcceptingTags" : this.state.isAcceptingTags,
-      "Password" : this.state.password })      
-    
-      successful = this.props.userRegistrationForPost( this.props.registeredUser)
+    await this.props.userRegistration({
+      Username: this.state.username,
+      EmailAddress: this.state.email,
+      FirstName: this.state.firstName,
+      LastName: this.state.lastName,
+      DateOfBirth: this.state.dateOfBirth,
+      PhoneNumber: this.state.phoneNumber,
+      Gender: this.state.gender,
+      WebsiteAddress: this.state.webSite,
+      Bio: this.state.bio,
+      IsPrivate: this.state.isPrivate,
+      IsAcceptingMessages: this.state.isAcceptingMessages,
+      IsAcceptingTags: this.state.isAcceptingTags,
+      Password: this.state.password,
+    });
+
+    // successful = this.props.userRegistrationForPost( this.props.registeredUser)
     //   "Username" : this.state.username,
     //   "EmailAddress" : this.state.email,
     //   "FirstName" : this.state.firstName,
@@ -302,10 +330,10 @@ class Registration extends Component {
     //   "IsPrivate" : this.state.isPrivate,
     //   "IsAcceptingMessages" : this.state.isAcceptingMessages,
     //   "IsAcceptingTags" : this.state.isAcceptingTags,
-    //   "Password" : this.state.password 
+    //   "Password" : this.state.password
     // })
-    
-    successful = await this.props.userRegistrationForStory( this.props.registeredUser)
+
+    //successful = await this.props.userRegistrationForStory( this.props.registeredUser)
     //ZA STORY KOJI JE NO SQL
     // this.props.userRegistrationForStory({ "Username" : this.state.username,
     //   "EmailAddress" : this.state.email,
@@ -319,7 +347,7 @@ class Registration extends Component {
     //   "IsPrivate" : this.state.isPrivate,
     //   "IsAcceptingMessages" : this.state.isAcceptingMessages,
     //   "IsAcceptingTags" : this.state.isAcceptingTags,
-    //   "Password" : this.state.password 
+    //   "Password" : this.state.password
     // })
     if (successful === true) {
       this.props.history.replace({
@@ -334,12 +362,18 @@ class Registration extends Component {
   }
 }
 
-
-
-
-const mapStateToProps = (state) =>
-
-    ({ userRegistration: state.userRegistration, userRegistrationForPost: state.userRegistrationForPost, userRegistrationForStory: state.userRegistrationForStory , registeredUser : state.registeredUser})
+const mapStateToProps = (state) => ({
+  userRegistration: state.userRegistration,
+  userRegistrationForPost: state.userRegistrationForPost,
+  userRegistrationForStory: state.userRegistrationForStory,
+  registeredUser: state.registeredUser,
+});
 
 export default compose(
-  withRouter,connect(mapStateToProps, { userRegistration, userRegistrationForPost, userRegistrationForStory }))(Registration);
+  withRouter,
+  connect(mapStateToProps, {
+    userRegistration,
+    userRegistrationForPost,
+    userRegistrationForStory,
+  })
+)(Registration);

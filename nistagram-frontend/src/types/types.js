@@ -149,3 +149,9 @@ export const CREATE_NOTIFICATION_ERROR = "createNotificationError";
 export const GET_NOTIFICATIONS_FOR_FOLLOWING = "getNotificationsForFollowing";
 export const GET_NOTIFICATIONS_FOR_FOLLOWING_ERROR =
   "getNotificationsForFollowingError";
+export const GET_REPORTS = "getReports";
+export const GET_REPORTS_ERROR = "getReportsError";
+export const GET_STORY_BY_ID = "getStoryById";
+export const GET_STORY_BY_ID_ERROR = "getStoryByIdError";
+export const LOAD_IMAGE_FOR_STORY = "loadImageForStory";
+export const LOAD_IMAGE_FOR_STORY_ERROR = "loadImageForStoryError";

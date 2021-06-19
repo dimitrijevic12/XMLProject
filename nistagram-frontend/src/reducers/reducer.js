@@ -66,6 +66,9 @@ import {
   EDIT_NOTIFICATION_SETTINGS,
   CREATE_NOTIFICATION,
   GET_NOTIFICATIONS_FOR_FOLLOWING,
+  GET_REPORTS,
+  GET_STORY_BY_ID,
+  LOAD_IMAGE_FOR_STORY,
 } from "../types/types";
 
 const initialState = {
@@ -107,6 +110,9 @@ const initialState = {
   userNotificationSettings: {},
   commentId: 0,
   notificationsForFollowing: [],
+  reports: [],
+  storyById: {},
+  imageForStory: "",
 };
 
 function reducer(state = initialState, action) {
@@ -414,6 +420,21 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         notificationsForFollowing: action.payload,
+      };
+    case GET_REPORTS:
+      return {
+        ...state,
+        reports: action.payload,
+      };
+    case GET_STORY_BY_ID:
+      return {
+        ...state,
+        storyById: action.payload,
+      };
+    case LOAD_IMAGE_FOR_STORY:
+      return {
+        ...state,
+        imageForStory: action.payload,
       };
     default:
       return state;

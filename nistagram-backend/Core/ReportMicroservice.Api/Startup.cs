@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ReportMicroservice.Api.Consumers;
+using ReportMicroservice.Api.Factories;
 using ReportMicroservice.Core.Interface.Repository;
 using ReportMicroservice.Core.Services;
 using ReportMicroservice.DataAccess.Implementation;
@@ -50,6 +51,8 @@ namespace ReportMicroservice.Api
             services.AddScoped<IReportRepository, ReportRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<UserService>();
+            services.AddScoped<ReportFactory>();
+            services.AddScoped<RegisteredUserFactory>();
 
             services.AddScoped<PostUserRegisteredEventConsumer>();
             services.AddScoped<UnsuccessfulNotificationUserRegistrationEventConsumer>();

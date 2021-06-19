@@ -692,6 +692,28 @@
         }
       ],
       "UpstreamPathTemplate": "/api/notifications/following"
+    },
+    {
+      "DownstreamPathTemplate": "/api/stories/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 9587
+        }
+      ],
+      "UpstreamPathTemplate": "/api/stories/{id}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/stories/contents/{path}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 9587
+        }
+      ],
+      "UpstreamPathTemplate": "/api/stories/contents/{path}"
     }
   ],
   "GlobalConfiguration": {
