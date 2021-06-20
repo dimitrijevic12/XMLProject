@@ -38,6 +38,10 @@ namespace StoryMicroservice.DataAccess.Implementation
         {
             var storyDTO = _stories.Find<Story>(story => story.Id.Equals(id)).FirstOrDefault();
             if (storyDTO == null) return Maybe<Core.Model.Story>.None;
+            if (storyDTO.IsBanned == true)
+            {
+                return Maybe<Core.Model.Story>.None;
+            }
             var taggedUsers = _userRepository.GetUsersByDTO(storyDTO.TaggedUsers);
             var seenByUsers = _userRepository.GetUsersByDTO(storyDTO.SeenByUsers);
             var myCloseFriends = _userRepository.GetUsersById(storyDTO.RegisteredUser.MyCloseFriends);
@@ -63,9 +67,12 @@ namespace StoryMicroservice.DataAccess.Implementation
 
         public IEnumerable<Core.Model.Story> GetBy(string storyOwnerId, string followingId, string last24h)
         {
-            List<Core.Model.Story> stories = new List<Core.Model.Story>();
+            List<Core.Model.Story> allStories = new List<Core.Model.Story>();
+
             if (!String.IsNullOrWhiteSpace(storyOwnerId))
-                stories.AddRange(storyFactory.CreateStories(_stories.Find(story => story.RegisteredUser.Id.Equals(storyOwnerId)).ToList()));
+                allStories.AddRange(storyFactory.CreateStories(_stories.Find(story => story.RegisteredUser.Id.Equals(storyOwnerId)).ToList()));
+            List<Core.Model.Story> stories = new List<Core.Model.Story>();
+            stories.AddRange(allStories.Where(story => story.IsBanned == false));
             if (!String.IsNullOrWhiteSpace(followingId) && String.IsNullOrWhiteSpace(storyOwnerId))
             {
                 var user = _userRepository.GetById(new Guid(followingId)).Value;
@@ -75,11 +82,11 @@ namespace StoryMicroservice.DataAccess.Implementation
                 foreach (var story in stories) if (story.GetType().Name.Equals("CloseFriendStory"))
                         tempStories.Add(Core.Model.CloseFriendStory.Create(story.Id, story.ContentPath,
                      story.TimeStamp, story.Duration, story.Description, _userRepository.GetById(story.RegisteredUser.Id).Value,
-                     story.Location, story.SeenByUsers, story.TaggedUsers, story.HashTags).Value);
+                     story.Location, story.SeenByUsers, story.TaggedUsers, story.HashTags, story.IsBanned).Value);
                     else
                         tempStories.Add(Core.Model.Story.Create(story.Id, story.ContentPath,
                     story.TimeStamp, story.Duration, story.Description, _userRepository.GetById(story.RegisteredUser.Id).Value,
-                    story.Location, story.SeenByUsers, story.TaggedUsers, story.HashTags).Value);
+                    story.Location, story.SeenByUsers, story.TaggedUsers, story.HashTags, story.IsBanned).Value);
                 stories = tempStories;
             }
             if (!String.IsNullOrWhiteSpace(last24h) && last24h.Equals("true"))
@@ -104,6 +111,14 @@ namespace StoryMicroservice.DataAccess.Implementation
                         stories.Remove(story);
             }
             return stories;
+        }
+
+        public void BanStory(string id)
+        {
+            var story = GetById(new Guid(id)).Value;
+            Story dto = storyFactory.Create(story);
+            dto.IsBanned = true;
+            _stories.ReplaceOne(story => story.Id == id, dto);
         }
     }
 }

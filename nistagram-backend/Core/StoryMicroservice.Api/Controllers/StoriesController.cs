@@ -78,5 +78,12 @@ namespace StoryMicroservice.Api.Controllers
             FileContentResult fileContentResult = File(content.Bytes, content.Type);
             return Ok(fileContentResult);
         }
+
+        [Microsoft.AspNetCore.Mvc.HttpPut("{id}/ban")]
+        public IActionResult BanStory(string id)
+        {
+            _storyRepository.BanStory(id);
+            return Ok();
+        }
     }
 }

@@ -10,6 +10,7 @@ import StoryReportModal from "./StoryReportModal";
 import moment from "moment";
 import { banUser } from "../../actions/actionsUser";
 import { banPost } from "../../actions/actions";
+import { banStory } from "../../actions/actionsStory";
 
 class Reports extends Component {
   state = {
@@ -97,12 +98,12 @@ class Reports extends Component {
                         style={{ textAlign: "center" }}
                       >
                         <button
-                          className="btn btn-primary mb-2"
+                          className="btn btn-primary mb-3"
                           onClick={() => {
                             this.view(f);
                           }}
                         >
-                          View
+                          <img src="/images/view.png" />
                         </button>
                       </td>
                       <td
@@ -110,12 +111,15 @@ class Reports extends Component {
                         style={{ textAlign: "center" }}
                       >
                         <button
-                          className="btn btn-primary mb-2"
+                          className="btn btn-primary mb-3"
                           onClick={() => {
                             this.removeContent(f);
                           }}
                         >
-                          Remove
+                          <img
+                            style={{ width: 24, height: 24 }}
+                            src="/images/ban.png"
+                          />
                         </button>
                       </td>
                       <td
@@ -123,12 +127,15 @@ class Reports extends Component {
                         style={{ textAlign: "center" }}
                       >
                         <button
-                          className="btn btn-primary mb-2"
+                          className="btn btn-primary mb-3"
                           onClick={() => {
                             this.removeUser(f);
                           }}
                         >
-                          Remove
+                          <img
+                            style={{ width: 24, height: 24 }}
+                            src="/images/ban.png"
+                          />
                         </button>
                       </td>
                       <td
@@ -136,12 +143,15 @@ class Reports extends Component {
                         style={{ textAlign: "center" }}
                       >
                         <button
-                          className="btn btn-primary mb-2"
+                          className="btn btn-primary mb-3"
                           onClick={() => {
                             this.skip(f);
                           }}
                         >
-                          Skip
+                          <img
+                            style={{ width: 24, height: 24 }}
+                            src="/images/minus.png"
+                          />
                         </button>
                       </td>
                     </tr>
@@ -246,6 +256,7 @@ class Reports extends Component {
   }
 
   async removeStory(f) {
+    await this.props.banStory(f.content.id);
     await this.props.editReport({
       Id: f.id,
       TimeStamp: f.timeStamp,
@@ -270,5 +281,6 @@ export default compose(
     editReport,
     banUser,
     banPost,
+    banStory,
   })
 )(Reports);

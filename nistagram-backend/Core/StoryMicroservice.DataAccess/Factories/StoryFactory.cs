@@ -34,7 +34,8 @@ namespace StoryMicroservice.DataAccess.Factories
                 HashTags = hashTagFactory.CreateHashTags(story.HashTags),
                 ContentPath = story.ContentPath.ToString(),
                 Duration = story.Duration,
-                Type = story.GetType().Name
+                Type = story.GetType().Name,
+                IsBanned = story.IsBanned
             };
         }
 
@@ -47,7 +48,7 @@ namespace StoryMicroservice.DataAccess.Factories
                 new List<Core.Model.RegisteredUser>(), new List<Core.Model.RegisteredUser>(), new List<Core.Model.RegisteredUser>(),
                 new List<Core.Model.RegisteredUser>(), new List<Core.Model.RegisteredUser>(), myCloseFriends),
                 locationFactory.Create(story.Location), seenByUsers, taggedUsers,
-                hashTagFactory.CreateHashTags(story.HashTags)).Value;
+                hashTagFactory.CreateHashTags(story.HashTags), story.IsBanned).Value;
             else
                 return Core.Model.Story.Create(new Guid(story.Id), ContentPath.Create(story.ContentPath).Value,
                     story.TimeStamp,
@@ -55,7 +56,7 @@ namespace StoryMicroservice.DataAccess.Factories
                     new List<Core.Model.RegisteredUser>(), new List<Core.Model.RegisteredUser>(), new List<Core.Model.RegisteredUser>(),
                     new List<Core.Model.RegisteredUser>(), new List<Core.Model.RegisteredUser>(), new List<Core.Model.RegisteredUser>()),
                     locationFactory.Create(story.Location), seenByUsers, taggedUsers,
-                    hashTagFactory.CreateHashTags(story.HashTags)).Value;
+                    hashTagFactory.CreateHashTags(story.HashTags), story.IsBanned).Value;
         }
 
         public List<Story> CreateStories(IEnumerable<Core.Model.Story> stories)
