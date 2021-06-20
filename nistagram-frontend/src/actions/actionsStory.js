@@ -35,6 +35,8 @@ import {
   GET_STORY_BY_ID_ERROR,
   LOAD_IMAGE_FOR_STORY,
   LOAD_IMAGE_FOR_STORY_ERROR,
+  BAN_STORY,
+  BAN_STORY_ERROR,
 } from "../types/types";
 import axios from "axios";
 
@@ -459,6 +461,31 @@ export const loadImageForStory = (path) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: LOAD_IMAGE_FOR_STORY_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const banStory = (id) => async (dispatch) => {
+  try {
+    const response = await axios.put(
+      "https://localhost:44355/api/stories/" + id + "/ban",
+      {},
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      }
+    );
+    dispatch({
+      type: BAN_STORY,
+      payload: response.data,
+    });
+    return true;
+  } catch (e) {
+    dispatch({
+      type: BAN_STORY_ERROR,
       payload: console.log(e),
     });
   }

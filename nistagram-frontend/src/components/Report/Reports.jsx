@@ -10,6 +10,7 @@ import StoryReportModal from "./StoryReportModal";
 import moment from "moment";
 import { banUser } from "../../actions/actionsUser";
 import { banPost } from "../../actions/actions";
+import { banStory } from "../../actions/actionsStory";
 
 class Reports extends Component {
   state = {
@@ -246,6 +247,7 @@ class Reports extends Component {
   }
 
   async removeStory(f) {
+    await this.props.banStory(f.content.id);
     await this.props.editReport({
       Id: f.id,
       TimeStamp: f.timeStamp,
@@ -270,5 +272,6 @@ export default compose(
     editReport,
     banUser,
     banPost,
+    banStory,
   })
 )(Reports);

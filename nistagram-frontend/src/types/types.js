@@ -161,3 +161,5 @@ export const BAN_USER = "banUser";
 export const BAN_USER_ERROR = "banUserError";
 export const BAN_POST = "banPost";
 export const BAN_POST_ERROR = "banPostError";
+export const BAN_STORY = "banStory";
+export const BAN_STORY_ERROR = "banStoryError";

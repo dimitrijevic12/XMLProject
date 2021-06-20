@@ -72,6 +72,7 @@ import {
   EDIT_REPORT,
   BAN_USER,
   BAN_POST,
+  BAN_STORY,
 } from "../types/types";
 
 const initialState = {
@@ -451,6 +452,10 @@ function reducer(state = initialState, action) {
         ...state,
       };
     case BAN_POST:
+      return {
+        ...state,
+      };
+    case BAN_STORY:
       return {
         ...state,
       };

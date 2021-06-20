@@ -249,6 +249,7 @@ class CreateStory extends Component {
           this.state.isCloseFriendsStory === true
             ? "CloseFriendStory"
             : "Story",
+        IsBanned: false,
       });
     });
     await this.props.createNotification({

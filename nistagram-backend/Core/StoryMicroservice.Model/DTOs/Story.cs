@@ -22,5 +22,6 @@ namespace StoryMicroservice.Core.DTOs
         public List<RegisteredUser> SeenByUsers { get; set; }
         public List<RegisteredUser> TaggedUsers { get; set; }
         public List<string> HashTags { get; set; }
+        public bool IsBanned { get; set; }
     }
 }
