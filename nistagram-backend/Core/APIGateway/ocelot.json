@@ -725,6 +725,17 @@
         }
       ],
       "UpstreamPathTemplate": "/api/users/{id}/ban"
+    },
+    {
+      "DownstreamPathTemplate": "/api/posts/{id}/ban",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44333
+        }
+      ],
+      "UpstreamPathTemplate": "/api/posts/{id}/ban"
     }
   ],
   "GlobalConfiguration": {

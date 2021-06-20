@@ -9,6 +9,7 @@ import PostModal from "../Profile/PostModal";
 import StoryReportModal from "./StoryReportModal";
 import moment from "moment";
 import { banUser } from "../../actions/actionsUser";
+import { banPost } from "../../actions/actions";
 
 class Reports extends Component {
   state = {
@@ -67,6 +68,7 @@ class Reports extends Component {
                     <th style={{ textAlign: "center" }}>View</th>
                     <th style={{ textAlign: "center" }}>Remove Content</th>
                     <th style={{ textAlign: "center" }}>Remove User</th>
+                    <th style={{ textAlign: "center" }}>Skip</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -129,6 +131,19 @@ class Reports extends Component {
                           Remove
                         </button>
                       </td>
+                      <td
+                        className="pl-4 pt-4 pb-4"
+                        style={{ textAlign: "center" }}
+                      >
+                        <button
+                          className="btn btn-primary mb-2"
+                          onClick={() => {
+                            this.skip(f);
+                          }}
+                        >
+                          Skip
+                        </button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -183,13 +198,67 @@ class Reports extends Component {
         id: f.registeredUser.id,
         username: f.registeredUser.username,
       },
-      Content: { id: this.props.contentId },
+      Content: { id: f.content.id },
       Type: f.type,
       ReportAction: "Ban",
     });
   }
 
-  async removeContent(f) {}
+  async skip(f) {
+    await this.props.editReport({
+      Id: f.id,
+      TimeStamp: f.timeStamp,
+      ReportReason: f.reportReason,
+      RegisteredUser: {
+        id: f.registeredUser.id,
+        username: f.registeredUser.username,
+      },
+      Content: { id: f.content.id },
+      Type: f.type,
+      ReportAction: "NotBanned",
+    });
+  }
+
+  async removeContent(f) {
+    if (f != undefined) {
+      if (f.type === "Post" || f.type === "post") {
+        this.removePost(f);
+      } else {
+        this.removeStory(f);
+      }
+    }
+  }
+
+  async removePost(f) {
+    await this.props.banPost(f.content.id);
+    await this.props.editReport({
+      Id: f.id,
+      TimeStamp: f.timeStamp,
+      ReportReason: f.reportReason,
+      RegisteredUser: {
+        id: f.registeredUser.id,
+        username: f.registeredUser.username,
+      },
+      Content: { id: f.content.id },
+      Type: f.type,
+      ReportAction: "Ban",
+    });
+  }
+
+  async removeStory(f) {
+    await this.props.editReport({
+      Id: f.id,
+      TimeStamp: f.timeStamp,
+      ReportReason: f.reportReason,
+      RegisteredUser: {
+        id: f.registeredUser.id,
+        username: f.registeredUser.username,
+      },
+      Content: { id: f.content.id },
+      Type: f.type,
+      ReportAction: "Ban",
+    });
+  }
 }
 
 const mapStateToProps = (state) => ({ reports: state.reports });
@@ -200,5 +269,6 @@ export default compose(
     getReports,
     editReport,
     banUser,
+    banPost,
   })
 )(Reports);

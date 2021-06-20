@@ -21,11 +21,12 @@ namespace PostMicroservice.Core.Model
         public Location Location { get; }
         public IEnumerable<RegisteredUser> TaggedUsers => this.taggedUsers;
         public IEnumerable<HashTag> HashTags => this.hashTags;
+        public bool IsBanned { get; }
 
         protected Post(Guid id, DateTime timeStamp, Description description,
             RegisteredUser registeredUser, IEnumerable<RegisteredUser> likes,
             IEnumerable<RegisteredUser> dislikes, IEnumerable<Comment> comments, Location location,
-            IEnumerable<RegisteredUser> taggedUsers, IEnumerable<HashTag> hashTags)
+            IEnumerable<RegisteredUser> taggedUsers, IEnumerable<HashTag> hashTags, bool isBanned)
         {
             Id = id;
             TimeStamp = timeStamp;
@@ -37,6 +38,7 @@ namespace PostMicroservice.Core.Model
             Location = location;
             this.taggedUsers = new List<RegisteredUser>(taggedUsers);
             this.hashTags = new List<HashTag>(hashTags);
+            IsBanned = isBanned;
         }
 
         public void AddComment(Comment comment)

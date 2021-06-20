@@ -159,3 +159,5 @@ export const EDIT_REPORT = "editReport";
 export const EDIT_REPORT_ERROR = "editReportError";
 export const BAN_USER = "banUser";
 export const BAN_USER_ERROR = "banUserError";
+export const BAN_POST = "banPost";
+export const BAN_POST_ERROR = "banPostError";

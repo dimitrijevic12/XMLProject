@@ -71,6 +71,7 @@ import {
   LOAD_IMAGE_FOR_STORY,
   EDIT_REPORT,
   BAN_USER,
+  BAN_POST,
 } from "../types/types";
 
 const initialState = {
@@ -446,6 +447,10 @@ function reducer(state = initialState, action) {
         ),
       };
     case BAN_USER:
+      return {
+        ...state,
+      };
+    case BAN_POST:
       return {
         ...state,
       };

@@ -128,7 +128,7 @@ namespace PostMicroservice.Api.Controllers
                 if (result.IsFailure) return BadRequest();
                 if (_postService.SaveSinglePost(PostSingle.Create(id, timeStamp.Value, description.Value,
                     registeredUser, new List<RegisteredUser>(), new List<RegisteredUser>(),
-                    new List<Comment>(), location, taggedUsers, hashTags,
+                    new List<Comment>(), location, taggedUsers, hashTags, false,
                     contentPath.Value).Value) == null) return BadRequest();
             }
             else
@@ -138,7 +138,7 @@ namespace PostMicroservice.Api.Controllers
                 Result result = Result.Combine(timeStamp, description);
                 if (_postService.SaveAlbumPost(PostAlbum.Create(id, timeStamp.Value, description.Value,
                 registeredUser, new List<RegisteredUser>(), new List<RegisteredUser>(),
-                new List<Comment>(), location, taggedUsers, hashTags,
+                new List<Comment>(), location, taggedUsers, hashTags, false,
                 contentPaths).Value) == null) return BadRequest();
             }
             post.Id = id;
@@ -274,6 +274,13 @@ namespace PostMicroservice.Api.Controllers
                 }
             }
             return Ok(toReturn);
+        }
+
+        [HttpPut("{id}/ban")]
+        public IActionResult BanPost(Guid id)
+        {
+            _postRepository.BanPost(id);
+            return Ok();
         }
     }
 }

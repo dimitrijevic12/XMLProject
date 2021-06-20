@@ -30,10 +30,10 @@ namespace PostMicroservice.DataAccess.Implementation
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT p.id, p.timestamp, p.description, " +
                 "p.type, l.id, l.city_name, l.street, l.country, r.id, r.username, r.first_name, " +
-                "r.last_name, r.profilePicturePath, r.isPrivate, r.isAcceptingTags, c.content_path ");
+                "r.last_name, r.profilePicturePath, r.isPrivate, r.isAcceptingTags, p.is_banned, c.content_path ");
             queryBuilder.Append("FROM dbo.Post AS p, dbo.Location AS l, dbo.RegisteredUser AS r, " +
                 "dbo.Content AS c ");
-            queryBuilder.Append("WHERE p.location_id=l.id AND p.registered_user_id=r.id AND p.id=c.post_id;");
+            queryBuilder.Append("WHERE p.is_banned = 0 AND p.location_id=l.id AND p.registered_user_id=r.id AND p.id=c.post_id;");
 
             string query = queryBuilder.ToString();
 
@@ -52,10 +52,10 @@ namespace PostMicroservice.DataAccess.Implementation
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT p.id, p.timestamp, p.description, " +
                 "p.type, l.id, l.street, l.city_name, l.country, r.id, r.username, r.first_name, " +
-                "r.last_name, r.profilePicturePath, r.isPrivate, r.isAcceptingTags, c.content_path ");
+                "r.last_name, r.profilePicturePath, r.isPrivate, r.isAcceptingTags, p.is_banned, c.content_path ");
             queryBuilder.Append("FROM dbo.Post AS p, dbo.Location AS l, dbo.RegisteredUser AS r, " +
                 "dbo.Content AS c ");
-            queryBuilder.Append("WHERE p.location_id=l.id AND p.registered_user_id=r.id AND p.id=c.post_id " +
+            queryBuilder.Append("WHERE p.is_banned = 0 AND p.location_id=l.id AND p.registered_user_id=r.id AND p.id=c.post_id " +
                 "AND p.Id = @Id;");
 
             string query = queryBuilder.ToString();
@@ -145,10 +145,10 @@ namespace PostMicroservice.DataAccess.Implementation
             StringBuilder queryBuilder = new StringBuilder("SELECT p.id, MAX(p.timestamp), MAX(p.description), " +
                 "MAX(p.type), MAX(l.id), MAX(l.street), MAX(l.city_name), MAX(l.country), MAX(r.id), " +
                 "MAX(r.username), MAX(r.first_name), MAX(r.last_name), MAX(r.profilePicturePath), " +
-                "cast(max(cast(r.isPrivate as int)) as bit), cast(max(cast(r.isAcceptingTags as int)) as bit), MAX(c.content_path) ");
+                "cast(max(cast(r.isPrivate as int)) as bit), cast(max(cast(r.isAcceptingTags as int)) as bit), cast(max(cast(p.is_banned as int)) as bit), MAX(c.content_path) ");
             queryBuilder.Append("FROM dbo.Post AS p, dbo.Location AS l, dbo.RegisteredUser AS r, " +
                 "dbo.Content AS c, dbo.HashTags AS h ");
-            queryBuilder.Append("WHERE p.location_id=l.id AND p.registered_user_id=r.id AND p.id=c.post_id AND h.post_id = p.id ");
+            queryBuilder.Append("WHERE p.is_banned = 0 AND p.location_id=l.id AND p.registered_user_id=r.id AND p.id=c.post_id AND h.post_id = p.id ");
 
             List<SqlParameter> parameters = new List<SqlParameter>();
 
@@ -221,10 +221,10 @@ namespace PostMicroservice.DataAccess.Implementation
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT p.id, p.timestamp, p.description, " +
                 "p.type, l.id, l.street, l.city_name, l.country, r.id, r.username, r.first_name, " +
-                "r.last_name, r.profilePicturePath, r.isPrivate, r.isAcceptingTags, c.content_path ");
+                "r.last_name, r.profilePicturePath, r.isPrivate, r.isAcceptingTags, p.is_banned, c.content_path ");
             queryBuilder.Append("FROM dbo.Post AS p, dbo.Location AS l, dbo.RegisteredUser AS r, " +
                 "dbo.Content AS c, dbo.HashTags AS h ");
-            queryBuilder.Append("WHERE p.location_id=l.id AND p.registered_user_id=r.id AND p.id=c.post_id " +
+            queryBuilder.Append("WHERE p.is_banned = 0 AND p.location_id=l.id AND p.registered_user_id=r.id AND p.id=c.post_id " +
                 "AND h.text = @HashTag;");
 
             string query = queryBuilder.ToString();
@@ -547,10 +547,10 @@ namespace PostMicroservice.DataAccess.Implementation
             StringBuilder queryBuilder = new StringBuilder("SELECT p.id, MAX(p.timestamp), MAX(p.description), " +
                  "MAX(p.type), MAX(l.id), MAX(l.street), MAX(l.city_name), MAX(l.country), MAX(r.id), " +
                  "MAX(r.username), MAX(r.first_name), MAX(r.last_name), MAX(r.profilePicturePath), " +
-                 "cast(max(cast(r.isPrivate as int)) as bit), cast(max(cast(r.isAcceptingTags as int)) as bit), MAX(c.content_path) ");
+                 "cast(max(cast(r.isPrivate as int)) as bit), cast(max(cast(r.isAcceptingTags as int)) as bit), cast(max(cast(p.is_banned as int)) as bit), MAX(c.content_path) ");
             queryBuilder.Append("FROM dbo.Post AS p, dbo.Location AS l, dbo.RegisteredUser AS r, " +
                 "dbo.Content AS c ");
-            queryBuilder.Append("WHERE p.location_id=l.id AND p.registered_user_id=r.id AND p.id=c.post_id " +
+            queryBuilder.Append("WHERE p.is_banned = 0 AND p.location_id=l.id AND p.registered_user_id=r.id AND p.id=c.post_id " +
                 "AND p.registered_user_id = @Id ");
             queryBuilder.Append("GROUP BY p.id " +
                 "ORDER BY MAX(p.timestamp) DESC; ");
@@ -575,10 +575,10 @@ namespace PostMicroservice.DataAccess.Implementation
             StringBuilder queryBuilder = new StringBuilder("SELECT p.id, MAX(p.timestamp), MAX(p.description), " +
                 "MAX(p.type), MAX(l.id), MAX(l.street), MAX(l.city_name), MAX(l.country), MAX(r.id), " +
                 "MAX(r.username), MAX(r.first_name), MAX(r.last_name), MAX(r.profilePicturePath), " +
-                "cast(max(cast(r.isPrivate as int)) as bit), cast(max(cast(r.isAcceptingTags as int)) as bit), MAX(con.content_path) ");
+                "cast(max(cast(r.isPrivate as int)) as bit), cast(max(cast(r.isAcceptingTags as int)) as bit), cast(max(cast(p.is_banned as int)) as bit), MAX(con.content_path) ");
             queryBuilder.Append("FROM dbo.Collection as c, dbo.CollectionContent as cc, dbo.Post as p, " +
                 "dbo.Location AS l, dbo.RegisteredUser AS r, dbo.Content AS con ");
-            queryBuilder.Append("WHERE c.id = cc.collection_id and cc.post_id = p.id and " +
+            queryBuilder.Append("WHERE p.is_banned = 0 AND c.id = cc.collection_id and cc.post_id = p.id and " +
                 "p.location_id = l.id AND p.registered_user_id = r.id AND p.id = con.post_id " +
                 "AND c.id = @Id AND c.registered_user_id = @UserId ");
             queryBuilder.Append("GROUP BY p.id; ");
@@ -614,10 +614,10 @@ namespace PostMicroservice.DataAccess.Implementation
             StringBuilder queryBuilder = new StringBuilder("SELECT p.id, MAX(p.timestamp), MAX(p.description), " +
                  "MAX(p.type), MAX(l.id), MAX(l.street), MAX(l.city_name), MAX(l.country), MAX(r.id), " +
                  "MAX(r.username), MAX(r.first_name), MAX(r.last_name), MAX(r.profilePicturePath), " +
-                 "cast(max(cast(r.isPrivate as int)) as bit), cast(max(cast(r.isAcceptingTags as int)) as bit), MAX(c.content_path) ");
+                 "cast(max(cast(r.isPrivate as int)) as bit), cast(max(cast(r.isAcceptingTags as int)) as bit), cast(max(cast(p.is_banned as int)) as bit), MAX(c.content_path) ");
             queryBuilder.Append("FROM dbo.Post AS p, dbo.Location AS l, dbo.RegisteredUser AS r, " +
                 "dbo.Content AS c, dbo.Likes as likes ");
-            queryBuilder.Append("WHERE p.location_id=l.id AND p.registered_user_id=r.id AND p.id=c.post_id " +
+            queryBuilder.Append("WHERE p.is_banned = 0 AND p.location_id=l.id AND p.registered_user_id=r.id AND p.id=c.post_id " +
                 "AND p.id = likes.post_id AND likes.registered_user_id = @Id ");
             queryBuilder.Append("GROUP BY p.id; ");
 
@@ -641,10 +641,10 @@ namespace PostMicroservice.DataAccess.Implementation
             StringBuilder queryBuilder = new StringBuilder("SELECT p.id, MAX(p.timestamp), MAX(p.description), " +
                  "MAX(p.type), MAX(l.id), MAX(l.street), MAX(l.city_name), MAX(l.country), MAX(r.id), " +
                  "MAX(r.username), MAX(r.first_name), MAX(r.last_name), MAX(r.profilePicturePath), " +
-                 "cast(max(cast(r.isPrivate as int)) as bit), cast(max(cast(r.isAcceptingTags as int)) as bit), MAX(c.content_path) ");
+                 "cast(max(cast(r.isPrivate as int)) as bit), cast(max(cast(r.isAcceptingTags as int)) as bit), cast(max(cast(p.is_banned as int)) as bit), MAX(c.content_path) ");
             queryBuilder.Append("FROM dbo.Post AS p, dbo.Location AS l, dbo.RegisteredUser AS r, " +
                 "dbo.Content AS c, dbo.Dislikes as dislikes ");
-            queryBuilder.Append("WHERE p.location_id=l.id AND p.registered_user_id=r.id AND p.id=c.post_id " +
+            queryBuilder.Append("WHERE p.is_banned = 0 AND p.location_id=l.id AND p.registered_user_id=r.id AND p.id=c.post_id " +
                 "AND p.id = dislikes.post_id AND dislikes.registered_user_id = @Id ");
             queryBuilder.Append("GROUP BY p.id; ");
 
@@ -661,6 +661,22 @@ namespace PostMicroservice.DataAccess.Implementation
                     GetDislikesForPost((Guid)dataRow[0]), GetHashTagsForPost((Guid)dataRow[0]),
                     GetCommentsForPost((Guid)dataRow[0]), GetTaggedPeopleForPost((Guid)dataRow[0]),
                     GetContentsPathForPost((Guid)dataRow[0]))).ToList();
+        }
+
+        public void BanPost(Guid id)
+        {
+            StringBuilder queryBuilder = new StringBuilder("UPDATE dbo.Post ");
+            queryBuilder.Append("SET is_banned = 1 ");
+            queryBuilder.Append("WHERE id = @id;");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = id },
+             };
+
+            ExecuteQuery(query, parameters);
         }
     }
 }
