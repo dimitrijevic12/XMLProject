@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import "../../css/story.css";
 import TaggedUsersProfileStoryModal from "./TaggedUsersProfileStoryModal";
 import CollectionsModal from "./CollectionsModal";
+import ReportModal from "../Report/ReportModal";
 
 function ProfileStoryModal(props) {
   const [showProfileStoryModal, setShowProfileStoryModal] = useState(
@@ -16,6 +17,7 @@ function ProfileStoryModal(props) {
   );
   const [showTaggedUsersModal, setShowTaggedUsersModal] = useState(false);
   const [showCollectionsModal, setShowCollectionsModal] = useState(false);
+  const [showReportModal, setShowReportModal] = useState(false);
   const [users, setUsers] = useState([]);
   const [story, setStory] = useState({});
   var tempStories = [];
@@ -81,6 +83,12 @@ function ProfileStoryModal(props) {
     setUsers(users);
   };
 
+  const displayModalReport = (story) => {
+    debugger;
+    setShowReportModal(!showReportModal);
+    setStory(story);
+  };
+
   const displayCollectionsModal = (story) => {
     debugger;
     setShowCollectionsModal(!showCollectionsModal);
@@ -122,6 +130,15 @@ function ProfileStoryModal(props) {
       seeMore: ({ close }) => {
         return (
           <div>
+            {showReportModal ? (
+              <ReportModal
+                show={showReportModal}
+                contentId={story.id}
+                type="story"
+                registeredUser={story.registeredUser}
+                onShowChange={displayModalReport}
+              />
+            ) : null}
             <div
               onClick={close}
               style={{
@@ -145,6 +162,14 @@ function ProfileStoryModal(props) {
                 onClick={() => displayModalStory(story.taggedUsers)}
               >
                 Tagged users:
+              </button>
+            </div>
+            <div className="story-footer-collections">
+              <button
+                className="btn btn-sm btn-primary"
+                onClick={() => displayModalReport(story)}
+              >
+                Report
               </button>
             </div>
             <div className="story-footer-collections">

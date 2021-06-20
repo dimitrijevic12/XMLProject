@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import axios from "axios";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
+import { createNotification } from "../../actions/actionsNotification";
 
 class CreateStory extends Component {
   state = {
@@ -250,6 +251,11 @@ class CreateStory extends Component {
             : "Story",
       });
     });
+    await this.props.createNotification({
+      Type: "Story",
+      ContentId: "12345678-1234-1234-1234-123456789123",
+      RegisteredUser: { id: this.state.storyOwner.id },
+    });
 
     window.location = "/";
   }
@@ -342,6 +348,7 @@ const mapStateToProps = (state) => ({
   locations: state.locations,
   taggableUsers: state.taggableUsers,
   storyOwner: state.registeredUser,
+  story: state.story,
 });
 
 export default compose(
@@ -351,5 +358,6 @@ export default compose(
     getLocationsForStory,
     getTaggableForStory,
     getUserForStory,
+    createNotification,
   })
 )(CreateStory);

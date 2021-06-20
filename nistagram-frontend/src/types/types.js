@@ -139,3 +139,25 @@ export const DELETE_VERIFICATION_REQUEST_ERROR =
   "deleteVerificationRequestError";
 export const VERIFY_USER = "verifyUser";
 export const VERIFY_USER_ERROR = "verifyUserError";
+export const GET_USER_NOTIFICATION_SETTINGS = "getUserNotificationSettings";
+export const GET_USER_NOTIFICATION_SETTINGS_ERROR =
+  "getUserNotificationSettingsError";
+export const EDIT_NOTIFICATION_SETTINGS = "editNotificationSettings";
+export const EDIT_NOTIFICATION_SETTINGS_ERROR = "editNotificationSettingsError";
+export const CREATE_NOTIFICATION = "createNotification";
+export const CREATE_NOTIFICATION_ERROR = "createNotificationError";
+export const GET_NOTIFICATIONS_FOR_FOLLOWING = "getNotificationsForFollowing";
+export const GET_NOTIFICATIONS_FOR_FOLLOWING_ERROR =
+  "getNotificationsForFollowingError";
+export const GET_REPORTS = "getReports";
+export const GET_REPORTS_ERROR = "getReportsError";
+export const GET_STORY_BY_ID = "getStoryById";
+export const GET_STORY_BY_ID_ERROR = "getStoryByIdError";
+export const LOAD_IMAGE_FOR_STORY = "loadImageForStory";
+export const LOAD_IMAGE_FOR_STORY_ERROR = "loadImageForStoryError";
+export const EDIT_REPORT = "editReport";
+export const EDIT_REPORT_ERROR = "editReportError";
+export const BAN_USER = "banUser";
+export const BAN_USER_ERROR = "banUserError";
+export const BAN_POST = "banPost";
+export const BAN_POST_ERROR = "banPostError";

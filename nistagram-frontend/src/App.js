@@ -26,6 +26,9 @@ import SendVerificationRequestPage from "./pages/SendVerificationRequestPage";
 import ViewVerificationRequestPage from "./pages/ViewVerificationRequestPage";
 import LikedPostsPage from "./pages/LikedPostsPage";
 import DislikedPostsPage from "./pages/DislikedPostsPage";
+import ChangeNotificationSettingsPage from "./pages/ChangeNotificationSettingsPage";
+import NotificationsPage from "./pages/NotificationsPage";
+import ReportsPage from "./pages/ReportsPage";
 
 function App() {
   return (
@@ -85,7 +88,8 @@ function App() {
           <ProtectedRoute
             exact
             path="/sendVerificationRequest"
-            component={SendVerificationRequestPage}/>
+            component={SendVerificationRequestPage}
+          />
           <ProtectedRoute exact path="/liked" component={LikedPostsPage} />
           <ProtectedRoute
             exact
@@ -95,6 +99,18 @@ function App() {
           <Route exact path="/change-profile-picture">
             <ChangeProfilePicturePage />
           </Route>
+          <Route exact path="/reports">
+            <ReportsPage />
+          </Route>
+          <ProtectedRoute
+            path="/change-notification-settings"
+            component={ChangeNotificationSettingsPage}
+          />
+          <ProtectedRoute
+            exact
+            path="/notifications"
+            component={NotificationsPage}
+          />
           <Route path="/explore/:search">
             <Explore />
           </Route>

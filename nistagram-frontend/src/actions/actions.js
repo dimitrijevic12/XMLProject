@@ -56,6 +56,8 @@ import {
   GET_LIKED_POSTS_ERROR,
   GET_DISLIKED_POSTS,
   GET_DISLIKED_POSTS_ERROR,
+  BAN_POST,
+  BAN_POST_ERROR,
 } from "../types/types";
 import axios from "axios";
 
@@ -691,6 +693,31 @@ export const getDislikedPosts = () => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: GET_DISLIKED_POSTS_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const banPost = (id) => async (dispatch) => {
+  try {
+    const response = await axios.put(
+      "https://localhost:44355/api/posts/" + id + "/ban",
+      {},
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      }
+    );
+    dispatch({
+      type: BAN_POST,
+      payload: response.data,
+    });
+    return true;
+  } catch (e) {
+    dispatch({
+      type: BAN_POST_ERROR,
       payload: console.log(e),
     });
   }

@@ -35,6 +35,7 @@ namespace PostMicroservice.Api.Factories
                 Location = locationFactory.Create(post.Location),
                 TaggedUsers = registeredUserFactory.CreateUsers(post.TaggedUsers),
                 HashTags = hashTagFactory.CreateHashTags(post.HashTags),
+                IsBanned = post.IsBanned,
                 ContentPaths = Convert(post.ContentPaths)
             };
         }

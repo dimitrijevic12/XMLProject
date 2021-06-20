@@ -27,5 +27,7 @@ namespace PostMicroservice.Core.Interface.Repository
         public IEnumerable<Post> GetLikedByUser(Guid id);
 
         public IEnumerable<Post> GetDislikedByUser(Guid id);
+
+        public void BanPost(Guid id);
     }
 }

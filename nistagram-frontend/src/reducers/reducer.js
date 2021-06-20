@@ -62,6 +62,16 @@ import {
   REPORT_CONTENT,
   DELETE_VERIFICATION_REQUEST,
   VERIFY_USER,
+  GET_USER_NOTIFICATION_SETTINGS,
+  EDIT_NOTIFICATION_SETTINGS,
+  CREATE_NOTIFICATION,
+  GET_NOTIFICATIONS_FOR_FOLLOWING,
+  GET_REPORTS,
+  GET_STORY_BY_ID,
+  LOAD_IMAGE_FOR_STORY,
+  EDIT_REPORT,
+  BAN_USER,
+  BAN_POST,
 } from "../types/types";
 
 const initialState = {
@@ -100,6 +110,12 @@ const initialState = {
   unapprovedVerificationRequests: [],
   likedPosts: [],
   dislikedPosts: [],
+  userNotificationSettings: {},
+  commentId: 0,
+  notificationsForFollowing: [],
+  reports: [],
+  storyById: {},
+  imageForStory: "",
 };
 
 function reducer(state = initialState, action) {
@@ -173,8 +189,10 @@ function reducer(state = initialState, action) {
         ...state,
       };
     case COMMENT_POST:
+      debugger;
       return {
         ...state,
+        commentId: action.payload,
       };
     case CLEAR_IMAGES:
       return {
@@ -284,6 +302,7 @@ function reducer(state = initialState, action) {
         locations: action.payload,
       };
     case SAVE_STORY:
+      debugger;
       return {
         ...state,
         story: action.payload,
@@ -385,6 +404,55 @@ function reducer(state = initialState, action) {
           state.unapprovedVerificationRequests.filter(
             (request) => action.payload.id !== request.id
           ),
+      };
+    case GET_USER_NOTIFICATION_SETTINGS:
+      return {
+        ...state,
+        userNotificationSettings: action.payload,
+      };
+    case EDIT_NOTIFICATION_SETTINGS:
+      return {
+        ...state,
+        userNotificationSettings: action.payload,
+      };
+    case CREATE_NOTIFICATION:
+      return {
+        ...state,
+      };
+    case GET_NOTIFICATIONS_FOR_FOLLOWING:
+      return {
+        ...state,
+        notificationsForFollowing: action.payload,
+      };
+    case GET_REPORTS:
+      return {
+        ...state,
+        reports: action.payload,
+      };
+    case GET_STORY_BY_ID:
+      return {
+        ...state,
+        storyById: action.payload,
+      };
+    case LOAD_IMAGE_FOR_STORY:
+      return {
+        ...state,
+        imageForStory: action.payload,
+      };
+    case EDIT_REPORT:
+      return {
+        ...state,
+        reports: state.reports.filter(
+          (report) => action.payload.id !== report.id
+        ),
+      };
+    case BAN_USER:
+      return {
+        ...state,
+      };
+    case BAN_POST:
+      return {
+        ...state,
       };
     default:
       return state;

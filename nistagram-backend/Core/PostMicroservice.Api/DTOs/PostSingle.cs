@@ -15,6 +15,7 @@ namespace PostMicroservice.Api.DTOs
         public Location Location { get; set; }
         public IEnumerable<RegisteredUser> TaggedUsers { get; set; }
         public IEnumerable<HashTag> HashTags { get; set; }
+        public bool IsBanned { get; set; }
         public string ContentPath { get; set; }
     }
 }

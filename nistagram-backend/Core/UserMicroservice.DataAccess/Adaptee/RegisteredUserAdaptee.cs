@@ -35,7 +35,8 @@ namespace UserMicroservice.DataAccess.Adaptee
                                     following,
                                     followers,
                                     myCloseFriends,
-                                    closeFriendsTo).Value;
+                                    closeFriendsTo,
+                                    bool.Parse(dataRow[17].ToString())).Value;
         }
     }
 }

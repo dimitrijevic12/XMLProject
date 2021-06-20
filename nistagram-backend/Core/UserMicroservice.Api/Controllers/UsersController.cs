@@ -80,7 +80,8 @@ namespace UserMicroservice.Api.Controllers
                                   new List<Core.Model.RegisteredUser>(),
                                   new List<Core.Model.RegisteredUser>(),
                                   new List<Core.Model.RegisteredUser>(),
-                                  new List<Core.Model.RegisteredUser>()).Value);
+                                  new List<Core.Model.RegisteredUser>(),
+                                  false).Value);
 
             if (registrationResult.IsFailure) return BadRequest();
             dto.Id = id;
@@ -261,6 +262,13 @@ namespace UserMicroservice.Api.Controllers
             Guid id = Guid.NewGuid();
             if (userService.Block(id, block.BlockedById, block.BlockingId).IsFailure) return BadRequest();
             return Created(this.Request.Path + id, "");
+        }
+
+        [HttpPut("{id}/ban")]
+        public IActionResult BanUser(Guid id)
+        {
+            _userRepository.BanUser(id);
+            return Ok();
         }
     }
 }

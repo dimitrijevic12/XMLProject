@@ -10,5 +10,6 @@ namespace ReportMicroservice.Api.DTOs
         public RegisteredUser RegisteredUser { get; set; }
         public Content Content { get; set; }
         public string Type { get; set; }
+        public string ReportAction { get; set; }
     }
 }

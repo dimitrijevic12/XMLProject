@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import axios from "axios";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
+import { createNotification } from "../../actions/actionsNotification";
 
 class CreatePost extends Component {
   state = {
@@ -197,6 +198,11 @@ class CreatePost extends Component {
       HashTags: hashTagsObjects,
       Taggedusers: this.state.taggedUsers,
     });
+    await this.props.createNotification({
+      Type: "Post",
+      ContentId: this.props.post.id,
+      RegisteredUser: { id: this.state.registeredUser.id },
+    });
     window.location = "/profile/" + sessionStorage.getItem("userId");
   }
 
@@ -275,6 +281,7 @@ class CreatePost extends Component {
 const mapStateToProps = (state) => ({
   locations: state.locations,
   taggableUsers: state.taggableUsers,
+  post: state.post,
 });
 
 export default compose(
@@ -283,5 +290,6 @@ export default compose(
     savePost,
     getLocationsByText,
     getTaggableUsers,
+    createNotification,
   })
 )(CreatePost);

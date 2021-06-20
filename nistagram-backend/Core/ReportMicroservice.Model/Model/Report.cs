@@ -10,21 +10,23 @@ namespace ReportMicroservice.Core.Model
         public ReportReason ReportReason { get; }
         public RegisteredUser RegisteredUser { get; }
         public Content Content { get; }
+        public ReportAction ReportAction { get; }
 
         private Report(Guid id, DateTime timestamp, ReportReason reportReason, RegisteredUser registeredUser,
-            Content content)
+            Content content, ReportAction action)
         {
             Id = id;
             TimeStamp = timestamp;
             ReportReason = reportReason;
             RegisteredUser = registeredUser;
             Content = content;
+            ReportAction = action;
         }
 
         public static Result<Report> Create(Guid id, DateTime timestamp, ReportReason reportReason,
-            RegisteredUser registeredUser, Content content)
+            RegisteredUser registeredUser, Content content, ReportAction action)
         {
-            return Result.Success(new Report(id, timestamp, reportReason, registeredUser, content));
+            return Result.Success(new Report(id, timestamp, reportReason, registeredUser, content, action));
         }
     }
 }

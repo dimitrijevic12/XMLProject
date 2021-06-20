@@ -88,6 +88,19 @@ class MyOptionsModal extends Component {
           </button>
           <hr />
           <button
+            onClick={() => this.changeNotificationOptions()}
+            style={{
+              height: "100%",
+              width: "100%",
+              alignSelf: "stretch",
+              float: "center",
+            }}
+            className="btn btn-block btn-primary btn-md mb-2"
+          >
+            <label>Change notification options</label>
+          </button>
+          <hr />
+          <button
             onClick={() => this.likedPosts()}
             style={{
               height: "100%",
@@ -142,6 +155,10 @@ class MyOptionsModal extends Component {
     this.props.history.replace({
       pathname: "/change-profile-picture",
     });
+  }
+
+  changeNotificationOptions() {
+    window.location = "/change-notification-settings";
   }
 
   likedPosts() {

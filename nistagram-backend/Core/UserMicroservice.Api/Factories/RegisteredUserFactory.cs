@@ -32,7 +32,8 @@ namespace UserMicroservice.Api.Factories
                 Following = Convert(registeredUser.Following),
                 Followers = Convert(registeredUser.Followers),
                 MyCloseFriends = Convert(registeredUser.MyCloseFriends),
-                CloseFriendTo = Convert(registeredUser.CloseFriendTo)
+                CloseFriendTo = Convert(registeredUser.CloseFriendTo),
+                IsBanned = registeredUser.IsBanned
             };
         }
 
@@ -54,7 +55,8 @@ namespace UserMicroservice.Api.Factories
                 ProfilePicturePath = registeredUser.ProfileImagePath,
                 IsPrivate = registeredUser.IsPrivate,
                 IsAcceptingMessages = registeredUser.IsAcceptingMessages,
-                IsAcceptingTags = registeredUser.IsAcceptingTags
+                IsAcceptingTags = registeredUser.IsAcceptingTags,
+                IsBanned = registeredUser.IsBanned
             }).ToList();
         }
     }

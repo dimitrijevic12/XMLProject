@@ -23,6 +23,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ChooseCollectionModal from "../Collection/ChooseCollectionModal";
 import ReportModal from "../Report/ReportModal";
+import { createNotification } from "../../actions/actionsNotification";
 
 class PostModal extends Component {
   state = {
@@ -349,6 +350,7 @@ class PostModal extends Component {
   }
 
   async commentPost() {
+    this.sendNotification();
     const comment = {
       CommentText: this.state.commentText,
       RegisteredUser: { id: sessionStorage.getItem("userId") },
@@ -358,6 +360,15 @@ class PostModal extends Component {
     toast.configure();
     toast.success("Commented successfully!", {
       position: toast.POSITION.TOP_RIGHT,
+    });
+  }
+
+  sendNotification() {
+    debugger;
+    this.props.createNotification({
+      Type: "Comment",
+      ContentId: "12345678-1234-1234-1234-123456789123",
+      RegisteredUser: { id: sessionStorage.getItem("userId") },
     });
   }
 
@@ -394,6 +405,7 @@ const mapStateToProps = (state) => ({
   loadedImage: state.loadedImage,
   loadedImages: state.loadedImages,
   profileImage: state.profileImage,
+  commentId: state.commentId,
 });
 
 export default connect(mapStateToProps, {
@@ -404,4 +416,5 @@ export default connect(mapStateToProps, {
   commentPost,
   loadImages,
   loadImageProfile,
+  createNotification,
 })(PostModal);

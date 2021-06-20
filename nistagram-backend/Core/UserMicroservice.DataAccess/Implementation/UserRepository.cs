@@ -114,7 +114,7 @@ namespace UserMicroservice.DataAccess.Implementation
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT * ");
             queryBuilder.Append("FROM dbo.RegisteredUser ");
-            queryBuilder.Append("WHERE id = @Id;");
+            queryBuilder.Append("WHERE id = @Id AND is_banned=0;");
 
             string query = queryBuilder.ToString();
 
@@ -135,7 +135,7 @@ namespace UserMicroservice.DataAccess.Implementation
             return Maybe<RegisteredUser>.None;
         }
 
-        private Boolean isBlocked(Guid loggedId, Guid userId)
+        private Boolean IsBlocked(Guid loggedId, Guid userId)
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT * ");
             queryBuilder.Append("FROM dbo.Blocks ");
@@ -156,10 +156,10 @@ namespace UserMicroservice.DataAccess.Implementation
 
         public Maybe<RegisteredUser> GetByIdWithoutBlocked(Guid loggedId, Guid userId)
         {
-            if (isBlocked(loggedId, userId)) return Maybe<RegisteredUser>.None;
+            if (IsBlocked(loggedId, userId)) return Maybe<RegisteredUser>.None;
             StringBuilder queryBuilder = new StringBuilder("SELECT * ");
             queryBuilder.Append("FROM dbo.RegisteredUser ");
-            queryBuilder.Append("WHERE id = @Id;");
+            queryBuilder.Append("WHERE id = @Id AND is_banned=0;");
 
             string query = queryBuilder.ToString();
 
@@ -184,7 +184,7 @@ namespace UserMicroservice.DataAccess.Implementation
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT * ");
             queryBuilder.Append("FROM dbo.RegisteredUser ");
-            queryBuilder.Append("WHERE username = @Username;");
+            queryBuilder.Append("WHERE username = @Username AND is_banned=0;");
 
             string query = queryBuilder.ToString();
 
@@ -210,7 +210,7 @@ namespace UserMicroservice.DataAccess.Implementation
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT * ");
             queryBuilder.Append("FROM dbo.RegisteredUser ");
-            queryBuilder.Append("WHERE username = @Username;");
+            queryBuilder.Append("WHERE username = @Username AND is_banned=0;");
 
             string query = queryBuilder.ToString();
 
@@ -236,9 +236,10 @@ namespace UserMicroservice.DataAccess.Implementation
 
             List<SqlParameter> parameters = new List<SqlParameter>();
 
+            queryBuilder.Append("WHERE is_banned = 0 AND ");
+
             if (!String.IsNullOrWhiteSpace(name) || !String.IsNullOrWhiteSpace(access))
             {
-                queryBuilder.Append("WHERE ");
                 bool needsAnd = false;
                 if (!String.IsNullOrWhiteSpace(name))
                 {
@@ -288,7 +289,7 @@ namespace UserMicroservice.DataAccess.Implementation
 
             if (!String.IsNullOrWhiteSpace(name) || !String.IsNullOrWhiteSpace(access))
             {
-                queryBuilder.Append("WHERE r2.id = @loggedId AND NOT(r.id = b.blocking_id AND r2.id = b.blocked_by_id) ");
+                queryBuilder.Append("WHERE r.is_banned=0 AND r2.id = @loggedId AND NOT(r.id = b.blocking_id AND r2.id = b.blocked_by_id) ");
                 SqlParameter parameterId = new SqlParameter("@loggedId", SqlDbType.UniqueIdentifier) { Value = loggedId };
                 parameters.Add(parameterId);
                 bool needsAnd = true;
@@ -333,8 +334,8 @@ namespace UserMicroservice.DataAccess.Implementation
         public RegisteredUser Save(RegisteredUser registeredUser)
         {
             StringBuilder queryBuilder = new StringBuilder("INSERT INTO dbo.RegisteredUser ");
-            queryBuilder.Append("(id, username, email, first_name, last_name, date_of_birth, phone_number, gender, website_address, bio, is_private, is_accepting_messages, is_accepting_tags, type, category, password) ");
-            queryBuilder.Append("VALUES (@id, @username, @email, @first_name, @last_name, @date_of_birth, @phone_number, @gender, @website_address, @bio, @is_private, @is_accepting_messages, @is_accepting_tags, 'default', '', @password);");
+            queryBuilder.Append("(id, username, email, first_name, last_name, date_of_birth, phone_number, gender, website_address, bio, is_private, is_accepting_messages, is_accepting_tags, type, category, password, is_banned) ");
+            queryBuilder.Append("VALUES (@id, @username, @email, @first_name, @last_name, @date_of_birth, @phone_number, @gender, @website_address, @bio, @is_private, @is_accepting_messages, @is_accepting_tags, 'default', '', @password, @is_banned);");
 
             string query = queryBuilder.ToString();
 
@@ -354,6 +355,7 @@ namespace UserMicroservice.DataAccess.Implementation
                  new SqlParameter("@is_accepting_messages", SqlDbType.Bit) { Value = registeredUser.IsAcceptingMessages },
                  new SqlParameter("@is_accepting_tags", SqlDbType.Bit) { Value = registeredUser.IsAcceptingTags },
                  new SqlParameter("@password", SqlDbType.NVarChar) { Value = registeredUser.Password.ToString() },
+                 new SqlParameter("@is_banned", SqlDbType.Bit) { Value = registeredUser.IsBanned },
              };
 
             ExecuteQuery(query, parameters);
@@ -478,11 +480,11 @@ namespace UserMicroservice.DataAccess.Implementation
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT f.id, f.timestamp, r.id, r.username, r.email, r.first_name, r.last_name, r.date_of_birth, " +
                 "r.phone_number, r.gender, r.website_address, r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, " +
-                "r.password, r.profilePicturePath, r2.id, r2.username, r2.email, r2.first_name, r2.last_name, r2.date_of_birth, " +
+                "r.password, r.profilePicturePath, r.is_banned, r2.id, r2.username, r2.email, r2.first_name, r2.last_name, r2.date_of_birth, " +
                 "r2.phone_number, r2.gender, r2.website_address, r2.bio, r2.is_private, " +
-                "r2.is_accepting_messages, r2.is_accepting_tags, r2.type, r2.category, r2.password, r2.profilePicturePath ");
+                "r2.is_accepting_messages, r2.is_accepting_tags, r2.type, r2.category, r2.password, r2.profilePicturePath, r2.is_banned ");
             queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.FollowRequest AS f, dbo.RegisteredUser As r2 ");
-            queryBuilder.Append("WHERE r.id = f.requests_follow_id AND f.recieves_follow_id = @id  AND f.recieves_follow_id = r2.id " +
+            queryBuilder.Append("WHERE r.id = f.requests_follow_id AND r.is_banned = 0 AND f.recieves_follow_id = @id  AND f.recieves_follow_id = r2.id " +
                 "AND f.type = \'unappr\' ");
             queryBuilder.Append("ORDER BY f.timestamp DESC");
 
@@ -503,10 +505,10 @@ namespace UserMicroservice.DataAccess.Implementation
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT r.id, r.username, r.email, " +
                 "r.first_name, r.last_name, r.date_of_birth, r.phone_number, r.gender, r.website_address, " +
-                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password, r.profilePicturePath ");
+                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password, r.profilePicturePath, r.is_banned ");
             queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.RegisteredUser AS r2, " +
                 "dbo.Follows as f ");
-            queryBuilder.Append("WHERE f.following_id = r2.id AND f.followed_by_id = r.id " +
+            queryBuilder.Append("WHERE f.following_id = r2.id AND r.is_banned = 0 AND f.followed_by_id = r.id " +
                 "AND f.following_id = @Id");
 
             List<SqlParameter> parameters = new List<SqlParameter>{
@@ -528,10 +530,10 @@ namespace UserMicroservice.DataAccess.Implementation
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT r.id, r.username, r.email, " +
                 "r.first_name, r.last_name, r.date_of_birth, r.phone_number, r.gender, r.website_address, " +
-                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password, r.profilePicturePath  ");
+                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password, r.profilePicturePath, r.is_banned  ");
             queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.RegisteredUser AS r2, " +
                 "dbo.Follows as f ");
-            queryBuilder.Append("WHERE f.following_id=r.id AND f.followed_by_id=r2.id " +
+            queryBuilder.Append("WHERE f.following_id=r.id AND r.is_banned = 0 AND f.followed_by_id=r2.id " +
                 "AND f.followed_by_id = @Id");
 
             List<SqlParameter> parameters = new List<SqlParameter>{
@@ -549,16 +551,39 @@ namespace UserMicroservice.DataAccess.Implementation
                     new List<RegisteredUser>(), new List<RegisteredUser>())).ToList();
         }
 
+        private Boolean DoesHaveMuted(Guid userId)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT * ");
+            queryBuilder.Append("FROM dbo.Mutes ");
+            queryBuilder.Append("WHERE muted_by_id = @userId;");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+            {
+                new SqlParameter("@userId", SqlDbType.UniqueIdentifier) { Value = userId }
+            };
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            return dataTable.Rows.Count > 0;
+        }
+
         public IEnumerable<RegisteredUser> GetFollowingWithoutMuted(Guid id)
         {
+            if (!DoesHaveMuted(id))
+            {
+                return GetFollowing(id);
+            }
             StringBuilder queryBuilder = new StringBuilder("SELECT r.id, MAX(r.username), MAX(r.email), " +
                 "MAX(r.first_name), MAX(r.last_name), MAX(r.date_of_birth), MAX(r.phone_number), MAX(r.gender), MAX(r.website_address), " +
                 "MAX(r.bio), cast(max(cast(r.is_private as int)) as bit), cast(max(cast(r.is_accepting_messages as int)) as bit), " +
                 "cast(max(cast(r.is_accepting_tags as int)) as bit), " +
-                "MAX(r.type), MAX(r.category), MAX(r.password), MAX(r.profilePicturePath)  ");
+                "MAX(r.type), MAX(r.category), MAX(r.password), MAX(r.profilePicturePath), cast(max(cast(r.is_banned as int)) as bit)  ");
             queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.RegisteredUser AS r2, dbo.Mutes AS m, " +
                 "dbo.Follows as f ");
-            queryBuilder.Append("WHERE f.following_id=r.id AND f.followed_by_id=r2.id AND NOT (f.followed_by_id = m.muted_by_id AND f.following_id = m.muting_id) " +
+            queryBuilder.Append("WHERE f.following_id=r.id AND r.is_banned = 0 AND f.followed_by_id=r2.id " +
+                "AND f.followed_by_id NOT IN (SELECT m2.muted_by_id FROM  dbo.Mutes AS m2 WHERE m2.muting_id = f.following_id) " +
                 "AND f.followed_by_id = @Id ");
             queryBuilder.Append("GROUP BY r.id; ");
 
@@ -581,10 +606,10 @@ namespace UserMicroservice.DataAccess.Implementation
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT r.id, r.username, r.email, " +
                 "r.first_name, r.last_name, r.date_of_birth, r.phone_number, r.gender, r.website_address, " +
-                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password, r.profilePicturePath ");
+                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password, r.profilePicturePath,  r.is_banned ");
             queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.RegisteredUser AS r2, " +
                 "dbo.Blocks as f ");
-            queryBuilder.Append("WHERE f.blocking_id = r2.id AND f.blocked_by_id = r.id " +
+            queryBuilder.Append("WHERE f.blocking_id = r2.id AND r.is_banned = 0 AND f.blocked_by_id = r.id " +
                 "AND f.blocking_id = @Id");
 
             List<SqlParameter> parameters = new List<SqlParameter>{
@@ -606,10 +631,10 @@ namespace UserMicroservice.DataAccess.Implementation
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT r.id, r.username, r.email, " +
                 "r.first_name, r.last_name, r.date_of_birth, r.phone_number, r.gender, r.website_address, " +
-                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password, r.profilePicturePath ");
+                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password, r.profilePicturePath, r.is_banned ");
             queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.RegisteredUser AS r2, " +
                 "dbo.Blocks as f ");
-            queryBuilder.Append("WHERE f.blocking_id = r.id AND f.blocked_by_id = r2.id " +
+            queryBuilder.Append("WHERE f.blocking_id = r.id AND r.is_banned = 0 AND f.blocked_by_id = r2.id " +
                 "AND f.blocked_by_id = @Id");
 
             List<SqlParameter> parameters = new List<SqlParameter>{
@@ -631,10 +656,10 @@ namespace UserMicroservice.DataAccess.Implementation
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT r.id, r.username, r.email, " +
                 "r.first_name, r.last_name, r.date_of_birth, r.phone_number, r.gender, r.website_address, " +
-                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password, r.profilePicturePath ");
+                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password, r.profilePicturePath, r.is_banned ");
             queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.RegisteredUser AS r2, " +
                 "dbo.Mutes as f ");
-            queryBuilder.Append("WHERE f.muting_id = r2.id AND f.muted_by_id = r.id " +
+            queryBuilder.Append("WHERE f.muting_id = r2.id AND r.is_banned = 0 AND f.muted_by_id = r.id " +
                 "AND f.muting_id = @Id");
 
             List<SqlParameter> parameters = new List<SqlParameter>{
@@ -656,10 +681,10 @@ namespace UserMicroservice.DataAccess.Implementation
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT r.id, r.username, r.email, " +
                 "r.first_name, r.last_name, r.date_of_birth, r.phone_number, r.gender, r.website_address, " +
-                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password, r.profilePicturePath ");
+                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password, r.profilePicturePath, r.is_banned ");
             queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.RegisteredUser AS r2, " +
                 "dbo.Mutes as f ");
-            queryBuilder.Append("WHERE f.muting_id = r.id AND f.muted_by_id = r2.id " +
+            queryBuilder.Append("WHERE f.muting_id = r.id AND r.is_banned = 0 AND f.muted_by_id = r2.id " +
                 "AND f.muted_by_id = @Id");
 
             List<SqlParameter> parameters = new List<SqlParameter>{
@@ -681,10 +706,10 @@ namespace UserMicroservice.DataAccess.Implementation
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT r.id, r.username, r.email, " +
                 "r.first_name, r.last_name, r.date_of_birth, r.phone_number, r.gender, r.website_address, " +
-                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password, r.profilePicturePath ");
+                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password, r.profilePicturePath, r.is_banned ");
             queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.RegisteredUser AS r2, " +
                 "dbo.CloseFriends as f ");
-            queryBuilder.Append("WHERE f.my_close_friend_id = r2.id AND f.close_friend_to_id = r.id " +
+            queryBuilder.Append("WHERE f.my_close_friend_id = r2.id AND f.close_friend_to_id = r.id AND r.is_banned = 0 " +
                 "AND f.my_close_friend_id = @Id");
 
             List<SqlParameter> parameters = new List<SqlParameter>{
@@ -706,10 +731,10 @@ namespace UserMicroservice.DataAccess.Implementation
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT r.id, r.username, r.email, " +
                 "r.first_name, r.last_name, r.date_of_birth, r.phone_number, r.gender, r.website_address, " +
-                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password, r.profilePicturePath ");
+                "r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, r.type, r.category, r.password, r.profilePicturePath, r.is_banned ");
             queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.RegisteredUser AS r2, " +
                 "dbo.CloseFriends as f ");
-            queryBuilder.Append("WHERE f.my_close_friend_id = r.id AND f.close_friend_to_id = r2.id " +
+            queryBuilder.Append("WHERE f.my_close_friend_id = r.id AND r.is_banned = 0 AND f.close_friend_to_id = r2.id " +
                 "AND f.close_friend_to_id = @Id");
 
             List<SqlParameter> parameters = new List<SqlParameter>{
@@ -808,6 +833,22 @@ namespace UserMicroservice.DataAccess.Implementation
              {
                  new SqlParameter("@blocked_by_id", SqlDbType.UniqueIdentifier) { Value = blockedById },
                  new SqlParameter("@blocking_id", SqlDbType.UniqueIdentifier) { Value = blockingId }
+             };
+
+            ExecuteQuery(query, parameters);
+        }
+
+        public void BanUser(Guid id)
+        {
+            StringBuilder queryBuilder = new StringBuilder("UPDATE dbo.RegisteredUser ");
+            queryBuilder.Append("SET is_banned = 1 ");
+            queryBuilder.Append("WHERE id = @id;");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = id },
              };
 
             ExecuteQuery(query, parameters);

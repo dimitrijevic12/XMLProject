@@ -28,5 +28,6 @@ namespace UserMicroservice.Api.DTOs
         public IEnumerable<RegisteredUser> Followers { get; set; }
         public IEnumerable<RegisteredUser> MyCloseFriends { get; set; }
         public IEnumerable<RegisteredUser> CloseFriendTo { get; set; }
+        public bool IsBanned { get; set; }
     }
 }
