@@ -98,12 +98,12 @@ class Reports extends Component {
                         style={{ textAlign: "center" }}
                       >
                         <button
-                          className="btn btn-primary mb-2"
+                          className="btn btn-primary mb-3"
                           onClick={() => {
                             this.view(f);
                           }}
                         >
-                          View
+                          <img src="/images/view.png" />
                         </button>
                       </td>
                       <td
@@ -111,12 +111,15 @@ class Reports extends Component {
                         style={{ textAlign: "center" }}
                       >
                         <button
-                          className="btn btn-primary mb-2"
+                          className="btn btn-primary mb-3"
                           onClick={() => {
                             this.removeContent(f);
                           }}
                         >
-                          Remove
+                          <img
+                            style={{ width: 24, height: 24 }}
+                            src="/images/ban.png"
+                          />
                         </button>
                       </td>
                       <td
@@ -124,12 +127,15 @@ class Reports extends Component {
                         style={{ textAlign: "center" }}
                       >
                         <button
-                          className="btn btn-primary mb-2"
+                          className="btn btn-primary mb-3"
                           onClick={() => {
                             this.removeUser(f);
                           }}
                         >
-                          Remove
+                          <img
+                            style={{ width: 24, height: 24 }}
+                            src="/images/ban.png"
+                          />
                         </button>
                       </td>
                       <td
@@ -137,12 +143,15 @@ class Reports extends Component {
                         style={{ textAlign: "center" }}
                       >
                         <button
-                          className="btn btn-primary mb-2"
+                          className="btn btn-primary mb-3"
                           onClick={() => {
                             this.skip(f);
                           }}
                         >
-                          Skip
+                          <img
+                            style={{ width: 24, height: 24 }}
+                            src="/images/minus.png"
+                          />
                         </button>
                       </td>
                     </tr>
