@@ -58,6 +58,11 @@ namespace PostMicroservice.Core.Services
             return Task.CompletedTask;
         }
 
+        public async Task<Result> CreateEditAsync(RegisteredUser registeredUser)
+        {
+            return Edit(registeredUser);
+        }
+
         public Result Edit(RegisteredUser registeredUser)
         {
             if (!_userRepository.GetById(registeredUser.Id).Value.Username.ToString().Equals(registeredUser.Username))

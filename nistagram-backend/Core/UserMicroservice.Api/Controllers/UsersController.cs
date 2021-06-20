@@ -154,7 +154,8 @@ namespace UserMicroservice.Api.Controllers
                                           new List<Core.Model.RegisteredUser>(),
                                           new List<Core.Model.RegisteredUser>(),
                                           new List<Core.Model.RegisteredUser>(),
-                                          new List<Core.Model.RegisteredUser>()).Value));
+                                          new List<Core.Model.RegisteredUser>(),
+                                          dto.IsBanned).Value));
 
             if (userResult.IsFailure) return BadRequest();
             return Ok(userResult);

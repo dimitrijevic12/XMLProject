@@ -34,6 +34,11 @@ namespace ReportMicroservice.Core.Services
             return Result.Success(registeredUser);
         }
 
+        public async Task<Result> CreateEditAsync(RegisteredUser registeredUser)
+        {
+            return Edit(registeredUser);
+        }
+
         public Result Edit(RegisteredUser registeredUser)
         {
             if (!_userRepository.GetById(registeredUser.Id).Value.Username.ToString().Equals(registeredUser.Username))
@@ -43,8 +48,8 @@ namespace ReportMicroservice.Core.Services
             _userRepository.Edit(registeredUser);
             return Result.Success(registeredUser);
         }
-        
-         public Task RejectRegistrationAsync(Guid registeredUserId, string reason)
+
+        public Task RejectRegistrationAsync(Guid registeredUserId, string reason)
         {
             _userRepository.Delete(registeredUserId);
 

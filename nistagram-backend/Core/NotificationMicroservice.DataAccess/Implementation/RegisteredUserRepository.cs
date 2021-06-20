@@ -98,7 +98,21 @@ namespace NotificationMicroservice.DataAccess.Implementation
 
         public RegisteredUser Edit(RegisteredUser registeredUser)
         {
-            return EditNotificationOptions(registeredUser);
+            StringBuilder queryBuilder = new StringBuilder("UPDATE dbo.RegisteredUser ");
+            queryBuilder.Append("SET username = @username ");
+            queryBuilder.Append("WHERE id = @id;");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+            {
+                new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = registeredUser.Id },
+                 new SqlParameter("@username", SqlDbType.NVarChar) { Value = registeredUser.Username.ToString() },
+            };
+
+            ExecuteQuery(query, parameters);
+
+            return registeredUser;
         }
 
         private RegisteredUser EditNotificationOptions(RegisteredUser registeredUser)

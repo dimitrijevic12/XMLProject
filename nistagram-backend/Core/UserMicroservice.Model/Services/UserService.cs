@@ -83,7 +83,7 @@ namespace UserMicroservice.Core.Services
             var oldUser = _userRepository.GetById(registeredUser.Id).Value;
             var result = Edit(registeredUser);
             if (result.IsFailure) return Result.Failure(result.Error);
-            await _bus.PubSub.PublishAsync(new UserEditEvent
+            await _bus.PubSub.PublishAsync(new UserEditedEvent
             {
                 Id = registeredUser.Id.ToString(),
                 Username = registeredUser.Username,
@@ -94,12 +94,11 @@ namespace UserMicroservice.Core.Services
                 IsAcceptingTags = registeredUser.IsAcceptingTags,
                 Followers = CreateIds(registeredUser.Followers),
                 Following = CreateIds(registeredUser.Following),
-                BlockedUsers = CreateIds(registeredUser.Followers),
-                BlockedByUsers = CreateIds(registeredUser.Following),
-                MyCloseFriends = CreateIds(registeredUser.Followers),
-                CloseFriendTo = CreateIds(registeredUser.Following),
+                BlockedUsers = CreateIds(registeredUser.BlockedUsers),
+                BlockedByUsers = CreateIds(registeredUser.BlockedByUsers),
+                MyCloseFriends = CreateIds(registeredUser.MyCloseFriends),
+                CloseFriendTo = CreateIds(registeredUser.CloseFriendTo),
 
-                //old
                 OldUsername = oldUser.Username,
                 OldFirstName = oldUser.FirstName,
                 OldLastName = oldUser.LastName,
@@ -108,10 +107,10 @@ namespace UserMicroservice.Core.Services
                 OldIsAcceptingTags = oldUser.IsAcceptingTags,
                 OldFollowers = CreateIds(oldUser.Followers),
                 OldFollowing = CreateIds(oldUser.Following),
-                OldBlockedUsers = CreateIds(oldUser.Followers),
-                OldBlockedByUsers = CreateIds(oldUser.Following),
-                OldMyCloseFriends = CreateIds(oldUser.Followers),
-                OldCloseFriendTo = CreateIds(oldUser.Following),
+                OldBlockedUsers = CreateIds(oldUser.BlockedUsers),
+                OldBlockedByUsers = CreateIds(oldUser.BlockedByUsers),
+                OldMyCloseFriends = CreateIds(oldUser.MyCloseFriends),
+                OldCloseFriendTo = CreateIds(oldUser.CloseFriendTo),
             });
             return Result.Success(registeredUser);
         }
@@ -124,6 +123,18 @@ namespace UserMicroservice.Core.Services
             }
             _userRepository.Edit(registeredUser);
             return Result.Success(registeredUser);
+        }
+
+        public Task CompleteEditAsync(Guid registeredUserId)
+        {
+            return Task.CompletedTask;
+        }
+
+        public Task RejectEditAsync(RegisteredUser user, string reason)
+        {
+            _userRepository.Edit(user);
+
+            return Task.CompletedTask;
         }
 
         public Result EditVerifiedUser(VerifiedUser verifiedUser)
