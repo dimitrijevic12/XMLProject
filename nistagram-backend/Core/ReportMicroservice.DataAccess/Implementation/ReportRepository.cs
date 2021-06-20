@@ -54,15 +54,15 @@ namespace ReportMicroservice.DataAccess.Implementation
             string query = queryBuilder.ToString();
 
             List<SqlParameter> parameters = new List<SqlParameter>
-             {
-                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = report.Id },
-                 new SqlParameter("@timestamp", SqlDbType.NVarChar) { Value = report.TimeStamp },
-                 new SqlParameter("@report_reason", SqlDbType.NVarChar) { Value = report.ReportReason.ToString() },
-                 new SqlParameter("@registered_user_id", SqlDbType.UniqueIdentifier) { Value = report.RegisteredUser.Id },
-                 new SqlParameter("@type", SqlDbType.NVarChar) { Value = report.Content.GetType().Name },
-                 new SqlParameter("@content_id", SqlDbType.UniqueIdentifier) { Value = report.Content.Id },
-                 new SqlParameter("@action", SqlDbType.NVarChar) { Value = report.ReportAction.ToString() }
-             };
+            {
+                new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = report.Id },
+                new SqlParameter("@timestamp", SqlDbType.NVarChar) { Value = report.TimeStamp },
+                new SqlParameter("@report_reason", SqlDbType.NVarChar) { Value = report.ReportReason.ToString() },
+                new SqlParameter("@registered_user_id", SqlDbType.UniqueIdentifier) { Value = report.RegisteredUser.Id },
+                new SqlParameter("@type", SqlDbType.NVarChar) { Value = report.Content.GetType().Name },
+                new SqlParameter("@content_id", SqlDbType.UniqueIdentifier) { Value = report.Content.Id },
+                new SqlParameter("@action", SqlDbType.NVarChar) { Value = report.ReportAction.ToString() }
+            };
 
             ExecuteQuery(query, parameters);
 
@@ -71,7 +71,27 @@ namespace ReportMicroservice.DataAccess.Implementation
 
         public Report Edit(Report report)
         {
-            throw new NotImplementedException();
+            StringBuilder queryBuilder = new StringBuilder("UPDATE dbo.Report ");
+            queryBuilder.Append("SET timestamp = @timestamp, report_reason = @report_reason, " +
+                "registered_user_id = @registered_user_id, type = @type, content_id = @content_id, action = @action ");
+            queryBuilder.Append("WHERE id = @id;");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+            {
+                new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = report.Id },
+                new SqlParameter("@timestamp", SqlDbType.NVarChar) { Value = report.TimeStamp },
+                new SqlParameter("@report_reason", SqlDbType.NVarChar) { Value = report.ReportReason.ToString() },
+                new SqlParameter("@registered_user_id", SqlDbType.UniqueIdentifier) { Value = report.RegisteredUser.Id },
+                new SqlParameter("@type", SqlDbType.NVarChar) { Value = report.Content.GetType().Name },
+                new SqlParameter("@content_id", SqlDbType.UniqueIdentifier) { Value = report.Content.Id },
+                new SqlParameter("@action", SqlDbType.NVarChar) { Value = report.ReportAction.ToString() }
+            };
+
+            ExecuteQuery(query, parameters);
+
+            return report;
         }
 
         public void Delete(Guid id)

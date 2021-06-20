@@ -69,6 +69,8 @@ import {
   GET_REPORTS,
   GET_STORY_BY_ID,
   LOAD_IMAGE_FOR_STORY,
+  EDIT_REPORT,
+  BAN_USER,
 } from "../types/types";
 
 const initialState = {
@@ -435,6 +437,17 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         imageForStory: action.payload,
+      };
+    case EDIT_REPORT:
+      return {
+        ...state,
+        reports: state.reports.filter(
+          (report) => action.payload.id !== report.id
+        ),
+      };
+    case BAN_USER:
+      return {
+        ...state,
       };
     default:
       return state;

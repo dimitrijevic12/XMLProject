@@ -51,7 +51,8 @@ namespace UserMicroservice.DataAccess.Adaptee
                                     new List<Core.Model.RegisteredUser>(),
                                     new List<Core.Model.RegisteredUser>(),
                                     new List<Core.Model.RegisteredUser>(),
-                                    new List<Core.Model.RegisteredUser>()).Value;
+                                    new List<Core.Model.RegisteredUser>(),
+                                    bool.Parse(dataRow[17].ToString())).Value;
         }
 
         private ApprovedAgent ConvertSqlDataReaderToApprovedAgent(DataRow dataRow)
@@ -78,7 +79,8 @@ namespace UserMicroservice.DataAccess.Adaptee
                                     new List<Core.Model.RegisteredUser>(),
                                     new List<Core.Model.RegisteredUser>(),
                                     new List<Core.Model.RegisteredUser>(),
-                                    new List<Core.Model.RegisteredUser>()).Value;
+                                    new List<Core.Model.RegisteredUser>(),
+                                    bool.Parse(dataRow[17].ToString())).Value;
         }
 
         private UnapprovedAgent ConvertSqlDataReaderToUnapprovedAgent(DataRow dataRow)
@@ -105,7 +107,8 @@ namespace UserMicroservice.DataAccess.Adaptee
                                     new List<Core.Model.RegisteredUser>(),
                                     new List<Core.Model.RegisteredUser>(),
                                     new List<Core.Model.RegisteredUser>(),
-                                    new List<Core.Model.RegisteredUser>()).Value;
+                                    new List<Core.Model.RegisteredUser>(),
+                                    bool.Parse(dataRow[17].ToString())).Value;
         }
 
         private DeniedAgent ConvertSqlDataReaderToDeniedAgent(DataRow dataRow)
@@ -132,7 +135,8 @@ namespace UserMicroservice.DataAccess.Adaptee
                                     new List<Core.Model.RegisteredUser>(),
                                     new List<Core.Model.RegisteredUser>(),
                                     new List<Core.Model.RegisteredUser>(),
-                                    new List<Core.Model.RegisteredUser>()).Value;
+                                    new List<Core.Model.RegisteredUser>(),
+                                    bool.Parse(dataRow[17].ToString())).Value;
         }
     }
 }

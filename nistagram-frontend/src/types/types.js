@@ -155,3 +155,7 @@ export const GET_STORY_BY_ID = "getStoryById";
 export const GET_STORY_BY_ID_ERROR = "getStoryByIdError";
 export const LOAD_IMAGE_FOR_STORY = "loadImageForStory";
 export const LOAD_IMAGE_FOR_STORY_ERROR = "loadImageForStoryError";
+export const EDIT_REPORT = "editReport";
+export const EDIT_REPORT_ERROR = "editReportError";
+export const BAN_USER = "banUser";
+export const BAN_USER_ERROR = "banUserError";

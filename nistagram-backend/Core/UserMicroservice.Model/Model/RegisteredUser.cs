@@ -26,6 +26,7 @@ namespace UserMicroservice.Core.Model
         public IEnumerable<RegisteredUser> Followers { get; }
         public IEnumerable<RegisteredUser> MyCloseFriends { get; }
         public IEnumerable<RegisteredUser> CloseFriendTo { get; }
+        public bool IsBanned { get; }
 
         protected RegisteredUser() : base()
         {
@@ -37,7 +38,7 @@ namespace UserMicroservice.Core.Model
             ProfileImagePath profileImagePath, IEnumerable<RegisteredUser> blockedUsers, IEnumerable<RegisteredUser> blockedByUsers,
             IEnumerable<RegisteredUser> mutedUsers, IEnumerable<RegisteredUser> mutedByUsers,
             IEnumerable<RegisteredUser> following, IEnumerable<RegisteredUser> followers,
-            IEnumerable<RegisteredUser> myCloseFriends, IEnumerable<RegisteredUser> closeFriendTo)
+            IEnumerable<RegisteredUser> myCloseFriends, IEnumerable<RegisteredUser> closeFriendTo, bool isBanned)
             : base(id, username, emailAddress)
         {
             FirstName = firstName;
@@ -60,6 +61,7 @@ namespace UserMicroservice.Core.Model
             Followers = followers;
             MyCloseFriends = myCloseFriends;
             CloseFriendTo = closeFriendTo;
+            IsBanned = isBanned;
         }
 
         public static Result<RegisteredUser> Create(Guid id, Username username, EmailAddress emailAddress, FirstName firstName,
@@ -68,16 +70,13 @@ namespace UserMicroservice.Core.Model
             ProfileImagePath profileImagePath, IEnumerable<RegisteredUser> blockedUsers, IEnumerable<RegisteredUser> blockedByUsers,
             IEnumerable<RegisteredUser> mutedUsers, IEnumerable<RegisteredUser> mutedByUsers,
             IEnumerable<RegisteredUser> following, IEnumerable<RegisteredUser> followers,
-            IEnumerable<RegisteredUser> myCloseFriends, IEnumerable<RegisteredUser> closeFriendTo)
+            IEnumerable<RegisteredUser> myCloseFriends, IEnumerable<RegisteredUser> closeFriendTo, bool isBanned)
         {
             return Result.Success(new RegisteredUser(id, username, emailAddress, firstName,
             lastName, dateOfBirth, phoneNumber,
             gender, websiteAddress, bio, isPrivate, isAcceptingMessages, isAcceptingTags, password,
             profileImagePath, blockedUsers, blockedByUsers,
-            mutedUsers, mutedByUsers,
-            following, followers,
-            myCloseFriends, closeFriendTo
-            ));
+            mutedUsers, mutedByUsers, following, followers, myCloseFriends, closeFriendTo, isBanned));
         }
     }
 }

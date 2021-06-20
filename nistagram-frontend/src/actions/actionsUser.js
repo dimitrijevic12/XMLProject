@@ -41,10 +41,13 @@ import {
   DELETE_VERIFICATION_REQUEST_ERROR,
   VERIFY_USER,
   VERIFY_USER_ERROR,
+  BAN_USER,
+  BAN_USER_ERROR,
 } from "../types/types";
 import axios from "axios";
 
 export const userRegistration = (user) => async (dispatch) => {
+  debugger;
   try {
     const response = await axios.post(
       "https://localhost:44355/api/users",
@@ -640,6 +643,31 @@ export const verifyUser = (request) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: VERIFY_USER_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const banUser = (id) => async (dispatch) => {
+  try {
+    const response = await axios.put(
+      "https://localhost:44355/api/users/" + id + "/ban",
+      {},
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      }
+    );
+    dispatch({
+      type: BAN_USER,
+      payload: response.data,
+    });
+    return true;
+  } catch (e) {
+    dispatch({
+      type: BAN_USER_ERROR,
       payload: console.log(e),
     });
   }

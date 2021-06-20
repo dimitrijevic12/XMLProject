@@ -31,7 +31,8 @@ namespace UserMicroservice.DataAccess.Adaptee
                                     new List<RegisteredUser>(),
                                     new List<RegisteredUser>(),
                                     new List<RegisteredUser>(),
-                                    new List<RegisteredUser>()).Value;
+                                    new List<RegisteredUser>(),
+                                    bool.Parse(dataRow[19].ToString())).Value;
 
             RegisteredUser receivesFollow = RegisteredUser.Create(Guid.Parse(dataRow[19].ToString()),
                                     Username.Create(dataRow[20].ToString()).Value,
@@ -55,7 +56,8 @@ namespace UserMicroservice.DataAccess.Adaptee
                                     new List<RegisteredUser>(),
                                     new List<RegisteredUser>(),
                                     new List<RegisteredUser>(),
-                                    new List<RegisteredUser>()).Value;
+                                    new List<RegisteredUser>(),
+                                    bool.Parse(dataRow[36].ToString())).Value;
 
             return FollowRequest.Create(Guid.Parse(dataRow[0].ToString()),
                             DateTime.Parse(dataRow[1].ToString()),

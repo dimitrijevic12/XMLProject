@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { getReports } from "../../actions/actionsReport";
+import { getReports, editReport } from "../../actions/actionsReport";
 import { connect } from "react-redux";
 import { Table } from "reactstrap";
 import { Card } from "reactstrap";
@@ -8,6 +8,7 @@ import { compose } from "redux";
 import PostModal from "../Profile/PostModal";
 import StoryReportModal from "./StoryReportModal";
 import moment from "moment";
+import { banUser } from "../../actions/actionsUser";
 
 class Reports extends Component {
   state = {
@@ -172,7 +173,21 @@ class Reports extends Component {
     });
   };
 
-  async removeUser(f) {}
+  async removeUser(f) {
+    await this.props.banUser(f.registeredUser.id);
+    await this.props.editReport({
+      Id: f.id,
+      TimeStamp: f.timeStamp,
+      ReportReason: f.reportReason,
+      RegisteredUser: {
+        id: f.registeredUser.id,
+        username: f.registeredUser.username,
+      },
+      Content: { id: this.props.contentId },
+      Type: f.type,
+      ReportAction: "Ban",
+    });
+  }
 
   async removeContent(f) {}
 }
@@ -183,5 +198,7 @@ export default compose(
   withRouter,
   connect(mapStateToProps, {
     getReports,
+    editReport,
+    banUser,
   })
 )(Reports);

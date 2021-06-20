@@ -77,8 +77,8 @@ namespace PostMicroservice.DataAccess.Implementation
         public Post SaveSinglePost(PostSingle post)
         {
             StringBuilder queryBuilder = new StringBuilder("INSERT INTO dbo.Post ");
-            queryBuilder.Append("(id, timestamp, description, registered_user_id, type, location_id) ");
-            queryBuilder.Append("VALUES (@id, @timestamp, @description, @registered_user_id, @type, @location_id);");
+            queryBuilder.Append("(id, timestamp, description, registered_user_id, type, location_id, is_banned) ");
+            queryBuilder.Append("VALUES (@id, @timestamp, @description, @registered_user_id, @type, @location_id, @is_banned);");
 
             string query = queryBuilder.ToString();
 
@@ -89,7 +89,8 @@ namespace PostMicroservice.DataAccess.Implementation
                 new SqlParameter("@description", SqlDbType.NVarChar) { Value = post.Description.ToString() },
                 new SqlParameter("@registered_user_id", SqlDbType.UniqueIdentifier) { Value = post.RegisteredUser.Id },
                 new SqlParameter("@type", SqlDbType.NVarChar) { Value = "single" },
-                new SqlParameter("@location_id", SqlDbType.UniqueIdentifier) { Value = post.Location.Id }
+                new SqlParameter("@location_id", SqlDbType.UniqueIdentifier) { Value = post.Location.Id },
+                new SqlParameter("@is_banned", SqlDbType.Bit) { Value = false }
             };
 
             ExecuteQuery(query, parameters);
@@ -104,8 +105,8 @@ namespace PostMicroservice.DataAccess.Implementation
         public Post SaveAlbumPost(PostAlbum post)
         {
             StringBuilder queryBuilder = new StringBuilder("INSERT INTO dbo.Post ");
-            queryBuilder.Append("(id, timestamp, description, registered_user_id, type, location_id) ");
-            queryBuilder.Append("VALUES (@id, @timestamp, @description, @registered_user_id, @type, @location_id);");
+            queryBuilder.Append("(id, timestamp, description, registered_user_id, type, location_id, is_banned) ");
+            queryBuilder.Append("VALUES (@id, @timestamp, @description, @registered_user_id, @type, @location_id, @is_banned);");
 
             string query = queryBuilder.ToString();
 
@@ -116,7 +117,8 @@ namespace PostMicroservice.DataAccess.Implementation
                 new SqlParameter("@description", SqlDbType.NVarChar) { Value = post.Description.ToString() },
                 new SqlParameter("@registered_user_id", SqlDbType.UniqueIdentifier) { Value = post.RegisteredUser.Id },
                 new SqlParameter("@type", SqlDbType.NVarChar) { Value = "album" },
-                new SqlParameter("@location_id", SqlDbType.UniqueIdentifier) { Value = post.Location.Id }
+                new SqlParameter("@location_id", SqlDbType.UniqueIdentifier) { Value = post.Location.Id },
+                new SqlParameter("@is_banned", SqlDbType.Bit) { Value = false }
             };
 
             ExecuteQuery(query, parameters);

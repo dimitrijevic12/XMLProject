@@ -301,7 +301,7 @@ class Registration extends Component {
   async register() {
     debugger;
     var successful = false;
-    await this.props.userRegistration({
+    successful = await this.props.userRegistration({
       Username: this.state.username,
       EmailAddress: this.state.email,
       FirstName: this.state.firstName,

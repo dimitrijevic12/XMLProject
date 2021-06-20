@@ -49,5 +49,7 @@ namespace UserMicroservice.Core.Interface.Repository
         public IEnumerable<RegisteredUser> GetByWithoutBlocked(Guid loggedId, string name, string access);
 
         public RegisteredUser EditVerifiedUser(VerifiedUser registeredUser);
+
+        public void BanUser(Guid id);
     }
 }
