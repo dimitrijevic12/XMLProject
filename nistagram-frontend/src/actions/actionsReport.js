@@ -36,7 +36,7 @@ export const reportContent = (report) => async (dispatch) => {
 export const getReports = () => async (dispatch) => {
   debugger;
   try {
-    const response = await axios.get("https://localhost:44355/api/reports", {
+    const response = await axios.get("http://localhost:44355/api/reports", {
       headers: {
         "Access-Control-Allow-Origin": "*",
         Authorization: "Bearer " + sessionStorage.getItem("token"),
@@ -58,7 +58,7 @@ export const editReport = (report) => async (dispatch) => {
   debugger;
   try {
     const response = await axios.put(
-      "https://localhost:44355/api/reports",
+      "http://localhost:44355/api/reports",
       report,
       {
         headers: {

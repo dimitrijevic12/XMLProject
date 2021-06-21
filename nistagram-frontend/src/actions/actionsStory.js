@@ -413,7 +413,7 @@ export const addCloseFriendStory = (userId) => async (dispatch) => {
 export const getStoryById = (id) => async (dispatch) => {
   try {
     const response = await axios
-      .get("https://localhost:44355/api/stories/" + id, {
+      .get("http://localhost:44355/api/stories/" + id, {
         headers: { "Access-Control-Allow-Origin": "*" },
       })
       .then(async function (response) {
@@ -423,7 +423,7 @@ export const getStoryById = (id) => async (dispatch) => {
         });
         const response2 = axios
           .get(
-            "https://localhost:44355/api/stories/contents/" +
+            "http://localhost:44355/api/stories/contents/" +
               response.data.contentPath,
             {
               headers: {
@@ -449,7 +449,7 @@ export const getStoryById = (id) => async (dispatch) => {
 export const loadImageForStory = (path) => async (dispatch) => {
   try {
     const response = await axios.get(
-      "https://localhost:44355/api/stories/contents/" + path,
+      "http://localhost:44355/api/stories/contents/" + path,
       {
         headers: { "Access-Control-Allow-Origin": "*" },
       }
@@ -469,7 +469,7 @@ export const loadImageForStory = (path) => async (dispatch) => {
 export const banStory = (id) => async (dispatch) => {
   try {
     const response = await axios.put(
-      "https://localhost:44355/api/stories/" + id + "/ban",
+      "http://localhost:44355/api/stories/" + id + "/ban",
       {},
       {
         headers: {

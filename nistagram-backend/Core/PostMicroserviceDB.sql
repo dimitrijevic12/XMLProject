@@ -1,9 +1,9 @@
 USE [master]
 GO
-/****** Object:  Database [postdb]    Script Date: 6/5/2021 12:28:05 AM ******/
+/****** Object:  Database [postdb]    Script Date: 6/20/2021 5:20:40 PM ******/
 CREATE DATABASE [postdb]
 GO
-ALTER DATABASE [postdb] SET COMPATIBILITY_LEVEL = 140
+ALTER DATABASE [postdb] SET COMPATIBILITY_LEVEL = 130
 GO
 IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
 begin
@@ -68,13 +68,21 @@ ALTER DATABASE [postdb] SET TARGET_RECOVERY_TIME = 60 SECONDS
 GO
 ALTER DATABASE [postdb] SET DELAYED_DURABILITY = DISABLED 
 GO
-EXEC sys.sp_db_vardecimal_storage_format N'postdb', N'ON'
-GO
 ALTER DATABASE [postdb] SET QUERY_STORE = OFF
 GO
 USE [postdb]
 GO
-/****** Object:  Table [dbo].[Blocks]    Script Date: 6/5/2021 12:28:06 AM ******/
+ALTER DATABASE SCOPED CONFIGURATION SET LEGACY_CARDINALITY_ESTIMATION = OFF;
+GO
+ALTER DATABASE SCOPED CONFIGURATION SET MAXDOP = 0;
+GO
+ALTER DATABASE SCOPED CONFIGURATION SET PARAMETER_SNIFFING = ON;
+GO
+ALTER DATABASE SCOPED CONFIGURATION SET QUERY_OPTIMIZER_HOTFIXES = OFF;
+GO
+USE [postdb]
+GO
+/****** Object:  Table [dbo].[Blocks]    Script Date: 6/20/2021 5:20:40 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -89,7 +97,7 @@ CREATE TABLE [dbo].[Blocks](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Collection]    Script Date: 6/5/2021 12:28:06 AM ******/
+/****** Object:  Table [dbo].[Collection]    Script Date: 6/20/2021 5:20:40 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -104,7 +112,7 @@ CREATE TABLE [dbo].[Collection](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[CollectionContent]    Script Date: 6/5/2021 12:28:06 AM ******/
+/****** Object:  Table [dbo].[CollectionContent]    Script Date: 6/20/2021 5:20:40 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -119,7 +127,7 @@ CREATE TABLE [dbo].[CollectionContent](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Comment]    Script Date: 6/5/2021 12:28:06 AM ******/
+/****** Object:  Table [dbo].[Comment]    Script Date: 6/20/2021 5:20:40 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -136,7 +144,7 @@ CREATE TABLE [dbo].[Comment](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[CommentProfileTags]    Script Date: 6/5/2021 12:28:06 AM ******/
+/****** Object:  Table [dbo].[CommentProfileTags]    Script Date: 6/20/2021 5:20:40 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -151,7 +159,7 @@ CREATE TABLE [dbo].[CommentProfileTags](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Content]    Script Date: 6/5/2021 12:28:06 AM ******/
+/****** Object:  Table [dbo].[Content]    Script Date: 6/20/2021 5:20:40 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -166,7 +174,7 @@ CREATE TABLE [dbo].[Content](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Dislikes]    Script Date: 6/5/2021 12:28:06 AM ******/
+/****** Object:  Table [dbo].[Dislikes]    Script Date: 6/20/2021 5:20:40 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -181,7 +189,7 @@ CREATE TABLE [dbo].[Dislikes](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Follows]    Script Date: 6/5/2021 12:28:06 AM ******/
+/****** Object:  Table [dbo].[Follows]    Script Date: 6/20/2021 5:20:40 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -196,7 +204,7 @@ CREATE TABLE [dbo].[Follows](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[HashTags]    Script Date: 6/5/2021 12:28:06 AM ******/
+/****** Object:  Table [dbo].[HashTags]    Script Date: 6/20/2021 5:20:40 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -211,7 +219,7 @@ CREATE TABLE [dbo].[HashTags](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Likes]    Script Date: 6/5/2021 12:28:06 AM ******/
+/****** Object:  Table [dbo].[Likes]    Script Date: 6/20/2021 5:20:40 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -226,7 +234,7 @@ CREATE TABLE [dbo].[Likes](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Location]    Script Date: 6/5/2021 12:28:06 AM ******/
+/****** Object:  Table [dbo].[Location]    Script Date: 6/20/2021 5:20:40 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -242,7 +250,7 @@ CREATE TABLE [dbo].[Location](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Post]    Script Date: 6/5/2021 12:28:06 AM ******/
+/****** Object:  Table [dbo].[Post]    Script Date: 6/20/2021 5:20:40 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -254,13 +262,14 @@ CREATE TABLE [dbo].[Post](
 	[registered_user_id] [uniqueidentifier] NOT NULL,
 	[type] [nvarchar](10) NOT NULL,
 	[location_id] [uniqueidentifier] NULL,
+	[is_banned] [bit] NOT NULL,
  CONSTRAINT [PK_Post] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[PostProfileTags]    Script Date: 6/5/2021 12:28:06 AM ******/
+/****** Object:  Table [dbo].[PostProfileTags]    Script Date: 6/20/2021 5:20:40 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -275,7 +284,7 @@ CREATE TABLE [dbo].[PostProfileTags](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[RegisteredUser]    Script Date: 6/5/2021 12:28:06 AM ******/
+/****** Object:  Table [dbo].[RegisteredUser]    Script Date: 6/20/2021 5:20:40 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON

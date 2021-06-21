@@ -692,9 +692,61 @@
         }
       ],
       "UpstreamPathTemplate": "/api/notifications/following"
+    },
+    {
+      "DownstreamPathTemplate": "/api/stories/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_storymicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/stories/{id}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/stories/contents/{path}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_storymicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/stories/contents/{path}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/{id}/ban",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_usermicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/{id}/ban"
+    },
+    {
+      "DownstreamPathTemplate": "/api/posts/{id}/ban",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_postmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/posts/{id}/ban"
+    },
+    {
+      "DownstreamPathTemplate": "/api/stories/{id}/ban",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_storymicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/stories/{id}/ban"
     }
-  ],
-  "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:37101"
-  }
+  ]
 }

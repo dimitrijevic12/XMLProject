@@ -48,6 +48,7 @@ function PublicProfile(props) {
       await props.getStoriesForUser();
       await props.loadImagesForArchive();
     }
+    debugger;
   }, [props.location.pathname]);
 
   useEffect(() => {

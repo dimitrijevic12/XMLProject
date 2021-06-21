@@ -289,7 +289,7 @@ namespace UserMicroservice.DataAccess.Implementation
 
             if (!String.IsNullOrWhiteSpace(name) || !String.IsNullOrWhiteSpace(access))
             {
-                queryBuilder.Append("WHERE r.is_banned=0 AND r2.id = @loggedId AND NOT(r.id = b.blocking_id AND r2.id = b.blocked_by_id) ");
+                queryBuilder.Append("WHERE r2.id = @loggedId AND NOT(r.id = b.blocking_id AND r2.id = b.blocked_by_id) ");
                 SqlParameter parameterId = new SqlParameter("@loggedId", SqlDbType.UniqueIdentifier) { Value = loggedId };
                 parameters.Add(parameterId);
                 bool needsAnd = true;

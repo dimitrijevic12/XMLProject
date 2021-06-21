@@ -701,7 +701,7 @@ export const getDislikedPosts = () => async (dispatch) => {
 export const banPost = (id) => async (dispatch) => {
   try {
     const response = await axios.put(
-      "https://localhost:44355/api/posts/" + id + "/ban",
+      "http://localhost:44355/api/posts/" + id + "/ban",
       {},
       {
         headers: {

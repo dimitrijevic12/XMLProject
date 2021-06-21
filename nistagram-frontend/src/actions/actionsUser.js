@@ -651,7 +651,7 @@ export const verifyUser = (request) => async (dispatch) => {
 export const banUser = (id) => async (dispatch) => {
   try {
     const response = await axios.put(
-      "https://localhost:44355/api/users/" + id + "/ban",
+      "http://localhost:44355/api/users/" + id + "/ban",
       {},
       {
         headers: {

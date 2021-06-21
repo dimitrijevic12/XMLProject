@@ -214,6 +214,7 @@ CREATE TABLE [dbo].[RegisteredUser](
 	[category] [nvarchar](30) NOT NULL,
 	[password] [nvarchar](256) NOT NULL,
 	[profilePicturePath] [nvarchar](250) NULL,
+	[is_banned] [bit] NOT NULL,
  CONSTRAINT [PK_RegisteredUser] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
