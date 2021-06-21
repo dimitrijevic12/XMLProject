@@ -54,6 +54,7 @@ namespace PostMicroservice.DataAccess.Adaptee
                                           country: Country.Create(dataRow[7].ToString().Trim()).Value).Value,
                 taggedUsers: taggedUsers,
                 hashTags: hashTags,
+                isBanned: bool.Parse(dataRow[15].ToString().Trim()),
                 contentPaths: contentPaths).Value;
         }
 
@@ -87,7 +88,8 @@ namespace PostMicroservice.DataAccess.Adaptee
                                           country: Country.Create(dataRow[7].ToString().Trim()).Value).Value,
                 taggedUsers: taggedUsers,
                 hashTags: hashTags,
-                contentPath: ContentPath.Create(dataRow[15].ToString().Trim()).Value).Value;
+                isBanned: bool.Parse(dataRow[15].ToString().Trim()),
+                contentPath: ContentPath.Create(dataRow[16].ToString().Trim()).Value).Value;
         }
     }
 }

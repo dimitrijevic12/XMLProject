@@ -3,7 +3,7 @@ using System;
 
 namespace ReportMicroservice.Core.Model
 {
-    internal class Campaign : Content
+    public class Campaign : Content
     {
         private Campaign(Guid id) : base(id)
         {

@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using StoryMicroservice.Core.Interface.Repository;
 using StoryMicroservice.Core.Services;
@@ -22,9 +23,10 @@ namespace StoryMicroservice.Api.Controllers
         private readonly StoryFactory storyFactory;
         private readonly HashTagFactory hashTagFactory;
         private readonly StoryService storyService;
+        private readonly IWebHostEnvironment _env;
 
         public StoriesController(IStoryRepository storyRepository, StoryFactory storyFactory, IUserRepository userRepository,
-            ILocationRepository locationRepository, HashTagFactory hashTagFactory, StoryService storyService)
+            ILocationRepository locationRepository, IWebHostEnvironment env, HashTagFactory hashTagFactory, StoryService storyService)
         {
             _storyRepository = storyRepository;
             _userRepository = userRepository;
@@ -32,6 +34,7 @@ namespace StoryMicroservice.Api.Controllers
             this.storyFactory = storyFactory;
             this.hashTagFactory = hashTagFactory;
             this.storyService = storyService;
+            _env = env;
         }
 
         [HttpGet]
@@ -58,6 +61,29 @@ namespace StoryMicroservice.Api.Controllers
             if (storyService.Create(storyFactory.Create(story, _userRepository.GetUsersByDTO(story.SeenByUsers),
                 _userRepository.GetUsersByDTO(story.TaggedUsers), _userRepository.GetUsersById(story.RegisteredUser.MyCloseFriends))).IsFailure) return BadRequest();
             return Created(this.Request.Path + "/" + story.Id, "");
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult GetById(Guid id)
+        {
+            return Ok(storyFactory.Create(_storyRepository.GetById(id).Value));
+        }
+
+        [HttpGet("contents/{fileName}")]
+        public IActionResult GetImage(string fileName)
+        {
+            var content = storyService.GetImage(_env.WebRootPath, fileName);
+            if (content.Type.Equals(".mp4")) content.Type = "video/mp4";
+            else content.Type = "image/jpeg";
+            FileContentResult fileContentResult = File(content.Bytes, content.Type);
+            return Ok(fileContentResult);
+        }
+
+        [Microsoft.AspNetCore.Mvc.HttpPut("{id}/ban")]
+        public IActionResult BanStory(string id)
+        {
+            _storyRepository.BanStory(id);
+            return Ok();
         }
     }
 }

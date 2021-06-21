@@ -34,6 +34,7 @@ namespace PostMicroservice.DataAccess.Adaptee
                                           country: Country.Create(dataRow[12].ToString().Trim()).Value).Value,
                 taggedUsers: new List<RegisteredUser>(),
                 hashTags: new List<HashTag>(),
+                isBanned: bool.Parse(dataRow[13].ToString().Trim()),
                 contentPaths: new List<ContentPath>()).Value;
         }
     }

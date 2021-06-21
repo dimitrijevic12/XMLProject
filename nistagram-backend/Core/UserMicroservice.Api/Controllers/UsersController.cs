@@ -80,7 +80,8 @@ namespace UserMicroservice.Api.Controllers
                                   new List<Core.Model.RegisteredUser>(),
                                   new List<Core.Model.RegisteredUser>(),
                                   new List<Core.Model.RegisteredUser>(),
-                                  new List<Core.Model.RegisteredUser>()).Value);
+                                  new List<Core.Model.RegisteredUser>(),
+                                  false).Value);
 
             if (registrationResult.IsFailure) return BadRequest();
             dto.Id = id;
@@ -131,8 +132,6 @@ namespace UserMicroservice.Api.Controllers
 
             Result result = Result.Combine(username, emailAddress, firstName, lastName, phoneNumber, gender, websiteAddress, bio, password);
             if (result.IsFailure) return BadRequest(result.Error);
-            string test = _userRepository.GetById(dto.Id).Value.Username;
-            string test2 = _userRepository.GetById(dto.Id).Value.Username.ToString();
             if (!_userRepository.GetById(dto.Id).Value.Username.ToString().Equals(dto.Username))
             {
                 if (_userRepository.GetByUsername(dto.Username).HasValue) return BadRequest();
@@ -159,7 +158,8 @@ namespace UserMicroservice.Api.Controllers
                                           new List<Core.Model.RegisteredUser>(),
                                           new List<Core.Model.RegisteredUser>(),
                                           new List<Core.Model.RegisteredUser>(),
-                                          new List<Core.Model.RegisteredUser>()).Value)));
+                                          new List<Core.Model.RegisteredUser>(),
+                                          dto.IsBanned).Value)));
         }
 
         [HttpGet]
@@ -264,6 +264,13 @@ namespace UserMicroservice.Api.Controllers
             Guid id = Guid.NewGuid();
             if (userService.Block(id, block.BlockedById, block.BlockingId).IsFailure) return BadRequest();
             return Created(this.Request.Path + id, "");
+        }
+
+        [HttpPut("{id}/ban")]
+        public IActionResult BanUser(Guid id)
+        {
+            _userRepository.BanUser(id);
+            return Ok();
         }
     }
 }

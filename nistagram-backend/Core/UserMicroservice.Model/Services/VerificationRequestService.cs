@@ -36,7 +36,7 @@ namespace UserMicroservice.Core.Services
                 verificationRequest.RegisteredUser.Password, verificationRequest.RegisteredUser.ProfileImagePath, verificationRequest.RegisteredUser.BlockedUsers,
                 verificationRequest.RegisteredUser.BlockedByUsers, verificationRequest.RegisteredUser.MutedUsers, verificationRequest.RegisteredUser.MutedByUsers,
                 verificationRequest.RegisteredUser.Following, verificationRequest.RegisteredUser.Followers, verificationRequest.RegisteredUser.MyCloseFriends,
-                verificationRequest.RegisteredUser.CloseFriendTo, Category.Create(verificationRequest.Category.ToString()).Value);
+                verificationRequest.RegisteredUser.CloseFriendTo, verificationRequest.RegisteredUser.IsBanned, Category.Create(verificationRequest.Category.ToString()).Value);
             result = _userService.EditVerifiedUser(verifiedUser.Value);
             if (result.IsFailure) return Result.Failure(result.Error);
             /*await _bus.PubSub.PublishAsync(new UserRegisteredEvent

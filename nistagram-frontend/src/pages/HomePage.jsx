@@ -23,6 +23,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ChooseCollectionModal from "../components/Collection/ChooseCollectionModal";
 import TaggedUsersModal from "../components/Profile/TaggedUsersModal";
 import { createNotification } from "../actions/actionsNotification";
+import ReportModal from "../components/Report/ReportModal";
 
 const style = {
   height: 30,
@@ -37,6 +38,7 @@ class HomePage extends Component {
     comments: [],
     showTaggedModal: false,
     showChooseCollectionModal: false,
+    showReportModal: false,
     liked: false,
     disliked: false,
     post: {},
@@ -94,6 +96,15 @@ class HomePage extends Component {
             show={this.state.showChooseCollectionModal}
             postId={this.state.post.id}
             onShowChange={this.displayModalCollection.bind(this)}
+          />
+        ) : null}
+        {this.state.showReportModal ? (
+          <ReportModal
+            show={this.state.showReportModal}
+            contentId={this.state.post.id}
+            type="post"
+            registeredUser={this.state.post.registeredUser}
+            onShowChange={this.displayModalReport.bind(this)}
           />
         ) : null}
         <StoryCard users={users} />
@@ -163,6 +174,9 @@ class HomePage extends Component {
                       style={{ float: "right" }}
                       className="mr-4"
                       href="javascript:;"
+                      onClick={() => {
+                        this.displayModalReport(post);
+                      }}
                     >
                       Report
                     </a>
@@ -307,6 +321,9 @@ class HomePage extends Component {
                       style={{ float: "right" }}
                       className="mr-4"
                       href="javascript:;"
+                      onClick={() => {
+                        this.displayModalReport(post);
+                      }}
                     >
                       Report
                     </a>
@@ -498,6 +515,14 @@ class HomePage extends Component {
       Type: "Comment",
       ContentId: "12345678-1234-1234-1234-123456789123",
       RegisteredUser: { id: sessionStorage.getItem("userId") },
+    });
+  }
+
+  displayModalReport(post) {
+    debugger;
+    this.setState({
+      post: post,
+      showReportModal: !this.state.showReportModal,
     });
   }
 

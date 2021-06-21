@@ -11,11 +11,11 @@ namespace UserMicroservice.DataAccess.Adaptee
         {
             return VerificationRequest.Create(new Guid(dataRow[0].ToString()),
                             ConvertSqlDataReaderToRegisteredUser(dataRow),
-                            VerificationRequestFirstName.Create(dataRow[17].ToString()).Value,
-                            VerificationRequestLastName.Create(dataRow[18].ToString()).Value,
-                            (Categories)Enum.Parse(typeof(Categories), dataRow[19].ToString()),
-                            DocumentImagePath.Create(dataRow[20].ToString()).Value,
-                            bool.Parse(dataRow[21].ToString())).Value;
+                            VerificationRequestFirstName.Create(dataRow[18].ToString()).Value,
+                            VerificationRequestLastName.Create(dataRow[19].ToString()).Value,
+                            (Categories)Enum.Parse(typeof(Categories), dataRow[20].ToString()),
+                            DocumentImagePath.Create(dataRow[21].ToString()).Value,
+                            bool.Parse(dataRow[22].ToString())).Value;
         }
 
         private RegisteredUser ConvertSqlDataReaderToRegisteredUser(DataRow dataRow)
@@ -29,7 +29,7 @@ namespace UserMicroservice.DataAccess.Adaptee
                             bool.Parse(dataRow[12].ToString()), bool.Parse(dataRow[13].ToString()), Password.Create(dataRow[16].ToString()).Value,
                             ProfileImagePath.Create(dataRow[15].ToString()).Value, new List<RegisteredUser>(), new List<RegisteredUser>(),
                             new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>(),
-                            new List<RegisteredUser>(), new List<RegisteredUser>()).Value;
+                            new List<RegisteredUser>(), new List<RegisteredUser>(), bool.Parse(dataRow[17].ToString())).Value;
             else
                 return VerifiedUser.Create(new Guid(dataRow[1].ToString()), Username.Create(dataRow[2].ToString()).Value,
                             EmailAddress.Create(dataRow[3].ToString()).Value, FirstName.Create(dataRow[4].ToString()).Value,
@@ -39,7 +39,7 @@ namespace UserMicroservice.DataAccess.Adaptee
                             bool.Parse(dataRow[12].ToString()), bool.Parse(dataRow[13].ToString()), Password.Create(dataRow[16].ToString()).Value,
                             ProfileImagePath.Create(dataRow[15].ToString()).Value, new List<RegisteredUser>(), new List<RegisteredUser>(),
                             new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>(),
-                            new List<RegisteredUser>(), new List<RegisteredUser>()).Value;
+                            new List<RegisteredUser>(), new List<RegisteredUser>(), bool.Parse(dataRow[17].ToString())).Value;
         }
     }
 }

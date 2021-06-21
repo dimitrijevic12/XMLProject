@@ -12,10 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Factories\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\ReportMicroservice.DataAccess\ReportMicroservice.DataAccess.csproj" />
     <ProjectReference Include="..\ReportMicroservice.Model\ReportMicroservice.Core.csproj" />
     <ProjectReference Include="..\Shared.Contracts\Shared.Contracts.csproj" />

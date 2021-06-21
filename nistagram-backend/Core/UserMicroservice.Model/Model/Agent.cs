@@ -12,14 +12,14 @@ namespace UserMicroservice.Core.Model
             ProfileImagePath profileImagePath, IEnumerable<RegisteredUser> blockedUsers, IEnumerable<RegisteredUser> blockedByUsers,
             IEnumerable<RegisteredUser> mutedUsers, IEnumerable<RegisteredUser> mutedByUsers,
             IEnumerable<RegisteredUser> following, IEnumerable<RegisteredUser> followers,
-            IEnumerable<RegisteredUser> myCloseFriends, IEnumerable<RegisteredUser> closeFriendTo)
+            IEnumerable<RegisteredUser> myCloseFriends, IEnumerable<RegisteredUser> closeFriendTo, bool isBanned)
             : base(id, username, emailAddress, firstName,
                    lastName, dateOfBirth, phoneNumber,
                    gender, websiteAddress, bio, isPrivate, isAcceptingMessages, isAcceptingTags, password,
                    profileImagePath, blockedUsers, blockedByUsers,
                    mutedUsers, mutedByUsers,
                    following, followers,
-                   myCloseFriends, closeFriendTo)
+                   myCloseFriends, closeFriendTo, isBanned)
         {
         }
 
@@ -29,7 +29,7 @@ namespace UserMicroservice.Core.Model
             ProfileImagePath profileImagePath, IEnumerable<RegisteredUser> blockedUsers, IEnumerable<RegisteredUser> blockedByUsers,
             IEnumerable<RegisteredUser> mutedUsers, IEnumerable<RegisteredUser> mutedByUsers,
             IEnumerable<RegisteredUser> following, IEnumerable<RegisteredUser> followers,
-            IEnumerable<RegisteredUser> myCloseFriends, IEnumerable<RegisteredUser> closeFriendTo)
+            IEnumerable<RegisteredUser> myCloseFriends, IEnumerable<RegisteredUser> closeFriendTo, bool isBanned)
         {
             return Result.Success(new Agent(id, username, emailAddress, firstName,
             lastName, dateOfBirth, phoneNumber,
@@ -37,7 +37,7 @@ namespace UserMicroservice.Core.Model
             profileImagePath, blockedUsers, blockedByUsers,
             mutedUsers, mutedByUsers,
             following, followers,
-            myCloseFriends, closeFriendTo));
+            myCloseFriends, closeFriendTo, isBanned));
         }
     }
 }

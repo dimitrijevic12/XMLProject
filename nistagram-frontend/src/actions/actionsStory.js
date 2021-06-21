@@ -31,6 +31,12 @@ import {
   GET_ACTIVE_STORIES_ERROR,
   ADD_CLOSE_FRIEND_STORY,
   ADD_CLOSE_FRIEND_STORY_ERROR,
+  GET_STORY_BY_ID,
+  GET_STORY_BY_ID_ERROR,
+  LOAD_IMAGE_FOR_STORY,
+  LOAD_IMAGE_FOR_STORY_ERROR,
+  BAN_STORY,
+  BAN_STORY_ERROR,
 } from "../types/types";
 import axios from "axios";
 
@@ -399,6 +405,87 @@ export const addCloseFriendStory = (userId) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: ADD_CLOSE_FRIEND_STORY_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const getStoryById = (id) => async (dispatch) => {
+  try {
+    const response = await axios
+      .get("https://localhost:44355/api/stories/" + id, {
+        headers: { "Access-Control-Allow-Origin": "*" },
+      })
+      .then(async function (response) {
+        dispatch({
+          type: GET_STORY_BY_ID,
+          payload: response.data,
+        });
+        const response2 = axios
+          .get(
+            "https://localhost:44355/api/stories/contents/" +
+              response.data.contentPath,
+            {
+              headers: {
+                "Access-Control-Allow-Origin": "*",
+              },
+            }
+          )
+          .then(function (response2) {
+            dispatch({
+              type: LOAD_IMAGE_FOR_STORY,
+              payload: response2.data,
+            });
+          });
+      });
+  } catch (e) {
+    dispatch({
+      type: GET_STORY_BY_ID_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const loadImageForStory = (path) => async (dispatch) => {
+  try {
+    const response = await axios.get(
+      "https://localhost:44355/api/stories/contents/" + path,
+      {
+        headers: { "Access-Control-Allow-Origin": "*" },
+      }
+    );
+    dispatch({
+      type: LOAD_IMAGE_FOR_STORY,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: LOAD_IMAGE_FOR_STORY_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const banStory = (id) => async (dispatch) => {
+  try {
+    const response = await axios.put(
+      "https://localhost:44355/api/stories/" + id + "/ban",
+      {},
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      }
+    );
+    dispatch({
+      type: BAN_STORY,
+      payload: response.data,
+    });
+    return true;
+  } catch (e) {
+    dispatch({
+      type: BAN_STORY_ERROR,
       payload: console.log(e),
     });
   }

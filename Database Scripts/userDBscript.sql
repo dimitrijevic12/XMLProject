@@ -2,11 +2,6 @@ USE [master]
 GO
 /****** Object:  Database [userdb]    Script Date: 6/19/2021 4:36:20 PM ******/
 CREATE DATABASE [userdb]
- CONTAINMENT = NONE
- ON  PRIMARY 
-( NAME = N'userdb', FILENAME = N'C:\Users\Nemanja\userdb.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
- LOG ON 
-( NAME = N'userdb_log', FILENAME = N'C:\Users\Nemanja\userdb_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
 GO
 ALTER DATABASE [userdb] SET COMPATIBILITY_LEVEL = 130
 GO
@@ -219,6 +214,7 @@ CREATE TABLE [dbo].[RegisteredUser](
 	[category] [nvarchar](30) NOT NULL,
 	[password] [nvarchar](256) NOT NULL,
 	[profilePicturePath] [nvarchar](250) NULL,
+	[is_banned] [bit] NOT NULL,
  CONSTRAINT [PK_RegisteredUser] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC

@@ -8,18 +8,18 @@ namespace StoryMicroservice.Core.Model
     {
         private ExpiredStory(Guid id, ContentPath contentPath, DateTime timeStamp, Duration duration, Description description,
             RegisteredUser registeredUser, Location location,
-            IEnumerable<RegisteredUser> seenByUsers, IEnumerable<RegisteredUser> taggedUsers, IEnumerable<HashTag> hashTags)
+            IEnumerable<RegisteredUser> seenByUsers, IEnumerable<RegisteredUser> taggedUsers, IEnumerable<HashTag> hashTags, bool isBanned)
             : base(id, contentPath, timeStamp, duration, description, registeredUser, location,
-                seenByUsers, taggedUsers, hashTags)
+                seenByUsers, taggedUsers, hashTags, isBanned)
         {
         }
 
         public static new Result<ExpiredStory> Create(Guid id, ContentPath contentPath, DateTime timeStamp, Duration duration, Description description,
             RegisteredUser registeredUser, Location location,
-            IEnumerable<RegisteredUser> seenByUsers, IEnumerable<RegisteredUser> taggedUsers, IEnumerable<HashTag> hashTags)
+            IEnumerable<RegisteredUser> seenByUsers, IEnumerable<RegisteredUser> taggedUsers, IEnumerable<HashTag> hashTags, bool isBanned)
         {
             return Result.Success(new ExpiredStory(id, contentPath, timeStamp, duration, description, registeredUser, location,
-                seenByUsers, taggedUsers, hashTags));
+                seenByUsers, taggedUsers, hashTags, isBanned));
         }
     }
 }

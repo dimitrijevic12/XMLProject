@@ -8,19 +8,19 @@ namespace StoryMicroservice.Core.Model
     {
         private CloseFriendStory(Guid id, ContentPath contentPath, DateTime timeStamp, Duration duration, Description description,
             RegisteredUser registeredUser, Location location,
-            IEnumerable<RegisteredUser> seenByUsers, IEnumerable<RegisteredUser> taggedUsers, IEnumerable<HashTag> hashTags)
+            IEnumerable<RegisteredUser> seenByUsers, IEnumerable<RegisteredUser> taggedUsers, IEnumerable<HashTag> hashTags, bool isBanned)
             : base(id, contentPath, timeStamp, duration, description, registeredUser, location,
-                seenByUsers, taggedUsers, hashTags)
+                seenByUsers, taggedUsers, hashTags, isBanned)
         {
         }
 
         public static new Result<CloseFriendStory> Create(Guid id, ContentPath contentPath, DateTime timeStamp, Duration duration, Description description,
             RegisteredUser registeredUser, Location location,
-            IEnumerable<RegisteredUser> seenByUsers, IEnumerable<RegisteredUser> taggedUsers, IEnumerable<HashTag> hashTags)
+            IEnumerable<RegisteredUser> seenByUsers, IEnumerable<RegisteredUser> taggedUsers, IEnumerable<HashTag> hashTags, bool isBanned)
         {
             return Result.Success(new CloseFriendStory(id, contentPath, timeStamp, duration, description, registeredUser, location,
 
-                seenByUsers, taggedUsers, hashTags));
+                seenByUsers, taggedUsers, hashTags, isBanned));
         }
     }
 }
