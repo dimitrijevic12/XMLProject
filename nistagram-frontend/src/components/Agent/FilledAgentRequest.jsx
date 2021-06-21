@@ -3,21 +3,24 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import "../../css/acceptdeny.css";
+import moment from "moment";
 
 class FilledAgentRequest extends Component {
   state = {
-    id: 1,
-    name: "Ana",
-    email: "ana@gmail.com",
-    phoneNumber: "123-456789",
-    dateOfBirth: "",
-    gender: "Female",
-    username: "ana",
-    bio:
-      "Asdasa sadgas fhgfdhdfhdf gdgsggdsg ofohdfosdho oshfdsfshfsdhiudsfhids hshdf",
-    webSite: "www.ana.com",
-    password: "ana",
-    repeatPassword: "ana",
+    id: this.props.request.id,
+    name:
+      this.props.request.registeredUser.firstName +
+      " " +
+      this.props.request.registeredUser.lastName,
+    email: this.props.request.registeredUser.email,
+    phoneNumber: this.props.request.registeredUser.phoneNumber,
+    dateOfBirth: moment(this.props.request.registeredUser.dateOfBirth).format(
+      "DD/MM/YYYY"
+    ),
+    gender: this.props.request.registeredUser.gender,
+    username: this.props.request.registeredUser.username,
+    bio: this.props.request.registeredUser.bio,
+    webSite: this.props.request.registeredUser.websiteAddress,
     showRequestModal: this.props.show,
   };
 
@@ -44,7 +47,7 @@ class FilledAgentRequest extends Component {
           <div className="mt-5">
             <div className="d-inline-flex w-50">
               <div class="form-group w-100 pr-5">
-                <label for="firstName">Name:</label>
+                <label for="firstName">Name and surname:</label>
                 <input
                   type="text"
                   name="name"
@@ -76,15 +79,14 @@ class FilledAgentRequest extends Component {
               <div class="form-group w-100 pr-5">
                 <label for="dateofbirth">Date of birth:</label>
                 <div className="d-block w-100">
-                  <DatePicker
-                    className="form-control w-100"
-                    id="dateofbirth"
-                    name="dueDate"
+                  <input
+                    type="text"
+                    name="dateOfBirth"
                     disabled={true}
-                    dateFormat="dd/MM/yyyy"
-                    selected={this.state.dateOfBirth}
-                    maxDate={new Date()}
-                    onChange={(e) => this.handleChangeDate(e)}
+                    value={this.state.dateOfBirth}
+                    class="form-control"
+                    id="dateOfBirth"
+                    placeholder="Enter date of birth"
                   />
                 </div>
               </div>
@@ -129,8 +131,8 @@ class FilledAgentRequest extends Component {
                   name="gender"
                 >
                   <option value=""> </option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
                 </select>
               </div>
             </div>

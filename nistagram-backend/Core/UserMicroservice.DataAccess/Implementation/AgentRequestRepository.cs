@@ -67,7 +67,7 @@ namespace UserMicroservice.DataAccess.Implementation
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT a.id, a.is_approved, r.id, r.username, r.email, r.first_name, r.last_name," +
                 " r.date_of_birth, r.phone_number, r.gender, r.website_address, r.bio, r.is_private, r.is_accepting_messages, r.is_accepting_tags, " +
-                " r.profile_picture_path, r.password, r.is_banned ");
+                " r.profilePicturePath, r.password, r.is_banned ");
             queryBuilder.Append("FROM dbo.AgentRequest as a, dbo.RegisteredUser as r ");
             queryBuilder.Append("WHERE r.id = a.registered_user_id ");
 

@@ -29,6 +29,7 @@ import DislikedPostsPage from "./pages/DislikedPostsPage";
 import ChangeNotificationSettingsPage from "./pages/ChangeNotificationSettingsPage";
 import NotificationsPage from "./pages/NotificationsPage";
 import ReportsPage from "./pages/ReportsPage";
+import AgentRegistrationPage from "./pages/AgentRegistrationPage";
 
 function App() {
   return (
@@ -101,6 +102,9 @@ function App() {
           </Route>
           <Route exact path="/reports">
             <ReportsPage />
+          </Route>
+          <Route exact path="/agent-registration">
+            <AgentRegistrationPage />
           </Route>
           <ProtectedRoute
             path="/change-notification-settings"
