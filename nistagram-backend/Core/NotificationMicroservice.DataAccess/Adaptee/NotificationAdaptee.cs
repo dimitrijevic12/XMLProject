@@ -39,14 +39,6 @@ namespace NotificationMicroservice.DataAccess.Adaptee
                 registeredUser: RegisteredUser.Create(
                     id: Guid.Parse(dataRow[4].ToString().Trim()),
                     username: Username.Create(dataRow[5].ToString().Trim()).Value,
-                    notificationOptions: NotificationOptions.Create(
-                        id: Guid.Parse(dataRow[7].ToString().Trim()),
-                        isNotifiedByFollowRequests: bool.Parse(dataRow[8].ToString().Trim()),
-                        isNotifiedByMessages: bool.Parse(dataRow[9].ToString().Trim()),
-                        isNotifiedByPosts: bool.Parse(dataRow[10].ToString().Trim()),
-                        isNotifiedByStories: bool.Parse(dataRow[11].ToString().Trim()),
-                        isNotifiedByComments: bool.Parse(dataRow[12].ToString().Trim())
-                        ).Value,
                     profilePicturePath: ProfilePicturePath.Create(dataRow[6].ToString().Trim()).Value).Value).Value;
         }
 
@@ -59,14 +51,6 @@ namespace NotificationMicroservice.DataAccess.Adaptee
                 registeredUser: RegisteredUser.Create(
                     id: Guid.Parse(dataRow[4].ToString().Trim()),
                     username: Username.Create(dataRow[5].ToString().Trim()).Value,
-                    notificationOptions: NotificationOptions.Create(
-                        id: Guid.Parse(dataRow[7].ToString().Trim()),
-                        isNotifiedByFollowRequests: bool.Parse(dataRow[8].ToString().Trim()),
-                        isNotifiedByMessages: bool.Parse(dataRow[9].ToString().Trim()),
-                        isNotifiedByPosts: bool.Parse(dataRow[10].ToString().Trim()),
-                        isNotifiedByStories: bool.Parse(dataRow[11].ToString().Trim()),
-                        isNotifiedByComments: bool.Parse(dataRow[12].ToString().Trim())
-                        ).Value,
                     profilePicturePath: ProfilePicturePath.Create(dataRow[6].ToString().Trim()).Value).Value).Value;
         }
 
@@ -79,14 +63,6 @@ namespace NotificationMicroservice.DataAccess.Adaptee
                 registeredUser: RegisteredUser.Create(
                     id: Guid.Parse(dataRow[4].ToString().Trim()),
                     username: Username.Create(dataRow[5].ToString().Trim()).Value,
-                    notificationOptions: NotificationOptions.Create(
-                        id: Guid.Parse(dataRow[7].ToString().Trim()),
-                        isNotifiedByFollowRequests: bool.Parse(dataRow[8].ToString().Trim()),
-                        isNotifiedByMessages: bool.Parse(dataRow[9].ToString().Trim()),
-                        isNotifiedByPosts: bool.Parse(dataRow[10].ToString().Trim()),
-                        isNotifiedByStories: bool.Parse(dataRow[11].ToString().Trim()),
-                        isNotifiedByComments: bool.Parse(dataRow[12].ToString().Trim())
-                        ).Value,
                     profilePicturePath: ProfilePicturePath.Create(dataRow[6].ToString().Trim()).Value).Value).Value;
         }
 
@@ -99,14 +75,6 @@ namespace NotificationMicroservice.DataAccess.Adaptee
                 registeredUser: RegisteredUser.Create(
                     id: Guid.Parse(dataRow[4].ToString().Trim()),
                     username: Username.Create(dataRow[5].ToString().Trim()).Value,
-                    notificationOptions: NotificationOptions.Create(
-                        id: Guid.Parse(dataRow[7].ToString().Trim()),
-                        isNotifiedByFollowRequests: bool.Parse(dataRow[8].ToString().Trim()),
-                        isNotifiedByMessages: bool.Parse(dataRow[9].ToString().Trim()),
-                        isNotifiedByPosts: bool.Parse(dataRow[10].ToString().Trim()),
-                        isNotifiedByStories: bool.Parse(dataRow[11].ToString().Trim()),
-                        isNotifiedByComments: bool.Parse(dataRow[12].ToString().Trim())
-                        ).Value,
                     profilePicturePath: ProfilePicturePath.Create(dataRow[6].ToString().Trim()).Value).Value).Value;
         }
 
@@ -119,14 +87,6 @@ namespace NotificationMicroservice.DataAccess.Adaptee
                 registeredUser: RegisteredUser.Create(
                     id: Guid.Parse(dataRow[4].ToString().Trim()),
                     username: Username.Create(dataRow[5].ToString().Trim()).Value,
-                    notificationOptions: NotificationOptions.Create(
-                        id: Guid.Parse(dataRow[7].ToString().Trim()),
-                        isNotifiedByFollowRequests: bool.Parse(dataRow[8].ToString().Trim()),
-                        isNotifiedByMessages: bool.Parse(dataRow[9].ToString().Trim()),
-                        isNotifiedByPosts: bool.Parse(dataRow[10].ToString().Trim()),
-                        isNotifiedByStories: bool.Parse(dataRow[11].ToString().Trim()),
-                        isNotifiedByComments: bool.Parse(dataRow[12].ToString().Trim())
-                        ).Value,
                     profilePicturePath: ProfilePicturePath.Create(dataRow[6].ToString().Trim()).Value).Value).Value;
         }
     }

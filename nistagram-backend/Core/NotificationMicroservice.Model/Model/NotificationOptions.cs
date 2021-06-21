@@ -11,9 +11,12 @@ namespace NotificationMicroservice.Core.Model
         public bool IsNotifiedByPosts { get; }
         public bool IsNotifiedByStories { get; }
         public bool IsNotifiedByComments { get; }
+        public RegisteredUser LoggedUser { get; }
+        public RegisteredUser NotificationByUser { get; }
 
         private NotificationOptions(Guid id, bool isNotifiedByFollowRequests, bool isNotifiedByMessages,
-            bool isNotifiedByPosts, bool isNotifiedByStories, bool isNotifiedByComments)
+            bool isNotifiedByPosts, bool isNotifiedByStories, bool isNotifiedByComments,
+            RegisteredUser loggedUser, RegisteredUser notificationByUser)
         {
             Id = id;
             IsNotifiedByFollowRequests = isNotifiedByFollowRequests;
@@ -21,12 +24,16 @@ namespace NotificationMicroservice.Core.Model
             IsNotifiedByPosts = isNotifiedByPosts;
             IsNotifiedByStories = isNotifiedByStories;
             IsNotifiedByComments = isNotifiedByComments;
+            LoggedUser = loggedUser;
+            NotificationByUser = notificationByUser;
         }
 
-        public static Result<NotificationOptions> Create(Guid id, bool isNotifiedByFollowRequests, bool isNotifiedByMessages, bool isNotifiedByPosts, bool isNotifiedByStories, bool isNotifiedByComments)
+        public static Result<NotificationOptions> Create(Guid id, bool isNotifiedByFollowRequests,
+            bool isNotifiedByMessages, bool isNotifiedByPosts, bool isNotifiedByStories,
+            bool isNotifiedByComments, RegisteredUser loggedUser, RegisteredUser notificationByUser)
         {
             return Result.Success(new NotificationOptions(id, isNotifiedByFollowRequests, isNotifiedByMessages, isNotifiedByPosts,
-              isNotifiedByStories, isNotifiedByComments));
+              isNotifiedByStories, isNotifiedByComments, loggedUser, notificationByUser));
         }
     }
 }
