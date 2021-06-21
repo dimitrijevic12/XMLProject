@@ -72,7 +72,7 @@ class HomePage extends Component {
       return null;
     }
 
-    var users = this.getAllUsersFromStories();
+    var users = this.props.following;
 
     var posts = [...this.props.posts];
     posts.sort(function compare(a, b) {

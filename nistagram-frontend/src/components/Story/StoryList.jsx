@@ -17,13 +17,15 @@ class StoryList extends Component {
     return (
       <div className="story-wrapper">
         <Story first={true} item={{}} i={0} />
-        {this.props.items.map((item, i) => (
-          <Story
-            profileImage={this.props.storyProfileImages[i]}
-            item={item}
-            first={false}
-          />
-        ))}
+        {this.props.stories.length === 0
+          ? null
+          : this.props.items.map((item, i) => (
+              <Story
+                profileImage={this.props.storyProfileImages[i]}
+                item={item}
+                first={false}
+              />
+            ))}
       </div>
     );
   }
@@ -39,6 +41,7 @@ class StoryList extends Component {
 
 const mapStateToProps = (state) => ({
   storyProfileImages: state.storyProfileImages,
+  stories: state.stories,
 });
 
 export default connect(mapStateToProps, { loadProfileImagesStory })(StoryList);

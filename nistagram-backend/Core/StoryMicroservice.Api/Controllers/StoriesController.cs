@@ -39,10 +39,10 @@ namespace StoryMicroservice.Api.Controllers
 
         [HttpGet]
         public IActionResult Search([FromQuery(Name = "story-owner-id")] string storyOwnerId, [FromQuery(Name = "following-id")] string followingId,
-            [FromQuery(Name = "last-24h")] string last24h)
+            [FromQuery(Name = "last-24h")] string last24h, [FromQuery(Name = "not-logged-in")] string notLoggedIn)
         {
             if (Request.Query.Count == 0) return BadRequest();
-            return Ok(storyFactory.CreateStories(_storyRepository.GetBy(storyOwnerId, followingId, last24h)));
+            return Ok(storyFactory.CreateStories(_storyRepository.GetBy(storyOwnerId, followingId, last24h, notLoggedIn)));
         }
 
         [Authorize(Roles = "RegisteredUser")]
