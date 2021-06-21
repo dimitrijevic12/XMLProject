@@ -163,3 +163,6 @@ export const BAN_POST = "banPost";
 export const BAN_POST_ERROR = "banPostError";
 export const BAN_STORY = "banStory";
 export const BAN_STORY_ERROR = "banStoryError";
+export const GET_STORIES_FOR_NOT_LOGGED_IN_USER = "getStoriesForNotLoggedIn";
+export const GET_STORIES_FOR_NOT_LOGGED_IN_USER_ERROR =
+  "getStoriesForNotLoggedInError";

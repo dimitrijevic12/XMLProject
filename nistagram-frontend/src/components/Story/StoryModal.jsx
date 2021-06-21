@@ -83,14 +83,16 @@ class StoryModal extends Component {
                   Tagged users:
                 </button>
               </div>
-              <div className="story-footer-collections">
-                <button
-                  className="btn btn-sm btn-primary"
-                  onClick={() => this.displayModalReport(story)}
-                >
-                  Report
-                </button>
-              </div>
+              {sessionStorage.getItem("userId") === "" ? null : (
+                <div className="story-footer-collections">
+                  <button
+                    className="btn btn-sm btn-primary"
+                    onClick={() => this.displayModalReport(story)}
+                  >
+                    Report
+                  </button>
+                </div>
+              )}
             </div>
           );
         },
