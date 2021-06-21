@@ -163,11 +163,12 @@ namespace UserMicroservice.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult Search([FromQuery] Guid id, [FromQuery] string name, [FromQuery] string access)
+        public IActionResult Search([FromQuery] Guid id, [FromQuery] string name, [FromQuery] string access,
+            [FromQuery(Name = "user-id")] string userId)
         {
             if (Request.Query.Count == 0) return BadRequest();
             if (id == Guid.Empty && String.IsNullOrWhiteSpace(name) && String.IsNullOrEmpty(access)) return BadRequest();
-            return Ok(_userRepository.GetBy(name, access)
+            return Ok(_userRepository.GetBy(id.ToString(), name, access)
                 .Select(user => registerUserFactory.Create(user)));
         }
 

@@ -78,5 +78,11 @@ namespace UserMicroservice.Core.Model
             profileImagePath, blockedUsers, blockedByUsers,
             mutedUsers, mutedByUsers, following, followers, myCloseFriends, closeFriendTo, isBanned));
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is RegisteredUser registeredUser &&
+                  Id.Equals(registeredUser.Id);
+        }
     }
 }
