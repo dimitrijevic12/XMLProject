@@ -56,6 +56,8 @@ namespace ReportMicroservice.Api
 
             services.AddScoped<PostUserRegisteredEventConsumer>();
             services.AddScoped<UnsuccessfulNotificationUserRegistrationEventConsumer>();
+            services.AddScoped<UnsuccessfulNotificationUserEditEventConsumer>();
+            services.AddScoped<PostUserEditedEventConsumer>();
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {

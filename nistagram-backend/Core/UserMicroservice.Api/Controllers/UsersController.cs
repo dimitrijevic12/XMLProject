@@ -118,7 +118,7 @@ namespace UserMicroservice.Api.Controllers
         }
 
         [HttpPut("edit")]
-        public IActionResult Edit(DTOs.RegisteredUser dto)
+        public async Task<IActionResult> Edit(DTOs.RegisteredUser dto)
         {
             Result<Username> username = Username.Create(dto.Username);
             Result<EmailAddress> emailAddress = EmailAddress.Create(dto.EmailAddress);
@@ -132,7 +132,7 @@ namespace UserMicroservice.Api.Controllers
 
             Result result = Result.Combine(username, emailAddress, firstName, lastName, phoneNumber, gender, websiteAddress, bio, password);
             if (result.IsFailure) return BadRequest(result.Error);
-            Result userResult = userService.Edit((Core.Model.RegisteredUser.Create(dto.Id,
+            Result userResult = await userService.EditAsync((Core.Model.RegisteredUser.Create(dto.Id,
                                           username.Value,
                                           emailAddress.Value,
                                           firstName.Value,

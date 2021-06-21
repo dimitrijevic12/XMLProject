@@ -62,7 +62,9 @@ namespace UserMicroservice.Api
             services.AddScoped<VerificationRequestViewFactory>();
 
             services.AddScoped<UnsuccessfulStoryUserRegistrationEventConsumer>();
+            services.AddScoped<UnsuccessfulStoryUserEditEventConsumer>();
             services.AddScoped<UserRegistrationCompletedEventConsumer>();
+            services.AddScoped<UserEditCompletedEventConsumer>();
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {

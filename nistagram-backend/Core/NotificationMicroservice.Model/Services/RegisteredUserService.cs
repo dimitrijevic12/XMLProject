@@ -42,5 +42,12 @@ namespace NotificationMicroservice.Core.Services
             _userRepository.Edit(registeredUser);
             return Result.Success(registeredUser);
         }
+
+        public Task RejectEditAsync(RegisteredUser user, string reason)
+        {
+            _userRepository.Edit(user);
+
+            return Task.CompletedTask;
+        }
     }
 }

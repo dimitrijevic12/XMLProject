@@ -27,18 +27,40 @@ namespace NotificationMicroservice.Api.Consumers
             var result = await userService.CreateEditAsync(Convert(message));
             if (result.IsSuccess)
             {
-                /* await _bus.PubSub.PublishAsync(new ReportUserEditedEvent
-                 {
-                     Id = message.Id,
-                     Username = message.Username
-                 });*/
+                await _bus.PubSub.PublishAsync(new UserEditCompletedEvent
+                {
+                    Id = message.Id,
+                });
             }
             else
             {
-                /*await _bus.PubSub.PublishAsync(new UnsuccessfulNotificationUserRegistrationEvent
+                await _bus.PubSub.PublishAsync(new UnsuccessfulNotificationUserEditEvent
                 {
-                    Id = message.Id,
-                });*/
+                    Id = message.Id.ToString(),
+                    EmailAddress = message.OldEmailAddress,
+                    Username = message.OldUsername,
+                    FirstName = message.OldFirstName,
+                    LastName = message.OldLastName,
+                    DateOfBirth = message.OldDateOfBirth,
+                    PhoneNumber = message.OldPhoneNumber,
+                    Gender = message.OldGender,
+                    WebsiteAddress = message.OldWebsiteAddress,
+                    Bio = message.OldBio,
+                    Password = message.OldPassword,
+                    IsPrivate = message.OldIsPrivate,
+                    IsAcceptingMessages = message.OldIsAcceptingMessages,
+                    IsAcceptingTags = message.OldIsAcceptingTags,
+                    ProfileImagePath = message.OldProfileImagePath,
+                    BlockedUsers = message.OldBlockedUsers,
+                    BlockedByUsers = message.OldBlockedByUsers,
+                    MutedUsers = message.OldMutedUsers,
+                    MutedByUsers = message.OldMutedByUsers,
+                    Following = message.OldFollowing,
+                    Followers = message.OldFollowers,
+                    MyCloseFriends = message.OldMyCloseFriends,
+                    CloseFriendTo = message.OldCloseFriendTo,
+                    IsBanned = message.OldIsBanned,
+                });
             }
         }
 

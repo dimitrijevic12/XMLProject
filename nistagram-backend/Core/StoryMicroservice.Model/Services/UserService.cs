@@ -57,6 +57,13 @@ namespace StoryMicroservice.Core.Services
             return Result.Success(registeredUser);
         }
 
+        public Task RejectEditAsync(RegisteredUser user, string reason)
+        {
+            _userRepository.Edit(user.Id.ToString(), user);
+
+            return Task.CompletedTask;
+        }
+
         private List<string> CreateIds(IEnumerable<Core.Model.RegisteredUser> registeredUsers)
         {
             var test = registeredUsers.Select(registeredUser => registeredUser.Id.ToString()).ToList();

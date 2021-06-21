@@ -99,18 +99,29 @@ namespace UserMicroservice.Core.Services
                 MyCloseFriends = CreateIds(registeredUser.MyCloseFriends),
                 CloseFriendTo = CreateIds(registeredUser.CloseFriendTo),
 
+                OldEmailAddress = oldUser.EmailAddress,
                 OldUsername = oldUser.Username,
                 OldFirstName = oldUser.FirstName,
                 OldLastName = oldUser.LastName,
-                OldProfilePicturePath = oldUser.ProfileImagePath,
+                OldDateOfBirth = oldUser.DateOfBirth,
+                OldPhoneNumber = oldUser.PhoneNumber,
+                OldGender = oldUser.Gender,
+                OldWebsiteAddress = oldUser.WebsiteAddress,
+                OldBio = oldUser.Bio,
+                OldPassword = oldUser.Password,
                 OldIsPrivate = oldUser.IsPrivate,
+                OldIsAcceptingMessages = oldUser.IsAcceptingMessages,
                 OldIsAcceptingTags = oldUser.IsAcceptingTags,
-                OldFollowers = CreateIds(oldUser.Followers),
-                OldFollowing = CreateIds(oldUser.Following),
+                OldProfileImagePath = oldUser.ProfileImagePath,
                 OldBlockedUsers = CreateIds(oldUser.BlockedUsers),
                 OldBlockedByUsers = CreateIds(oldUser.BlockedByUsers),
+                OldMutedUsers = CreateIds(oldUser.MutedUsers),
+                OldMutedByUsers = CreateIds(oldUser.MutedByUsers),
+                OldFollowing = CreateIds(oldUser.Following),
+                OldFollowers = CreateIds(oldUser.Followers),
                 OldMyCloseFriends = CreateIds(oldUser.MyCloseFriends),
                 OldCloseFriendTo = CreateIds(oldUser.CloseFriendTo),
+                OldIsBanned = oldUser.IsBanned
             });
             return Result.Success(registeredUser);
         }

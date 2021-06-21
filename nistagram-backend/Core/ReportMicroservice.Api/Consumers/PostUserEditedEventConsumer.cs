@@ -33,15 +33,73 @@ namespace ReportMicroservice.Api.Consumers
                 await _bus.PubSub.PublishAsync(new ReportUserEditedEvent
                 {
                     Id = message.Id,
-                    Username = message.Username
+                    Username = message.Username,
+                    FirstName = message.FirstName,
+                    LastName = message.LastName,
+                    ProfilePicturePath = message.ProfilePicturePath,
+                    IsPrivate = message.IsPrivate,
+                    IsAcceptingTags = message.IsAcceptingTags,
+                    Followers = message.Followers,
+                    Following = message.Following,
+                    BlockedUsers = message.BlockedUsers,
+                    BlockedByUsers = message.BlockedByUsers,
+                    MyCloseFriends = message.MyCloseFriends,
+                    CloseFriendTo = message.CloseFriendTo,
+
+                    OldEmailAddress = message.OldEmailAddress,
+                    OldUsername = message.OldUsername,
+                    OldFirstName = message.OldFirstName,
+                    OldLastName = message.OldLastName,
+                    OldDateOfBirth = message.OldDateOfBirth,
+                    OldPhoneNumber = message.OldPhoneNumber,
+                    OldGender = message.OldGender,
+                    OldWebsiteAddress = message.OldWebsiteAddress,
+                    OldBio = message.OldBio,
+                    OldPassword = message.OldPassword,
+                    OldIsPrivate = message.OldIsPrivate,
+                    OldIsAcceptingMessages = message.OldIsAcceptingMessages,
+                    OldIsAcceptingTags = message.OldIsAcceptingTags,
+                    OldProfileImagePath = message.OldProfileImagePath,
+                    OldBlockedUsers = message.OldBlockedUsers,
+                    OldBlockedByUsers = message.OldBlockedByUsers,
+                    OldMutedUsers = message.OldMutedUsers,
+                    OldMutedByUsers = message.OldMutedByUsers,
+                    OldFollowing = message.OldFollowing,
+                    OldFollowers = message.OldFollowers,
+                    OldMyCloseFriends = message.OldMyCloseFriends,
+                    OldCloseFriendTo = message.OldCloseFriendTo,
+                    OldIsBanned = message.OldIsBanned
                 });
             }
             else
             {
-                /*await _bus.PubSub.PublishAsync(new UnsuccessfulReportUserRegistrationEvent
+                await _bus.PubSub.PublishAsync(new UnsuccessfulReportUserEditEvent
                 {
-                    Id = message.Id,
-                });*/
+                    Id = message.Id.ToString(),
+                    EmailAddress = message.OldEmailAddress,
+                    Username = message.OldUsername,
+                    FirstName = message.OldFirstName,
+                    LastName = message.OldLastName,
+                    DateOfBirth = message.OldDateOfBirth,
+                    PhoneNumber = message.OldPhoneNumber,
+                    Gender = message.OldGender,
+                    WebsiteAddress = message.OldWebsiteAddress,
+                    Bio = message.OldBio,
+                    Password = message.OldPassword,
+                    IsPrivate = message.OldIsPrivate,
+                    IsAcceptingMessages = message.OldIsAcceptingMessages,
+                    IsAcceptingTags = message.OldIsAcceptingTags,
+                    ProfileImagePath = message.OldProfileImagePath,
+                    BlockedUsers = message.OldBlockedUsers,
+                    BlockedByUsers = message.OldBlockedByUsers,
+                    MutedUsers = message.OldMutedUsers,
+                    MutedByUsers = message.OldMutedByUsers,
+                    Following = message.OldFollowing,
+                    Followers = message.OldFollowers,
+                    MyCloseFriends = message.OldMyCloseFriends,
+                    CloseFriendTo = message.OldCloseFriendTo,
+                    IsBanned = message.OldIsBanned,
+                });
             }
         }
 

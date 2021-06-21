@@ -49,6 +49,13 @@ namespace ReportMicroservice.Core.Services
             return Result.Success(registeredUser);
         }
 
+        public Task RejectEditAsync(RegisteredUser user, string reason)
+        {
+            _userRepository.Edit(user);
+
+            return Task.CompletedTask;
+        }
+
         public Task RejectRegistrationAsync(Guid registeredUserId, string reason)
         {
             _userRepository.Delete(registeredUserId);
