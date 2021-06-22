@@ -10,13 +10,16 @@ import {
 } from "../types/types";
 import axios from "axios";
 
-export const getUserNotificationSettings = (report) => async (dispatch) => {
+export const getUserNotificationSettings = (dto) => async (dispatch) => {
   debugger;
   try {
     const response = await axios.get(
-      "http://localhost:44355/api/notification-microservice/users/" +
-        sessionStorage.getItem("userId"),
+      "https://localhost:44355/api/notificationOptions?",
       {
+        params: {
+          loggedUserId: dto.loggedUserId,
+          notificationByUserId: dto.notificationByUserId,
+        },
         headers: {
           "Access-Control-Allow-Origin": "*",
           Authorization: "Bearer " + sessionStorage.getItem("token"),
@@ -35,31 +38,32 @@ export const getUserNotificationSettings = (report) => async (dispatch) => {
   }
 };
 
-export const editNotificationSettings = (user) => async (dispatch) => {
-  debugger;
-  try {
-    const response = await axios.put(
-      "http://localhost:44355/api/notification-microservice/users",
-      user,
-      {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          Authorization: "Bearer " + sessionStorage.getItem("token"),
-        },
-      }
-    );
-    dispatch({
-      type: EDIT_NOTIFICATION_SETTINGS,
-      payload: response.data,
-    });
-    return true;
-  } catch (e) {
-    dispatch({
-      type: EDIT_NOTIFICATION_SETTINGS_ERROR,
-      payload: console.log(e),
-    });
-  }
-};
+export const editNotificationSettings =
+  (notificationOptions) => async (dispatch) => {
+    debugger;
+    try {
+      const response = await axios.put(
+        "https://localhost:44355/api/notificationOptions",
+        notificationOptions,
+        {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            Authorization: "Bearer " + sessionStorage.getItem("token"),
+          },
+        }
+      );
+      dispatch({
+        type: EDIT_NOTIFICATION_SETTINGS,
+        payload: response.data,
+      });
+      return true;
+    } catch (e) {
+      dispatch({
+        type: EDIT_NOTIFICATION_SETTINGS_ERROR,
+        payload: console.log(e),
+      });
+    }
+  };
 
 export const createNotification = (notification) => async (dispatch) => {
   debugger;

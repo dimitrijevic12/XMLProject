@@ -229,7 +229,7 @@ namespace UserMicroservice.DataAccess.Implementation
             return Maybe<User>.None;
         }
 
-        public IEnumerable<RegisteredUser> GetBy(string name, string access)
+        public IEnumerable<RegisteredUser> GetBy(string id, string name, string access)
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT * ");
             queryBuilder.Append("FROM dbo.RegisteredUser ");
@@ -246,7 +246,7 @@ namespace UserMicroservice.DataAccess.Implementation
                     if (needsAnd)
                         queryBuilder.Append("AND ");
 
-                    queryBuilder.Append("LOWER(username) like LOWER(@Name) OR LOWER(first_name) like LOWER(@Name) OR LOWER(last_name) like LOWER(@Name)");
+                    queryBuilder.Append("(LOWER(username) like LOWER(@Name) OR LOWER(first_name) like LOWER(@Name) OR LOWER(last_name) like LOWER(@Name)) ");
                     SqlParameter parameterName = new SqlParameter("@Name", SqlDbType.NVarChar) { Value = "%" + name + "%" };
                     parameters.Add(parameterName);
                     needsAnd = true;
@@ -269,14 +269,23 @@ namespace UserMicroservice.DataAccess.Implementation
 
             DataTable dataTable = ExecuteQuery(query, parameters);
 
-            return (from DataRow dataRow in dataTable.Rows
+            List<RegisteredUser> resultUsers = (from DataRow dataRow in dataTable.Rows
 
-                    select (RegisteredUser)_registeredUserTarget.ConvertSql(dataRow,
-                    GetBlocking((Guid)dataRow[0]), GetBlockedBy((Guid)dataRow[0]),
-                    GetMuted((Guid)dataRow[0]), GetMutedBy((Guid)dataRow[0]), GetFollowing((Guid)dataRow[0]),
-                    GetFollowers((Guid)dataRow[0]), GetMyCloseFriends((Guid)dataRow[0]),
-                    GetCloseFriendsTo((Guid)dataRow[0])
-                    )).ToList();
+                                                select (RegisteredUser)_registeredUserTarget.ConvertSql(dataRow,
+                                                GetBlocking((Guid)dataRow[0]), GetBlockedBy((Guid)dataRow[0]),
+                                                GetMuted((Guid)dataRow[0]), GetMutedBy((Guid)dataRow[0]), GetFollowing((Guid)dataRow[0]),
+                                                GetFollowers((Guid)dataRow[0]), GetMyCloseFriends((Guid)dataRow[0]),
+                                                GetCloseFriendsTo((Guid)dataRow[0])
+                                                )).ToList();
+            if (new Guid(id) != new Guid())
+            {
+                List<RegisteredUser> blockedUsers = GetBlocking(new Guid(id)).ToList();
+                foreach (var user in blockedUsers) resultUsers.Remove(user);
+                blockedUsers = GetBlockedBy(new Guid(id)).ToList();
+                foreach (var user in blockedUsers) resultUsers.Remove(user);
+            }
+
+            return resultUsers;
         }
 
         public IEnumerable<RegisteredUser> GetByWithoutBlocked(Guid loggedId, string name, string access)
@@ -298,7 +307,7 @@ namespace UserMicroservice.DataAccess.Implementation
                     if (needsAnd)
                         queryBuilder.Append("AND ");
 
-                    queryBuilder.Append("LOWER(r.username) like LOWER(@Name) OR LOWER(r.first_name) like LOWER(@Name) OR LOWER(r.last_name) like LOWER(@Name)");
+                    queryBuilder.Append("LOWER(r.username) like LOWER(@Name) OR LOWER(r.first_name) like LOWER(@Name) OR LOWER(r.last_name) like LOWER(@Name) ");
                     SqlParameter parameterName = new SqlParameter("@Name", SqlDbType.NVarChar) { Value = "%" + name + "%" };
                     parameters.Add(parameterName);
                     needsAnd = true;

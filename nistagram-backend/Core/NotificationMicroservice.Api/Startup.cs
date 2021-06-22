@@ -61,6 +61,8 @@ namespace NotificationMicroservice.Api
             services.AddScoped<INotificationRepository, NotificationRepository>();
             services.AddScoped<NotificationFactory>();
             services.AddScoped<RegisteredUserService>();
+            services.AddScoped<INotificationOptionsRepository, NotificationOptionsRepository>();
+            services.AddScoped<NotificationOptionsService>();
 
             services.AddScoped<ReportUserRegisteredEventConsumer>();
 

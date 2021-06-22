@@ -37,6 +37,8 @@ import {
   LOAD_IMAGE_FOR_STORY_ERROR,
   BAN_STORY,
   BAN_STORY_ERROR,
+  GET_STORIES_FOR_NOT_LOGGED_IN_USER,
+  GET_STORIES_FOR_NOT_LOGGED_IN_USER_ERROR,
 } from "../types/types";
 import axios from "axios";
 
@@ -486,6 +488,32 @@ export const banStory = (id) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: BAN_STORY_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const getStoriesForNotLogged = (id) => async (dispatch) => {
+  debugger;
+  try {
+    const response = await axios.get("https://localhost:44355/api/stories", {
+      params: {
+        "story-owner-id": id,
+        "not-logged-in": "true",
+      },
+      headers: {
+        "Access-Control-Allow-Origin": "",
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
+      },
+    });
+    debugger;
+    dispatch({
+      type: GET_STORIES_FOR_NOT_LOGGED_IN_USER,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_STORIES_FOR_NOT_LOGGED_IN_USER_ERROR,
       payload: console.log(e),
     });
   }

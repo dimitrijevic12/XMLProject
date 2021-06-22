@@ -73,6 +73,7 @@ import {
   BAN_USER,
   BAN_POST,
   BAN_STORY,
+  GET_STORIES_FOR_NOT_LOGGED_IN_USER,
 } from "../types/types";
 
 const initialState = {
@@ -117,6 +118,7 @@ const initialState = {
   reports: [],
   storyById: {},
   imageForStory: "",
+  notLoggedInUserStories: [],
 };
 
 function reducer(state = initialState, action) {
@@ -458,6 +460,11 @@ function reducer(state = initialState, action) {
     case BAN_STORY:
       return {
         ...state,
+      };
+    case GET_STORIES_FOR_NOT_LOGGED_IN_USER:
+      return {
+        ...state,
+        notLoggedInUserStories: action.payload,
       };
     default:
       return state;

@@ -3,7 +3,11 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { connect } from "react-redux";
 import { addCloseFriendStory } from "../../actions/actionsStory";
-import { addCloseFriend, muteProfile, blockProfile } from "../../actions/actionsUser";
+import {
+  addCloseFriend,
+  muteProfile,
+  blockProfile,
+} from "../../actions/actionsUser";
 
 class OptionsModal extends Component {
   state = {
@@ -23,7 +27,7 @@ class OptionsModal extends Component {
         <ModalHeader toggle={this.toggle.bind(this)}></ModalHeader>
         <ModalBody>
           <button
-          onClick={() => this.block()}
+            onClick={() => this.block()}
             style={{
               height: "100%",
               width: "100%",
@@ -58,6 +62,19 @@ class OptionsModal extends Component {
             className="btn btn-block btn-primary btn-md mb-2"
           >
             <label>Report this user</label>
+          </button>
+          <hr />
+          <button
+            onClick={() => this.changeNotificationSettings()}
+            style={{
+              height: "100%",
+              width: "100%",
+              alignSelf: "stretch",
+              float: "center",
+            }}
+            className="btn btn-block btn-primary btn-md mb-2"
+          >
+            <label>Change notification settings for this user</label>
           </button>
           <hr />
           {this.displayCloseFriendButton()}
@@ -115,18 +132,23 @@ class OptionsModal extends Component {
 
   async mute() {
     await this.props.muteProfile({
-      "MutedById": sessionStorage.getItem("userId"),
-      "MutingId": this.props.user.id
-    })
+      MutedById: sessionStorage.getItem("userId"),
+      MutingId: this.props.user.id,
+    });
     window.location = "/profile/" + this.props.user.id;
   }
 
   async block() {
     await this.props.blockProfile({
-      "BlockedById": sessionStorage.getItem("userId"),
-      "BlockingId": this.props.user.id
-    })
+      BlockedById: sessionStorage.getItem("userId"),
+      BlockingId: this.props.user.id,
+    });
     window.location = "/profile/" + this.props.user.id;
+  }
+
+  changeNotificationSettings() {
+    sessionStorage.setItem("notificationByUserId", this.props.user.id);
+    window.location = "/change-notification-settings";
   }
 
   toggle() {

@@ -247,14 +247,25 @@ export const editUserForStory = (user) => async (dispatch) => {
 
 export const getUsersByName = (name) => async (dispatch) => {
   try {
-    const response = await axios.get("http://localhost:44355/api/users?", {
-      params: {
-        id: sessionStorage.getItem("userId"),
-        name: name,
-        access: "public",
-      },
-      headers: { "Access-Control-Allow-Origin": "" },
-    });
+    var response = {};
+    if (sessionStorage.getItem("token") === "") {
+      response = await axios.get("https://localhost:44355/api/users?", {
+        params: {
+          name: name,
+          access: "public",
+        },
+        headers: { "Access-Control-Allow-Origin": "" },
+      });
+    } else {
+      response = await axios.get("https://localhost:44355/api/users?", {
+        params: {
+          id: sessionStorage.getItem("userId"),
+          name: name,
+          access: "public",
+        },
+        headers: { "Access-Control-Allow-Origin": "" },
+      });
+    }
     dispatch({
       type: GET_USERS_BY_NAME,
       payload: response.data,

@@ -17,9 +17,12 @@ namespace NotificationMicroservice.DataAccess.Implementation
     public class NotificationRepository : Repository, INotificationRepository
     {
         public ITarget _notificationTarget = new NotificationAdapter(new NotificationAdaptee());
+        private readonly INotificationOptionsRepository _notificationOptionsRepository;
 
-        public NotificationRepository(IConfiguration configuration) : base(configuration)
+        public NotificationRepository(IConfiguration configuration,
+            INotificationOptionsRepository notificationOptionsRepository) : base(configuration)
         {
+            _notificationOptionsRepository = notificationOptionsRepository;
         }
 
         public IEnumerable<Notification> GetAll()
@@ -79,23 +82,29 @@ namespace NotificationMicroservice.DataAccess.Implementation
             RegisteredUser loggedUser)
         {
             List<Notification> notifications = new List<Notification>();
-            if (loggedUser.NotificationOptions.IsNotifiedByFollowRequests)
+            if (_notificationOptionsRepository.GetBy(loggedUser.Id, registeredUser.Id).HasNoValue)
+            {
+                return new List<Notification>();
+            }
+            NotificationOptions notificationOptions = _notificationOptionsRepository.GetBy(loggedUser.Id, registeredUser.Id).Value;
+
+            if (notificationOptions.IsNotifiedByFollowRequests)
             {
                 notifications.AddRange(GetFollowRequestsNotificationsForRegisteredUser(registeredUser));
             }
-            if (loggedUser.NotificationOptions.IsNotifiedByPosts)
+            if (notificationOptions.IsNotifiedByPosts)
             {
                 notifications.AddRange(GetPostsNotificationsForRegisteredUser(registeredUser));
             }
-            if (loggedUser.NotificationOptions.IsNotifiedByStories)
+            if (notificationOptions.IsNotifiedByStories)
             {
                 notifications.AddRange(GetStoriesNotificationsForRegisteredUser(registeredUser));
             }
-            if (loggedUser.NotificationOptions.IsNotifiedByComments)
+            if (notificationOptions.IsNotifiedByComments)
             {
                 notifications.AddRange(GetCommentsNotificationsForRegisteredUser(registeredUser));
             }
-            if (loggedUser.NotificationOptions.IsNotifiedByMessages)
+            if (notificationOptions.IsNotifiedByMessages)
             {
                 notifications.AddRange(GetMessagesNotificationsForRegisteredUser(registeredUser));
             }
@@ -105,11 +114,9 @@ namespace NotificationMicroservice.DataAccess.Implementation
         private IEnumerable<Notification> GetFollowRequestsNotificationsForRegisteredUser(RegisteredUser registeredUser)
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT notif.id, notif.timestamp, notif.type, " +
-                "notif.content_id, r.id, r.username, r.profilePicturePath, " +
-                "n.id, n.is_notified_by_follow_requests, n.is_notified_by_messages, n.is_notified_by_posts, " +
-                "n.is_notified_by_stories, n.is_notified_by_comments ");
-            queryBuilder.Append("FROM dbo.Notification AS notif, dbo.RegisteredUser AS R, dbo.NotificationOptions AS n ");
-            queryBuilder.Append("WHERE n.id = r.notification_options_id and notif.registered_user_id = @Id AND r.id = @Id AND " +
+                "notif.content_id, r.id, r.username, r.profilePicturePath ");
+            queryBuilder.Append("FROM dbo.Notification AS notif, dbo.RegisteredUser AS R ");
+            queryBuilder.Append("WHERE notif.registered_user_id = @Id AND r.id = @Id AND " +
                 "notif.type = \'FollowRequest\'");
 
             string query = queryBuilder.ToString();
@@ -127,11 +134,9 @@ namespace NotificationMicroservice.DataAccess.Implementation
         private IEnumerable<Notification> GetPostsNotificationsForRegisteredUser(RegisteredUser registeredUser)
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT DISTINCT notif.id, notif.timestamp, notif.type, " +
-                "notif.content_id, r.id, r.username, r.profilePicturePath, " +
-                "n.id, n.is_notified_by_follow_requests, n.is_notified_by_messages, n.is_notified_by_posts, " +
-                "n.is_notified_by_stories, n.is_notified_by_comments ");
-            queryBuilder.Append("FROM  dbo.Notification AS notif, dbo.RegisteredUser AS R, dbo.NotificationOptions AS n ");
-            queryBuilder.Append("WHERE n.id = r.notification_options_id and notif.registered_user_id = @Id AND r.id = @Id AND " +
+                "notif.content_id, r.id, r.username, r.profilePicturePath ");
+            queryBuilder.Append("FROM  dbo.Notification AS notif, dbo.RegisteredUser AS r ");
+            queryBuilder.Append("WHERE notif.registered_user_id = @Id AND r.id = @Id AND " +
                 "notif.type = \'Post\'");
 
             string query = queryBuilder.ToString();
@@ -149,11 +154,9 @@ namespace NotificationMicroservice.DataAccess.Implementation
         private IEnumerable<Notification> GetStoriesNotificationsForRegisteredUser(RegisteredUser registeredUser)
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT notif.id, notif.timestamp, notif.type, " +
-                "notif.content_id, r.id, r.username, r.profilePicturePath, " +
-                "n.id, n.is_notified_by_follow_requests, n.is_notified_by_messages, n.is_notified_by_posts, " +
-                "n.is_notified_by_stories, n.is_notified_by_comments ");
-            queryBuilder.Append("FROM  dbo.Notification AS notif, dbo.RegisteredUser AS R, dbo.NotificationOptions AS n ");
-            queryBuilder.Append("WHERE n.id = r.notification_options_id and notif.registered_user_id = @Id AND r.id = @Id AND " +
+                "notif.content_id, r.id, r.username, r.profilePicturePath ");
+            queryBuilder.Append("FROM  dbo.Notification AS notif, dbo.RegisteredUser AS r ");
+            queryBuilder.Append("WHERE notif.registered_user_id = @Id AND r.id = @Id AND " +
                 "notif.type = \'Story\'");
 
             string query = queryBuilder.ToString();
@@ -171,11 +174,9 @@ namespace NotificationMicroservice.DataAccess.Implementation
         private IEnumerable<Notification> GetCommentsNotificationsForRegisteredUser(RegisteredUser registeredUser)
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT notif.id, notif.timestamp, notif.type, " +
-                "notif.content_id, r.id, r.username, r.profilePicturePath, " +
-                "n.id, n.is_notified_by_follow_requests, n.is_notified_by_messages, n.is_notified_by_posts, " +
-                "n.is_notified_by_stories, n.is_notified_by_comments ");
-            queryBuilder.Append("FROM  dbo.Notification AS notif, dbo.RegisteredUser AS R, dbo.NotificationOptions AS n ");
-            queryBuilder.Append("WHERE n.id = r.notification_options_id and notif.registered_user_id = @Id AND r.id = @Id AND " +
+                "notif.content_id, r.id, r.username, r.profilePicturePath ");
+            queryBuilder.Append("FROM  dbo.Notification AS notif, dbo.RegisteredUser AS r ");
+            queryBuilder.Append("WHERE notif.registered_user_id = @Id AND r.id = @Id AND " +
                 "notif.type = \'Comment\'");
 
             string query = queryBuilder.ToString();
@@ -193,11 +194,9 @@ namespace NotificationMicroservice.DataAccess.Implementation
         private IEnumerable<Notification> GetMessagesNotificationsForRegisteredUser(RegisteredUser registeredUser)
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT notif.id, notif.timestamp, notif.type, " +
-                "notif.content_id, r.id, r.username, r.profilePicturePath, " +
-                "n.id, n.is_notified_by_follow_requests, n.is_notified_by_messages, n.is_notified_by_posts, " +
-                "n.is_notified_by_stories, n.is_notified_by_comments ");
-            queryBuilder.Append("FROM  dbo.Notification AS notif, dbo.RegisteredUser AS R, dbo.NotificationOptions AS n ");
-            queryBuilder.Append("WHERE n.id = r.notification_options_id and notif.registered_user_id = @Id AND r.id = @Id AND " +
+                "notif.content_id, r.id, r.username, r.profilePicturePath ");
+            queryBuilder.Append("FROM  dbo.Notification AS notif, dbo.RegisteredUser AS r ");
+            queryBuilder.Append("WHERE notif.registered_user_id = @Id AND r.id = @Id AND " +
                 "notif.type = \'Message\'");
 
             string query = queryBuilder.ToString();

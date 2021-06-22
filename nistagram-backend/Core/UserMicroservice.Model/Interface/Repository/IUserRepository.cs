@@ -14,7 +14,7 @@ namespace UserMicroservice.Core.Interface.Repository
 
         public Maybe<User> GetRoleByUsername(String username);
 
-        public IEnumerable<RegisteredUser> GetBy(string name, string access);
+        public IEnumerable<RegisteredUser> GetBy(string id, string name, string access);
 
         public void Follow(Guid id, Guid followedById, Guid followingId);
 

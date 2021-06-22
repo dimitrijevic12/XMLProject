@@ -9,7 +9,6 @@ namespace NotificationMicroservice.Api.DTOs
     {
         public Guid Id { get; set; }
         public string Username { get; set; }
-        public NotificationOptions NotificationOptions { get; set; }
         public string ProfilePicturePath { get; set; }
     }
 }

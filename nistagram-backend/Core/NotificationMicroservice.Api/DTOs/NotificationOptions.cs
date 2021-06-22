@@ -10,5 +10,7 @@ namespace NotificationMicroservice.Api.DTOs
         public bool IsNotifiedByPosts { get; set; }
         public bool IsNotifiedByStories { get; set; }
         public bool IsNotifiedByComments { get; set; }
+        public RegisteredUser LoggedUser { get; set; }
+        public RegisteredUser NotificationByUser { get; set; }
     }
 }
