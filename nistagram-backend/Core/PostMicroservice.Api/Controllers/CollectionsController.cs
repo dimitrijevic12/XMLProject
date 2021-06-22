@@ -25,14 +25,12 @@ namespace PostMicroservice.Api.Controllers
             _userRepository = userRepository;
         }
 
-        [Authorize(Roles = "RegisteredUser")]
         [HttpGet]
         public IActionResult GetBy([FromQuery] Guid userId)
         {
             return Ok(collectionFactory.CreateCollections(_collectionRepository.GetByUserId(userId)));
         }
 
-        [Authorize(Roles = "RegisteredUser")]
         [HttpPost]
         public IActionResult Save(DTOs.Collection collection)
         {
@@ -46,7 +44,6 @@ namespace PostMicroservice.Api.Controllers
             return Ok(collection);
         }
 
-        [Authorize(Roles = "RegisteredUser")]
         [HttpPut("{id}/posts/{postId}")]
         public IActionResult AddPostToCollection([FromRoute] Guid id, [FromRoute] Guid postId)
         {

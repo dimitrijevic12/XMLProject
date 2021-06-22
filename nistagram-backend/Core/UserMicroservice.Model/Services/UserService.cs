@@ -96,7 +96,7 @@ namespace UserMicroservice.Core.Services
             return _userRepository.GetById(id).Value;
         }
 
-        public RegisteredUser GetUserByIdWithoutBlocked(Guid loggedId, Guid userId)
+        public User GetUserByIdWithoutBlocked(Guid loggedId, Guid userId)
         {
             if (_userRepository.GetByIdWithoutBlocked(loggedId, userId).HasNoValue) return null;
             return _userRepository.GetByIdWithoutBlocked(loggedId, userId).Value;

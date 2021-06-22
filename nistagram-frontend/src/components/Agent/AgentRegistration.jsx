@@ -1,9 +1,5 @@
 import React, { Component } from "react";
-import {
-  userRegistration,
-  userRegistrationForPost,
-  userRegistrationForStory,
-} from "../../actions/actionsUser";
+import { createAgentRequest } from "../../actions/actionsAgent";
 import DatePicker from "react-datepicker";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
@@ -300,48 +296,20 @@ class AgentRegistration extends Component {
 
   async register() {
     debugger;
-    var successful = false;
-    successful = await this.props.userRegistration({
-      Username: this.state.username,
-      EmailAddress: this.state.email,
-      FirstName: this.state.firstName,
-      LastName: this.state.lastName,
-      DateOfBirth: this.state.dateOfBirth,
-      PhoneNumber: this.state.phoneNumber,
-      Gender: this.state.gender,
-      WebsiteAddress: this.state.webSite,
-      Bio: this.state.bio,
-      IsPrivate: this.state.isPrivate,
-      IsAcceptingMessages: this.state.isAcceptingMessages,
-      IsAcceptingTags: this.state.isAcceptingTags,
-      Password: this.state.password,
+    await this.props.createAgentRequest({
+      IsApproved: false,
+      RegisteredUser: { id: sessionStorage.getItem("userId") },
     });
 
-    if (successful === true) {
-      this.props.history.replace({
-        pathname: "/login",
-      });
-    } else {
-      toast.configure();
-      toast.error("Unsuccessful registration!", {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-    }
+    this.props.history.replace({
+      pathname: "/",
+    });
   }
 }
 
-const mapStateToProps = (state) => ({
-  userRegistration: state.userRegistration,
-  userRegistrationForPost: state.userRegistrationForPost,
-  userRegistrationForStory: state.userRegistrationForStory,
-  registeredUser: state.registeredUser,
-});
+const mapStateToProps = (state) => ({});
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, {
-    userRegistration,
-    userRegistrationForPost,
-    userRegistrationForStory,
-  })
+  connect(mapStateToProps, { createAgentRequest })
 )(AgentRegistration);

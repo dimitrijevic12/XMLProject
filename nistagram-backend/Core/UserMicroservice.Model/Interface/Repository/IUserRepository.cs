@@ -44,7 +44,7 @@ namespace UserMicroservice.Core.Interface.Repository
 
         public void DeleteFollowRequests(Guid blockedById, Guid blockingId);
 
-        public Maybe<RegisteredUser> GetByIdWithoutBlocked(Guid loggedId, Guid userId);
+        public Maybe<User> GetByIdWithoutBlocked(Guid loggedId, Guid userId);
 
         public IEnumerable<RegisteredUser> GetByWithoutBlocked(Guid loggedId, string name, string access);
 

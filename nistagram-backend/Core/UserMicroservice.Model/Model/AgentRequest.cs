@@ -5,15 +5,15 @@ namespace UserMicroservice.Core.Model
 {
     public class AgentRequest
     {
-        private readonly Guid id;
-        private readonly bool isApproved;
-        private readonly RegisteredUser registeredUser;
+        public Guid Id { get; }
+        public bool IsApproved { get; }
+        public RegisteredUser RegisteredUser { get; }
 
         private AgentRequest(Guid id, bool isApproved, RegisteredUser registeredUser)
         {
-            this.id = id;
-            this.isApproved = isApproved;
-            this.registeredUser = registeredUser;
+            Id = id;
+            IsApproved = isApproved;
+            RegisteredUser = registeredUser;
         }
 
         public static Result<AgentRequest> Create(Guid id, bool isApproved, RegisteredUser registeredUser)

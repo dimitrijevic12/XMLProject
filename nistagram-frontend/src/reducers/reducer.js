@@ -74,6 +74,8 @@ import {
   BAN_POST,
   BAN_STORY,
   GET_STORIES_FOR_NOT_LOGGED_IN_USER,
+  CREATE_AGENT_REQUEST,
+  GET_AGENT_REQUESTS,
 } from "../types/types";
 
 const initialState = {
@@ -119,6 +121,7 @@ const initialState = {
   storyById: {},
   imageForStory: "",
   notLoggedInUserStories: [],
+  agentRequests: [],
 };
 
 function reducer(state = initialState, action) {
@@ -465,6 +468,15 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         notLoggedInUserStories: action.payload,
+      };
+    case CREATE_AGENT_REQUEST:
+      return {
+        ...state,
+      };
+    case GET_AGENT_REQUESTS:
+      return {
+        ...state,
+        agentRequests: action.payload,
       };
     default:
       return state;

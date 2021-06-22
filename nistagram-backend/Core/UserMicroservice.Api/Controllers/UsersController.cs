@@ -23,19 +23,21 @@ namespace UserMicroservice.Api.Controllers
     {
         private readonly UserService userService;
         private readonly RegisteredUserFactory registerUserFactory;
+        private readonly VerifiedUserFactory verifiedUserFactory;
         private readonly IUserRepository _userRepository;
         private readonly FollowRequestFactory followRequestFactory;
         private readonly IWebHostEnvironment _env;
 
         public UsersController(UserService userService, IUserRepository userRepository,
             RegisteredUserFactory registerUserFactory, FollowRequestFactory followRequestFactory,
-            IWebHostEnvironment env)
+            IWebHostEnvironment env, VerifiedUserFactory verifiedUserFactory)
         {
             this.userService = userService;
             _userRepository = userRepository;
             this.registerUserFactory = registerUserFactory;
             this.followRequestFactory = followRequestFactory;
             _env = env;
+            this.verifiedUserFactory = verifiedUserFactory;
         }
 
         //[Authorize(Roles = "ApprovedAgent")]
@@ -112,9 +114,16 @@ namespace UserMicroservice.Api.Controllers
         [HttpGet("{loggedId}/logged/{userId}/user")]
         public IActionResult GetByIdWithoutBlocked([FromRoute] Guid loggedId, [FromRoute] Guid userId)
         {
-            Core.Model.RegisteredUser user = userService.GetUserByIdWithoutBlocked(loggedId, userId);
+            Core.Model.User user = userService.GetUserByIdWithoutBlocked(loggedId, userId);
             if (user == null) return BadRequest();
-            return Ok(registerUserFactory.Create(user));
+            if (user.GetType().Name.Equals("VerifiedUser"))
+            {
+                return Ok(verifiedUserFactory.Create((Core.Model.VerifiedUser)user));
+            }
+            else
+            {
+                return Ok(registerUserFactory.Create((Core.Model.RegisteredUser)user));
+            }
         }
 
         [HttpPut("edit")]

@@ -17,7 +17,7 @@ namespace UserMicroservice.DataAccess.Implementation
     public class UserRepository : Repository, IUserRepository
     {
         public RegisteredUserAdapter _registeredUserTarget = new RegisteredUserAdapter(new RegisteredUserAdaptee());
-        public ITarget _userModelTarget = new UserModelAdapter(new UserModelAdaptee());
+        public UserModelAdapter _userModelTarget = new UserModelAdapter(new UserModelAdaptee());
         public ITarget _followRequestTarget = new FollowRequestAdapter(new FollowRequestAdaptee());
 
         public UserRepository(IConfiguration configuration) : base(configuration)
@@ -154,9 +154,9 @@ namespace UserMicroservice.DataAccess.Implementation
             return dataTable.Rows.Count > 0;
         }
 
-        public Maybe<RegisteredUser> GetByIdWithoutBlocked(Guid loggedId, Guid userId)
+        public Maybe<User> GetByIdWithoutBlocked(Guid loggedId, Guid userId)
         {
-            if (IsBlocked(loggedId, userId)) return Maybe<RegisteredUser>.None;
+            if (IsBlocked(loggedId, userId)) return Maybe<User>.None;
             StringBuilder queryBuilder = new StringBuilder("SELECT * ");
             queryBuilder.Append("FROM dbo.RegisteredUser ");
             queryBuilder.Append("WHERE id = @Id AND is_banned=0;");
@@ -171,13 +171,24 @@ namespace UserMicroservice.DataAccess.Implementation
 
             if (dataTable.Rows.Count > 0)
             {
-                return (RegisteredUser)_registeredUserTarget.ConvertSql(
+                if (dataTable.Rows[0][13].Equals("default"))
+                {
+                    return (RegisteredUser)_userModelTarget.ConvertSql(
+                  dataTable.Rows[0], GetBlocking(userId), GetBlockedBy(userId),
+                  GetMuted(userId), GetMutedBy(userId), GetFollowing(userId), GetFollowers(userId),
+                  GetMyCloseFriends(userId), GetCloseFriendsTo(userId)
+                );
+                }
+                else
+                {
+                    return (VerifiedUser)_userModelTarget.ConvertSql(
                    dataTable.Rows[0], GetBlocking(userId), GetBlockedBy(userId),
                    GetMuted(userId), GetMutedBy(userId), GetFollowing(userId), GetFollowers(userId),
                    GetMyCloseFriends(userId), GetCloseFriendsTo(userId)
-                );
+                    );
+                }
             }
-            return Maybe<RegisteredUser>.None;
+            return Maybe<User>.None;
         }
 
         public Maybe<RegisteredUser> GetByUsername(String username)
@@ -223,7 +234,9 @@ namespace UserMicroservice.DataAccess.Implementation
             if (dataTable.Rows.Count > 0)
             {
                 return (User)_userModelTarget.ConvertSql(
-                dataTable.Rows[0]
+                dataTable.Rows[0], new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>(),
+                new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>(),
+                new List<RegisteredUser>()
                 );
             }
             return Maybe<User>.None;

@@ -18,7 +18,6 @@ namespace StoryMicroservice.Api.Controllers
             this.locationFactory = locationFactory;
         }
 
-        [Authorize(Roles = "RegisteredUser")]
         [HttpGet]
         public IActionResult GetAll()
         {

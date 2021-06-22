@@ -104,7 +104,6 @@ namespace PostMicroservice.Api.Controllers
             return Ok(fileName);
         }
 
-        [Authorize(Roles = "RegisteredUser")]
         [HttpPost]
         public IActionResult Save(DTOs.PostAlbum post)
         {
@@ -145,7 +144,6 @@ namespace PostMicroservice.Api.Controllers
             return Ok(post);
         }
 
-        [Authorize(Roles = "RegisteredUser")]
         [HttpPut("{id}/users/{userId}/likes")]
         public IActionResult Like([FromRoute] Guid id, [FromRoute] Guid userId)
         {
@@ -163,7 +161,6 @@ namespace PostMicroservice.Api.Controllers
             return Ok();
         }
 
-        [Authorize(Roles = "RegisteredUser")]
         [HttpPost("{id}/comments")]
         public IActionResult CommentPost([FromRoute] Guid id, [FromBody] DTOs.Comment comment)
         {
@@ -197,7 +194,6 @@ namespace PostMicroservice.Api.Controllers
             return Ok(toReturn);
         }
 
-        [Authorize(Roles = "RegisteredUser")]
         [HttpGet("collections/{collectionId}/users/{userId}")]
         public IActionResult GetByCollectionAndUser(Guid collectionId, Guid userId)
         {
