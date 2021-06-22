@@ -26,7 +26,6 @@ namespace StoryMicroservice.Api.Controllers
             _userRepository = userRepository;
         }
 
-        [Authorize(Roles = "RegisteredUser")]
         [HttpGet]
         public IActionResult GetBy([FromQuery(Name = "is-taggable")] string isTaggable)
         {
@@ -53,7 +52,6 @@ namespace StoryMicroservice.Api.Controllers
             return Created(this.Request.Path + "/" + dto.Id, "");
         }
 
-        [Authorize(Roles = "RegisteredUser")]
         [HttpPut("{id}")]
         public IActionResult Edit(RegisteredUser dto, [FromRoute] string id)
         {

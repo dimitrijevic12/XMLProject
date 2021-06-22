@@ -45,7 +45,6 @@ namespace StoryMicroservice.Api.Controllers
             return Ok(storyFactory.CreateStories(_storyRepository.GetBy(storyOwnerId, followingId, last24h, notLoggedIn)));
         }
 
-        [Authorize(Roles = "RegisteredUser")]
         [HttpPost]
         public IActionResult Create(Story story)
         {

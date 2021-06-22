@@ -59,6 +59,7 @@ namespace UserMicroservice.Api
             services.AddScoped<RegisterUserFactory>();
             services.AddScoped<RegisteredUserFactory>();
             services.AddScoped<FollowRequestFactory>();
+            services.AddScoped<VerifiedUserFactory>();
             services.AddScoped<VerificationRequestFactory>();
             services.AddScoped<VerificationRequestViewFactory>();
             services.AddScoped<AgentRequestFactory>();
