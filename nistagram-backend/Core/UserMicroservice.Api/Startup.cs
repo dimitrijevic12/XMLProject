@@ -60,11 +60,14 @@ namespace UserMicroservice.Api
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IAdminRepository, AdminRepository>();
             services.AddScoped<IVerificationRequestRepository, VerificationRequestRepository>();
+            services.AddScoped<IAgentRequestRepository, AgentRequestRepository>();
             services.AddScoped<RegisterUserFactory>();
             services.AddScoped<RegisteredUserFactory>();
             services.AddScoped<FollowRequestFactory>();
+            services.AddScoped<VerifiedUserFactory>();
             services.AddScoped<VerificationRequestFactory>();
             services.AddScoped<VerificationRequestViewFactory>();
+            services.AddScoped<AgentRequestFactory>();
 
             services.AddScoped<UnsuccessfulStoryUserRegistrationEventConsumer>();
             services.AddScoped<UserRegistrationCompletedEventConsumer>();

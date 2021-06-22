@@ -192,7 +192,7 @@ class CreatePost extends Component {
     res.forEach((element) => hashTagsObjects.push({ HashTagText: element }));
     await this.props.savePost({
       Description: this.state.description,
-      RegisteredUser: this.state.registeredUser,
+      RegisteredUser: { id: this.state.registeredUser.id },
       Location: this.state.location,
       ContentPaths: this.state.contentPaths,
       HashTags: hashTagsObjects,
