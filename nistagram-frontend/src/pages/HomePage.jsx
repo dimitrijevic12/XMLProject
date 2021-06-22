@@ -72,6 +72,7 @@ class HomePage extends Component {
       return null;
     }
 
+    debugger;
     var users = this.props.following;
 
     var posts = [...this.props.posts];

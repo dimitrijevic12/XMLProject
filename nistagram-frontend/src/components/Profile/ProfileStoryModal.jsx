@@ -168,7 +168,7 @@ function ProfileStoryModal(props) {
               <div className="story-footer-collections">
                 <button
                   className="btn btn-sm btn-primary"
-                  onClick={() => this.displayModalReport(story)}
+                  onClick={() => displayModalReport(story)}
                 >
                   Report
                 </button>

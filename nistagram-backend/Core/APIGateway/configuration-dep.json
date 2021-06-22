@@ -747,6 +747,28 @@
         }
       ],
       "UpstreamPathTemplate": "/api/stories/{id}/ban"
+    },
+    {
+      "DownstreamPathTemplate": "/api/notificationOptions?{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_notificationmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/notificationOptions?{everything}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/notificationOptions",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_notificationmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/notificationOptions"
     }
   ]
 }

@@ -1,9 +1,7 @@
 USE [master]
 GO
-/****** Object:  Database [reportdb]    Script Date: 6/19/2021 3:24:16 PM ******/
+/****** Object:  Database [reportdb]    Script Date: 6/19/2021 8:06:32 PM ******/
 CREATE DATABASE [reportdb]
-GO
-ALTER DATABASE [reportdb] SET COMPATIBILITY_LEVEL = 130
 GO
 IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
 begin
@@ -82,7 +80,7 @@ ALTER DATABASE SCOPED CONFIGURATION SET QUERY_OPTIMIZER_HOTFIXES = OFF;
 GO
 USE [reportdb]
 GO
-/****** Object:  Table [dbo].[RegisteredUser]    Script Date: 6/19/2021 3:24:17 PM ******/
+/****** Object:  Table [dbo].[RegisteredUser]    Script Date: 6/19/2021 8:06:32 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -96,7 +94,7 @@ CREATE TABLE [dbo].[RegisteredUser](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Report]    Script Date: 6/19/2021 3:24:17 PM ******/
+/****** Object:  Table [dbo].[Report]    Script Date: 6/19/2021 8:06:32 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -108,6 +106,7 @@ CREATE TABLE [dbo].[Report](
 	[registered_user_id] [uniqueidentifier] NOT NULL,
 	[type] [nvarchar](10) NOT NULL,
 	[content_id] [uniqueidentifier] NOT NULL,
+	[action] [nvarchar](250) NULL,
  CONSTRAINT [PK_Report] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC

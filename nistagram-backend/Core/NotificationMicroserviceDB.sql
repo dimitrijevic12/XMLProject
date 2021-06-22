@@ -1,9 +1,7 @@
 USE [master]
 GO
-/****** Object:  Database [notificationdb]    Script Date: 6/19/2021 3:21:09 PM ******/
+/****** Object:  Database [notificationdb]    Script Date: 6/21/2021 3:34:22 PM ******/
 CREATE DATABASE [notificationdb]
-GO
-ALTER DATABASE [notificationdb] SET COMPATIBILITY_LEVEL = 130
 GO
 IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
 begin
@@ -82,7 +80,7 @@ ALTER DATABASE SCOPED CONFIGURATION SET QUERY_OPTIMIZER_HOTFIXES = OFF;
 GO
 USE [notificationdb]
 GO
-/****** Object:  Table [dbo].[Blocks]    Script Date: 6/19/2021 3:21:09 PM ******/
+/****** Object:  Table [dbo].[Blocks]    Script Date: 6/21/2021 3:34:22 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -97,7 +95,7 @@ CREATE TABLE [dbo].[Blocks](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Follows]    Script Date: 6/19/2021 3:21:09 PM ******/
+/****** Object:  Table [dbo].[Follows]    Script Date: 6/21/2021 3:34:22 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -112,7 +110,7 @@ CREATE TABLE [dbo].[Follows](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Mutes]    Script Date: 6/19/2021 3:21:09 PM ******/
+/****** Object:  Table [dbo].[Mutes]    Script Date: 6/21/2021 3:34:22 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -127,7 +125,7 @@ CREATE TABLE [dbo].[Mutes](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Notification]    Script Date: 6/19/2021 3:21:09 PM ******/
+/****** Object:  Table [dbo].[Notification]    Script Date: 6/21/2021 3:34:22 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -144,7 +142,7 @@ CREATE TABLE [dbo].[Notification](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[NotificationOptions]    Script Date: 6/19/2021 3:21:09 PM ******/
+/****** Object:  Table [dbo].[NotificationOptions]    Script Date: 6/21/2021 3:34:22 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -156,13 +154,15 @@ CREATE TABLE [dbo].[NotificationOptions](
 	[is_notified_by_posts] [bit] NOT NULL,
 	[is_notified_by_stories] [bit] NOT NULL,
 	[is_notified_by_comments] [bit] NOT NULL,
+	[logged_user_id] [uniqueidentifier] NOT NULL,
+	[notification_by_user_id] [uniqueidentifier] NOT NULL,
  CONSTRAINT [PK_NotificationOptions] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[RegisteredUser]    Script Date: 6/19/2021 3:21:09 PM ******/
+/****** Object:  Table [dbo].[RegisteredUser]    Script Date: 6/21/2021 3:34:22 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -170,7 +170,6 @@ GO
 CREATE TABLE [dbo].[RegisteredUser](
 	[id] [uniqueidentifier] NOT NULL,
 	[username] [nvarchar](50) NOT NULL,
-	[notification_options_id] [uniqueidentifier] NOT NULL,
 	[profilePicturePath] [nvarchar](250) NULL,
  CONSTRAINT [PK_RegisteredUser] PRIMARY KEY CLUSTERED 
 (
@@ -213,10 +212,15 @@ REFERENCES [dbo].[RegisteredUser] ([id])
 GO
 ALTER TABLE [dbo].[Notification] CHECK CONSTRAINT [FK_Notification_RegisteredUser]
 GO
-ALTER TABLE [dbo].[RegisteredUser]  WITH CHECK ADD  CONSTRAINT [FK_RegisteredUser_NotificationOptions] FOREIGN KEY([notification_options_id])
-REFERENCES [dbo].[NotificationOptions] ([id])
+ALTER TABLE [dbo].[NotificationOptions]  WITH CHECK ADD  CONSTRAINT [FK_NotificationOptions_RegisteredUser] FOREIGN KEY([logged_user_id])
+REFERENCES [dbo].[RegisteredUser] ([id])
 GO
-ALTER TABLE [dbo].[RegisteredUser] CHECK CONSTRAINT [FK_RegisteredUser_NotificationOptions]
+ALTER TABLE [dbo].[NotificationOptions] CHECK CONSTRAINT [FK_NotificationOptions_RegisteredUser]
+GO
+ALTER TABLE [dbo].[NotificationOptions]  WITH CHECK ADD  CONSTRAINT [FK_NotificationOptions_RegisteredUser1] FOREIGN KEY([notification_by_user_id])
+REFERENCES [dbo].[RegisteredUser] ([id])
+GO
+ALTER TABLE [dbo].[NotificationOptions] CHECK CONSTRAINT [FK_NotificationOptions_RegisteredUser1]
 GO
 USE [master]
 GO

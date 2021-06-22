@@ -14,7 +14,7 @@ export const getUserNotificationSettings = (dto) => async (dispatch) => {
   debugger;
   try {
     const response = await axios.get(
-      "https://localhost:44355/api/notificationOptions?",
+      "http://localhost:44355/api/notificationOptions?",
       {
         params: {
           loggedUserId: dto.loggedUserId,
@@ -43,7 +43,7 @@ export const editNotificationSettings =
     debugger;
     try {
       const response = await axios.put(
-        "https://localhost:44355/api/notificationOptions",
+        "http://localhost:44355/api/notificationOptions",
         notificationOptions,
         {
           headers: {

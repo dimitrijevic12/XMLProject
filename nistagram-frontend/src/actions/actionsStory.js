@@ -496,7 +496,7 @@ export const banStory = (id) => async (dispatch) => {
 export const getStoriesForNotLogged = (id) => async (dispatch) => {
   debugger;
   try {
-    const response = await axios.get("https://localhost:44355/api/stories", {
+    const response = await axios.get("http://localhost:44355/api/stories", {
       params: {
         "story-owner-id": id,
         "not-logged-in": "true",

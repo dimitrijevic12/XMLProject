@@ -8,6 +8,7 @@ class StoryList extends Component {
   state = {};
 
   componentDidMount() {
+    debugger;
     this.props.loadProfileImagesStory(this.createImagesList(this.props.items));
   }
 

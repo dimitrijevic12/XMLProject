@@ -249,19 +249,17 @@ export const getUsersByName = (name) => async (dispatch) => {
   try {
     var response = {};
     if (sessionStorage.getItem("token") === "") {
-      response = await axios.get("https://localhost:44355/api/users?", {
+      response = await axios.get("http://localhost:44355/api/users?", {
         params: {
           name: name,
-          access: "public",
         },
         headers: { "Access-Control-Allow-Origin": "" },
       });
     } else {
-      response = await axios.get("https://localhost:44355/api/users?", {
+      response = await axios.get("http://localhost:44355/api/users?", {
         params: {
           id: sessionStorage.getItem("userId"),
           name: name,
-          access: "public",
         },
         headers: { "Access-Control-Allow-Origin": "" },
       });

@@ -46,16 +46,6 @@ class ChangeNotificationSettings extends Component {
         <h2>Change your notification settings for user </h2>
         <br />
         <label htmlFor="normal-switch" className="pt-4">
-          <span>Notified By Follow Requests</span>
-          <Switch
-            onChange={this.handleChangeFollowRequests}
-            checked={this.state.isNotifiedByFollowRequests}
-            className="react-switch"
-            id="normal-switch"
-          />
-        </label>
-        <br />
-        <label htmlFor="normal-switch" className="pt-4">
           <span>Notified By Messages</span>
           <Switch
             onChange={this.handleChangeMessages}

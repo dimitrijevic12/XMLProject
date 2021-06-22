@@ -110,7 +110,7 @@ namespace UserMicroservice.DataAccess.Implementation
             throw new NotImplementedException();
         }
 
-        public Maybe<RegisteredUser> GetById(Guid id)
+        public Maybe<VerifiedUser> GetById(Guid id)
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT * ");
             queryBuilder.Append("FROM dbo.RegisteredUser ");
@@ -126,13 +126,13 @@ namespace UserMicroservice.DataAccess.Implementation
 
             if (dataTable.Rows.Count > 0)
             {
-                return (RegisteredUser)_registeredUserTarget.ConvertSql(
+                return (VerifiedUser)_registeredUserTarget.ConvertSql(
                 dataTable.Rows[0], GetBlocking(id), GetBlockedBy(id),
                 GetMuted(id), GetMutedBy(id), GetFollowing(id), GetFollowers(id),
                 GetMyCloseFriends(id), GetCloseFriendsTo(id)
                 );
             }
-            return Maybe<RegisteredUser>.None;
+            return Maybe<VerifiedUser>.None;
         }
 
         private Boolean IsBlocked(Guid loggedId, Guid userId)
