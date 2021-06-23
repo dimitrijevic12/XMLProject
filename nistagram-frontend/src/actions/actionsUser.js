@@ -326,6 +326,7 @@ export const getUserByIdWithoutBlocked = (id) => async (dispatch) => {
 
 export const followProfile = (follow) => async (dispatch) => {
   try {
+    debugger;
     const response = await axios.post(
       "http://localhost:44355/api/users/follow",
       follow,
@@ -336,6 +337,7 @@ export const followProfile = (follow) => async (dispatch) => {
         },
       }
     );
+    debugger;
     dispatch({
       type: FOLLOW_PROFILE,
       payload: response.data,

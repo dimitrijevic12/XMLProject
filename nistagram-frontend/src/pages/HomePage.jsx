@@ -73,7 +73,16 @@ class HomePage extends Component {
     }
 
     debugger;
-    var users = this.props.following;
+    var allUsers = this.props.following;
+    var storyUsers = this.getAllUsersFromStories();
+    var users = [];
+    allUsers.forEach((user) => {
+      storyUsers.forEach((storyUser) => {
+        if (user.id === storyUser.id) users.push(user);
+      });
+    });
+    debugger;
+    users = [...new Set(users)];
 
     var posts = [...this.props.posts];
     posts.sort(function compare(a, b) {

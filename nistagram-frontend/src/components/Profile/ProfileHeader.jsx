@@ -25,7 +25,7 @@ function ProfileHeader(props) {
           ? "data:image/jpg;base64," + props.profileImage
           : "/images/user.png"
       }
-      username={props.user.username + " <div>asd</div>"}
+      username={props.user.username}
       followersData={[
         postsCount,
         props.user.followers === undefined ? 0 : props.user.followers.length,

@@ -175,6 +175,21 @@ function PublicProfile(props) {
         userid={user.id}
         postsCount={props.posts.length}
       />
+      {props.user.category !== undefined ? (
+        <div
+          style={{
+            marginLeft: "340px",
+            marginTop: "-50px",
+            marginBottom: "50px",
+          }}
+        >
+          <img
+            style={{ width: "30px", height: "30px", marginRight: "10px" }}
+            src="/images/correct.png"
+          />
+          <b>{props.user.category}</b>
+        </div>
+      ) : null}
       {shouldDisplayStories ? (
         <ProfileStoryCard
           user={props.user}
