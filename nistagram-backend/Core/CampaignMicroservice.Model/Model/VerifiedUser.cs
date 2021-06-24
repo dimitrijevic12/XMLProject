@@ -8,21 +8,23 @@ namespace CampaignMicroservice.Core.Model
     {
         private readonly Category category;
 
-        private VerifiedUser(Guid id, Username username, FirstName firstName,
-            LastName lastName, DateTime dateOfBirth, Gender gender, IEnumerable<Agent> blockedByAgents,
-            IEnumerable<Agent> blockedAgents, IEnumerable<Agent> followsAgents, Category category)
-            : base(id, username, firstName, lastName, dateOfBirth, gender, blockedByAgents, blockedAgents,
-                  followsAgents)
+        private VerifiedUser(Guid id, Username username, FirstName firstName, LastName lastName, DateTime dateOfBirth, Gender gender,
+            ProfileImagePath profileImagePath, bool isPrivate, IEnumerable<RegisteredUser> blockedByUsers, IEnumerable<RegisteredUser> blockedUsers,
+            IEnumerable<RegisteredUser> following, IEnumerable<RegisteredUser> followers, IEnumerable<RegisteredUser> mutedByUsers,
+            IEnumerable<RegisteredUser> mutedUsers, bool isBanned, Category category)
+            : base(id, username, firstName, lastName, dateOfBirth, gender, profileImagePath, isPrivate, blockedByUsers,
+                                                        blockedUsers, following, followers, mutedByUsers, mutedUsers, isBanned)
         {
             this.category = category;
         }
 
-        public static Result<VerifiedUser> Create(Guid id, Username username, FirstName firstName,
-            LastName lastName, DateTime dateOfBirth, Gender gender, IEnumerable<Agent> blockedByAgents,
-            IEnumerable<Agent> blockedAgents, IEnumerable<Agent> followsAgents, Category category)
+        public static Result<VerifiedUser> Create(Guid id, Username username, FirstName firstName, LastName lastName, DateTime dateOfBirth, Gender gender,
+            ProfileImagePath profileImagePath, bool isPrivate, IEnumerable<RegisteredUser> blockedByUsers, IEnumerable<RegisteredUser> blockedUsers,
+            IEnumerable<RegisteredUser> following, IEnumerable<RegisteredUser> followers, IEnumerable<RegisteredUser> mutedByUsers,
+            IEnumerable<RegisteredUser> mutedUsers, bool isBanned, Category category)
         {
-            return Result.Success(new VerifiedUser(id, username, firstName, lastName, dateOfBirth,
-                gender, blockedByAgents, blockedAgents, followsAgents, category));
+            return Result.Success(new VerifiedUser(id, username, firstName, lastName, dateOfBirth, gender, profileImagePath, isPrivate, blockedByUsers,
+                                                        blockedUsers, following, followers, mutedByUsers, mutedUsers, isBanned, category));
         }
     }
 }

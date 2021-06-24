@@ -7,7 +7,7 @@ namespace CampaignService.DataAccess.Adaptee
 {
     public class OneTimeStoryCampaignAdaptee
     {
-        public OneTimeStoryCampaign ConvertSqlDataReaderToOneTimeStoryCampaign(DataRow dataRow)
+        /*public OneTimeStoryCampaign ConvertSqlDataReaderToOneTimeStoryCampaign(DataRow dataRow)
         {
             return OneTimeStoryCampaign.Create(
                     id: Guid.Parse(dataRow[0].ToString().Trim()),
@@ -23,6 +23,6 @@ namespace CampaignService.DataAccess.Adaptee
                         exposureCount: ExposureCount.Create(int.Parse(dataRow[7].ToString().Trim())).Value,
                         clickCount: ClickCount.Create(int.Parse(dataRow[8].ToString().Trim())).Value).Value,
                     exposureDate: DateTime.Parse(dataRow[9].ToString().Trim())).Value;
-        }
+        }*/
     }
 }

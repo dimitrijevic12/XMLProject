@@ -16,6 +16,7 @@ namespace CampaignMicroservice.Core.Model
         {
             if (gender.ToLower().Equals("male")) return Result.Success(new Gender(gender));
             if (gender.ToLower().Equals("female")) return Result.Success(new Gender(gender));
+            if (gender.ToLower().Equals("none")) return Result.Success(new Gender(gender));
             return Result.Failure<Gender>("Gender has to be either 'male' or 'female'");
         }
 

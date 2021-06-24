@@ -7,7 +7,7 @@ namespace CampaignService.DataAccess.Adaptee
 {
     public class RegisteredUserAdaptee
     {
-        public RegisteredUser ConvertSqlDataReaderToRegisteredUser(DataRow dataRow)
+        /*public RegisteredUser ConvertSqlDataReaderToRegisteredUser(DataRow dataRow)
         {
             return RegisteredUser.Create(
                     id: Guid.Parse(dataRow[0].ToString().Trim()),
@@ -19,6 +19,6 @@ namespace CampaignService.DataAccess.Adaptee
                     blockedByAgents: new List<Agent>(),
                     blockedAgents: new List<Agent>(),
                     followsAgents: new List<Agent>()).Value;
-        }
+        }*/
     }
 }

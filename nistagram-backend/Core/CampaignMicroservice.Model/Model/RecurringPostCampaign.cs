@@ -13,8 +13,8 @@ namespace CampaignMicroservice.Core.Model
 
         private RecurringPostCampaign(Guid id, TargetAudience targetAudience, Agent agent,
             CampaignStatistics campaignStatistics, DateTime startDate, DateTime endDate,
-            IEnumerable<ExposureDate> exposureDates, DateTime dateOfChange)
-            : base(id, targetAudience, agent, campaignStatistics)
+            IEnumerable<ExposureDate> exposureDates, DateTime dateOfChange, IEnumerable<Ad> ads)
+            : base(id, targetAudience, agent, campaignStatistics, ads)
         {
             this.startDate = startDate;
             this.endDate = endDate;
@@ -24,10 +24,10 @@ namespace CampaignMicroservice.Core.Model
 
         public static Result<RecurringPostCampaign> Create(Guid id, TargetAudience targetAudience, Agent agent,
             CampaignStatistics campaignStatistics, DateTime startDate, DateTime endDate,
-            IEnumerable<ExposureDate> exposureDates, DateTime dateOfChange)
+            IEnumerable<ExposureDate> exposureDates, DateTime dateOfChange, IEnumerable<Ad> ads)
         {
             return Result.Success(new RecurringPostCampaign(id, targetAudience, agent, campaignStatistics,
-                startDate, endDate, exposureDates, dateOfChange));
+                startDate, endDate, exposureDates, dateOfChange, ads));
         }
     }
 }

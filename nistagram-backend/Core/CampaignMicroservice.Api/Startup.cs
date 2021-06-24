@@ -1,3 +1,5 @@
+using CampaignMicroservice.Core.Interface;
+using CampaignService.DataAccess.Implementation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -6,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+
 using System.Text;
 
 namespace CampaignMicroservice.Api
@@ -27,6 +30,8 @@ namespace CampaignMicroservice.Api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CampaignMicroservice.Api", Version = "v1" });
             });
+
+            services.AddScoped<ICampaignRepository, CampaignRepository>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
          .AddJwtBearer(options =>

@@ -4,7 +4,7 @@ using System.Data;
 
 namespace CampaignService.DataAccess.Adapter
 {
-    public class RecurringPostCampaignAdapter : ITarget
+    public class RecurringPostCampaignAdapter /*: ITarget*/
     {
         private readonly RecurringPostCampaignAdaptee recurringPostCampaignAdaptee;
 
@@ -13,9 +13,9 @@ namespace CampaignService.DataAccess.Adapter
             this.recurringPostCampaignAdaptee = recurringPostCampaignAdaptee;
         }
 
-        public object ConvertSql(DataRow dataRow)
-        {
-            return recurringPostCampaignAdaptee.ConvertSqlDataReaderToReccuringStoryCampaign(dataRow);
-        }
+        /* public object ConvertSql(DataRow dataRow)
+         {
+             return recurringPostCampaignAdaptee.ConvertSqlDataReaderToReccuringStoryCampaign(dataRow);
+         }*/
     }
 }

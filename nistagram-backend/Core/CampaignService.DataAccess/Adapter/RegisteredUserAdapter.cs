@@ -4,7 +4,7 @@ using System.Data;
 
 namespace CampaignService.DataAccess.Adapter
 {
-    public class RegisteredUserAdapter : ITarget
+    public class RegisteredUserAdapter /*: ITarget*/
     {
         private readonly RegisteredUserAdaptee registeredUserAdaptee;
 
@@ -13,9 +13,9 @@ namespace CampaignService.DataAccess.Adapter
             this.registeredUserAdaptee = registeredUserAdaptee;
         }
 
-        public object ConvertSql(DataRow dataRow)
+        /*public object ConvertSql(DataRow dataRow)
         {
             return registeredUserAdaptee.ConvertSqlDataReaderToRegisteredUser(dataRow);
-        }
+        }*/
     }
 }
