@@ -13,7 +13,8 @@ namespace CampaignService.DataAccess.Implementation
 
         public Repository(IConfiguration configuration)
         {
-            configurationString = configuration.GetConnectionString("postdb");
+            var test = configuration.GetConnectionString("campaigndb");
+            configurationString = configuration.GetConnectionString("campaigndb");
         }
 
         public DataTable ExecuteQuery(string query, IEnumerable<SqlParameter> parameters)

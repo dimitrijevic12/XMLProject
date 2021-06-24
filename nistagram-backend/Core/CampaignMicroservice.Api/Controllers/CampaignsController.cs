@@ -23,7 +23,8 @@ namespace CampaignMicroservice.Api.Controllers
         public IActionResult Save()
         {
             _campaignRepository.Save(RecurringPostCampaign.Create(Guid.NewGuid(), TargetAudience.Create(new DateTime(), new DateTime(),
-                Gender.Create("male").Value).Value, Agent.Create(Guid.NewGuid(), Username.Create("test").Value, FirstName.Create("test").Value,
+                Gender.Create("male").Value).Value, Agent.Create(new Guid("FB42F1A1-04D1-4BD1-9642-F60375BB8F59"), Username.Create("test").Value,
+                FirstName.Create("test").Value,
                 LastName.Create("test").Value, new DateTime(), Gender.Create("male").Value,
                 ProfileImagePath.Create("asd").Value, false, new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>(),
                 new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>(), false,

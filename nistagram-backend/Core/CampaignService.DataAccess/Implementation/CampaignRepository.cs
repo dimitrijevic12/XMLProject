@@ -30,19 +30,21 @@ namespace CampaignService.DataAccess.Implementation
 
             string query = queryBuilder.ToString();
             var campaign2 = (RecurringPostCampaign)campaign;
+            var test = int.Parse(campaign.CampaignStatistics.LikesCount.ToString());
 
             List<SqlParameter> parameters = new List<SqlParameter>
              {
                  new SqlParameter("@Id", SqlDbType.UniqueIdentifier) { Value = campaign.Id },
-                 new SqlParameter("@Target_audience_id", SqlDbType.UniqueIdentifier) { Value = Guid.NewGuid()},
+                 new SqlParameter("@Target_audience_id", SqlDbType.UniqueIdentifier) { Value = new Guid("8C062887-1E37-489F-BA89-942FA64058BE")},
                  new SqlParameter("@Agent_id", SqlDbType.UniqueIdentifier) { Value = campaign.Agent.Id },
-                 new SqlParameter("@Likes_count", SqlDbType.Int) { Value = campaign.CampaignStatistics.LikesCount },
-                 new SqlParameter("@Exposure_count", SqlDbType.Int) { Value = campaign.CampaignStatistics.ExposureCount },
-                 new SqlParameter("@Click_count", SqlDbType.Int) { Value = campaign.CampaignStatistics.ClickCount },
+                 new SqlParameter("@Likes_count", SqlDbType.Int) { Value = int.Parse(campaign.CampaignStatistics.LikesCount.ToString()) },
+                 new SqlParameter("@Dislikes_count", SqlDbType.Int) { Value = int.Parse(campaign.CampaignStatistics.DislikesCount.ToString()) },
+                 new SqlParameter("@Exposure_count", SqlDbType.Int) { Value = int.Parse(campaign.CampaignStatistics.ExposureCount.ToString()) },
+                 new SqlParameter("@Click_count", SqlDbType.Int) { Value = int.Parse(campaign.CampaignStatistics.ClickCount.ToString()) },
                  new SqlParameter("@Type", SqlDbType.NVarChar) { Value = campaign.GetType().Name },
-                 /*new SqlParameter("@Start_date", SqlDbType.DateTime) { Value = campaign.sta },
-                 new SqlParameter("@End_date", SqlDbType.Bit) { Value = campaign.IsPrivate },
-                 new SqlParameter("@Date_of_change", SqlDbType.Bit) { Value = campaign.IsAcceptingMessages },*/
+                 new SqlParameter("@Start_date", SqlDbType.DateTime) { Value = campaign2.StartDate },
+                 new SqlParameter("@End_date", SqlDbType.DateTime) { Value = campaign2.EndDate },
+                 new SqlParameter("@Date_of_change", SqlDbType.DateTime) { Value = campaign2.DateOfChange },
              };
 
             ExecuteQuery(query, parameters);
