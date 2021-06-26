@@ -51,5 +51,7 @@ namespace UserMicroservice.Core.Interface.Repository
         public RegisteredUser EditVerifiedUser(VerifiedUser registeredUser);
 
         public void BanUser(Guid id);
+
+        public RegisteredUser EditAgent(Agent agent);
     }
 }

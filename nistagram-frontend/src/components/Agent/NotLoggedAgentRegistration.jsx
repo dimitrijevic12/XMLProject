@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { createAgentRequest } from "../../actions/actionsAgent";
+import { userRegistration } from "../../actions/actionsUser";
 import DatePicker from "react-datepicker";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
@@ -8,7 +9,7 @@ import { compose } from "redux";
 import "react-toastify/dist/ReactToastify.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
 
-class AgentRegistration extends Component {
+class NotLoggedAgentRegistration extends Component {
   state = {
     id: 1,
     firstName: "",
@@ -308,10 +309,42 @@ class AgentRegistration extends Component {
 
   async register() {
     debugger;
-    await this.props.createAgentRequest({
-      IsApproved: false,
-      RegisteredUser: {
-        Id: sessionStorage.getItem("userId"),
+    debugger;
+    var successful = false;
+    successful = await this.props.userRegistration({
+      Username: this.state.username,
+      EmailAddress: this.state.email,
+      FirstName: this.state.firstName,
+      LastName: this.state.lastName,
+      DateOfBirth: this.state.dateOfBirth,
+      PhoneNumber: this.state.phoneNumber,
+      Gender: this.state.gender,
+      WebsiteAddress: this.state.webSite,
+      Bio: this.state.bio,
+      IsPrivate: this.state.isPrivate,
+      IsAcceptingMessages: this.state.isAcceptingMessages,
+      IsAcceptingTags: this.state.isAcceptingTags,
+      Password: this.state.password,
+    });
+    if (successful === true) {
+      await this.props.createAgentRequest({
+        IsApproved: false,
+        RegisteredUser: {
+          Id: this.props.registeredUser.id,
+          Username: this.state.username,
+          EmailAddress: this.state.email,
+          FirstName: this.state.firstName,
+          LastName: this.state.lastName,
+          DateOfBirth: this.state.dateOfBirth,
+          PhoneNumber: this.state.phoneNumber,
+          Gender: this.state.gender,
+          WebsiteAddress: this.state.webSite,
+          Bio: this.state.bio,
+          IsPrivate: this.state.isPrivate,
+          IsAcceptingTags: this.state.isAcceptingTags,
+          IsAcceptingMessages: this.state.isAcceptingMessages,
+          IsBanned: this.state.isBanned,
+        },
         Username: this.state.username,
         EmailAddress: this.state.email,
         FirstName: this.state.firstName,
@@ -324,32 +357,23 @@ class AgentRegistration extends Component {
         IsPrivate: this.state.isPrivate,
         IsAcceptingTags: this.state.isAcceptingTags,
         IsAcceptingMessages: this.state.isAcceptingMessages,
-        IsBanned: this.state.isBanned,
-      },
-      Username: this.state.username,
-      EmailAddress: this.state.email,
-      FirstName: this.state.firstName,
-      LastName: this.state.lastName,
-      DateOfBirth: this.state.dateOfBirth,
-      PhoneNumber: this.state.phoneNumber,
-      Gender: this.state.gender,
-      WebsiteAddress: this.state.webSite,
-      Bio: this.state.bio,
-      IsPrivate: this.state.isPrivate,
-      IsAcceptingTags: this.state.isAcceptingTags,
-      IsAcceptingMessages: this.state.isAcceptingMessages,
-      Password: this.state.password,
-    });
-
-    this.props.history.replace({
-      pathname: "/",
-    });
+        Password: this.state.password,
+      });
+      this.props.history.replace({
+        pathname: "/",
+      });
+    } else {
+      toast.configure();
+      toast.error("Unsuccessful registration!", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
   }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({ registeredUser: state.registeredUser });
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, { createAgentRequest })
-)(AgentRegistration);
+  connect(mapStateToProps, { createAgentRequest, userRegistration })
+)(NotLoggedAgentRegistration);

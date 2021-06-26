@@ -39,7 +39,21 @@ namespace UserMicroservice.DataAccess.Adaptee
                                 new List<RegisteredUser>(),
                                 new List<RegisteredUser>(),
                                 new List<RegisteredUser>(),
-                                bool.Parse(dataRow[17].ToString())).Value).Value;
+                                bool.Parse(dataRow[17].ToString())).Value,
+                            AgentRequestAction.Create(dataRow[18].ToString().Trim()).Value,
+                            Username.Create(dataRow[19].ToString()).Value,
+                            EmailAddress.Create(dataRow[20].ToString()).Value,
+                            FirstName.Create(dataRow[21].ToString()).Value,
+                            LastName.Create(dataRow[22].ToString()).Value,
+                            DateTime.Parse(dataRow[23].ToString()),
+                            PhoneNumber.Create(dataRow[24].ToString()).Value,
+                            Gender.Create(dataRow[25].ToString()).Value,
+                            WebsiteAddress.Create(dataRow[26].ToString()).Value,
+                            Bio.Create(dataRow[27].ToString()).Value,
+                            bool.Parse(dataRow[28].ToString()),
+                            bool.Parse(dataRow[29].ToString()),
+                            bool.Parse(dataRow[30].ToString()),
+                            Password.Create(dataRow[31].ToString()).Value).Value;
         }
     }
 }

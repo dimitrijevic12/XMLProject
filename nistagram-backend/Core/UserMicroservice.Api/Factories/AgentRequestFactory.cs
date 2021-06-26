@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using UserMicroservice.Api.DTOs;
 
 namespace UserMicroservice.Api.Factories
@@ -21,7 +19,21 @@ namespace UserMicroservice.Api.Factories
             {
                 Id = agentRequest.Id,
                 IsApproved = agentRequest.IsApproved,
-                RegisteredUser = registeredUserFactory.Create(agentRequest.RegisteredUser)
+                RegisteredUser = registeredUserFactory.Create(agentRequest.RegisteredUser),
+                AgentRequestAction = agentRequest.AgentRequestAction,
+                Username = agentRequest.Username,
+                EmailAddress = agentRequest.EmailAddress,
+                FirstName = agentRequest.FirstName,
+                LastName = agentRequest.LastName,
+                DateOfBirth = agentRequest.DateOfBirth,
+                PhoneNumber = agentRequest.PhoneNumber,
+                Gender = agentRequest.Gender,
+                WebsiteAddress = agentRequest.WebsiteAddress,
+                Bio = agentRequest.Bio,
+                IsPrivate = agentRequest.IsPrivate,
+                IsAcceptingMessages = agentRequest.IsAcceptingMessages,
+                IsAcceptingTags = agentRequest.IsAcceptingTags,
+                Password = agentRequest.Password
             };
         }
 

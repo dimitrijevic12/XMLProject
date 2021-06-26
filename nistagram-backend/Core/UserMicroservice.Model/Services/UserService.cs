@@ -90,6 +90,12 @@ namespace UserMicroservice.Core.Services
             return Result.Success(verifiedUser);
         }
 
+        public Result EditAgent(Agent agent)
+        {
+            _userRepository.EditAgent(agent);
+            return Result.Success(agent);
+        }
+
         public RegisteredUser GetUserById(Guid id)
         {
             if (_userRepository.GetById(id).HasNoValue) return null;

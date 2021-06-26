@@ -35,6 +35,16 @@ class AdminNavigationBar extends Component {
           >
             <img src="/images/verified.png" />
           </NavLink>
+          <span style={{ width: 25, display: "inline-block" }}></span>
+          <NavLink
+            exact
+            to="/approval"
+            onClick={() => {
+              window.location = "/approval";
+            }}
+          >
+            <img src="/images/agent-verification.png" />
+          </NavLink>
           <UncontrolledDropdown style={{ float: "right" }}>
             <DropdownToggle nav caret></DropdownToggle>
             <DropdownMenu right>
