@@ -1,16 +1,18 @@
 {
   "version": 2,
-  "dgSpecHash": "zCpK8syT1sJZFzoZX+JXZ0oR0nmI92u2NtqlucX+pqPz43iHHfSP932+y0QF4n+RtPOMMxEoeU9XtcMAyCreqQ==",
+  "dgSpecHash": "i9o1DVGAuOuEkInJPFTy+HQqbal3tnqyzgqIkkbIXEOUgj8Diu13wBhpd32vXPdG7g+jWRKQUxqZSBOBcSO29Q==",
   "success": true,
   "projectFilePath": "C:\\XMLProjekat\\XMLProject\\agentapp-backend\\AgentAppSolution\\AgentApp.Core\\AgentApp.Core.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Stefan\\.nuget\\packages\\csharpfunctionalextensions\\2.16.0\\csharpfunctionalextensions.2.16.0.nupkg.sha512",
-    "C:\\Users\\Stefan\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
-    "C:\\Users\\Stefan\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\6.11.1\\microsoft.identitymodel.jsonwebtokens.6.11.1.nupkg.sha512",
-    "C:\\Users\\Stefan\\.nuget\\packages\\microsoft.identitymodel.logging\\6.11.1\\microsoft.identitymodel.logging.6.11.1.nupkg.sha512",
-    "C:\\Users\\Stefan\\.nuget\\packages\\microsoft.identitymodel.tokens\\6.11.1\\microsoft.identitymodel.tokens.6.11.1.nupkg.sha512",
-    "C:\\Users\\Stefan\\.nuget\\packages\\system.identitymodel.tokens.jwt\\6.11.1\\system.identitymodel.tokens.jwt.6.11.1.nupkg.sha512",
-    "C:\\Users\\Stefan\\.nuget\\packages\\system.security.cryptography.cng\\4.5.0\\system.security.cryptography.cng.4.5.0.nupkg.sha512"
+    "C:\\Users\\Aleksa\\.nuget\\packages\\csharpfunctionalextensions\\2.16.0\\csharpfunctionalextensions.2.16.0.nupkg.sha512",
+    "C:\\Users\\Aleksa\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
+    "C:\\Users\\Aleksa\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\5.0.0\\microsoft.extensions.configuration.abstractions.5.0.0.nupkg.sha512",
+    "C:\\Users\\Aleksa\\.nuget\\packages\\microsoft.extensions.primitives\\5.0.0\\microsoft.extensions.primitives.5.0.0.nupkg.sha512",
+    "C:\\Users\\Aleksa\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\6.11.1\\microsoft.identitymodel.jsonwebtokens.6.11.1.nupkg.sha512",
+    "C:\\Users\\Aleksa\\.nuget\\packages\\microsoft.identitymodel.logging\\6.11.1\\microsoft.identitymodel.logging.6.11.1.nupkg.sha512",
+    "C:\\Users\\Aleksa\\.nuget\\packages\\microsoft.identitymodel.tokens\\6.11.1\\microsoft.identitymodel.tokens.6.11.1.nupkg.sha512",
+    "C:\\Users\\Aleksa\\.nuget\\packages\\system.identitymodel.tokens.jwt\\6.11.1\\system.identitymodel.tokens.jwt.6.11.1.nupkg.sha512",
+    "C:\\Users\\Aleksa\\.nuget\\packages\\system.security.cryptography.cng\\4.5.0\\system.security.cryptography.cng.4.5.0.nupkg.sha512"
   ],
   "logs": []
 }

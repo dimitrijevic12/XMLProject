@@ -10,11 +10,11 @@
         "projectUniqueName": "C:\\XMLProjekat\\XMLProject\\agentapp-backend\\AgentAppSolution\\AgentApp.Api\\AgentApp.Api.csproj",
         "projectName": "AgentApp.Api",
         "projectPath": "C:\\XMLProjekat\\XMLProject\\agentapp-backend\\AgentAppSolution\\AgentApp.Api\\AgentApp.Api.csproj",
-        "packagesPath": "C:\\Users\\Stefan\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\Aleksa\\.nuget\\packages\\",
         "outputPath": "C:\\XMLProjekat\\XMLProject\\agentapp-backend\\AgentAppSolution\\AgentApp.Api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Stefan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Aleksa\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -47,9 +47,21 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "Microsoft.AspNet.WebApi.Client": {
+              "target": "Package",
+              "version": "[5.2.7, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[5.0.7, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[5.6.3, )"
+            },
+            "System.Net.Http.Formatting.Extension": {
+              "target": "Package",
+              "version": "[5.2.3, )"
             }
           },
           "imports": [
@@ -80,11 +92,11 @@
         "projectUniqueName": "C:\\XMLProjekat\\XMLProject\\agentapp-backend\\AgentAppSolution\\AgentApp.Core\\AgentApp.Core.csproj",
         "projectName": "AgentApp.Core",
         "projectPath": "C:\\XMLProjekat\\XMLProject\\agentapp-backend\\AgentAppSolution\\AgentApp.Core\\AgentApp.Core.csproj",
-        "packagesPath": "C:\\Users\\Stefan\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\Aleksa\\.nuget\\packages\\",
         "outputPath": "C:\\XMLProjekat\\XMLProject\\agentapp-backend\\AgentAppSolution\\AgentApp.Core\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Stefan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Aleksa\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -113,6 +125,10 @@
             "CSharpFunctionalExtensions": {
               "target": "Package",
               "version": "[2.16.0, )"
+            },
+            "Microsoft.Extensions.Configuration.Abstractions": {
+              "target": "Package",
+              "version": "[5.0.0, )"
             },
             "Microsoft.IdentityModel.Tokens": {
               "target": "Package",
@@ -148,11 +164,11 @@
         "projectUniqueName": "C:\\XMLProjekat\\XMLProject\\agentapp-backend\\AgentAppSolution\\AgentApp.DataAccess\\AgentApp.DataAccess.csproj",
         "projectName": "AgentApp.DataAccess",
         "projectPath": "C:\\XMLProjekat\\XMLProject\\agentapp-backend\\AgentAppSolution\\AgentApp.DataAccess\\AgentApp.DataAccess.csproj",
-        "packagesPath": "C:\\Users\\Stefan\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\Aleksa\\.nuget\\packages\\",
         "outputPath": "C:\\XMLProjekat\\XMLProject\\agentapp-backend\\AgentAppSolution\\AgentApp.DataAccess\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Stefan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Aleksa\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

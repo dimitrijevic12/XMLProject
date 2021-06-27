@@ -42,3 +42,11 @@ C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.Api\obj\Deb
 C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.Api\obj\Debug\net5.0\ref\AgentApp.Api.dll
 C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.Api\obj\Debug\net5.0\AgentApp.Api.pdb
 C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.Api\obj\Debug\net5.0\AgentApp.Api.genruntimeconfig.cache
+C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.Api\bin\Debug\net5.0\System.Net.Http.Formatting.dll
+C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.Api\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.Api\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.dll
+C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.Api\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.Api\bin\Debug\net5.0\Newtonsoft.Json.dll
+C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.Api\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll
+C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.Api\bin\Debug\net5.0\System.Net.Http.Extensions.dll
+C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.Api\bin\Debug\net5.0\System.Net.Http.Primitives.dll

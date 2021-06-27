@@ -10,11 +10,11 @@
         "projectUniqueName": "C:\\XMLProjekat\\XMLProject\\agentapp-backend\\AgentAppSolution\\AgentApp.Core\\AgentApp.Core.csproj",
         "projectName": "AgentApp.Core",
         "projectPath": "C:\\XMLProjekat\\XMLProject\\agentapp-backend\\AgentAppSolution\\AgentApp.Core\\AgentApp.Core.csproj",
-        "packagesPath": "C:\\Users\\Stefan\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\Aleksa\\.nuget\\packages\\",
         "outputPath": "C:\\XMLProjekat\\XMLProject\\agentapp-backend\\AgentAppSolution\\AgentApp.Core\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Stefan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Aleksa\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -43,6 +43,10 @@
             "CSharpFunctionalExtensions": {
               "target": "Package",
               "version": "[2.16.0, )"
+            },
+            "Microsoft.Extensions.Configuration.Abstractions": {
+              "target": "Package",
+              "version": "[5.0.0, )"
             },
             "Microsoft.IdentityModel.Tokens": {
               "target": "Package",

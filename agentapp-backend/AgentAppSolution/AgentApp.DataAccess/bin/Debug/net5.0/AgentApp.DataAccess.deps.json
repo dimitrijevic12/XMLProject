@@ -170,6 +170,7 @@
       "AgentApp.Core/1.0.0": {
         "dependencies": {
           "CSharpFunctionalExtensions": "2.16.0",
+          "Microsoft.Extensions.Configuration.Abstractions": "5.0.0",
           "Microsoft.IdentityModel.Tokens": "6.11.1",
           "System.IdentityModel.Tokens.Jwt": "6.11.1"
         },

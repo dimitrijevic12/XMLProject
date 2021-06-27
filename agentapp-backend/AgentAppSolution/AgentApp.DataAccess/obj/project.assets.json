@@ -238,6 +238,7 @@
         "framework": ".NETCoreApp,Version=v5.0",
         "dependencies": {
           "CSharpFunctionalExtensions": "2.16.0",
+          "Microsoft.Extensions.Configuration.Abstractions": "5.0.0",
           "Microsoft.IdentityModel.Tokens": "6.11.1",
           "System.IdentityModel.Tokens.Jwt": "6.11.1"
         },
@@ -859,7 +860,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Stefan\\.nuget\\packages\\": {}
+    "C:\\Users\\Aleksa\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
@@ -867,11 +868,11 @@
       "projectUniqueName": "C:\\XMLProjekat\\XMLProject\\agentapp-backend\\AgentAppSolution\\AgentApp.DataAccess\\AgentApp.DataAccess.csproj",
       "projectName": "AgentApp.DataAccess",
       "projectPath": "C:\\XMLProjekat\\XMLProject\\agentapp-backend\\AgentAppSolution\\AgentApp.DataAccess\\AgentApp.DataAccess.csproj",
-      "packagesPath": "C:\\Users\\Stefan\\.nuget\\packages\\",
+      "packagesPath": "C:\\Users\\Aleksa\\.nuget\\packages\\",
       "outputPath": "C:\\XMLProjekat\\XMLProject\\agentapp-backend\\AgentAppSolution\\AgentApp.DataAccess\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Stefan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Aleksa\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
