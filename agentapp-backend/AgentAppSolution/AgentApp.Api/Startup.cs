@@ -1,3 +1,6 @@
+using AgentApp.Api.Factories;
+using AgentApp.Core.Interface.Repository;
+using AgentApp.DataAccess.Implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -31,6 +34,9 @@ namespace AgentApp.Api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AgentApp.Api", Version = "v1" });
             });
+
+            services.AddScoped<IItemRepository, ItemRepository>();
+            services.AddScoped<ItemFactory>();
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {
