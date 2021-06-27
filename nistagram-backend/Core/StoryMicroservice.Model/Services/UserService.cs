@@ -49,7 +49,7 @@ namespace StoryMicroservice.Core.Services
 
         public Result Edit(string id, RegisteredUser registeredUser)
         {
-            if (!_userRepository.GetById(registeredUser.Id).Value.Username.ToString().Equals(registeredUser.Username))
+            if (!_userRepository.GetById(registeredUser.Id).Value.Username.Equals(registeredUser.Username))
             {
                 if (_userRepository.GetByUsername(registeredUser.Username).HasValue) return Result.Failure("There is already user with that username");
             }
