@@ -164,17 +164,20 @@ function ProfileStoryModal(props) {
                 Tagged users:
               </button>
             </div>
-            <div className="story-footer-collections">
-              <button
-                className="btn btn-sm btn-primary"
-                onClick={() => displayModalReport(story)}
-              >
-                Report
-              </button>
-            </div>
+            {sessionStorage.getItem("token") === "" ? null : (
+              <div className="story-footer-collections">
+                <button
+                  className="btn btn-sm btn-primary"
+                  onClick={() => this.displayModalReport(story)}
+                >
+                  Report
+                </button>
+              </div>
+            )}
             <div className="story-footer-collections">
               {props.isActiveStories &&
-              props.user === sessionStorage.getItem("userId") ? (
+              props.user === sessionStorage.getItem("userId") &&
+              sessionStorage.getItem("token") !== "" ? (
                 <button
                   className="btn btn-sm btn-primary"
                   onClick={() => displayCollectionsModal(story)}

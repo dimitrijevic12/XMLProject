@@ -2,17 +2,30 @@ import React, { Component } from "react";
 import { Table } from "reactstrap";
 import { Card } from "reactstrap";
 import FilledAgentRequest from "./FilledAgentRequest";
+import { getAgentRequests } from "../../actions/actionsAgent";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import { compose } from "redux";
 
 class ApprovalAgentRequest extends Component {
   state = {
     showRequestModal: false,
+    request: {},
   };
 
+  async componentDidMount() {
+    await this.props.getAgentRequests();
+  }
+
   render() {
+    if (this.props.agentRequests === undefined) {
+      return null;
+    }
     return (
       <React.Fragment>
         {this.state.showRequestModal ? (
           <FilledAgentRequest
+            request={this.state.request}
             show={this.state.showRequestModal}
             onShowChange={this.displayModalRequest.bind(this)}
           />
@@ -58,34 +71,16 @@ class ApprovalAgentRequest extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td
-                      className="pl-4 pt-4 pb-4"
-                      style={{ textAlign: "center" }}
-                    >
-                      Request: Ana Stanic
-                    </td>
-                    <td
-                      className="pl-4 pt-4 pb-4"
-                      style={{ textAlign: "center" }}
-                    >
-                      <button
-                        className="btn btn-primary btn-block btn-md mb-2"
-                        onClick={() => {
-                          this.displayModalRequest(1);
-                        }}
-                      >
-                        Open
-                      </button>
-                    </td>
-                  </tr>
-                  {/* {allReports.map((f) => (
+                  {this.props.agentRequests.map((f) => (
                     <tr key={f.id}>
                       <td
                         className="pl-4 pt-4 pb-4"
                         style={{ textAlign: "center" }}
                       >
-                        Report: {f.id}
+                        Request by:{" "}
+                        {f.registeredUser.firstName +
+                          " " +
+                          f.registeredUser.lastName}
                       </td>
                       <td
                         className="pl-4 pt-4 pb-4"
@@ -94,14 +89,14 @@ class ApprovalAgentRequest extends Component {
                         <button
                           className="btn btn-primary btn-block btn-md mb-2"
                           onClick={() => {
-                            this.displayModalRequest(f.id);
+                            this.displayModalRequest(f);
                           }}
                         >
                           Open
                         </button>
                       </td>
                     </tr>
-                  ))} */}
+                  ))}
                 </tbody>
               </Table>
             </Card>
@@ -112,16 +107,21 @@ class ApprovalAgentRequest extends Component {
   }
 
   registerAgent() {
-    window.location.href = "http://localhost:3000/registration";
+    window.location = "http://localhost:3000/not-logged-agent-registration";
   }
 
-  displayModalRequest(id) {
+  displayModalRequest(f) {
     debugger;
-    localStorage.setItem("requestId", id);
     this.setState({
+      request: f,
       showRequestModal: !this.state.showRequestModal,
     });
   }
 }
 
-export default ApprovalAgentRequest;
+const mapStateToProps = (state) => ({ agentRequests: state.agentRequests });
+
+export default compose(
+  withRouter,
+  connect(mapStateToProps, { getAgentRequests })
+)(ApprovalAgentRequest);

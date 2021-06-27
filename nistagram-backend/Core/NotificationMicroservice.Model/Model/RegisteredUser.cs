@@ -7,22 +7,18 @@ namespace NotificationMicroservice.Core.Model
     {
         public Guid Id { get; }
         public Username Username { get; }
-        public NotificationOptions NotificationOptions { get; }
         public ProfilePicturePath ProfilePicturePath { get; }
 
-        private RegisteredUser(Guid id, Username username, NotificationOptions notificationOptions,
-            ProfilePicturePath profilePicturePath)
+        private RegisteredUser(Guid id, Username username, ProfilePicturePath profilePicturePath)
         {
             Id = id;
             Username = username;
-            NotificationOptions = notificationOptions;
             ProfilePicturePath = profilePicturePath;
         }
 
-        public static Result<RegisteredUser> Create(Guid id, Username username,
-            NotificationOptions notificationOptions, ProfilePicturePath profilePicturePath)
+        public static Result<RegisteredUser> Create(Guid id, Username username, ProfilePicturePath profilePicturePath)
         {
-            return Result.Success(new RegisteredUser(id, username, notificationOptions, profilePicturePath));
+            return Result.Success(new RegisteredUser(id, username, profilePicturePath));
         }
     }
 }

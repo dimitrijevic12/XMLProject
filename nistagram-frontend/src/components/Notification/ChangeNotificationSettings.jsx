@@ -18,23 +18,20 @@ class ChangeNotificationSettings extends Component {
   };
   async componentDidMount() {
     debugger;
-    await this.props.getUserNotificationSettings();
+    await this.props.getUserNotificationSettings({
+      loggedUserId: sessionStorage.getItem("userId"),
+      notificationByUserId: sessionStorage.getItem("notificationByUserId"),
+    });
     this.setState({
       isNotifiedByFollowRequests:
-        this.props.userNotificationSettings.notificationOptions
-          .isNotifiedByFollowRequests,
+        this.props.userNotificationSettings.isNotifiedByFollowRequests,
       isNotifiedByMessages:
-        this.props.userNotificationSettings.notificationOptions
-          .isNotifiedByMessages,
-      isNotifiedByPosts:
-        this.props.userNotificationSettings.notificationOptions
-          .isNotifiedByPosts,
+        this.props.userNotificationSettings.isNotifiedByMessages,
+      isNotifiedByPosts: this.props.userNotificationSettings.isNotifiedByPosts,
       isNotifiedByStories:
-        this.props.userNotificationSettings.notificationOptions
-          .isNotifiedByStories,
+        this.props.userNotificationSettings.isNotifiedByStories,
       isNotifiedByComments:
-        this.props.userNotificationSettings.notificationOptions
-          .isNotifiedByComments,
+        this.props.userNotificationSettings.isNotifiedByComments,
     });
   }
   render() {
@@ -46,7 +43,7 @@ class ChangeNotificationSettings extends Component {
 
     return (
       <div className="text-center">
-        <h2>Change your notification settings</h2>
+        <h2>Change your notification settings for user </h2>
         <br />
         <label htmlFor="normal-switch" className="pt-4">
           <span>Notified By Follow Requests</span>
@@ -138,17 +135,15 @@ class ChangeNotificationSettings extends Component {
   async editNotificationSettings() {
     await this.props.editNotificationSettings({
       Id: this.props.userNotificationSettings.id,
-      Username: this.props.userNotificationSettings.username,
-      NotificationOptions: {
-        Id: this.props.userNotificationSettings.notificationOptions.id,
-        IsNotifiedByFollowRequests: this.state.isNotifiedByFollowRequests,
-        IsNotifiedByMessages: this.state.isNotifiedByMessages,
-        IsNotifiedByPosts: this.state.isNotifiedByPosts,
-        IsNotifiedByStories: this.state.isNotifiedByStories,
-        IsNotifiedByComments: this.state.isNotifiedByComments,
+      IsNotifiedByFollowRequests: this.state.isNotifiedByFollowRequests,
+      IsNotifiedByMessages: this.state.isNotifiedByMessages,
+      IsNotifiedByPosts: this.state.isNotifiedByPosts,
+      IsNotifiedByStories: this.state.isNotifiedByStories,
+      IsNotifiedByComments: this.state.isNotifiedByComments,
+      LoggedUser: { id: sessionStorage.getItem("userId") },
+      NotificationByUser: {
+        id: sessionStorage.getItem("notificationByUserId"),
       },
-      ProfilePicturePath:
-        this.props.userNotificationSettings.profilePicturePath,
     });
     window.location = "/profile/" + sessionStorage.getItem("userId");
   }

@@ -65,7 +65,7 @@ namespace StoryMicroservice.DataAccess.Implementation
             _stories.DeleteOne(story => story.Id.Equals(id.ToString()));
         }
 
-        public IEnumerable<Core.Model.Story> GetBy(string storyOwnerId, string followingId, string last24h)
+        public IEnumerable<Core.Model.Story> GetBy(string storyOwnerId, string followingId, string last24h, string notLoggedIn)
         {
             List<Core.Model.Story> allStories = new List<Core.Model.Story>();
 
@@ -109,6 +109,18 @@ namespace StoryMicroservice.DataAccess.Implementation
                 foreach (var story in tempStories) if (userFactory.CreateIds(story.RegisteredUser.BlockedUsers).Contains(followingId) ||
                         userFactory.CreateIds(story.RegisteredUser.BlockedByUsers).Contains(followingId))
                         stories.Remove(story);
+            }
+            if (!String.IsNullOrWhiteSpace(notLoggedIn) && notLoggedIn.Equals("true"))
+            {
+                var expiredStories = storyFactory.CreateStories(_stories.Find(story => story.TimeStamp < DateTime.Now.AddDays(-1)).ToList());
+                foreach (var story in expiredStories) stories.Remove(story);
+                var tempStories = new List<Core.Model.Story>(stories);
+
+                foreach (var story in tempStories)
+                {
+                    if (story.GetType().Name == "CloseFriendStory")
+                        stories.Remove(story);
+                }
             }
             return stories;
         }

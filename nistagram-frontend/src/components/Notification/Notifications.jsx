@@ -26,9 +26,10 @@ class Notifications extends Component {
     await this.props.getFollowingWithoutMuted();
     await this.props.getUserNotificationSettings();
     await this.props.getNotificationsForFollowing({
-      LoggedUser: this.props.userNotificationSettings,
+      LoggedUser: { id: sessionStorage.getItem("userId") },
       RegisteredUsers: this.props.following,
     });
+    debugger;
     var notificationsForFollowing = [...this.props.notificationsForFollowing];
     notificationsForFollowing.sort(function compare(a, b) {
       var dateA = new Date(a.timeStamp);
@@ -48,10 +49,6 @@ class Notifications extends Component {
   }
   render() {
     if (this.props.following === undefined) {
-      return null;
-    }
-
-    if (this.props.userNotificationSettings === undefined) {
       return null;
     }
 

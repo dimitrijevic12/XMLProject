@@ -33,33 +33,5 @@ namespace NotificationMicroservice.Api.Controllers
         {
             return Ok(registeredUserFactory.Create(_registeredUserRepository.GetById(id).Value));
         }
-
-        [HttpPut]
-        public IActionResult Edit(DTOs.RegisteredUser registeredUser)
-        {
-            Result<Username> username = Username.Create(registeredUser.Username);
-            Result<ProfilePicturePath> profilePicturePath = ProfilePicturePath.Create(registeredUser.ProfilePicturePath);
-
-            Result result = Result.Combine(username, profilePicturePath);
-            if (result.IsFailure) return BadRequest(result.Error);
-            return Ok(registeredUserFactory.Create(_registeredUserRepository.Edit(RegisteredUser.Create(registeredUser.Id,
-                username.Value, NotificationOptions.Create(registeredUser.NotificationOptions.Id, registeredUser.NotificationOptions.IsNotifiedByFollowRequests,
-                registeredUser.NotificationOptions.IsNotifiedByMessages, registeredUser.NotificationOptions.IsNotifiedByPosts,
-                registeredUser.NotificationOptions.IsNotifiedByStories, registeredUser.NotificationOptions.IsNotifiedByComments).Value, profilePicturePath.Value).Value)));
-        }
-
-        [HttpPost]
-        public IActionResult Save(DTOs.RegisteredUser registeredUser)
-        {
-            Result<Username> username = Username.Create(registeredUser.Username);
-            Result<ProfilePicturePath> profilePicturePath = ProfilePicturePath.Create(registeredUser.ProfilePicturePath);
-
-            Result result = Result.Combine(username, profilePicturePath);
-            if (result.IsFailure) return BadRequest(result.Error);
-            Guid id = Guid.NewGuid();
-            if (registeredUserService.Create(RegisteredUser.Create(id,
-                username.Value, NotificationOptions.Create(id, true, true, true, true, true).Value, profilePicturePath.Value).Value).IsFailure) return BadRequest();
-            return Created(this.Request.Path + id, "");
-        }
     }
 }

@@ -163,3 +163,14 @@ export const BAN_POST = "banPost";
 export const BAN_POST_ERROR = "banPostError";
 export const BAN_STORY = "banStory";
 export const BAN_STORY_ERROR = "banStoryError";
+export const GET_STORIES_FOR_NOT_LOGGED_IN_USER = "getStoriesForNotLoggedIn";
+export const GET_STORIES_FOR_NOT_LOGGED_IN_USER_ERROR =
+  "getStoriesForNotLoggedInError";
+export const CREATE_AGENT_REQUEST = "createAgentRequest";
+export const CREATE_AGENT_REQUEST_ERROR = "createAgentRequestError";
+export const GET_AGENT_REQUESTS = "getAgentRequests";
+export const GET_AGENT_REQUESTS_ERROR = "getAgentRequestsError";
+export const UPDATE_AGENT_REQUEST = "updateAgentRequest";
+export const UPDATE_AGENT_REQUEST_ERROR = "updateAgentRequestError";
+export const CREATE_AGENT_NOT_EXISTING = "createAgentNotExisting";
+export const CREATE_AGENT_NOT_EXISTING_ERROR = "createAgentNotExistingError";

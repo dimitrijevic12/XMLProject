@@ -5,7 +5,7 @@ import { Table } from "reactstrap";
 import { Card } from "reactstrap";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
-import PostModal from "../Profile/PostModal";
+import NotLoggedPostModal from "../Profile/NotLoggedPostModal";
 import StoryReportModal from "./StoryReportModal";
 import moment from "moment";
 import { banUser } from "../../actions/actionsUser";
@@ -36,7 +36,7 @@ class Reports extends Component {
     return (
       <div>
         {this.state.showPostModal ? (
-          <PostModal
+          <NotLoggedPostModal
             show={this.state.showPostModal}
             postId={this.state.postId}
             personPhoto="/images/download.jfif"

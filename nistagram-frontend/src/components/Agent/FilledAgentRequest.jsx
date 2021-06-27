@@ -3,21 +3,23 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import "../../css/acceptdeny.css";
+import moment from "moment";
+import { updateAgentRequest } from "../../actions/actionsAgent";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import { compose } from "redux";
 
 class FilledAgentRequest extends Component {
   state = {
-    id: 1,
-    name: "Ana",
-    email: "ana@gmail.com",
-    phoneNumber: "123-456789",
-    dateOfBirth: "",
-    gender: "Female",
-    username: "ana",
-    bio:
-      "Asdasa sadgas fhgfdhdfhdf gdgsggdsg ofohdfosdho oshfdsfshfsdhiudsfhids hshdf",
-    webSite: "www.ana.com",
-    password: "ana",
-    repeatPassword: "ana",
+    id: this.props.request.id,
+    name: this.props.request.firstName + " " + this.props.request.lastName,
+    email: this.props.request.email,
+    phoneNumber: this.props.request.phoneNumber,
+    dateOfBirth: moment(this.props.request.dateOfBirth).format("DD/MM/YYYY"),
+    gender: this.props.request.gender,
+    username: this.props.request.username,
+    bio: this.props.request.bio,
+    webSite: this.props.request.websiteAddress,
     showRequestModal: this.props.show,
   };
 
@@ -36,15 +38,15 @@ class FilledAgentRequest extends Component {
           <div className="text-center pt-5">
             <img
               alt=""
-              width="100"
-              height="100"
-              src="/images/iconfinder_00-ELASTOFONT-STORE-READY_user-circle_2703062.png"
+              width="50"
+              height="50"
+              src="/images/agent-verification.png"
             />
           </div>
           <div className="mt-5">
             <div className="d-inline-flex w-50">
               <div class="form-group w-100 pr-5">
-                <label for="firstName">Name:</label>
+                <label for="firstName">Name and surname:</label>
                 <input
                   type="text"
                   name="name"
@@ -76,15 +78,14 @@ class FilledAgentRequest extends Component {
               <div class="form-group w-100 pr-5">
                 <label for="dateofbirth">Date of birth:</label>
                 <div className="d-block w-100">
-                  <DatePicker
-                    className="form-control w-100"
-                    id="dateofbirth"
-                    name="dueDate"
+                  <input
+                    type="text"
+                    name="dateOfBirth"
                     disabled={true}
-                    dateFormat="dd/MM/yyyy"
-                    selected={this.state.dateOfBirth}
-                    maxDate={new Date()}
-                    onChange={(e) => this.handleChangeDate(e)}
+                    value={this.state.dateOfBirth}
+                    class="form-control"
+                    id="dateOfBirth"
+                    placeholder="Enter date of birth"
                   />
                 </div>
               </div>
@@ -129,8 +130,8 @@ class FilledAgentRequest extends Component {
                   name="gender"
                 >
                   <option value=""> </option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
                 </select>
               </div>
             </div>
@@ -167,15 +168,43 @@ class FilledAgentRequest extends Component {
           </div>
         </ModalBody>
         <ModalFooter>
-          <button class="accept">
+          <button
+            class="accept"
+            onClick={() => {
+              this.accept();
+            }}
+          >
             ACCEPT <span class="fa fa-check"></span>
           </button>
-          <button class="deny">
+          <button
+            class="deny"
+            onClick={() => {
+              this.deny();
+            }}
+          >
             DENY <span class="fa fa-close"></span>
           </button>
         </ModalFooter>
       </Modal>
     );
+  }
+
+  async accept() {
+    debugger;
+    var agentRequest = this.props.request;
+    agentRequest.isApproved = true;
+    agentRequest.AgentRequestAction = "accepted";
+    await this.props.updateAgentRequest(agentRequest);
+    this.toggle();
+  }
+
+  async deny() {
+    debugger;
+    var agentRequest = this.props.request;
+    agentRequest.isApproved = false;
+    agentRequest.AgentRequestAction = "denied";
+    await this.props.updateAgentRequest(agentRequest);
+    this.toggle();
   }
 
   toggle() {
@@ -185,4 +214,9 @@ class FilledAgentRequest extends Component {
   }
 }
 
-export default FilledAgentRequest;
+const mapStateToProps = (state) => ({});
+
+export default compose(
+  withRouter,
+  connect(mapStateToProps, { updateAgentRequest })
+)(FilledAgentRequest);

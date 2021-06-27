@@ -14,7 +14,7 @@ namespace UserMicroservice.Core.Interface.Repository
 
         public Maybe<User> GetRoleByUsername(String username);
 
-        public IEnumerable<RegisteredUser> GetBy(string name, string access);
+        public IEnumerable<RegisteredUser> GetBy(string id, string name, string access);
 
         public void Follow(Guid id, Guid followedById, Guid followingId);
 
@@ -44,12 +44,14 @@ namespace UserMicroservice.Core.Interface.Repository
 
         public void DeleteFollowRequests(Guid blockedById, Guid blockingId);
 
-        public Maybe<RegisteredUser> GetByIdWithoutBlocked(Guid loggedId, Guid userId);
+        public Maybe<User> GetByIdWithoutBlocked(Guid loggedId, Guid userId);
 
         public IEnumerable<RegisteredUser> GetByWithoutBlocked(Guid loggedId, string name, string access);
 
         public RegisteredUser EditVerifiedUser(VerifiedUser registeredUser);
 
         public void BanUser(Guid id);
+
+        public RegisteredUser EditAgent(Agent agent);
     }
 }

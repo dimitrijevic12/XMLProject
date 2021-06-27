@@ -25,6 +25,12 @@ class NotLoggedNavigationBar extends Component {
               <DropdownItem>
                 <NavLink to="/login">Login</NavLink>
               </DropdownItem>
+              <DropdownItem divider />
+              <DropdownItem>
+                <NavLink to="/not-logged-agent-registration">
+                  Agent Registration
+                </NavLink>
+              </DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
         </React.Fragment>

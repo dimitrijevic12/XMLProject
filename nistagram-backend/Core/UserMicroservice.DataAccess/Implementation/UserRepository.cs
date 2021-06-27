@@ -17,7 +17,7 @@ namespace UserMicroservice.DataAccess.Implementation
     public class UserRepository : Repository, IUserRepository
     {
         public RegisteredUserAdapter _registeredUserTarget = new RegisteredUserAdapter(new RegisteredUserAdaptee());
-        public ITarget _userModelTarget = new UserModelAdapter(new UserModelAdaptee());
+        public UserModelAdapter _userModelTarget = new UserModelAdapter(new UserModelAdaptee());
         public ITarget _followRequestTarget = new FollowRequestAdapter(new FollowRequestAdaptee());
 
         public UserRepository(IConfiguration configuration) : base(configuration)
@@ -105,6 +105,39 @@ namespace UserMicroservice.DataAccess.Implementation
             return registeredUser;
         }
 
+        public RegisteredUser EditAgent(Agent registeredUser)
+        {
+            StringBuilder queryBuilder = new StringBuilder("UPDATE dbo.RegisteredUser ");
+            queryBuilder.Append("SET username = @username, email = @email, first_name = @first_name, last_name = @last_name, date_of_birth = @date_of_birth," +
+                " phone_number = @phone_number, gender = @gender, website_address = @website_address, bio = @bio, is_private = @is_private," +
+                " is_accepting_messages = @is_accepting_messages, is_accepting_tags = @is_accepting_tags, type = @type ");
+            queryBuilder.Append("WHERE id = @id;");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+            {
+                new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = registeredUser.Id },
+                 new SqlParameter("@username", SqlDbType.NVarChar) { Value = registeredUser.Username.ToString() },
+                 new SqlParameter("@email", SqlDbType.NVarChar) { Value = registeredUser.EmailAddress.ToString() },
+                 new SqlParameter("@first_name", SqlDbType.NVarChar) { Value = registeredUser.FirstName.ToString() },
+                 new SqlParameter("@last_name", SqlDbType.NVarChar) { Value = registeredUser.LastName.ToString() },
+                 new SqlParameter("@date_of_birth", SqlDbType.NVarChar) { Value = registeredUser.DateOfBirth.ToString() },
+                 new SqlParameter("@phone_number", SqlDbType.NVarChar) { Value = registeredUser.PhoneNumber.ToString() },
+                 new SqlParameter("@gender", SqlDbType.NVarChar) { Value = registeredUser.Gender.ToString() },
+                 new SqlParameter("@website_address", SqlDbType.NVarChar) { Value = registeredUser.WebsiteAddress.ToString() },
+                 new SqlParameter("@bio", SqlDbType.NVarChar) { Value = registeredUser.Bio.ToString() },
+                 new SqlParameter("@is_private", SqlDbType.Bit) { Value = registeredUser.IsPrivate },
+                 new SqlParameter("@is_accepting_messages", SqlDbType.Bit) { Value = registeredUser.IsAcceptingMessages },
+                 new SqlParameter("@is_accepting_tags", SqlDbType.Bit) { Value = registeredUser.IsAcceptingTags },
+                 new SqlParameter("@type", SqlDbType.NVarChar) { Value = registeredUser.GetType().Name },
+            };
+
+            ExecuteQuery(query, parameters);
+
+            return registeredUser;
+        }
+
         public IEnumerable<RegisteredUser> GetAll()
         {
             throw new NotImplementedException();
@@ -154,9 +187,9 @@ namespace UserMicroservice.DataAccess.Implementation
             return dataTable.Rows.Count > 0;
         }
 
-        public Maybe<RegisteredUser> GetByIdWithoutBlocked(Guid loggedId, Guid userId)
+        public Maybe<User> GetByIdWithoutBlocked(Guid loggedId, Guid userId)
         {
-            if (IsBlocked(loggedId, userId)) return Maybe<RegisteredUser>.None;
+            if (IsBlocked(loggedId, userId)) return Maybe<User>.None;
             StringBuilder queryBuilder = new StringBuilder("SELECT * ");
             queryBuilder.Append("FROM dbo.RegisteredUser ");
             queryBuilder.Append("WHERE id = @Id AND is_banned=0;");
@@ -171,13 +204,32 @@ namespace UserMicroservice.DataAccess.Implementation
 
             if (dataTable.Rows.Count > 0)
             {
-                return (RegisteredUser)_registeredUserTarget.ConvertSql(
+                if (dataTable.Rows[0][13].Equals("default"))
+                {
+                    return (RegisteredUser)_userModelTarget.ConvertSql(
+                  dataTable.Rows[0], GetBlocking(userId), GetBlockedBy(userId),
+                  GetMuted(userId), GetMutedBy(userId), GetFollowing(userId), GetFollowers(userId),
+                  GetMyCloseFriends(userId), GetCloseFriendsTo(userId)
+                );
+                }
+                else if (dataTable.Rows[0][13].Equals("Agent"))
+                {
+                    return (Agent)_userModelTarget.ConvertSql(
+                 dataTable.Rows[0], GetBlocking(userId), GetBlockedBy(userId),
+                 GetMuted(userId), GetMutedBy(userId), GetFollowing(userId), GetFollowers(userId),
+                 GetMyCloseFriends(userId), GetCloseFriendsTo(userId)
+                 );
+                }
+                else
+                {
+                    return (VerifiedUser)_userModelTarget.ConvertSql(
                    dataTable.Rows[0], GetBlocking(userId), GetBlockedBy(userId),
                    GetMuted(userId), GetMutedBy(userId), GetFollowing(userId), GetFollowers(userId),
                    GetMyCloseFriends(userId), GetCloseFriendsTo(userId)
                 );
+                }
             }
-            return Maybe<RegisteredUser>.None;
+            return Maybe<User>.None;
         }
 
         public Maybe<RegisteredUser> GetByUsername(String username)
@@ -223,13 +275,15 @@ namespace UserMicroservice.DataAccess.Implementation
             if (dataTable.Rows.Count > 0)
             {
                 return (User)_userModelTarget.ConvertSql(
-                dataTable.Rows[0]
+                dataTable.Rows[0], new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>(),
+                new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>(),
+                new List<RegisteredUser>()
                 );
             }
             return Maybe<User>.None;
         }
 
-        public IEnumerable<RegisteredUser> GetBy(string name, string access)
+        public IEnumerable<RegisteredUser> GetBy(string id, string name, string access)
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT * ");
             queryBuilder.Append("FROM dbo.RegisteredUser ");
@@ -246,7 +300,7 @@ namespace UserMicroservice.DataAccess.Implementation
                     if (needsAnd)
                         queryBuilder.Append("AND ");
 
-                    queryBuilder.Append("LOWER(username) like LOWER(@Name) OR LOWER(first_name) like LOWER(@Name) OR LOWER(last_name) like LOWER(@Name)");
+                    queryBuilder.Append("(LOWER(username) like LOWER(@Name) OR LOWER(first_name) like LOWER(@Name) OR LOWER(last_name) like LOWER(@Name)) ");
                     SqlParameter parameterName = new SqlParameter("@Name", SqlDbType.NVarChar) { Value = "%" + name + "%" };
                     parameters.Add(parameterName);
                     needsAnd = true;
@@ -269,14 +323,23 @@ namespace UserMicroservice.DataAccess.Implementation
 
             DataTable dataTable = ExecuteQuery(query, parameters);
 
-            return (from DataRow dataRow in dataTable.Rows
+            List<RegisteredUser> resultUsers = (from DataRow dataRow in dataTable.Rows
 
-                    select (RegisteredUser)_registeredUserTarget.ConvertSql(dataRow,
-                    GetBlocking((Guid)dataRow[0]), GetBlockedBy((Guid)dataRow[0]),
-                    GetMuted((Guid)dataRow[0]), GetMutedBy((Guid)dataRow[0]), GetFollowing((Guid)dataRow[0]),
-                    GetFollowers((Guid)dataRow[0]), GetMyCloseFriends((Guid)dataRow[0]),
-                    GetCloseFriendsTo((Guid)dataRow[0])
-                    )).ToList();
+                                                select (RegisteredUser)_registeredUserTarget.ConvertSql(dataRow,
+                                                GetBlocking((Guid)dataRow[0]), GetBlockedBy((Guid)dataRow[0]),
+                                                GetMuted((Guid)dataRow[0]), GetMutedBy((Guid)dataRow[0]), GetFollowing((Guid)dataRow[0]),
+                                                GetFollowers((Guid)dataRow[0]), GetMyCloseFriends((Guid)dataRow[0]),
+                                                GetCloseFriendsTo((Guid)dataRow[0])
+                                                )).ToList();
+            if (new Guid(id) != new Guid())
+            {
+                List<RegisteredUser> blockedUsers = GetBlocking(new Guid(id)).ToList();
+                foreach (var user in blockedUsers) resultUsers.Remove(user);
+                blockedUsers = GetBlockedBy(new Guid(id)).ToList();
+                foreach (var user in blockedUsers) resultUsers.Remove(user);
+            }
+
+            return resultUsers;
         }
 
         public IEnumerable<RegisteredUser> GetByWithoutBlocked(Guid loggedId, string name, string access)
@@ -298,7 +361,7 @@ namespace UserMicroservice.DataAccess.Implementation
                     if (needsAnd)
                         queryBuilder.Append("AND ");
 
-                    queryBuilder.Append("LOWER(r.username) like LOWER(@Name) OR LOWER(r.first_name) like LOWER(@Name) OR LOWER(r.last_name) like LOWER(@Name)");
+                    queryBuilder.Append("LOWER(r.username) like LOWER(@Name) OR LOWER(r.first_name) like LOWER(@Name) OR LOWER(r.last_name) like LOWER(@Name) ");
                     SqlParameter parameterName = new SqlParameter("@Name", SqlDbType.NVarChar) { Value = "%" + name + "%" };
                     parameters.Add(parameterName);
                     needsAnd = true;

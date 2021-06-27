@@ -29,6 +29,8 @@ import DislikedPostsPage from "./pages/DislikedPostsPage";
 import ChangeNotificationSettingsPage from "./pages/ChangeNotificationSettingsPage";
 import NotificationsPage from "./pages/NotificationsPage";
 import ReportsPage from "./pages/ReportsPage";
+import AgentRegistrationPage from "./pages/AgentRegistrationPage";
+import NotLoggedAgentRegistrationPage from "./pages/NotLoggedAgentRegistrationPage";
 
 function App() {
   return (
@@ -40,6 +42,9 @@ function App() {
           </Route>
           <Route exact path="/login">
             <LoginPage />
+          </Route>
+          <Route exact path="/not-logged-agent-registration">
+            <NotLoggedAgentRegistrationPage />
           </Route>
           <ProtectedRoute exact path="/post" component={CreatePostPage} />
           <ProtectedRoute exact path="/story" component={CreateStoryPage} />
@@ -101,6 +106,9 @@ function App() {
           </Route>
           <Route exact path="/reports">
             <ReportsPage />
+          </Route>
+          <Route exact path="/agent-registration">
+            <AgentRegistrationPage />
           </Route>
           <ProtectedRoute
             path="/change-notification-settings"

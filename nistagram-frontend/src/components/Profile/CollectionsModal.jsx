@@ -44,7 +44,7 @@ class CollectionsModal extends Component {
                     <div className="float-right">
                       <button
                         onClick={() => this.createHighlight()}
-                        className="btn btn-sm"
+                        className="btn btn-sm btn-primary"
                       >
                         +
                       </button>
@@ -67,7 +67,7 @@ class CollectionsModal extends Component {
                       <div className="float-right">
                         <button
                           onClick={() => this.addStoryToHighlight(f.id)}
-                          className="btn btn-sm"
+                          className="btn btn-sm btn-primary"
                         >
                           +
                         </button>
