@@ -9,3 +9,4 @@ C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.Core\obj\De
 C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.Core\obj\Debug\net5.0\AgentApp.Core.dll
 C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.Core\obj\Debug\net5.0\ref\AgentApp.Core.dll
 C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.Core\obj\Debug\net5.0\AgentApp.Core.pdb
+C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.Core\obj\Debug\net5.0\AgentApp.Core.csprojAssemblyReference.cache

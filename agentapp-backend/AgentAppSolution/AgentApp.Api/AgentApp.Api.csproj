@@ -13,4 +13,9 @@
     <ProjectReference Include="..\AgentApp.DataAccess\AgentApp.DataAccess.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DTOs\" />
+    <Folder Include="Factories\" />
+  </ItemGroup>
+
 </Project>

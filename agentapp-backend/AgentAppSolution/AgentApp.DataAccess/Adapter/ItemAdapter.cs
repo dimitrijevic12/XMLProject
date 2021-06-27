@@ -1,12 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AgentApp.DataAccess.Adaptee;
+using AgentApp.DataAccess.Target;
+using System.Data;
 
 namespace AgentApp.DataAccess.Adapter
 {
-    class ItemAdapter
+    public class ItemAdapter : ITarget
     {
+        private readonly ItemAdaptee itemAdaptee;
+
+        public ItemAdapter(ItemAdaptee itemAdaptee)
+        {
+            this.itemAdaptee = itemAdaptee;
+        }
+
+        public object ConvertSql(DataRow dataRow)
+        {
+            return itemAdaptee.ConvertSqlDataReaderToItem(dataRow);
+        }
     }
 }

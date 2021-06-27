@@ -12,7 +12,7 @@ namespace AgentApp.Core.Model
             this.price = price;
         }
 
-        public static Result<Price> Create(int price)
+        public static Result<Price> Create(float price)
         {
             if (price < 0) return Result.Failure<Price>("Price can't be less than 0");
             return Result.Success(new Price(price));
