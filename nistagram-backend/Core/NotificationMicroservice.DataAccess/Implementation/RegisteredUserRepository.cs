@@ -87,31 +87,6 @@ namespace NotificationMicroservice.DataAccess.Implementation
             return registeredUser;
         }
 
-        private RegisteredUser EditNotificationOptions(RegisteredUser registeredUser)
-        {
-            StringBuilder queryBuilder = new StringBuilder("UPDATE dbo.NotificationOptions ");
-            queryBuilder.Append("SET is_notified_by_follow_requests = @is_notified_by_follow_requests,  " +
-                "is_notified_by_messages = @is_notified_by_messages, is_notified_by_posts = @is_notified_by_posts, " +
-                "is_notified_by_stories = @is_notified_by_stories, is_notified_by_comments = @is_notified_by_comments ");
-            queryBuilder.Append("WHERE id = @id;");
-
-            string query = queryBuilder.ToString();
-
-            List<SqlParameter> parameters = new List<SqlParameter>
-            {
-                new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = registeredUser.NotificationOptions.Id },
-                 new SqlParameter("@is_notified_by_follow_requests", SqlDbType.Bit) { Value = registeredUser.NotificationOptions.IsNotifiedByFollowRequests },
-                 new SqlParameter("@is_notified_by_messages", SqlDbType.Bit) { Value = registeredUser.NotificationOptions.IsNotifiedByMessages },
-                 new SqlParameter("@is_notified_by_posts", SqlDbType.Bit) { Value = registeredUser.NotificationOptions.IsNotifiedByPosts },
-                 new SqlParameter("@is_notified_by_stories", SqlDbType.Bit) { Value = registeredUser.NotificationOptions.IsNotifiedByStories },
-                 new SqlParameter("@is_notified_by_comments", SqlDbType.Bit) { Value = registeredUser.NotificationOptions.IsNotifiedByComments }
-            };
-
-            ExecuteQuery(query, parameters);
-
-            return registeredUser;
-        }
-
         public void Delete(Guid id)
         {
             throw new NotImplementedException();

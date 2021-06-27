@@ -68,7 +68,6 @@ namespace NotificationMicroservice.Api.Consumers
         {
             return RegisteredUser.Create(message.Id,
                                            Username.Create(message.Username).Value,
-                                           NotificationOptions.Create(message.Id, true, true, true, true, true).Value,
                                            ProfilePicturePath.Create("").Value).Value;
         }
     }
