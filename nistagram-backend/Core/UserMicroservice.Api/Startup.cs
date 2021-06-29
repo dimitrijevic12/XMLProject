@@ -52,6 +52,7 @@ namespace UserMicroservice.Api
 
             services.AddScoped<UserService>();
             services.AddScoped<VerificationRequestService>();
+            services.AddScoped<AgentRequestService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IAdminRepository, AdminRepository>();
             services.AddScoped<IVerificationRequestRepository, VerificationRequestRepository>();
@@ -65,7 +66,9 @@ namespace UserMicroservice.Api
             services.AddScoped<AgentRequestFactory>();
 
             services.AddScoped<UnsuccessfulStoryUserRegistrationEventConsumer>();
+            services.AddScoped<UnsuccessfulStoryUserEditEventConsumer>();
             services.AddScoped<UserRegistrationCompletedEventConsumer>();
+            services.AddScoped<UserEditCompletedEventConsumer>();
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {

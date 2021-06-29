@@ -64,7 +64,9 @@ namespace StoryMicroservice.Api
             Configuration.GetSection(nameof(StoryDatabaseSettings)));
 
             services.AddScoped<UnsuccessfulPostUserRegistrationEventConsumer>();
+            services.AddScoped<UnsuccessfulPostUserEditEventConsumer>();
             services.AddScoped<UserRegisteredEventConsumer>();
+            services.AddScoped<UserEditedEventConsumer>();
 
             services.AddSingleton<IStoryDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<StoryDatabaseSettings>>().Value);

@@ -107,7 +107,7 @@ class ApprovalAgentRequest extends Component {
   }
 
   registerAgent() {
-    window.location.href = "http://localhost:3000/registration";
+    window.location = "http://localhost:3000/not-logged-agent-registration";
   }
 
   displayModalRequest(f) {

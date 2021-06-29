@@ -42,10 +42,32 @@ namespace StoryMicroservice.Core.Services
             return Result.Success(registeredUser);
         }
 
+        public async Task<Result> EditRegistrationAsync(RegisteredUser registeredUser)
+        {
+            return Edit(registeredUser.Id.ToString(), registeredUser);
+        }
+
         public Result Edit(string id, RegisteredUser registeredUser)
         {
+            if (!_userRepository.GetById(registeredUser.Id).Value.Username.Equals(registeredUser.Username))
+            {
+                if (_userRepository.GetByUsername(registeredUser.Username).HasValue) return Result.Failure("There is already user with that username");
+            }
             _userRepository.Edit(id, registeredUser);
             return Result.Success(registeredUser);
+        }
+
+        public Task RejectEditAsync(RegisteredUser user, string reason)
+        {
+            _userRepository.Edit(user.Id.ToString(), user);
+
+            return Task.CompletedTask;
+        }
+
+        private List<string> CreateIds(IEnumerable<Core.Model.RegisteredUser> registeredUsers)
+        {
+            var test = registeredUsers.Select(registeredUser => registeredUser.Id.ToString()).ToList();
+            return test;
         }
 
         public Result AddCloseFriend(string id, string closeFriendId)

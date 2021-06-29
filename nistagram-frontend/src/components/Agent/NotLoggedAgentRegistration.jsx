@@ -1,11 +1,7 @@
 import React, { Component } from "react";
+import { createAgentRequest } from "../../actions/actionsAgent";
+import { userRegistration } from "../../actions/actionsUser";
 import DatePicker from "react-datepicker";
-import {
-  editUser,
-  editUserForPost,
-  getLoggedUser,
-  editUserForStory,
-} from "../../actions/actionsUser";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
 import { withRouter } from "react-router-dom";
@@ -13,7 +9,7 @@ import { compose } from "redux";
 import "react-toastify/dist/ReactToastify.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
 
-class EditProfile extends Component {
+class NotLoggedAgentRegistration extends Component {
   state = {
     id: 1,
     firstName: "",
@@ -25,63 +21,14 @@ class EditProfile extends Component {
     username: "",
     bio: "",
     webSite: "",
-    profilePicturePath: "",
-    blockedUsers: [],
-    blockedByUsers: [],
-    mutedUsers: [],
-    mutedByUsers: [],
-    following: [],
-    followers: [],
-    myCloseFriends: [],
-    closeFriendTo: [],
+    password: "",
+    repeatPassword: "",
     isPrivate: false,
     isAcceptingMessages: false,
     isAcceptingTags: false,
-    isBanned: false,
-  };
-
-  componentDidMount() {
-    this.props.getLoggedUser();
-  }
-
-  changeState = (loggedUser) => {
-    debugger;
-    this.setState({
-      id: loggedUser.id,
-      firstName: loggedUser.firstName,
-      lastName: loggedUser.lastName,
-      email: loggedUser.emailAddress,
-      phoneNumber: loggedUser.phoneNumber,
-      dateOfBirth: new Date(loggedUser.dateOfBirth),
-      gender: loggedUser.gender,
-      username: loggedUser.username,
-      bio: loggedUser.bio,
-      webSite: loggedUser.websiteAddress,
-      profilePicturePath: loggedUser.profilePicturePath,
-      blockedUsers: loggedUser.blockedUsers,
-      blockedByUsers: loggedUser.blockedByUsers,
-      mutedUsers: loggedUser.mutedUsers,
-      mutedByUsers: loggedUser.mutedByUsers,
-      following: loggedUser.following,
-      followers: loggedUser.followers,
-      closeFriendTo: loggedUser.closeFriendTo,
-      myCloseFriends: loggedUser.myCloseFriends,
-      isPrivate: loggedUser.isPrivate,
-      isAcceptingTags: loggedUser.isAcceptingTags,
-      isAcceptingMessages: loggedUser.isAcceptingMessages,
-    });
   };
 
   render() {
-    debugger;
-    if (this.props.loggedUser === undefined) {
-      return null;
-    }
-
-    const loggedUser = this.props.loggedUser;
-    if (this.state.firstName === "") {
-      this.changeState(loggedUser);
-    }
     return (
       <React.Fragment>
         <main className="main pt-0 pb-0" style={{ backgroundColor: "#4da3ff" }}>
@@ -89,9 +36,9 @@ class EditProfile extends Component {
             <div className="text-center pt-5">
               <img
                 alt=""
-                width="100"
-                height="100"
-                src="/images/iconfinder_00-ELASTOFONT-STORE-READY_user-circle_2703062.png"
+                width="50"
+                height="50"
+                src="/images/agent-verification.png"
               />
             </div>
             <div className="mt-5">
@@ -217,7 +164,36 @@ class EditProfile extends Component {
                 </div>
               </div>
             </div>
-
+            <div className="mt-5">
+              <div className="d-inline-flex w-50">
+                <div class="form-group w-100 pr-5">
+                  <label for="firstName">Password:</label>
+                  <input
+                    type="password"
+                    name="password"
+                    value={this.state.password}
+                    onChange={this.handleChange}
+                    class="form-control"
+                    id="password"
+                    placeholder="Enter password"
+                  />
+                </div>
+              </div>
+              <div className="d-inline-flex w-50">
+                <div class="form-group w-100 pr-5">
+                  <label for="lastName">Repeat password:</label>
+                  <input
+                    type="password"
+                    name="repeatPassword"
+                    value={this.state.repeatPassword}
+                    onChange={this.handleChange}
+                    class="form-control"
+                    id="repeatPassword"
+                    placeholder="Repeat password"
+                  />
+                </div>
+              </div>
+            </div>
             <div className="mt-5">
               <div className="d-inline-flex w-50">
                 <div class="form-group w-100 pr-5">
@@ -243,7 +219,6 @@ class EditProfile extends Component {
                     type="checkbox"
                     id="isPrivate"
                     name="isPrivate"
-                    checked={this.state.isPrivate}
                     onChange={this.handleChangeCheckboxPrivate}
                   />
                   <br />
@@ -254,7 +229,6 @@ class EditProfile extends Component {
                     type="checkbox"
                     id="isAcceptingMessages"
                     name="isAcceptingMessages"
-                    checked={this.state.isAcceptingMessages}
                     onChange={this.handleChangeCheckboxMessages}
                   />
                   <br />
@@ -265,7 +239,6 @@ class EditProfile extends Component {
                     type="checkbox"
                     id="isAcceptingTags"
                     name="isAcceptingTags"
-                    checked={this.state.isAcceptingTags}
                     onChange={this.handleChangeCheckboxTags}
                   />
                 </div>
@@ -273,10 +246,23 @@ class EditProfile extends Component {
             </div>
             <div className="mt-5 pb-5">
               <button
-                onClick={this.edit.bind(this)}
+                disabled={
+                  this.state.password != this.state.repeatPassword ||
+                  this.state.firstName === "" ||
+                  this.state.lastName === "" ||
+                  this.state.username === "" ||
+                  this.state.phoneNumber === "" ||
+                  this.state.dateOfBirth === "" ||
+                  this.state.phoneNumber === "" ||
+                  this.state.gender === "" ||
+                  this.state.bio === "" ||
+                  this.state.website === "" ||
+                  this.state.password === ""
+                }
                 className="btn btn-lg btn-primary btn-block"
+                onClick={this.register.bind(this)}
               >
-                Save changes
+                Register
               </button>
             </div>
           </div>
@@ -297,71 +283,35 @@ class EditProfile extends Component {
         });
   };
 
-  handleChangeDate = (e) => {
-    this.setState({
-      dateOfBirth: e,
-    });
-  };
-
   handleChangeCheckboxPrivate = (e) => {
-    debugger;
     this.setState({
       isPrivate: !this.state.isPrivate,
     });
-    var test = this.state.isPrivate;
   };
 
   handleChangeCheckboxMessages = (e) => {
-    debugger;
     this.setState({
       isAcceptingMessages: !this.state.isAcceptingMessages,
     });
   };
 
   handleChangeCheckboxTags = (e) => {
-    debugger;
     this.setState({
       isAcceptingTags: !this.state.isAcceptingTags,
     });
   };
 
-  async edit() {
+  handleChangeDate = (e) => {
+    this.setState({
+      dateOfBirth: e,
+    });
+  };
+
+  async register() {
+    debugger;
     debugger;
     var successful = false;
-    // successful = await this.props.editUserForStory({
-    //   Id: this.state.id,
-    //   Username: this.state.username,
-    //   FirstName: this.state.firstName,
-    //   LastName: this.state.lastName,
-    //   IsPrivate: this.state.isPrivate,
-    //   IsAcceptingTags: this.state.isAcceptingTags,
-    //   IsAcceptingMessages: this.state.isAcceptingMessages,
-    //   ProfilePicturePath: this.state.profilePicturePath,
-    //   BlockedUsers: this.state.blockedUsers,
-    //   BlockedByUsers: this.state.blockedByUsers,
-    //   Following: this.state.following,
-    //   Followers: this.state.followers,
-    //   MyCloseFriends: this.state.myCloseFriends,
-    //   CloseFriendTo: this.state.closeFriendTo,
-    // });
-
-    // successful = await this.props.editUserForPost({
-    //   Id: this.state.id,
-    //   Username: this.state.username,
-    //   EmailAddress: this.state.email,
-    //   FirstName: this.state.firstName,
-    //   LastName: this.state.lastName,
-    //   DateOfBirth: this.state.dateOfBirth,
-    //   PhoneNumber: this.state.phoneNumber,
-    //   Gender: this.state.gender,
-    //   WebsiteAddress: this.state.webSite,
-    //   Bio: this.state.bio,
-    //   IsPrivate: this.state.isPrivate,
-    //   IsAcceptingTags: this.state.isAcceptingTags,
-    //   IsAcceptingMessages: this.state.IsAcceptingMessages,
-    // });
-    successful = await this.props.editUser({
-      Id: this.state.id,
+    successful = await this.props.userRegistration({
       Username: this.state.username,
       EmailAddress: this.state.email,
       FirstName: this.state.firstName,
@@ -372,32 +322,58 @@ class EditProfile extends Component {
       WebsiteAddress: this.state.webSite,
       Bio: this.state.bio,
       IsPrivate: this.state.isPrivate,
-      IsAcceptingTags: this.state.isAcceptingTags,
       IsAcceptingMessages: this.state.isAcceptingMessages,
-      IsBanned: this.state.isBanned,
+      IsAcceptingTags: this.state.isAcceptingTags,
+      Password: this.state.password,
     });
-
     if (successful === true) {
+      await this.props.createAgentRequest({
+        IsApproved: false,
+        RegisteredUser: {
+          Id: this.props.registeredUser.id,
+          Username: this.state.username,
+          EmailAddress: this.state.email,
+          FirstName: this.state.firstName,
+          LastName: this.state.lastName,
+          DateOfBirth: this.state.dateOfBirth,
+          PhoneNumber: this.state.phoneNumber,
+          Gender: this.state.gender,
+          WebsiteAddress: this.state.webSite,
+          Bio: this.state.bio,
+          IsPrivate: this.state.isPrivate,
+          IsAcceptingTags: this.state.isAcceptingTags,
+          IsAcceptingMessages: this.state.isAcceptingMessages,
+          IsBanned: this.state.isBanned,
+        },
+        Username: this.state.username,
+        EmailAddress: this.state.email,
+        FirstName: this.state.firstName,
+        LastName: this.state.lastName,
+        DateOfBirth: this.state.dateOfBirth,
+        PhoneNumber: this.state.phoneNumber,
+        Gender: this.state.gender,
+        WebsiteAddress: this.state.webSite,
+        Bio: this.state.bio,
+        IsPrivate: this.state.isPrivate,
+        IsAcceptingTags: this.state.isAcceptingTags,
+        IsAcceptingMessages: this.state.isAcceptingMessages,
+        Password: this.state.password,
+      });
       this.props.history.replace({
         pathname: "/",
       });
     } else {
       toast.configure();
-      toast.error("Unsuccessful edit!", {
+      toast.error("Unsuccessful registration!", {
         position: toast.POSITION.TOP_RIGHT,
       });
     }
   }
 }
 
-const mapStateToProps = (state) => ({ loggedUser: state.loggedUser });
+const mapStateToProps = (state) => ({ registeredUser: state.registeredUser });
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, {
-    editUser,
-    editUserForPost,
-    getLoggedUser,
-    editUserForStory,
-  })
-)(EditProfile);
+  connect(mapStateToProps, { createAgentRequest, userRegistration })
+)(NotLoggedAgentRegistration);
