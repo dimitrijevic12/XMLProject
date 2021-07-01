@@ -23,6 +23,11 @@ namespace AgentApp.Core.Model
             yield return price;
         }
 
+        public override string ToString()
+        {
+            return this.price.ToString();
+        }
+
         public static implicit operator string(Price price) => price.price.ToString();
     }
 }

@@ -60,7 +60,7 @@ namespace AgentApp.DataAccess.Implementation
 
         public Item Save(Item item)
         {
-            StringBuilder queryBuilder = new StringBuilder("INSERT INTO dbo.AgentRequest ");
+            StringBuilder queryBuilder = new StringBuilder("INSERT INTO dbo.Item ");
             queryBuilder.Append("(id, name, item_image_path, price, available_count ) ");
             queryBuilder.Append("VALUES (@id, @name, @item_image_path, @price, @available_count);");
 
@@ -72,7 +72,7 @@ namespace AgentApp.DataAccess.Implementation
                 new SqlParameter("@name", SqlDbType.NVarChar) { Value = item.Name.ToString() },
                 new SqlParameter("@item_image_path", SqlDbType.NVarChar) { Value = item.ItemImagePath.ToString() },
                 new SqlParameter("@price", SqlDbType.Float) { Value = item.Price.ToString() },
-                new SqlParameter("@available_count", SqlDbType.Int) { Value = item.AvailableCount.ToString() }
+                new SqlParameter("@available_count", SqlDbType.Int) { Value =  item.AvailableCount.ToString() }
             };
 
             ExecuteQuery(query, parameters);

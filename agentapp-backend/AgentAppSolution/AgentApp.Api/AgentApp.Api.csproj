@@ -13,4 +13,8 @@
     <ProjectReference Include="..\AgentApp.DataAccess\AgentApp.DataAccess.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
 </Project>

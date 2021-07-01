@@ -23,6 +23,11 @@ namespace AgentApp.Core.Model
             yield return count;
         }
 
+        public override string ToString()
+        {
+            return this.count.ToString();
+        }
+
         public static implicit operator string(AvailableCount clickCount) => clickCount.count.ToString();
     }
 }

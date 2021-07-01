@@ -4,7 +4,6 @@ import { Table } from "reactstrap";
 import { Card } from "reactstrap";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
-
 import { getItems } from "../../actions/actions";
 
 class ItemsTable extends Component {
@@ -61,8 +60,7 @@ class ItemsTable extends Component {
                       <th style={{ textAlign: "center" }}>Name</th>
                       <th style={{ textAlign: "center" }}>Price</th>
                       <th style={{ textAlign: "center" }}>Available Count</th>
-                      <th style={{ textAlign: "center" }}>Edit</th>
-                      <th style={{ textAlign: "center" }}>Delete</th>
+                      <th style={{ textAlign: "center" }}></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -73,20 +71,13 @@ class ItemsTable extends Component {
                         <td style={{ textAlign: "center" }}>
                           {f.availableCount}
                         </td>
+
                         <td style={{ textAlign: "center" }}>
                           <img
                             onClick={() => {
-                              this.edit(f);
+                              this.view(f);
                             }}
-                            src="/images/edit.png"
-                          />
-                        </td>
-                        <td style={{ textAlign: "center" }}>
-                          <img
-                            onClick={() => {
-                              this.delete(f);
-                            }}
-                            src="/images/trash.png"
+                            src="/images/analytics.png"
                           />
                         </td>
                       </tr>
@@ -111,6 +102,10 @@ class ItemsTable extends Component {
   async delete(item) {
     debugger;
     window.location = "/";
+  }
+
+  view(f) {
+    window.location = "/items/" + f.id;
   }
 
   displayModalPost() {

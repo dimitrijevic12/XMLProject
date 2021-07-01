@@ -30,6 +30,14 @@ namespace AgentApp.Api.Controllers
             return Ok(itemFactory.CreateItems(_itemRepository.GetAll()));
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GeyById(Guid id)
+        {
+            Maybe<Item> item = _itemRepository.GetById(id);
+            if (item.HasNoValue) return BadRequest();
+            return Ok(itemFactory.Create(item.Value));
+        }
+
         [HttpPost]
         public IActionResult Create(DTOs.Item item)
         {
@@ -52,7 +60,6 @@ namespace AgentApp.Api.Controllers
         [HttpPut]
         public IActionResult Edit(DTOs.Item item)
         {
-            Guid id = Guid.NewGuid();
             Result<Name> name = Name.Create(item.Name);
             Result<ItemImagePath> itemImagePath = ItemImagePath.Create(item.ItemImagePath);
             Result<Price> price = Price.Create(item.Price);
@@ -61,17 +68,17 @@ namespace AgentApp.Api.Controllers
             Result result = Result.Combine(name, itemImagePath, price, availableCount);
             if (result.IsFailure) return BadRequest();
 
-            if (_itemRepository.Edit(Item.Create(id, name.Value, itemImagePath.Value,
+            if (_itemRepository.Edit(Item.Create(item.Id, name.Value, itemImagePath.Value,
                 price.Value, availableCount.Value).Value) == null)
                 return BadRequest("Couldn't edit item");
 
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult Delete(Guid id)
+        [HttpDelete]
+        public IActionResult Delete(DTOs.Item item)
         {
-            _itemRepository.Delete(id);
+            _itemRepository.Delete(item.Id);
 
             return NoContent();
         }
