@@ -141,6 +141,11 @@ namespace UserMicroservice.Core.Services
             return Task.CompletedTask;
         }
 
+        public Task CompleteFollowAsync()
+        {
+            return Task.CompletedTask;
+        }
+
         public Task RejectEditAsync(RegisteredUser user, string reason)
         {
             _userRepository.Edit(user);
@@ -216,6 +221,25 @@ namespace UserMicroservice.Core.Services
         public RegisteredUser Save(RegisteredUser obj)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<Result> FollowAsync(Guid id, Guid followedById, Guid followingId)
+        {
+            var result = Follow(id, followedById, followingId);
+            if (result.IsFailure) return Result.Failure(result.Error);
+            await _bus.PubSub.PublishAsync(new UserFollowedEvent
+            {
+                FollowedById = followedById,
+                FollowingId = followingId
+            });
+            return Result.Success();
+        }
+
+        public Task RejectFollowAsync(Guid followedById, Guid followingId, string reson)
+        {
+            _userRepository.DeleteFollow(followedById, followingId);
+
+            return Task.CompletedTask;
         }
 
         public Result Follow(Guid id, Guid followedById, Guid followingId)

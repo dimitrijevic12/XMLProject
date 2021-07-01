@@ -181,10 +181,11 @@ namespace UserMicroservice.Api.Controllers
         }
 
         [HttpPost("follow")]
-        public IActionResult Follow(Follow follow)
+        public async Task<IActionResult> Follow(Follow follow)
         {
             Guid id = Guid.NewGuid();
-            if (userService.Follow(id, follow.FollowedById, follow.FollowingId).IsFailure) return BadRequest();
+            Result result = await userService.FollowAsync(id, follow.FollowedById, follow.FollowingId);
+            if (result.IsFailure) return BadRequest();
             return Created(this.Request.Path + id, "");
         }
 

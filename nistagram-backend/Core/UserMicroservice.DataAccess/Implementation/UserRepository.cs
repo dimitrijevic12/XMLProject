@@ -884,6 +884,22 @@ namespace UserMicroservice.DataAccess.Implementation
             ExecuteQuery(query, parameters);
         }
 
+        public void DeleteFollow(Guid followedById, Guid followingId)
+        {
+            StringBuilder queryBuilder = new StringBuilder("DELETE FROM dbo.Follows ");
+            queryBuilder.Append("WHERE followed_by_id = @followed_by_id AND following_id = @following_id;");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@followed_by_id", SqlDbType.UniqueIdentifier) { Value = followedById },
+                 new SqlParameter("@following_id", SqlDbType.UniqueIdentifier) { Value = followingId }
+             };
+
+            ExecuteQuery(query, parameters);
+        }
+
         public void DeleteFollowRequests(Guid blockedById, Guid blockingId)
         {
             StringBuilder queryBuilder = new StringBuilder("DELETE FROM dbo.FollowRequest ");
