@@ -1,6 +1,7 @@
 ﻿using AgentApp.Api.Factories;
 using AgentApp.Core.Interface.Repository;
 using AgentApp.Core.Model;
+using AgentApp.Core.Services;
 using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,11 +18,13 @@ namespace AgentApp.Api.Controllers
     {
         private readonly ItemFactory itemFactory;
         private readonly IItemRepository _itemRepository;
+        private readonly ItemService itemService;
 
-        public ItemsController(ItemFactory itemFactory, IItemRepository itemRepository)
+        public ItemsController(ItemFactory itemFactory, IItemRepository itemRepository, ItemService itemService)
         {
             this.itemFactory = itemFactory;
             _itemRepository = itemRepository;
+            this.itemService = itemService;
         }
 
         [HttpGet]
@@ -79,6 +82,17 @@ namespace AgentApp.Api.Controllers
         public IActionResult Delete(DTOs.Item item)
         {
             _itemRepository.Delete(item.Id);
+
+            return NoContent();
+        }
+
+        [HttpPut("buy")]
+        public IActionResult Buy(DTOs.BuyItem buyItem)
+        {
+            Maybe<Item> item = _itemRepository.GetById(buyItem.Item.Id);
+            if (item.HasNoValue) return BadRequest();
+            if (itemService.Buy(item.Value, buyItem.Quantity).IsFailure)
+                return BadRequest("Unavailable.");
 
             return NoContent();
         }

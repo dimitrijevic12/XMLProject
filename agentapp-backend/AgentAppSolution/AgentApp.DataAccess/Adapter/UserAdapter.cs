@@ -20,7 +20,7 @@ namespace AgentApp.DataAccess.Adapter
 
         public object ConvertSql(DataRow dataRow)
         {
-            return registeredUserAdaptee.ConvertSqlDataReaderToRegisteredUser(dataRow);
+            return registeredUserAdaptee.ConvertSqlDataReaderToUser(dataRow);
         }
     }
 }

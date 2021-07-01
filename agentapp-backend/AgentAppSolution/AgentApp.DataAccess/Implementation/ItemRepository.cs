@@ -117,5 +117,24 @@ namespace AgentApp.DataAccess.Implementation
 
             ExecuteQuery(query, parameters);
         }
+
+        public Item Buy(Item item, int quantity)
+        {
+            StringBuilder queryBuilder = new StringBuilder("UPDATE dbo.Item ");
+            queryBuilder.Append("SET available_count = @available_count ");
+            queryBuilder.Append("WHERE id = @id;");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+            {
+                new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = item.Id },
+                new SqlParameter("@available_count", SqlDbType.Int) { Value = quantity }
+            };
+
+            ExecuteQuery(query, parameters);
+
+            return item;
+        }
     }
 }

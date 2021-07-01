@@ -1,10 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { getItemById, deleteItem } from "../../actions/actions";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { withRouter } from "react-router-dom";
+import BuyItemModal from "./BuyItemModal";
 
 function ReviewItem(props) {
+  const [item, setItem] = useState({});
+  const [showPostModal, setShowPostModal] = useState(false);
+
   useEffect(() => {
     props.getItemById(props.location.pathname.slice(7));
   }, [props.location.pathname]);
@@ -24,8 +28,6 @@ function ReviewItem(props) {
     );
   };
 
-  debugger;
-
   const editItem = () => {
     sessionStorage.setItem("itemId", props.item.id);
     window.location = "/edit-item";
@@ -36,12 +38,26 @@ function ReviewItem(props) {
     window.location = "/";
   };
 
+  const displayModalPost = (item) => {
+    if (item != undefined) {
+      setItem(item);
+    }
+    setShowPostModal(!showPostModal);
+  };
+
   if (props.item === undefined) {
     return null;
   }
 
   return (
     <React.Fragment>
+      {showPostModal ? (
+        <BuyItemModal
+          show={showPostModal}
+          item={item}
+          onShowChange={() => displayModalPost()}
+        />
+      ) : null}
       <div className="mt-5">
         <div className="d-inline-flex w-50">
           <div class="form-group w-100 pr-5">
@@ -93,25 +109,36 @@ function ReviewItem(props) {
           </div>
         </div>
       </div>
-      <div style={{ textAlign: "center" }} className="mt-5 pb-5">
-        <button
-          onClick={() => {
-            editItem();
-          }}
-          className="btn btn-danger btn-block"
-        >
-          Edit
-        </button>
-        <span style={{ width: 25, display: "inline-block" }}></span>
-        <button
-          onClick={() => {
-            deleteItem();
-          }}
-          className="btn btn-danger btn-block"
-        >
-          Delete
-        </button>
-      </div>
+      {sessionStorage.getItem("roleAgentApp") === "Agent" ? (
+        <div style={{ textAlign: "center" }} className="mt-5 pb-5">
+          <button
+            onClick={() => {
+              editItem();
+            }}
+            className="btn btn-danger"
+          >
+            Edit
+          </button>
+          <span style={{ width: 25, display: "inline-block" }}></span>
+          <button
+            onClick={() => {
+              deleteItem();
+            }}
+            className="btn btn-danger"
+          >
+            Delete
+          </button>
+        </div>
+      ) : (
+        <div style={{ textAlign: "center" }} className="mt-5 pb-5">
+          <button
+            onClick={() => displayModalPost(props.item)}
+            className="btn btn-primary"
+          >
+            Buy
+          </button>
+        </div>
+      )}
     </React.Fragment>
   );
 }

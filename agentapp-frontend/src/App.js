@@ -5,6 +5,8 @@ import ItemsTablePage from "./pages/ItemsTablePage";
 import CreateItemPage from "./pages/CreateItemPage";
 import ReviewItemPage from "./pages/ReviewItemPage";
 import EditItemPage from "./pages/EditItemPage";
+import LoginPage from "./pages/LoginPage";
+import RegistrationPage from "./pages/RegistrationPage";
 
 function App() {
   return (
@@ -18,7 +20,9 @@ function App() {
             <CreateItemPage />
           </Route>
           <Route path="/items/:itemId" component={ReviewItemPage} />
-          <Route path="/edit-item" component={EditItemPage} />
+          <Route exact path="/edit-item" component={EditItemPage} />
+          <Route exact path="/login" component={LoginPage} />
+          <Route exact path="/registration" component={RegistrationPage} />
         </Switch>
       </div>
     </Router>

@@ -5,9 +5,18 @@ import {
   LOAD_IMAGE,
   EDIT_ITEM,
   DELETE_ITEM,
+  GET_LOGGED_USER,
+  REGISTER_USER,
+  BUY_ITEM,
 } from "../types/types";
 
-const initialState = { items: [], item: {}, loadedImage: "" };
+const initialState = {
+  items: [],
+  item: {},
+  loadedImage: "",
+  loggedUser: {},
+  registeredUser: {},
+};
 
 function reducer(state = initialState, action) {
   switch (action.type) {
@@ -35,6 +44,20 @@ function reducer(state = initialState, action) {
         ...state,
       };
     case DELETE_ITEM:
+      return {
+        ...state,
+      };
+    case GET_LOGGED_USER:
+      return {
+        ...state,
+        loggedUser: action.payload,
+      };
+    case REGISTER_USER:
+      return {
+        ...state,
+        registeredUser: action.payload,
+      };
+    case BUY_ITEM:
       return {
         ...state,
       };

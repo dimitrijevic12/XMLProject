@@ -17,7 +17,7 @@ namespace AgentApp.DataAccess.Adaptee
                             Name.Create(dataRow[1].ToString().Trim()).Value,
                             ItemImagePath.Create(dataRow[2].ToString().Trim()).Value,
                             Price.Create(float.Parse(dataRow[3].ToString().Trim())).Value,
-                            AvailableCount.Create(int.Parse(dataRow[3].ToString().Trim())).Value).Value;
+                            AvailableCount.Create(int.Parse(dataRow[4].ToString().Trim())).Value).Value;
         }
     }
 }

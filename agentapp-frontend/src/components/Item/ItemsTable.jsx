@@ -31,14 +31,19 @@ class ItemsTable extends Component {
         <hr />
         <div className="wrap bg-white pt-3">
           <div style={{ textAlign: "right" }}>
-            <button
-              className="btn btn-primary"
-              onClick={() => {
-                this.displayModalPost();
-              }}
-            >
-              Create new item
-            </button>
+            {sessionStorage.getItem("roleAgentApp") === "Agent" ? (
+              <button
+                type="button"
+                className="btn-primary btn"
+                onClick={() => {
+                  this.displayModalPost();
+                }}
+              >
+                Create new item
+              </button>
+            ) : (
+              ""
+            )}
           </div>
           <div style={{ marginTop: "40px" }} id="appointmentTable">
             <Card

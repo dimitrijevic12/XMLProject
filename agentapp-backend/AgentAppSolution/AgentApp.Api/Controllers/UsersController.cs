@@ -29,7 +29,6 @@ namespace AgentApp.Api.Controllers
             _env = env;
         }
 
-        [Authorize(Roles = "RegisteredUser")]
         [HttpPost]
         public async Task<IActionResult> RegisterUser(DTOs.RegisteredUser dto)
         {

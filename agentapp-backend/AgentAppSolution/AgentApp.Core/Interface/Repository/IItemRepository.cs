@@ -9,5 +9,6 @@ namespace AgentApp.Core.Interface.Repository
 {
     public interface IItemRepository : IRepository<Item>
     {
+        public Item Buy(Item item, int quantity);
     }
 }

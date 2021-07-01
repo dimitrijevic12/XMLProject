@@ -3,7 +3,13 @@ import { withRouter } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { NavItem, Nav } from "reactstrap";
 import { NavLink } from "react-router-dom";
-import "../../css/nav.css";
+
+import {
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  UncontrolledDropdown,
+} from "reactstrap";
 
 class NavigationBar extends Component {
   state = {};
@@ -13,7 +19,7 @@ class NavigationBar extends Component {
       return (
         <Nav
           className="navbar navbar-light pl-5 pr-5"
-          style={{ backgroundColor: "#e3f2fd", textDecoration: "none" }}
+          style={{ textDecoration: "none" }}
         >
           <NavItem>
             <NavLink
@@ -22,43 +28,55 @@ class NavigationBar extends Component {
               className="nav-link"
               activeClassName="nav-link-active"
             >
-              Attacks
+              Agent Application
             </NavLink>
           </NavItem>
           <NavItem>
             <NavLink
               exact
-              to="/cbr"
+              to="/"
               className="nav-link"
               activeClassName="nav-link-active"
             >
-              Case Base Reasoning
+              <img src="/images/home.png" />
             </NavLink>
           </NavItem>
-          <NavItem>
-            <NavLink
-              exact
-              to="/bayes"
-              className="nav-link"
-              activeClassName="nav-link-active"
-            >
-              Bayes Reasoning
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink
-              exact
-              to={"/calculator"}
-              className="nav-link"
-              activeClassName="nav-link-active"
-            >
-              Vulnerability Calculator
-            </NavLink>
-          </NavItem>
+
+          <UncontrolledDropdown style={{ float: "right" }}>
+            <DropdownToggle nav caret></DropdownToggle>
+            <DropdownMenu right>
+              <DropdownItem>
+                <NavLink to="/login" onClick={this.logout.bind(this)}>
+                  Logout
+                </NavLink>
+              </DropdownItem>
+            </DropdownMenu>
+          </UncontrolledDropdown>
         </Nav>
       );
     };
     return <NavBar />;
+  }
+
+  logout() {
+    this.removeLocalStorage();
+    this.removeSessionStorage();
+    this.props.history.push("/login");
+  }
+  removeLocalStorage() {
+    localStorage.setItem("storage", "");
+    localStorage.setItem("tokenAgentApp", "");
+    localStorage.setItem("userIdAgentApp", "");
+    localStorage.setItem("roleAgentApp", "");
+    localStorage.setItem("usernameAgentApp", "");
+  }
+
+  removeSessionStorage() {
+    localStorage.setItem("storage", "");
+    sessionStorage.setItem("tokenAgentApp", "");
+    sessionStorage.setItem("userIdAgentApp", "");
+    sessionStorage.setItem("roleAgentApp", "");
+    sessionStorage.setItem("usernameAgentApp", "");
   }
 }
 

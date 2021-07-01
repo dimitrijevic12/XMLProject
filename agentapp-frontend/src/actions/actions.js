@@ -11,6 +11,8 @@ import {
   EDIT_ITEM_ERROR,
   DELETE_ITEM,
   DELETE_ITEM_ERROR,
+  BUY_ITEM,
+  BUY_ITEM_ERROR,
 } from "../types/types";
 import axios from "axios";
 
@@ -144,6 +146,28 @@ export const deleteItem = (item) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: DELETE_ITEM_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const buyItem = (item) => async (dispatch) => {
+  try {
+    const response = await axios.put(
+      "http://localhost:55744/api/items/buy",
+      item,
+      {
+        headers: { "Access-Control-Allow-Origin": "*" },
+      }
+    );
+    dispatch({
+      type: BUY_ITEM,
+      payload: response.data,
+    });
+    return true;
+  } catch (e) {
+    dispatch({
+      type: BUY_ITEM_ERROR,
       payload: console.log(e),
     });
   }
