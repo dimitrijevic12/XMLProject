@@ -29,8 +29,6 @@ namespace CampaignService.DataAccess.Implementation
             queryBuilder.Append("VALUES (@Id, @Target_audience_id, @Agent_id, @Likes_count, @Dislikes_count, @Exposure_count, @Click_count, @Type, @Start_date, @End_date, @Date_of_change);");
 
             string query = queryBuilder.ToString();
-            var campaign2 = (RecurringPostCampaign)campaign;
-            var test = int.Parse(campaign.CampaignStatistics.LikesCount.ToString());
 
             List<SqlParameter> parameters = new List<SqlParameter>
              {
@@ -42,10 +40,21 @@ namespace CampaignService.DataAccess.Implementation
                  new SqlParameter("@Exposure_count", SqlDbType.Int) { Value = int.Parse(campaign.CampaignStatistics.ExposureCount.ToString()) },
                  new SqlParameter("@Click_count", SqlDbType.Int) { Value = int.Parse(campaign.CampaignStatistics.ClickCount.ToString()) },
                  new SqlParameter("@Type", SqlDbType.NVarChar) { Value = campaign.GetType().Name },
-                 new SqlParameter("@Start_date", SqlDbType.DateTime) { Value = campaign2.StartDate },
-                 new SqlParameter("@End_date", SqlDbType.DateTime) { Value = campaign2.EndDate },
-                 new SqlParameter("@Date_of_change", SqlDbType.DateTime) { Value = campaign2.DateOfChange },
              };
+            if (campaign.GetType().Name.Equals("RecurringPostCampaign"))
+            {
+                var campaign2 = (RecurringPostCampaign)campaign;
+                parameters.Add(new SqlParameter("@Start_date", SqlDbType.DateTime) { Value = campaign2.StartDate });
+                parameters.Add(new SqlParameter("@End_date", SqlDbType.DateTime) { Value = campaign2.EndDate });
+                parameters.Add(new SqlParameter("@Date_of_change", SqlDbType.DateTime) { Value = campaign2.DateOfChange });
+            }
+            else
+            {
+                var campaign2 = (RecurringStoryCampaign)campaign;
+                parameters.Add(new SqlParameter("@Start_date", SqlDbType.DateTime) { Value = campaign2.StartDate });
+                parameters.Add(new SqlParameter("@End_date", SqlDbType.DateTime) { Value = campaign2.EndDate });
+                parameters.Add(new SqlParameter("@Date_of_change", SqlDbType.DateTime) { Value = campaign2.DateOfChange });
+            }
 
             ExecuteQuery(query, parameters);
         }
