@@ -6,24 +6,21 @@ namespace CampaignMicroservice.Core.Model
 {
     public class TargetAudience
     {
-        private readonly DateTime minDateOfBirth;
-        private readonly DateTime maxDateOfBirth;
-        private readonly Gender gender;
-        private List<RegisteredUser> audience;
+        public DateTime MinDateOfBirth { get; }
+        public DateTime MaxDateOfBirth { get; }
+        public Gender Gender { get; }
 
-        private TargetAudience(DateTime minDateOfBirth, DateTime maxDateOfBirth, Gender gender,
-            List<RegisteredUser> audience)
+        private TargetAudience(DateTime minDateOfBirth, DateTime maxDateOfBirth, Gender gender)
         {
-            this.minDateOfBirth = minDateOfBirth;
-            this.maxDateOfBirth = maxDateOfBirth;
-            this.gender = gender;
-            this.audience = audience;
+            MinDateOfBirth = minDateOfBirth;
+            MaxDateOfBirth = maxDateOfBirth;
+            Gender = gender;
         }
 
         public static Result<TargetAudience> Create(DateTime minDateOfBirth, DateTime maxDateOfBirth,
-            Gender gender, List<RegisteredUser> audience)
+            Gender gender)
         {
-            return Result.Success(new TargetAudience(minDateOfBirth, maxDateOfBirth, gender, audience));
+            return Result.Success(new TargetAudience(minDateOfBirth, maxDateOfBirth, gender));
         }
     }
 }

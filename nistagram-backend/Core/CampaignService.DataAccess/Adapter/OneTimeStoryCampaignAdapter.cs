@@ -4,7 +4,7 @@ using System.Data;
 
 namespace CampaignService.DataAccess.Adapter
 {
-    public class OneTimeStoryCampaignAdapter : ITarget
+    public class OneTimeStoryCampaignAdapter /*: ITarget*/
     {
         private readonly OneTimeStoryCampaignAdaptee oneTimeStoryCampaignAdaptee;
 
@@ -13,9 +13,9 @@ namespace CampaignService.DataAccess.Adapter
             this.oneTimeStoryCampaignAdaptee = oneTimeStoryCampaignAdaptee;
         }
 
-        public object ConvertSql(DataRow dataRow)
+        /*public object ConvertSql(DataRow dataRow)
         {
             return oneTimeStoryCampaignAdaptee.ConvertSqlDataReaderToOneTimeStoryCampaign(dataRow);
-        }
+        }*/
     }
 }

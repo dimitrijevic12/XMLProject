@@ -7,7 +7,7 @@ namespace CampaignService.DataAccess.Adaptee
 {
     public class RecurringStoryCampaignAdaptee
     {
-        public RecurringStoryCampaign ConvertSqlDataReaderToReccuringStoryCampaign(DataRow dataRow)
+        /*public RecurringStoryCampaign ConvertSqlDataReaderToReccuringStoryCampaign(DataRow dataRow)
         {
             return RecurringStoryCampaign.Create(
                     id: Guid.Parse(dataRow[0].ToString().Trim()),
@@ -26,6 +26,6 @@ namespace CampaignService.DataAccess.Adaptee
                     endDate: DateTime.Parse(dataRow[10].ToString().Trim()),
                     exposureDates: new List<DateTime>(),
                     dateOfChange: DateTime.Parse(dataRow[11].ToString().Trim())).Value;
-        }
+        }*/
     }
 }

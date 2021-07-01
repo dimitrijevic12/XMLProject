@@ -9,24 +9,20 @@ namespace CampaignMicroservice.Core.Model
         private readonly ContentPath contentPath;
         private readonly Link link;
         private readonly ClickCount clickCount;
-        private readonly Campaign campaign;
-        private readonly VerifiedUser verifiedUser;
+        private readonly RegisteredUser profileOwner;
 
-        private Ad(Guid id, ContentPath contentPath, Link link, ClickCount clickCount,
-            Campaign campaign, VerifiedUser verifiedUser)
+        private Ad(Guid id, ContentPath contentPath, Link link, ClickCount clickCount, RegisteredUser profileOwner)
         {
             this.id = id;
             this.contentPath = contentPath;
             this.link = link;
             this.clickCount = clickCount;
-            this.campaign = campaign;
-            this.verifiedUser = verifiedUser;
+            this.profileOwner = profileOwner;
         }
 
-        public static Result<Ad> Create(Guid id, ContentPath contentPath, Link link, ClickCount clickCount,
-            Campaign campaign, VerifiedUser verifiedUser)
+        public static Result<Ad> Create(Guid id, ContentPath contentPath, Link link, ClickCount clickCount, RegisteredUser profileOwner)
         {
-            return Result.Success(new Ad(id, contentPath, link, clickCount, campaign, verifiedUser));
+            return Result.Success(new Ad(id, contentPath, link, clickCount, profileOwner));
         }
     }
 }

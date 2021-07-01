@@ -18,7 +18,7 @@ namespace CampaignMicroservice.Core.Model
             SeenBy = seenBy;
         }
 
-        public Result<ExposureDate> Create(DateTime time, IEnumerable<RegisteredUser> seenBy)
+        public static Result<ExposureDate> Create(DateTime time, IEnumerable<RegisteredUser> seenBy)
         {
             return new ExposureDate(time, seenBy);
         }
