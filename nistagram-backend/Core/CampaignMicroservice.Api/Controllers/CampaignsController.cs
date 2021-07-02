@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Campaign = CampaignMicroservice.Api.DTOs.Campaign;
 using ExposureDate = CampaignMicroservice.Api.DTOs.ExposureDate;
+using RegisteredUser = CampaignMicroservice.Core.Model.RegisteredUser;
 
 namespace CampaignMicroservice.Api.Controllers
 {
@@ -49,7 +50,7 @@ namespace CampaignMicroservice.Api.Controllers
                 List<RegisteredUser> profileOwner = _userRepository.GetById(ad.ProfileOwnerId);
                 ads.Add(_adFactory.Create(ad, profileOwner));
             }*/
-            _campaignRepository.Save(RecurringPostCampaign.Create(Guid.NewGuid(), _targetAudienceFactory.Create(campaign.targetAudience),
+            _campaignRepository.Save(RecurringPostCampaign.Create(Guid.NewGuid(), _targetAudienceFactory.Create(campaign.TargetAudience),
                 Agent.Create(new Guid("FB42F1A1-04D1-4BD1-9642-F60375BB8F59"), Username.Create("test").Value,
                 FirstName.Create("test").Value,
                 LastName.Create("test").Value, new DateTime(), Gender.Create("male").Value,

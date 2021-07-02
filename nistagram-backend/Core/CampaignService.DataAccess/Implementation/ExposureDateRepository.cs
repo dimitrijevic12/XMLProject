@@ -32,7 +32,7 @@ namespace CampaignService.DataAccess.Implementation
 
             DataTable dataTable = ExecuteQuery(query, parameters);
 
-            if (dataTable.Rows.Count > 0)
+            /*if (dataTable.Rows.Count > 0)
             {
                 return (RegisteredUser)_registeredUserTarget.ConvertSql(
                 dataTable.Rows[0], GetBlocking(id), GetBlockedBy(id),
