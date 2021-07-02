@@ -12,13 +12,13 @@ namespace CampaignMicroservice.Core.Services
     public class CampaignService
     {
         private readonly ICampaignRepository _campaignRepository;
-        private readonly IExposureDateRepository _exposureDateRepository;
         private readonly ExposureDateService _exposureDateService;
+        private readonly AdService _adService;
 
-        public CampaignService(ICampaignRepository campaignRepository, IExposureDateRepository exposureDateRepository,
+        public CampaignService(ICampaignRepository campaignRepository, AdService adService,
             ExposureDateService exposureDateService)
         {
-            _exposureDateRepository = exposureDateRepository;
+            _adService = adService;
             _exposureDateService = exposureDateService;
             _campaignRepository = campaignRepository;
         }
@@ -51,6 +51,10 @@ namespace CampaignMicroservice.Core.Services
                 {
                     if (_exposureDateService.Save(exposureDate).IsFailure) return Result.Failure("Exposure date with that id already exist");
                 }
+            }
+            foreach (Ad ad in campaign.Ads)
+            {
+                if (_adService.Save(ad, campaign.Id).IsFailure) return Result.Failure("Ad with that id already exist");
             }
             _campaignRepository.Save(campaign);
             return Result.Success();

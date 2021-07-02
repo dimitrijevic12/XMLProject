@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Ad = CampaignMicroservice.Api.DTOs.Ad;
 using Campaign = CampaignMicroservice.Api.DTOs.Campaign;
 using ExposureDate = CampaignMicroservice.Api.DTOs.ExposureDate;
 using RegisteredUser = CampaignMicroservice.Core.Model.RegisteredUser;
@@ -21,42 +22,38 @@ namespace CampaignMicroservice.Api.Controllers
         private readonly ExposureDateFactory _exposureDateFactory;
         private readonly AdFactory _adFactory;
         private readonly TargetAudienceFactory _targetAudienceFactory;
+        private readonly IUserRepository _userRepository;
 
         public CampaignsController(ICampaignRepository campaignRepository, ExposureDateFactory exposureDateFactory, AdFactory adFactory,
-            TargetAudienceFactory targetAudienceFactory)
+            TargetAudienceFactory targetAudienceFactory, IUserRepository userRepository)
         {
             _campaignRepository = campaignRepository;
             _exposureDateFactory = exposureDateFactory;
             _adFactory = adFactory;
             _targetAudienceFactory = targetAudienceFactory;
+            _userRepository = userRepository;
         }
 
         [HttpPost]
         public IActionResult Save(Campaign campaign)
         {
-            //Agent agent = _userRepository.GetById(campaign.AgentId);
+            Agent agent = (Agent)_userRepository.GetById(campaign.AgentId).Value;
             List<CampaignMicroservice.Core.Model.ExposureDate> exposureDates = new List<CampaignMicroservice.Core.Model.ExposureDate>();
-            /*foreach (ExposureDate exposureDate in campaign.ExposureDates)
+            foreach (ExposureDate exposureDate in campaign.ExposureDates)
             {
                 List<RegisteredUser> seenBy = new List<RegisteredUser>();
                 foreach (Guid registeredUserId in exposureDate.SeenByIds)
-                    seenBy.Add(_userRepository.GetById(registeredUserId));
+                    seenBy.Add(_userRepository.GetById(registeredUserId).Value);
                 exposureDates.Add(_exposureDateFactory.Create(exposureDate, seenBy));
-            }*/
-            //RegisteredUser adOwner = _userRepository.GetById(campaign.ad);
+            }
             List<CampaignMicroservice.Core.Model.Ad> ads = new List<CampaignMicroservice.Core.Model.Ad>();
-            /*foreach (Ad ad in campaign.Ads)
+            foreach (Ad ad in campaign.Ads)
             {
-                List<RegisteredUser> profileOwner = _userRepository.GetById(ad.ProfileOwnerId);
+                RegisteredUser profileOwner = _userRepository.GetById(ad.ProfileOwnerId).Value;
                 ads.Add(_adFactory.Create(ad, profileOwner));
-            }*/
+            }
             _campaignRepository.Save(RecurringPostCampaign.Create(Guid.NewGuid(), _targetAudienceFactory.Create(campaign.TargetAudience),
-                Agent.Create(new Guid("FB42F1A1-04D1-4BD1-9642-F60375BB8F59"), Username.Create("test").Value,
-                FirstName.Create("test").Value,
-                LastName.Create("test").Value, new DateTime(), Gender.Create("male").Value,
-                ProfileImagePath.Create("asd").Value, false, new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>(),
-                new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>(), false,
-                WebsiteAddress.Create("https://github.com/Aleksa1998/XMLProject/blob/main/Documents/campaignmicroserviceERDiagram.jpg").Value).Value,
+                agent,
                 CampaignStatistics.Create(LikesCount.Create(0).Value,
                 DislikesCount.Create(0).Value, ExposureCount.Create(0).Value, ClickCount.Create(0).Value).Value, campaign.StartDate, campaign.EndDate,
                 exposureDates, campaign.DateOfChange, ads

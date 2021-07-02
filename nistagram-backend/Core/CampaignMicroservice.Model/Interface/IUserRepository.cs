@@ -29,5 +29,7 @@ namespace CampaignMicroservice.Core.Interface
         public IEnumerable<RegisteredUser> GetFollowing(Guid id);
 
         public IEnumerable<RegisteredUser> GetFollowers(Guid id);
+        
+        public IEnumerable<RegisteredUser> GetSeenBy(Guid exposureDateId);
     }
 }
