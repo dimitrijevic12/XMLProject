@@ -1,0 +1,12 @@
+C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.Core\bin\Debug\net5.0\AgentApp.Core.deps.json
+C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.Core\bin\Debug\net5.0\AgentApp.Core.dll
+C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.Core\bin\Debug\net5.0\ref\AgentApp.Core.dll
+C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.Core\bin\Debug\net5.0\AgentApp.Core.pdb
+C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.Core\obj\Debug\net5.0\AgentApp.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.Core\obj\Debug\net5.0\AgentApp.Core.AssemblyInfoInputs.cache
+C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.Core\obj\Debug\net5.0\AgentApp.Core.AssemblyInfo.cs
+C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.Core\obj\Debug\net5.0\AgentApp.Core.csproj.CoreCompileInputs.cache
+C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.Core\obj\Debug\net5.0\AgentApp.Core.dll
+C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.Core\obj\Debug\net5.0\ref\AgentApp.Core.dll
+C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.Core\obj\Debug\net5.0\AgentApp.Core.pdb
+C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.Core\obj\Debug\net5.0\AgentApp.Core.csprojAssemblyReference.cache
