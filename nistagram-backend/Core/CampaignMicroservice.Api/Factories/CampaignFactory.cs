@@ -5,33 +5,9 @@ using System.Linq;
 
 namespace CampaignMicroservice.Api.Factories
 {
-    public class CampaignRequestFactory
+    public class CampaignFactory
     {
-        private readonly VerifiedUserFactory verifiedUserFactory;
-
-        public CampaignRequestFactory(VerifiedUserFactory verifiedUserFactory)
-        {
-            this.verifiedUserFactory = verifiedUserFactory;
-        }
-
-        public CampaignRequest Create(Core.Model.CampaignRequest campaignRequest)
-        {
-            return new CampaignRequest
-            {
-                Id = campaignRequest.Id,
-                IsApproved = campaignRequest.IsApproved,
-                VerifiedUser = verifiedUserFactory.Create(campaignRequest.VerifiedUser),
-                Campaign = ConvertCampaign(campaignRequest.Campaign),
-                CampaignRequestAction = campaignRequest.CampaignRequestAction
-            };
-        }
-
-        public IEnumerable<CampaignRequest> CreateCampaignRequests(IEnumerable<Core.Model.CampaignRequest> campaignRequests)
-        {
-            return campaignRequests.Select(campaignRequest => Create(campaignRequest)).ToList();
-        }
-
-        private Campaign ConvertCampaign(Core.Model.Campaign campaign)
+        public Campaign Create(Core.Model.Campaign campaign)
         {
             if (campaign.GetType().Name.Equals("OneTimePostCampaign"))
             {
@@ -39,6 +15,7 @@ namespace CampaignMicroservice.Api.Factories
                 return new Campaign
                 {
                     Id = campaign.Id,
+                    Type = campaign.GetType().Name,
                     TargetAudience = new TargetAudience
                     {
                         MinDateOfBirth = campaign.TargetAudience.MinDateOfBirth,
@@ -59,6 +36,7 @@ namespace CampaignMicroservice.Api.Factories
                 return new Campaign
                 {
                     Id = campaign.Id,
+                    Type = campaign.GetType().Name,
                     TargetAudience = new TargetAudience
                     {
                         MinDateOfBirth = campaign.TargetAudience.MinDateOfBirth,
@@ -79,6 +57,7 @@ namespace CampaignMicroservice.Api.Factories
                 return new Campaign
                 {
                     Id = campaign.Id,
+                    Type = campaign.GetType().Name,
                     TargetAudience = new TargetAudience
                     {
                         MinDateOfBirth = campaign.TargetAudience.MinDateOfBirth,
@@ -99,6 +78,7 @@ namespace CampaignMicroservice.Api.Factories
                 return new Campaign
                 {
                     Id = campaign.Id,
+                    Type = campaign.GetType().Name,
                     TargetAudience = new TargetAudience
                     {
                         MinDateOfBirth = campaign.TargetAudience.MinDateOfBirth,
@@ -113,6 +93,11 @@ namespace CampaignMicroservice.Api.Factories
                     Ads = ConvertAds(campaign.Ads)
                 };
             }
+        }
+
+        public IEnumerable<Campaign> CreateCampaigns(IEnumerable<Core.Model.Campaign> campaigns)
+        {
+            return campaigns.Select(campaign => Create(campaign)).ToList();
         }
 
         private Ad ConvertAd(Core.Model.Ad ad)
@@ -135,12 +120,13 @@ namespace CampaignMicroservice.Api.Factories
 
         private ExposureDate ConvertExposureDate(Core.Model.ExposureDate exposureDate)
         {
-            return new ExposureDate
-            {
-                Id = exposureDate.Id,
-                Time = exposureDate.Time,
-                SeenByIds = ConvertSeenByIds(exposureDate.SeenBy)
-            };
+            return exposureDate != null ?
+             new ExposureDate
+             {
+                 Id = exposureDate.Id,
+                 Time = exposureDate.Time,
+                 SeenByIds = ConvertSeenByIds(exposureDate.SeenBy)
+             } : null;
         }
 
         private IEnumerable<ExposureDate> ConvertExposureDates(IEnumerable<Core.Model.ExposureDate> exposureDates)

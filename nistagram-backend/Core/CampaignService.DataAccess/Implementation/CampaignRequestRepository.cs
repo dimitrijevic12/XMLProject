@@ -16,11 +16,16 @@ namespace CampaignService.DataAccess.Implementation
     {
         public CampaignRequestAdapter _campaignRequestTarget = new CampaignRequestAdapter(new CampaignRequestAdaptee());
         public IUserRepository _userRepository;
+        private readonly IExposureDateRepository _exposureDateRepository;
+        private readonly IAdRepository _adRepository;
 
-        public CampaignRequestRepository(IConfiguration configuration, IUserRepository userRepository) :
+        public CampaignRequestRepository(IConfiguration configuration, IUserRepository userRepository,
+            IExposureDateRepository exposureDateRepository, IAdRepository adRepository) :
             base(configuration)
         {
             _userRepository = userRepository;
+            _exposureDateRepository = exposureDateRepository;
+            _adRepository = adRepository;
         }
 
         public IEnumerable<CampaignRequest> GetBy(Guid userId, string isApproved)
@@ -61,8 +66,9 @@ namespace CampaignService.DataAccess.Implementation
                         _userRepository.GetFollowing(Guid.Parse(dataRow[17].ToString())),
                         _userRepository.GetFollowers(Guid.Parse(dataRow[17].ToString())),
                         _userRepository.GetMutedBy(Guid.Parse(dataRow[17].ToString())),
-                        _userRepository.GetMuted(Guid.Parse(dataRow[17].ToString())), new List<Ad>(),
-                        new List<ExposureDate>(),
+                        _userRepository.GetMuted(Guid.Parse(dataRow[17].ToString())),
+                        _adRepository.GetAdsForCampaign(Guid.Parse(dataRow[13].ToString())),
+                        _exposureDateRepository.GetExposureDatesForCampaign(Guid.Parse(dataRow[13].ToString())),
                         _userRepository.GetBlockedBy(userId),
                         _userRepository.GetBlocking(userId),
                         _userRepository.GetFollowing(userId),
@@ -73,6 +79,10 @@ namespace CampaignService.DataAccess.Implementation
 
         public CampaignRequest Save(CampaignRequest campaignRequest)
         {
+            if (AlreadyRequested(campaignRequest))
+            {
+                return null;
+            }
             StringBuilder queryBuilder = new StringBuilder("INSERT INTO dbo.CampaignRequest ");
             queryBuilder.Append("(id, is_approved, campaign_id, verified_user_id, action) ");
             queryBuilder.Append("VALUES (@id, @is_approved, @campaign_id, @verified_user_id, @action);");
@@ -91,6 +101,24 @@ namespace CampaignService.DataAccess.Implementation
             ExecuteQuery(query, parameters);
 
             return campaignRequest;
+        }
+
+        private bool AlreadyRequested(CampaignRequest campaignRequest)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT * FROM dbo.CampaignRequest ");
+            queryBuilder.Append("WHERE @campaign_id = campaign_id AND @verified_user_id = verified_user_id AND (@action = \'accepted\' OR @action = \'created\'); ");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@campaign_id", SqlDbType.UniqueIdentifier) { Value = campaignRequest.Campaign.Id },
+                 new SqlParameter("@verified_user_id", SqlDbType.UniqueIdentifier) { Value = campaignRequest.VerifiedUser.Id },
+             };
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            return dataTable.Rows.Count > 0;
         }
 
         public CampaignRequest Update(CampaignRequest campaignRequest)

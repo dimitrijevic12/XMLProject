@@ -791,6 +791,17 @@
         }
       ],
       "UpstreamPathTemplate": "/api/agentRequests?{everything}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/campaigns?{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44381
+        }
+      ],
+      "UpstreamPathTemplate": "/api/campaigns?{everything}"
     }
   ],
   "GlobalConfiguration": {
