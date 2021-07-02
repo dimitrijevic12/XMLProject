@@ -2,9 +2,6 @@
 using CSharpFunctionalExtensions;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CampaignMicroservice.Core.Interface
 {
@@ -13,5 +10,7 @@ namespace CampaignMicroservice.Core.Interface
         public void Save(ExposureDate exposureDate, Guid campaignId);
 
         public Maybe<ExposureDate> GetById(Guid id);
+
+        public IEnumerable<ExposureDate> GetExposureDatesForCampaign(Guid campaignId);
     }
 }

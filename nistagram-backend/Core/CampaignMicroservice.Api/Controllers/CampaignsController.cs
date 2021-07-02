@@ -25,9 +25,11 @@ namespace CampaignMicroservice.Api.Controllers
         private readonly TargetAudienceFactory _targetAudienceFactory;
         private readonly IUserRepository _userRepository;
         private readonly CampaignService _campaignService;
+        private readonly CampaignFactory _campaignFactory;
 
         public CampaignsController(ICampaignRepository campaignRepository, ExposureDateFactory exposureDateFactory, AdFactory adFactory,
-            TargetAudienceFactory targetAudienceFactory, IUserRepository userRepository, CampaignService campaignService)
+            TargetAudienceFactory targetAudienceFactory, IUserRepository userRepository, CampaignService campaignService,
+            CampaignFactory campaignFactory)
         {
             _campaignRepository = campaignRepository;
             _exposureDateFactory = exposureDateFactory;
@@ -35,6 +37,7 @@ namespace CampaignMicroservice.Api.Controllers
             _targetAudienceFactory = targetAudienceFactory;
             _userRepository = userRepository;
             _campaignService = campaignService;
+            _campaignFactory = campaignFactory;
         }
 
         [HttpPost]
@@ -87,6 +90,14 @@ namespace CampaignMicroservice.Api.Controllers
                ).Value);
 
             return Ok();
+        }
+
+        [HttpGet]
+        public IActionResult Search([FromQuery] Guid agentId)
+        {
+            if (Request.Query.Count == 0) return BadRequest();
+            if (String.IsNullOrEmpty(agentId.ToString())) return BadRequest();
+            return Ok(_campaignFactory.CreateCampaigns(_campaignRepository.GetBy(agentId)));
         }
     }
 }

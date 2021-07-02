@@ -13,5 +13,7 @@ namespace CampaignMicroservice.Core.Interface
         public void Save(Ad ad, Guid campaignId);
 
         public Maybe<Ad> GetById(Guid id);
+
+        public IEnumerable<Ad> GetAdsForCampaign(Guid campaignId);
     }
 }

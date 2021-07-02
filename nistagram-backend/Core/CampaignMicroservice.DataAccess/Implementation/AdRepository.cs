@@ -68,5 +68,23 @@ namespace CampaignMicroservice.DataAccessImplementation
 
             ExecuteQuery(query, parameters);
         }
+
+        public IEnumerable<Ad> GetAdsForCampaign(Guid campaignId)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT * ");
+            queryBuilder.Append("FROM dbo.Ad ");
+            queryBuilder.Append("WHERE campaign_id = @Id;");
+
+            string query = queryBuilder.ToString();
+
+            SqlParameter parameterId = new SqlParameter("@Id", SqlDbType.UniqueIdentifier) { Value = campaignId };
+
+            List<SqlParameter> parameters = new List<SqlParameter>() { parameterId };
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            return (from DataRow dataRow in dataTable.Rows
+                    select (Ad)_adAdapter.ConvertSql(dataRow, _userRepository.GetById(new Guid(dataRow[5].ToString())).Value)).ToList();
+        }
     }
 }

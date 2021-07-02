@@ -65,5 +65,23 @@ namespace CampaignMicroservice.DataAccessImplementation
 
             ExecuteQuery(query, parameters);
         }
+
+        public IEnumerable<ExposureDate> GetExposureDatesForCampaign(Guid campaignId)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT * ");
+            queryBuilder.Append("FROM dbo.ExposureDates ");
+            queryBuilder.Append("WHERE campaign_id = @Id;");
+
+            string query = queryBuilder.ToString();
+
+            SqlParameter parameterId = new SqlParameter("@Id", SqlDbType.UniqueIdentifier) { Value = campaignId };
+
+            List<SqlParameter> parameters = new List<SqlParameter>() { parameterId };
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            return (from DataRow dataRow in dataTable.Rows
+                    select (ExposureDate)exposureDateAdapter.ConvertSql(dataRow, _userRepository.GetSeenBy(new Guid(dataRow[0].ToString())))).ToList();
+        }
     }
 }

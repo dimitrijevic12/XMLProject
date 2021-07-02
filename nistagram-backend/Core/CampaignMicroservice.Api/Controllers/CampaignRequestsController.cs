@@ -16,31 +16,58 @@ namespace CampaignMicroservice.Api.Controllers
     {
         private readonly ICampaignRequestRepository _campaignRequestRepository;
         private readonly IUserRepository _userRepository;
+        private readonly ICampaignRepository _campaignRepository;
 
         public CampaignRequestsController(ICampaignRequestRepository campaignRequestRepository,
-            IUserRepository userRepository)
+            IUserRepository userRepository, ICampaignRepository campaignRepository)
         {
             _campaignRequestRepository = campaignRequestRepository;
             _userRepository = userRepository;
+            _campaignRepository = campaignRepository;
         }
 
         [HttpPost]
         public IActionResult Create(DTOs.CampaignRequest campaignRequest)
         {
             Guid id = Guid.NewGuid();
-            Result<CampaignRequestAction> username = CampaignRequestAction.Create(campaignRequest.CampaignRequestAction);
+            Result<CampaignRequestAction> campaignRequestAction = CampaignRequestAction.Create(campaignRequest.CampaignRequestAction);
 
-            Result result = Result.Combine(username);
+            Result result = Result.Combine(campaignRequestAction);
             if (result.IsFailure) return BadRequest();
 
             Maybe<RegisteredUser> user = _userRepository.GetById(campaignRequest.VerifiedUser.Id);
             if (user.HasNoValue) return BadRequest("Registered user doesn't exist.");
 
-            /*if (_campaignRequestRepository.Save(CampaignRequest.Create(id, campaignRequest.IsApproved,
-                ).Value) == null)
-                return BadRequest("Couldn't create agent request");*/
+            Maybe<Campaign> campaign = _campaignRepository.GetById(campaignRequest.Campaign.Id);
+            if (campaign.HasNoValue) return BadRequest("Campaign doesn't exist.");
 
-            return Created(this.Request.Path + id, "");
+            if (_campaignRequestRepository.Save(CampaignRequest.Create(id, campaignRequest.IsApproved,
+                campaign.Value, (VerifiedUser)user.Value, campaignRequestAction.Value).Value) == null)
+                return BadRequest("Couldn't create  campaign request");
+
+            campaignRequest.Id = id;
+            return Ok(campaignRequest);
+        }
+
+        [HttpPut]
+        public IActionResult Update(DTOs.CampaignRequest campaignRequest)
+        {
+            Result<CampaignRequestAction> campaignRequestAction = CampaignRequestAction.Create(campaignRequest.CampaignRequestAction);
+
+            Result result = Result.Combine(campaignRequestAction);
+            if (result.IsFailure) return BadRequest();
+
+            Maybe<RegisteredUser> user = _userRepository.GetById(campaignRequest.VerifiedUser.Id);
+            if (user.HasNoValue) return BadRequest("Registered user doesn't exist.");
+
+            Maybe<Campaign> campaign = _campaignRepository.GetById(campaignRequest.Campaign.Id);
+            if (campaign.HasNoValue) return BadRequest("Campaign doesn't exist.");
+
+            if (_campaignRequestRepository.Update(CampaignRequest.Create(campaignRequest.Id, campaignRequest.IsApproved,
+                campaign.Value, (VerifiedUser)user.Value, campaignRequestAction.Value).Value) == null)
+                return BadRequest("Couldn't create  campaign request");
+
+            return Ok(campaignRequest);
         }
     }
 }

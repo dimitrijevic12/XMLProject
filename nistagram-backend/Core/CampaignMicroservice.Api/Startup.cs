@@ -61,8 +61,9 @@ namespace CampaignMicroservice.Api
             services.AddScoped<UnsuccessfulStoryFollowEventConsumer>();
             services.AddScoped<CampaignRequestFactory>();
             services.AddScoped<VerifiedUserFactory>();
-            services.AddScoped<AdFactory>();
             services.AddScoped<ExposureDateFactory>();
+            services.AddScoped<CampaignFactory>();
+            services.AddScoped<AdFactory>();
             services.AddScoped<TargetAudienceFactory>();
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>

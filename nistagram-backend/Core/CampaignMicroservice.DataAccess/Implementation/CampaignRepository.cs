@@ -1,26 +1,95 @@
 ﻿using CampaignMicroservice.Core.Interface;
 using CampaignMicroservice.Core.Model;
+using CampaignService.DataAccess.Adaptee;
+using CampaignService.DataAccess.Adapter;
 using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Linq;
 
 namespace CampaignMicroservice.DataAccessImplementation
 {
     public class CampaignRepository : Repository, ICampaignRepository
     {
-        public CampaignRepository(IConfiguration configuration) : base(configuration)
+        private readonly CampaignAdapter _campaignTarget = new CampaignAdapter(new CampaignAdaptee());
+        private readonly IExposureDateRepository _exposureDateRepository;
+        private readonly IAdRepository _adRepository;
+        private readonly IUserRepository _userRepository;
+
+        public CampaignRepository(IConfiguration configuration, IUserRepository userRepository,
+            IExposureDateRepository exposureDateRepository, IAdRepository adRepository) :
+            base(configuration)
         {
+            _userRepository = userRepository;
+            _exposureDateRepository = exposureDateRepository;
+            _adRepository = adRepository;
         }
 
         public Maybe<Campaign> GetById(Guid id)
         {
-            throw new NotImplementedException();
+            StringBuilder queryBuilder = new StringBuilder("SELECT c.id, t.min_date_of_birth, " +
+                "t.max_date_of_birth, t.gender, c.agent_id, a.username, a.first_name, a.last_name, " +
+                "a.date_of_birth, a.gender, a.profile_image_path, a.is_private, a.is_banned, " +
+                "a.website_address, c.likes_count, c.dislikes_count, c.exposure_count, c.click_count, " +
+                "c.type, c.start_date, c.end_date, c.date_of_change ");
+            queryBuilder.Append("FROM dbo.Campaign AS c, dbo.TargetAudience AS t, dbo.RegisteredUser AS a ");
+            queryBuilder.Append("WHERE c.agent_id = a.id AND c.target_audience_id = t.id AND c.id = @Id;");
+
+            string query = queryBuilder.ToString();
+
+            SqlParameter parameterId = new SqlParameter("@Id", SqlDbType.UniqueIdentifier) { Value = id };
+
+            List<SqlParameter> parameters = new List<SqlParameter>() { parameterId };
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            if (dataTable.Rows.Count > 0)
+            {
+                return (Campaign)_campaignTarget.ConvertSql(
+                dataTable.Rows[0], _userRepository.GetBlockedBy(Guid.Parse(dataTable.Rows[0][4].ToString())),
+                        _userRepository.GetBlocking(Guid.Parse(dataTable.Rows[0][4].ToString())),
+                        _userRepository.GetFollowing(Guid.Parse(dataTable.Rows[0][4].ToString())),
+                        _userRepository.GetFollowers(Guid.Parse(dataTable.Rows[0][4].ToString())),
+                        _userRepository.GetMutedBy(Guid.Parse(dataTable.Rows[0][4].ToString())),
+                        _userRepository.GetMuted(Guid.Parse(dataTable.Rows[0][4].ToString())),
+                        _adRepository.GetAdsForCampaign(id),
+                        _exposureDateRepository.GetExposureDatesForCampaign(id)
+                );
+            }
+            return Maybe<Campaign>.None;
+        }
+
+        public IEnumerable<Campaign> GetBy(Guid agentId)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT c.id, t.min_date_of_birth, " +
+                "t.max_date_of_birth, t.gender, c.agent_id, a.username, a.first_name, a.last_name, " +
+                "a.date_of_birth, a.gender, a.profile_image_path, a.is_private, a.is_banned, " +
+                "a.website_address, c.likes_count, c.dislikes_count, c.exposure_count, c.click_count, " +
+                "c.type, c.start_date, c.end_date, c.date_of_change ");
+            queryBuilder.Append("FROM dbo.Campaign AS c, dbo.TargetAudience AS t, dbo.RegisteredUser AS a ");
+            queryBuilder.Append("WHERE c.agent_id = a.id AND c.target_audience_id = t.id AND c.agent_id = @Id;");
+
+            string query = queryBuilder.ToString();
+
+            SqlParameter parameterId = new SqlParameter("@Id", SqlDbType.UniqueIdentifier) { Value = agentId };
+
+            List<SqlParameter> parameters = new List<SqlParameter>() { parameterId };
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+            return (from DataRow dataRow in dataTable.Rows
+                    select (Campaign)_campaignTarget.ConvertSql(dataRow,
+                        _userRepository.GetBlockedBy(Guid.Parse(dataTable.Rows[0][4].ToString())),
+                        _userRepository.GetBlocking(Guid.Parse(dataRow[4].ToString())),
+                        _userRepository.GetFollowing(Guid.Parse(dataRow[4].ToString())),
+                        _userRepository.GetFollowers(Guid.Parse(dataRow[4].ToString())),
+                        _userRepository.GetMutedBy(Guid.Parse(dataRow[4].ToString())),
+                        _userRepository.GetMuted(Guid.Parse(dataRow[4].ToString())),
+                        _adRepository.GetAdsForCampaign(Guid.Parse(dataRow[0].ToString())),
+                        _exposureDateRepository.GetExposureDatesForCampaign(Guid.Parse(dataRow[0].ToString())))).ToList();
         }
 
         public void Remove(Guid id)
