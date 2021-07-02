@@ -15,9 +15,12 @@ namespace CampaignService.DataAccess.Implementation
     public class CampaignRequestRepository : Repository, ICampaignRequestRepository
     {
         public CampaignRequestAdapter _campaignRequestTarget = new CampaignRequestAdapter(new CampaignRequestAdaptee());
+        public IUserRepository _userRepository;
 
-        public CampaignRequestRepository(IConfiguration configuration) : base(configuration)
+        public CampaignRequestRepository(IConfiguration configuration, IUserRepository userRepository) :
+            base(configuration)
         {
+            _userRepository = userRepository;
         }
 
         public IEnumerable<CampaignRequest> GetBy(Guid userId, string isApproved)
@@ -32,7 +35,7 @@ namespace CampaignService.DataAccess.Implementation
             queryBuilder.Append("FROM dbo.CampaignRequest as cr, dbo.Campaign as c, dbo.RegisteredUser as r," +
                 " dbo.RegisteredUser as a, dbo.TargetAudience as t ");
             queryBuilder.Append("WHERE cr.campaign_id = c.id AND cr.verified_user_id = r.id AND " +
-                "c.target_audience_id = t.id AND c.agent_id = a.id AND r.id = a.registered_user_id " +
+                "c.target_audience_id = t.id AND c.agent_id = a.id " +
                 "AND a.action=\'created\' AND r.id = @Id ");
 
             List<SqlParameter> parameters = new List<SqlParameter>()
@@ -52,10 +55,20 @@ namespace CampaignService.DataAccess.Implementation
 
             DataTable dataTable = ExecuteQuery(query, parameters);
             return (from DataRow dataRow in dataTable.Rows
-                    select (CampaignRequest)_campaignRequestTarget.ConvertSql(dataRow, new List<RegisteredUser>(),
-                        new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>(),
-                        new List<RegisteredUser>(), new List<RegisteredUser>(), new List<Ad>(),
-                        new List<ExposureDate>())).ToList();
+                    select (CampaignRequest)_campaignRequestTarget.ConvertSql(dataRow,
+                    _userRepository.GetBlockedBy(Guid.Parse(dataRow[17].ToString())),
+                        _userRepository.GetBlocking(Guid.Parse(dataRow[17].ToString())),
+                        _userRepository.GetFollowing(Guid.Parse(dataRow[17].ToString())),
+                        _userRepository.GetFollowers(Guid.Parse(dataRow[17].ToString())),
+                        _userRepository.GetMutedBy(Guid.Parse(dataRow[17].ToString())),
+                        _userRepository.GetMuted(Guid.Parse(dataRow[17].ToString())), new List<Ad>(),
+                        new List<ExposureDate>(),
+                        _userRepository.GetBlockedBy(userId),
+                        _userRepository.GetBlocking(userId),
+                        _userRepository.GetFollowing(userId),
+                        _userRepository.GetFollowers(userId),
+                        _userRepository.GetMutedBy(userId),
+                        _userRepository.GetMuted(userId))).ToList();
         }
 
         public CampaignRequest Save(CampaignRequest campaignRequest)

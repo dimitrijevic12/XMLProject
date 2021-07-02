@@ -10,30 +10,40 @@ namespace CampaignService.DataAccess.Adaptee
     {
         public CampaignRequest ConvertSqlDataReaderToCampaignRequest(DataRow dataRow, IEnumerable<RegisteredUser> blockedByUsers, IEnumerable<RegisteredUser> blockedUsers,
         IEnumerable<RegisteredUser> following, IEnumerable<RegisteredUser> followers, IEnumerable<RegisteredUser> mutedByUsers,
-        IEnumerable<RegisteredUser> mutedUsers, IEnumerable<Ad> ads, IEnumerable<ExposureDate> exposureDates)
+        IEnumerable<RegisteredUser> mutedUsers, IEnumerable<Ad> ads, IEnumerable<ExposureDate> exposureDates,
+        IEnumerable<RegisteredUser> blockedByUsersVerified, IEnumerable<RegisteredUser> blockedUsersVerified,
+        IEnumerable<RegisteredUser> followingVerified, IEnumerable<RegisteredUser> followersVerified, IEnumerable<RegisteredUser> mutedByUsersVerified,
+        IEnumerable<RegisteredUser> mutedUsersVerified)
         {
             if (dataRow[31].ToString().Equals("OneTimePostCampaign", StringComparison.InvariantCultureIgnoreCase))
             {
                 return ConvertSqlDataReaderToCampaignRequestWithOneTimePostCampaign(dataRow, blockedByUsers, blockedUsers, following, followers, mutedByUsers,
-                    mutedUsers, ads, exposureDates.FirstOrDefault());
+                    mutedUsers, ads, exposureDates.FirstOrDefault(), blockedByUsersVerified, blockedUsersVerified, followingVerified, followersVerified, mutedByUsersVerified,
+                    mutedUsersVerified);
             }
             else if (dataRow[31].ToString().Equals("OneTimeStoryCampaign", StringComparison.InvariantCultureIgnoreCase))
             {
                 return ConvertSqlDataReaderToCampaignRequestWithOneTimeStoryCampaign(dataRow, blockedByUsers, blockedUsers, following, followers, mutedByUsers,
-                    mutedUsers, ads, exposureDates.FirstOrDefault());
+                    mutedUsers, ads, exposureDates.FirstOrDefault(), blockedByUsersVerified, blockedUsersVerified, followingVerified, followersVerified, mutedByUsersVerified,
+                    mutedUsersVerified);
             }
             else if (dataRow[31].ToString().Equals("RecurringPostCampaign", StringComparison.InvariantCultureIgnoreCase))
             {
                 return ConvertSqlDataReaderToCampaignRequestWithRecurringPostCampaign(dataRow, blockedByUsers, blockedUsers, following, followers, mutedByUsers,
-                    mutedUsers, ads, exposureDates);
+                    mutedUsers, ads, exposureDates, blockedByUsersVerified, blockedUsersVerified, followingVerified, followersVerified, mutedByUsersVerified,
+                    mutedUsersVerified);
             }
             return ConvertSqlDataReaderToCampaignRequestWithRecurringStoryCampaign(dataRow, blockedByUsers, blockedUsers, following, followers, mutedByUsers,
-                     mutedUsers, ads, exposureDates);
+                     mutedUsers, ads, exposureDates, blockedByUsersVerified, blockedUsersVerified, followingVerified, followersVerified, mutedByUsersVerified,
+                    mutedUsersVerified);
         }
 
         public CampaignRequest ConvertSqlDataReaderToCampaignRequestWithOneTimePostCampaign(DataRow dataRow, IEnumerable<RegisteredUser> blockedByUsers, IEnumerable<RegisteredUser> blockedUsers,
         IEnumerable<RegisteredUser> following, IEnumerable<RegisteredUser> followers, IEnumerable<RegisteredUser> mutedByUsers,
-        IEnumerable<RegisteredUser> mutedUsers, IEnumerable<Ad> ads, ExposureDate exposureDate)
+        IEnumerable<RegisteredUser> mutedUsers, IEnumerable<Ad> ads, ExposureDate exposureDate,
+        IEnumerable<RegisteredUser> blockedByUsersVerified, IEnumerable<RegisteredUser> blockedUsersVerified,
+        IEnumerable<RegisteredUser> followingVerified, IEnumerable<RegisteredUser> followersVerified, IEnumerable<RegisteredUser> mutedByUsersVerified,
+        IEnumerable<RegisteredUser> mutedUsersVerified)
         {
             return CampaignRequest.Create(
                     id: Guid.Parse(dataRow[0].ToString().Trim()),
@@ -74,12 +84,12 @@ namespace CampaignService.DataAccess.Adaptee
                                     /*WebsiteAddress.Create(dataRow[8].ToString()).Value,
                                     Category.Create(dataRow[5].ToString()).Value,*/
                                     bool.Parse(dataRow[9].ToString()),
-                                    blockedByUsers,
-                                    blockedUsers,
-                                    following,
-                                    followers,
-                                    mutedByUsers,
-                                    mutedUsers,
+                                    blockedByUsersVerified,
+                                    blockedUsersVerified,
+                                    followingVerified,
+                                    followersVerified,
+                                    mutedByUsersVerified,
+                                    mutedUsersVerified,
                                     bool.Parse(dataRow[10].ToString()),
                                     Category.Create(dataRow[11].ToString().Trim()).Value).Value,
                     CampaignRequestAction.Create(dataRow[12].ToString()).Value).Value;
@@ -87,7 +97,10 @@ namespace CampaignService.DataAccess.Adaptee
 
         public CampaignRequest ConvertSqlDataReaderToCampaignRequestWithOneTimeStoryCampaign(DataRow dataRow, IEnumerable<RegisteredUser> blockedByUsers, IEnumerable<RegisteredUser> blockedUsers,
         IEnumerable<RegisteredUser> following, IEnumerable<RegisteredUser> followers, IEnumerable<RegisteredUser> mutedByUsers,
-        IEnumerable<RegisteredUser> mutedUsers, IEnumerable<Ad> ads, ExposureDate exposureDate)
+        IEnumerable<RegisteredUser> mutedUsers, IEnumerable<Ad> ads, ExposureDate exposureDate,
+        IEnumerable<RegisteredUser> blockedByUsersVerified, IEnumerable<RegisteredUser> blockedUsersVerified,
+        IEnumerable<RegisteredUser> followingVerified, IEnumerable<RegisteredUser> followersVerified, IEnumerable<RegisteredUser> mutedByUsersVerified,
+        IEnumerable<RegisteredUser> mutedUsersVerified)
         {
             return CampaignRequest.Create(
                     id: Guid.Parse(dataRow[0].ToString().Trim()),
@@ -128,12 +141,12 @@ namespace CampaignService.DataAccess.Adaptee
                                     /*WebsiteAddress.Create(dataRow[8].ToString()).Value,
                                     Category.Create(dataRow[5].ToString()).Value,*/
                                     bool.Parse(dataRow[9].ToString()),
-                                    blockedByUsers,
-                                    blockedUsers,
-                                    following,
-                                    followers,
-                                    mutedByUsers,
-                                    mutedUsers,
+                                    blockedByUsersVerified,
+                                    blockedUsersVerified,
+                                    followingVerified,
+                                    followersVerified,
+                                    mutedByUsersVerified,
+                                    mutedUsersVerified,
                                     bool.Parse(dataRow[10].ToString()),
                                     Category.Create(dataRow[11].ToString().Trim()).Value).Value,
                     CampaignRequestAction.Create(dataRow[12].ToString()).Value).Value;
@@ -141,7 +154,10 @@ namespace CampaignService.DataAccess.Adaptee
 
         public CampaignRequest ConvertSqlDataReaderToCampaignRequestWithRecurringPostCampaign(DataRow dataRow, IEnumerable<RegisteredUser> blockedByUsers, IEnumerable<RegisteredUser> blockedUsers,
         IEnumerable<RegisteredUser> following, IEnumerable<RegisteredUser> followers, IEnumerable<RegisteredUser> mutedByUsers,
-        IEnumerable<RegisteredUser> mutedUsers, IEnumerable<Ad> ads, IEnumerable<ExposureDate> exposureDates)
+        IEnumerable<RegisteredUser> mutedUsers, IEnumerable<Ad> ads, IEnumerable<ExposureDate> exposureDates,
+        IEnumerable<RegisteredUser> blockedByUsersVerified, IEnumerable<RegisteredUser> blockedUsersVerified,
+        IEnumerable<RegisteredUser> followingVerified, IEnumerable<RegisteredUser> followersVerified, IEnumerable<RegisteredUser> mutedByUsersVerified,
+        IEnumerable<RegisteredUser> mutedUsersVerified)
         {
             return CampaignRequest.Create(
                     id: Guid.Parse(dataRow[0].ToString().Trim()),
@@ -185,12 +201,12 @@ namespace CampaignService.DataAccess.Adaptee
                                     /*WebsiteAddress.Create(dataRow[8].ToString()).Value,
                                     Category.Create(dataRow[5].ToString()).Value,*/
                                     bool.Parse(dataRow[9].ToString()),
-                                    blockedByUsers,
-                                    blockedUsers,
-                                    following,
-                                    followers,
-                                    mutedByUsers,
-                                    mutedUsers,
+                                    blockedByUsersVerified,
+                                    blockedUsersVerified,
+                                    followingVerified,
+                                    followersVerified,
+                                    mutedByUsersVerified,
+                                    mutedUsersVerified,
                                     bool.Parse(dataRow[10].ToString()),
                                     Category.Create(dataRow[11].ToString().Trim()).Value).Value,
                     CampaignRequestAction.Create(dataRow[12].ToString()).Value).Value;
@@ -198,7 +214,10 @@ namespace CampaignService.DataAccess.Adaptee
 
         public CampaignRequest ConvertSqlDataReaderToCampaignRequestWithRecurringStoryCampaign(DataRow dataRow, IEnumerable<RegisteredUser> blockedByUsers, IEnumerable<RegisteredUser> blockedUsers,
         IEnumerable<RegisteredUser> following, IEnumerable<RegisteredUser> followers, IEnumerable<RegisteredUser> mutedByUsers,
-        IEnumerable<RegisteredUser> mutedUsers, IEnumerable<Ad> ads, IEnumerable<ExposureDate> exposureDates)
+        IEnumerable<RegisteredUser> mutedUsers, IEnumerable<Ad> ads, IEnumerable<ExposureDate> exposureDates,
+        IEnumerable<RegisteredUser> blockedByUsersVerified, IEnumerable<RegisteredUser> blockedUsersVerified,
+        IEnumerable<RegisteredUser> followingVerified, IEnumerable<RegisteredUser> followersVerified, IEnumerable<RegisteredUser> mutedByUsersVerified,
+        IEnumerable<RegisteredUser> mutedUsersVerified)
         {
             return CampaignRequest.Create(
                     id: Guid.Parse(dataRow[0].ToString().Trim()),
@@ -242,12 +261,12 @@ namespace CampaignService.DataAccess.Adaptee
                                     /*WebsiteAddress.Create(dataRow[8].ToString()).Value,
                                     Category.Create(dataRow[5].ToString()).Value,*/
                                     bool.Parse(dataRow[9].ToString()),
-                                    blockedByUsers,
-                                    blockedUsers,
-                                    following,
-                                    followers,
-                                    mutedByUsers,
-                                    mutedUsers,
+                                    blockedByUsersVerified,
+                                    blockedUsersVerified,
+                                    followingVerified,
+                                    followersVerified,
+                                    mutedByUsersVerified,
+                                    mutedUsersVerified,
                                     bool.Parse(dataRow[10].ToString()),
                                     Category.Create(dataRow[11].ToString().Trim()).Value).Value,
                     CampaignRequestAction.Create(dataRow[12].ToString()).Value).Value;

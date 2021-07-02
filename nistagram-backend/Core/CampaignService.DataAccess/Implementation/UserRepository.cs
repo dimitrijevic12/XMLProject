@@ -130,7 +130,7 @@ namespace CampaignService.DataAccess.Implementation
             return registeredUser;
         }
 
-        private IEnumerable<RegisteredUser> GetBlocking(Guid id)
+        public IEnumerable<RegisteredUser> GetBlocking(Guid id)
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT * ");
             queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.RegisteredUser AS r2, " +
@@ -153,7 +153,7 @@ namespace CampaignService.DataAccess.Implementation
                     )).ToList();
         }
 
-        private IEnumerable<RegisteredUser> GetBlockedBy(Guid id)
+        public IEnumerable<RegisteredUser> GetBlockedBy(Guid id)
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT * ");
             queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.RegisteredUser AS r2, " +
@@ -176,7 +176,7 @@ namespace CampaignService.DataAccess.Implementation
                     )).ToList();
         }
 
-        private IEnumerable<RegisteredUser> GetMutedBy(Guid id)
+        public IEnumerable<RegisteredUser> GetMutedBy(Guid id)
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT * ");
             queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.RegisteredUser AS r2, " +
@@ -199,7 +199,7 @@ namespace CampaignService.DataAccess.Implementation
                     )).ToList();
         }
 
-        private IEnumerable<RegisteredUser> GetMuted(Guid id)
+        public IEnumerable<RegisteredUser> GetMuted(Guid id)
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT * ");
             queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.RegisteredUser AS r2, " +
@@ -245,7 +245,7 @@ namespace CampaignService.DataAccess.Implementation
                     )).ToList();
         }
 
-        private IEnumerable<RegisteredUser> GetFollowers(Guid id)
+        public IEnumerable<RegisteredUser> GetFollowers(Guid id)
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT * ");
             queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.RegisteredUser AS r2, " +
