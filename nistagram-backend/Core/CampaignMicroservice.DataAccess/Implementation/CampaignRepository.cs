@@ -1,7 +1,6 @@
 ﻿using CampaignMicroservice.Core.Interface;
 using CampaignMicroservice.Core.Model;
-using CampaignService.DataAccess.Adaptee;
-using CampaignService.DataAccess.Adapter;
+using CampaignMicroservice.DataAccess.Adaptee;
 using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -10,6 +9,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 using System.Linq;
+using CampaignMicroservice.DataAccessAdapter;
 
 namespace CampaignMicroservice.DataAccessImplementation
 {

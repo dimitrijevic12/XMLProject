@@ -91,7 +91,8 @@ class CreatePost extends Component {
   }
 
   addExposureDates(dates) {
-    this.setState({ exposureDates: this.state.exposureDates.concat(dates) });
+    debugger;
+    this.setState({ exposureDates: [...this.state.exposureDates, dates] });
   }
 
   changeStep(step) {
