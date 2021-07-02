@@ -50,7 +50,7 @@ namespace CampaignMicroservice.Api
             services.AddScoped<ICampaignRepository, CampaignRepository>();
             services.AddScoped<UserService>();
             services.AddScoped<IUserRepository, UserRepository>();
-
+            services.AddScoped<ICampaignRequestRepository, CampaignRequestRepository>();
             services.AddScoped<UserFollowedEventConsumer>();
             services.AddScoped<UnsuccessfulStoryFollowEventConsumer>();
 

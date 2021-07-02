@@ -6,7 +6,7 @@ namespace CampaignMicroservice.Core.Model
 {
     public class VerifiedUser : RegisteredUser
     {
-        private readonly Category category;
+        public Category Category { get; }
 
         private VerifiedUser(Guid id, Username username, FirstName firstName, LastName lastName, DateTime dateOfBirth, Gender gender,
             ProfileImagePath profileImagePath, bool isPrivate, IEnumerable<RegisteredUser> blockedByUsers, IEnumerable<RegisteredUser> blockedUsers,
@@ -15,7 +15,7 @@ namespace CampaignMicroservice.Core.Model
             : base(id, username, firstName, lastName, dateOfBirth, gender, profileImagePath, isPrivate, blockedByUsers,
                                                         blockedUsers, following, followers, mutedByUsers, mutedUsers, isBanned)
         {
-            this.category = category;
+            Category = category;
         }
 
         public static Result<VerifiedUser> Create(Guid id, Username username, FirstName firstName, LastName lastName, DateTime dateOfBirth, Gender gender,
