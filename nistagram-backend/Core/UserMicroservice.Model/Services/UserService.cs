@@ -12,7 +12,6 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using UserMicroservice.Core.Interface.Repository;
-using UserMicroservice.Core.Interface.Service;
 using UserMicroservice.Core.Model;
 using UserMicroservice.Core.Model.File;
 
@@ -130,13 +129,18 @@ namespace UserMicroservice.Core.Services
         {
             if (!_userRepository.GetById(registeredUser.Id).Value.Username.ToString().Equals(registeredUser.Username))
             {
-                if (_userRepository.GetByUsername(registeredUser.Username).HasValue) return Result.Failure("There is already user with that username");
+                if (_userRepository.GetByUsername(registeredUser.Username).HasValue) return Result.Failure("User with that username already exist");
             }
             _userRepository.Edit(registeredUser);
             return Result.Success(registeredUser);
         }
 
         public Task CompleteEditAsync(Guid registeredUserId)
+        {
+            return Task.CompletedTask;
+        }
+
+        public Task CompleteFollowAsync()
         {
             return Task.CompletedTask;
         }
@@ -216,6 +220,26 @@ namespace UserMicroservice.Core.Services
         public RegisteredUser Save(RegisteredUser obj)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<Result> FollowAsync(Guid id, Guid followedById, Guid followingId)
+        {
+            var result = Follow(id, followedById, followingId);
+            if (result.IsFailure) return Result.Failure(result.Error);
+            await _bus.PubSub.PublishAsync(new UserFollowedEvent
+            {
+                Id = id,
+                FollowedById = followedById,
+                FollowingId = followingId
+            });
+            return Result.Success();
+        }
+
+        public Task RejectFollowAsync(Guid followedById, Guid followingId, string reson)
+        {
+            _userRepository.DeleteFollow(followedById, followingId);
+
+            return Task.CompletedTask;
         }
 
         public Result Follow(Guid id, Guid followedById, Guid followingId)

@@ -1,0 +1,15 @@
+C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.DataAccess\bin\Debug\net5.0\AgentApp.DataAccess.deps.json
+C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.DataAccess\bin\Debug\net5.0\AgentApp.DataAccess.dll
+C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.DataAccess\bin\Debug\net5.0\ref\AgentApp.DataAccess.dll
+C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.DataAccess\bin\Debug\net5.0\AgentApp.DataAccess.pdb
+C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.DataAccess\bin\Debug\net5.0\AgentApp.Core.dll
+C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.DataAccess\bin\Debug\net5.0\AgentApp.Core.pdb
+C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.DataAccess\obj\Debug\net5.0\AgentApp.DataAccess.csprojAssemblyReference.cache
+C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.DataAccess\obj\Debug\net5.0\AgentApp.DataAccess.GeneratedMSBuildEditorConfig.editorconfig
+C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.DataAccess\obj\Debug\net5.0\AgentApp.DataAccess.AssemblyInfoInputs.cache
+C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.DataAccess\obj\Debug\net5.0\AgentApp.DataAccess.AssemblyInfo.cs
+C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.DataAccess\obj\Debug\net5.0\AgentApp.DataAccess.csproj.CoreCompileInputs.cache
+C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.DataAccess\obj\Debug\net5.0\AgentApp.DataAccess.csproj.CopyComplete
+C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.DataAccess\obj\Debug\net5.0\AgentApp.DataAccess.dll
+C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.DataAccess\obj\Debug\net5.0\ref\AgentApp.DataAccess.dll
+C:\XMLProjekat\XMLProject\agentapp-backend\AgentAppSolution\AgentApp.DataAccess\obj\Debug\net5.0\AgentApp.DataAccess.pdb

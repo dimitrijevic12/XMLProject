@@ -89,5 +89,17 @@ namespace StoryMicroservice.Core.Services
                 user.Followers, closeFriends, user.CloseFriendTo).Value);
             return Result.Success("User successfully added to close friends");
         }
+
+        public async Task<Result> FollowAsync(Guid followedById, Guid followingId)
+        {
+            return Follow(followedById, followingId);
+        }
+
+        public Result Follow(Guid followedById, Guid followingId)
+        {
+            if (_userRepository.AlreadyFollows(followedById, followingId)) return Result.Failure("They are already following");
+            _userRepository.Follow(followedById, followingId);
+            return Result.Success();
+        }
     }
 }
