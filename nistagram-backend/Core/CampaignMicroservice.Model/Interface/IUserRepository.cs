@@ -17,5 +17,7 @@ namespace CampaignMicroservice.Core.Interface
         public void DeleteFollow(Guid followedById, Guid followingId);
 
         public Boolean AlreadyFollowing(Guid requests_follow_id, Guid recieves_follow_id);
+
+        public IEnumerable<RegisteredUser> GetSeenBy(Guid exposureDateId);
     }
 }

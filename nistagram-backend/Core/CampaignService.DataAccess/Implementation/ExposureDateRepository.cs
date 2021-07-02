@@ -1,5 +1,7 @@
 ﻿using CampaignMicroservice.Core.Interface;
 using CampaignMicroservice.Core.Model;
+using CampaignService.DataAccess.Adaptee;
+using CampaignService.DataAccess.Adapter;
 using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -14,13 +16,17 @@ namespace CampaignService.DataAccess.Implementation
 {
     public class ExposureDateRepository : Repository, IExposureDateRepository
     {
-        public ExposureDateRepository(IConfiguration configuration) : base(configuration)
+        private readonly ExposureDateAdapter exposureDateAdapter = new ExposureDateAdapter(new ExposureDateAdaptee());
+        private readonly IUserRepository _userRepository;
+
+        public ExposureDateRepository(IConfiguration configuration, IUserRepository userRepository) : base(configuration)
         {
+            _userRepository = userRepository;
         }
 
         public Maybe<ExposureDate> GetById(Guid id)
         {
-            /*StringBuilder queryBuilder = new StringBuilder("SELECT * ");
+            StringBuilder queryBuilder = new StringBuilder("SELECT * ");
             queryBuilder.Append("FROM dbo.ExposureDates ");
             queryBuilder.Append("WHERE id = @Id;");
 
@@ -32,14 +38,14 @@ namespace CampaignService.DataAccess.Implementation
 
             DataTable dataTable = ExecuteQuery(query, parameters);
 
-            /*if (dataTable.Rows.Count > 0)
+            IEnumerable<RegisteredUser> seenBy = _userRepository.GetSeenBy(new Guid(dataTable.Rows[0][0].ToString()));
+
+            if (dataTable.Rows.Count > 0)
             {
-                return (RegisteredUser)_registeredUserTarget.ConvertSql(
-                dataTable.Rows[0], GetBlocking(id), GetBlockedBy(id),
-                GetMuted(id), GetMutedBy(id), GetFollowing(id), GetFollowers(id),
-                GetMyCloseFriends(id), GetCloseFriendsTo(id)
+                return (ExposureDate)exposureDateAdapter.ConvertSql(
+                dataTable.Rows[0], seenBy
                 );
-            }*/
+            }
             return Maybe<ExposureDate>.None;
         }
 
