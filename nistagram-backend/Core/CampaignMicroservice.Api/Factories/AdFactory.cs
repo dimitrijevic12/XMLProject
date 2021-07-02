@@ -10,7 +10,7 @@ namespace CampaignMicroservice.Api.Factories
 {
     public class AdFactory
     {
-        public CampaignMicroservice.Core.Model.Ad Create(Ad ad, RegisteredUser profileOwner)
+        public CampaignMicroservice.Core.Model.Ad Create(Ad ad, CampaignMicroservice.Core.Model.RegisteredUser profileOwner)
         {
             Content content;
             if (ad.Type.Equals("Post")) content = Post.Create(ad.ContentId).Value;

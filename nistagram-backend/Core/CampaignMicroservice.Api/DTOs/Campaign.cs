@@ -8,7 +8,7 @@ namespace CampaignMicroservice.Api.DTOs
     public class Campaign
     {
         public Guid Id { get; set; }
-        public TargetAudience targetAudience { get; set; }
+        public TargetAudience TargetAudience { get; set; }
         public Guid AgentId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
