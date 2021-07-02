@@ -10,7 +10,7 @@ namespace CampaignMicroservice.Core.Interface
 {
     public interface IExposureDateRepository
     {
-        public void Save(ExposureDate exposureDate);
+        public void Save(ExposureDate exposureDate, Guid campaignId);
 
         public Maybe<ExposureDate> GetById(Guid id);
     }

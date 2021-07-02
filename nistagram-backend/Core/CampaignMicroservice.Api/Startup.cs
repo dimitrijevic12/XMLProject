@@ -2,7 +2,7 @@ using CampaignMicroservice.Api.Consumers;
 using CampaignMicroservice.Api.Factories;
 using CampaignMicroservice.Core.Interface;
 using CampaignMicroservice.Core.Services;
-using CampaignService.DataAccess.Implementation;
+using CampaignMicroservice.DataAccessImplementation;
 using EasyNetQ;
 using EasyNetQ.AutoSubscribe;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -50,12 +50,20 @@ namespace CampaignMicroservice.Api
 
             services.AddScoped<ICampaignRepository, CampaignRepository>();
             services.AddScoped<UserService>();
+            services.AddScoped<CampaignService>();
+            services.AddScoped<AdService>();
+            services.AddScoped<ExposureDateService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ICampaignRequestRepository, CampaignRequestRepository>();
+            services.AddScoped<IAdRepository, AdRepository>();
+            services.AddScoped<IExposureDateRepository, ExposureDateRepository>();
             services.AddScoped<UserFollowedEventConsumer>();
             services.AddScoped<UnsuccessfulStoryFollowEventConsumer>();
             services.AddScoped<CampaignRequestFactory>();
             services.AddScoped<VerifiedUserFactory>();
+            services.AddScoped<AdFactory>();
+            services.AddScoped<ExposureDateFactory>();
+            services.AddScoped<TargetAudienceFactory>();
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {
