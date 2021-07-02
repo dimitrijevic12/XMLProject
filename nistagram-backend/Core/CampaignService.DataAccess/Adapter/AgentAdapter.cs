@@ -4,7 +4,7 @@ using System.Data;
 
 namespace CampaignService.DataAccess.Adapter
 {
-    public class AgentAdapter : ITarget
+    public class AgentAdapter /*: ITarget*/
     {
         private readonly AgentAdaptee agentAdaptee;
 
@@ -13,9 +13,9 @@ namespace CampaignService.DataAccess.Adapter
             this.agentAdaptee = agentAdaptee;
         }
 
-        public object ConvertSql(DataRow dataRow)
+        /*public object ConvertSql(DataRow dataRow)
         {
             return agentAdaptee.ConvertSqlDataReaderToAgent(dataRow);
-        }
+        }*/
     }
 }

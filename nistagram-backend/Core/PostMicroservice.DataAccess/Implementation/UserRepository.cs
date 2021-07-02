@@ -104,9 +104,9 @@ namespace PostMicroservice.DataAccess.Implementation
             string query = queryBuilder.ToString();
 
             List<SqlParameter> parameters = new List<SqlParameter>
-             {
+            {
                  new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = id },
-             };
+            };
 
             ExecuteQuery(query, parameters);
         }

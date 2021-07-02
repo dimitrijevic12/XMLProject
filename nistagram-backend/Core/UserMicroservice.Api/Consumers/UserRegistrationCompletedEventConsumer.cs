@@ -11,7 +11,7 @@ using UserMicroservice.Core.Services;
 
 namespace UserMicroservice.Api.Consumers
 {
-    public class UserRegistrationCompletedEventConsumer : IConsumeAsync<UserRegisteredEvent>
+    public class UserRegistrationCompletedEventConsumer : IConsumeAsync<UserRegistrationCompletedEvent>
     {
         private readonly UserService userService;
         private readonly IBus _bus;
@@ -22,9 +22,9 @@ namespace UserMicroservice.Api.Consumers
             _bus = bus;
         }
 
-        public async Task ConsumeAsync(UserRegisteredEvent message, CancellationToken cancellationToken = default)
+        public async Task ConsumeAsync(UserRegistrationCompletedEvent message, CancellationToken cancellationToken = default)
         {
-            await userService.CompleteRegistrationAsync(new Guid(message.Id));
+            await userService.CompleteRegistrationAsync(message.Id);
         }
     }
 }

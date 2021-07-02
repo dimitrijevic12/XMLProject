@@ -1,22 +1,26 @@
 ﻿using CSharpFunctionalExtensions;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace CampaignMicroservice.Core.Model
 {
     public abstract class Campaign
     {
-        private readonly Guid id;
-        private readonly TargetAudience targetAudience;
-        private readonly Agent agent;
-        private readonly CampaignStatistics campaignStatistics;
+        public Guid Id { get; }
+        public TargetAudience TargetAudience { get; }
+        public Agent Agent { get; }
+        public CampaignStatistics CampaignStatistics { get; }
+        public IEnumerable<Ad> Ads { get; }
 
         protected Campaign(Guid id, TargetAudience targetAudience, Agent agent,
-            CampaignStatistics campaignStatistics)
+            CampaignStatistics campaignStatistics, IEnumerable<Ad> ads)
         {
-            this.id = id;
-            this.targetAudience = targetAudience;
-            this.agent = agent;
-            this.campaignStatistics = campaignStatistics;
+            Id = id;
+            TargetAudience = targetAudience;
+            Agent = agent;
+            CampaignStatistics = campaignStatistics;
+            Ads = ads;
         }
     }
 }

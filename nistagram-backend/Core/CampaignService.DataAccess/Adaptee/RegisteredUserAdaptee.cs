@@ -7,18 +7,28 @@ namespace CampaignService.DataAccess.Adaptee
 {
     public class RegisteredUserAdaptee
     {
-        public RegisteredUser ConvertSqlDataReaderToRegisteredUser(DataRow dataRow)
+        public RegisteredUser ConvertSqlDataReaderToRegisteredUser(DataRow dataRow,
+             IEnumerable<RegisteredUser> blockedUsers, IEnumerable<RegisteredUser> blockedByUsers,
+             IEnumerable<RegisteredUser> mutedUsers, IEnumerable<RegisteredUser> mutedByUsers,
+             IEnumerable<RegisteredUser> following, IEnumerable<RegisteredUser> followers)
         {
-            return RegisteredUser.Create(
-                    id: Guid.Parse(dataRow[0].ToString().Trim()),
-                    username: Username.Create(dataRow[1].ToString().Trim()).Value,
-                    firstName: FirstName.Create(dataRow[2].ToString().Trim()).Value,
-                    lastName: LastName.Create(dataRow[3].ToString().Trim()).Value,
-                    dateOfBirth: DateTime.Parse(dataRow[4].ToString().Trim()),
-                    gender: Gender.Create(dataRow[5].ToString().Trim()).Value,
-                    blockedByAgents: new List<Agent>(),
-                    blockedAgents: new List<Agent>(),
-                    followsAgents: new List<Agent>()).Value;
+            return RegisteredUser.Create(Guid.Parse(dataRow[0].ToString()),
+                                    Username.Create(dataRow[1].ToString()).Value,
+                                    FirstName.Create(dataRow[9].ToString()).Value,
+                                    LastName.Create(dataRow[10].ToString()).Value,
+                                    DateTime.Parse(dataRow[2].ToString()),
+                                    Gender.Create(dataRow[3].ToString()).Value,
+                                    ProfileImagePath.Create(dataRow[6].ToString()).Value,
+                                    /*WebsiteAddress.Create(dataRow[8].ToString()).Value,
+                                    Category.Create(dataRow[5].ToString()).Value,*/
+                                    bool.Parse(dataRow[7].ToString()),
+                                    blockedUsers,
+                                    blockedByUsers,
+                                    mutedUsers,
+                                    mutedByUsers,
+                                    following,
+                                    followers,
+                                    bool.Parse(dataRow[11].ToString())).Value;
         }
     }
 }

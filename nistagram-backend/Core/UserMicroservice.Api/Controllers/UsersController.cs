@@ -127,7 +127,7 @@ namespace UserMicroservice.Api.Controllers
         }
 
         [HttpPut("edit")]
-        public IActionResult Edit(DTOs.RegisteredUser dto)
+        public async Task<IActionResult> Edit(DTOs.RegisteredUser dto)
         {
             Result<Username> username = Username.Create(dto.Username);
             Result<EmailAddress> emailAddress = EmailAddress.Create(dto.EmailAddress);
@@ -141,11 +141,7 @@ namespace UserMicroservice.Api.Controllers
 
             Result result = Result.Combine(username, emailAddress, firstName, lastName, phoneNumber, gender, websiteAddress, bio, password);
             if (result.IsFailure) return BadRequest(result.Error);
-            if (!_userRepository.GetById(dto.Id).Value.Username.ToString().Equals(dto.Username))
-            {
-                if (_userRepository.GetByUsername(dto.Username).HasValue) return BadRequest();
-            }
-            return Ok(userService.Edit((Core.Model.RegisteredUser.Create(dto.Id,
+            Result userResult = await userService.EditAsync((Core.Model.RegisteredUser.Create(dto.Id,
                                           username.Value,
                                           emailAddress.Value,
                                           firstName.Value,
@@ -168,7 +164,10 @@ namespace UserMicroservice.Api.Controllers
                                           new List<Core.Model.RegisteredUser>(),
                                           new List<Core.Model.RegisteredUser>(),
                                           new List<Core.Model.RegisteredUser>(),
-                                          dto.IsBanned).Value)));
+                                          dto.IsBanned).Value));
+
+            if (userResult.IsFailure) return BadRequest();
+            return Ok(userResult);
         }
 
         [HttpGet]
@@ -182,10 +181,11 @@ namespace UserMicroservice.Api.Controllers
         }
 
         [HttpPost("follow")]
-        public IActionResult Follow(Follow follow)
+        public async Task<IActionResult> Follow(Follow follow)
         {
             Guid id = Guid.NewGuid();
-            if (userService.Follow(id, follow.FollowedById, follow.FollowingId).IsFailure) return BadRequest();
+            Result result = await userService.FollowAsync(id, follow.FollowedById, follow.FollowingId);
+            if (result.IsFailure) return BadRequest();
             return Created(this.Request.Path + id, "");
         }
 

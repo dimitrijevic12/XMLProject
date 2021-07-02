@@ -69,6 +69,8 @@ namespace PostMicroservice.Api
 
             services.AddScoped<StoryUserRegisteredEventConsumer>();
             services.AddScoped<UnsuccessfulReportUserRegistrationEventConsumer>();
+            services.AddScoped<UnsuccessfulReportUserEditEventConsumer>();
+            services.AddScoped<StoryUserEditedEventConsumer>();
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {

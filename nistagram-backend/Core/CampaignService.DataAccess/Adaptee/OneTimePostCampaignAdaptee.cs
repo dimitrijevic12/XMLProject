@@ -7,7 +7,7 @@ namespace CampaignService.DataAccess.Adaptee
 {
     public class OneTimePostCampaignAdaptee
     {
-        public OneTimePostCampaign ConvertSqlDataReaderToOneTimePostCampaign(DataRow dataRow)
+        /*public OneTimePostCampaign ConvertSqlDataReaderToOneTimePostCampaign(DataRow dataRow)
         {
             return OneTimePostCampaign.Create(
                     id: Guid.Parse(dataRow[0].ToString().Trim()),
@@ -23,6 +23,6 @@ namespace CampaignService.DataAccess.Adaptee
                         exposureCount: ExposureCount.Create(int.Parse(dataRow[7].ToString().Trim())).Value,
                         clickCount: ClickCount.Create(int.Parse(dataRow[8].ToString().Trim())).Value).Value,
                     exposureDate: DateTime.Parse(dataRow[9].ToString().Trim())).Value;
-        }
+        }*/
     }
 }

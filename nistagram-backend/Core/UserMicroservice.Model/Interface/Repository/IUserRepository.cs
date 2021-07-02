@@ -53,5 +53,7 @@ namespace UserMicroservice.Core.Interface.Repository
         public void BanUser(Guid id);
 
         public RegisteredUser EditAgent(Agent agent);
+
+        public void DeleteFollow(Guid followedById, Guid followingId);
     }
 }

@@ -50,5 +50,11 @@ namespace StoryMicroservice.Core.Model
             blockedByUsers, following,
             followers, myCloseFriends, closeFriendTo));
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is RegisteredUser user &&
+                   Id.Equals(user.Id);
+        }
     }
 }

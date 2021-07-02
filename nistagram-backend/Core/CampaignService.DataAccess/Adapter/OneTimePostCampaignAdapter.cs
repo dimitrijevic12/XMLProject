@@ -4,7 +4,7 @@ using System.Data;
 
 namespace CampaignService.DataAccess.Adapter
 {
-    public class OneTimePostCampaignAdapter : ITarget
+    public class OneTimePostCampaignAdapter/* : ITarget*/
     {
         private readonly OneTimePostCampaignAdaptee oneTimePostCampaignAdaptee;
 
@@ -13,9 +13,9 @@ namespace CampaignService.DataAccess.Adapter
             this.oneTimePostCampaignAdaptee = oneTimePostCampaignAdaptee;
         }
 
-        public object ConvertSql(DataRow dataRow)
-        {
-            return oneTimePostCampaignAdaptee.ConvertSqlDataReaderToOneTimePostCampaign(dataRow);
-        }
+        /* public object ConvertSql(DataRow dataRow)
+         {
+             return oneTimePostCampaignAdaptee.ConvertSqlDataReaderToOneTimePostCampaign(dataRow);
+         }*/
     }
 }

@@ -29,5 +29,27 @@ namespace NotificationMicroservice.Core.Services
             _userRepository.Save(registeredUser);
             return Result.Success(registeredUser);
         }
+
+        public async Task<Result> CreateEditAsync(RegisteredUser registeredUser)
+        {
+            return Edit(registeredUser);
+        }
+
+        public Result Edit(RegisteredUser registeredUser)
+        {
+            if (!_userRepository.GetById(registeredUser.Id).Value.Username.ToString().Equals(registeredUser.Username))
+            {
+                if (_userRepository.GetByUsername(registeredUser.Username).HasValue) return Result.Failure("There is already user with that username");
+            }
+            _userRepository.Edit(registeredUser);
+            return Result.Success(registeredUser);
+        }
+
+        public Task RejectEditAsync(RegisteredUser user, string reason)
+        {
+            _userRepository.Edit(user);
+
+            return Task.CompletedTask;
+        }
     }
 }
