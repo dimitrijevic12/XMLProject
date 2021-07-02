@@ -17,5 +17,13 @@ namespace CampaignMicroservice.Core.Interface
         public void DeleteFollow(Guid followedById, Guid followingId);
 
         public Boolean AlreadyFollowing(Guid requests_follow_id, Guid recieves_follow_id);
+
+        public void Mute(Guid id, Guid mutedById, Guid mutingId);
+
+        public void Block(Guid id, Guid blockedById, Guid blockingId);
+
+        public void DeleteBlock(Guid id);
+
+        public void DeleteFollows(Guid blockedById, Guid blockingId);
     }
 }

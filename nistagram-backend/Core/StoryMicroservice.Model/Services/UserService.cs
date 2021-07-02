@@ -101,5 +101,23 @@ namespace StoryMicroservice.Core.Services
             _userRepository.Follow(followedById, followingId);
             return Result.Success();
         }
+
+        public async Task<Result> BlockAsync(Guid id, Guid blockedById, Guid blockingId)
+        {
+            var result = Block(id, blockedById, blockingId);
+            if (result.IsFailure) return Result.Failure(result.Error);
+            return Result.Success();
+        }
+
+        public Result Block(Guid id, Guid blockedById, Guid blockingId)
+        {
+            var user = _userRepository.GetById(blockedById);
+            var blockedUser = _userRepository.GetById(blockingId);
+            if ((user.HasNoValue) || (blockedUser.HasNoValue)) return Result.Failure("There is no user with that id");
+            if (user.Value.BlockedUsers.Contains(blockedUser.Value)) return Result.Failure("User is already a blocked");
+            _userRepository.Block(blockedById, blockingId);
+            _userRepository.DeleteFollow(blockedById, blockingId);
+            return Result.Success("User is successfully blocked");
+        }
     }
 }

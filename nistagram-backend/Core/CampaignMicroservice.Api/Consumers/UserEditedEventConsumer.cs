@@ -1,16 +1,16 @@
-﻿using EasyNetQ;
+﻿using CampaignMicroservice.Core.Interface;
+using CampaignMicroservice.Core.Model;
+using CampaignMicroservice.Core.Services;
+using EasyNetQ;
 using EasyNetQ.AutoSubscribe;
 using Shared.Contracts;
-using StoryMicroservice.Core.Interface.Repository;
-using StoryMicroservice.Core.Model;
-using StoryMicroservice.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace StoryMicroservice.Api.Consumers
+namespace CampaignMicroservice.Api.Consumers
 {
     public class UserEditedEventConsumer : IConsumeAsync<UserEditedEvent>
     {
@@ -27,12 +27,12 @@ namespace StoryMicroservice.Api.Consumers
 
         public async Task ConsumeAsync(UserEditedEvent message, CancellationToken cancellationToken = default)
         {
-            var result = await userService.EditRegistrationAsync(Convert(message));
+            var result = await userService.CreateEditAsync(Convert(message));
             if (result.IsSuccess)
             {
-                await _bus.PubSub.PublishAsync(new StoryUserEditedEvent
+                await _bus.PubSub.PublishAsync(new CampaignUserEditedEvent
                 {
-                    Id = new Guid(message.Id),
+                    Id = message.Id,
                     Username = message.Username,
                     FirstName = message.FirstName,
                     LastName = message.LastName,
@@ -103,19 +103,19 @@ namespace StoryMicroservice.Api.Consumers
             }
         }
 
-        private IEnumerable<StoryUserEditedEvent> Convert(IEnumerable<Core.Model.RegisteredUser> users)
-        {
-            return users.Select(registeredUser => new StoryUserEditedEvent
-            {
-                Id = registeredUser.Id,
-                Username = registeredUser.Username,
-                FirstName = registeredUser.FirstName,
-                LastName = registeredUser.LastName,
-                ProfilePicturePath = registeredUser.ProfilePicturePath,
-                IsPrivate = registeredUser.IsPrivate,
-                IsAcceptingTags = registeredUser.IsAcceptingTags,
-            }).ToList();
-        }
+        /*  private IEnumerable<StoryUserEditedEvent> Convert(IEnumerable<Core.Model.RegisteredUser> users)
+          {
+              return users.Select(registeredUser => new StoryUserEditedEvent
+              {
+                  Id = registeredUser.Id,
+                  Username = registeredUser.Username,
+                  FirstName = registeredUser.FirstName,
+                  LastName = registeredUser.LastName,
+                  ProfilePicturePath = registeredUser.ProfilePicturePath,
+                  IsPrivate = registeredUser.IsPrivate,
+                  IsAcceptingTags = registeredUser.IsAcceptingTags,
+              }).ToList();
+          }*/
 
         public List<string> CreateIds(IEnumerable<UserRegisteredEvent> registeredUsers)
         {
@@ -135,15 +135,17 @@ namespace StoryMicroservice.Api.Consumers
                                            Username.Create(message.Username).Value,
                                            FirstName.Create(message.FirstName).Value,
                                            LastName.Create(message.LastName).Value,
+                                           message.DateOfBirth,
+                                           Gender.Create(message.Gender).Value,
+                                           ProfileImagePath.Create(message.ProfilePicturePath).Value,
                                            message.IsPrivate,
-                                           message.IsAcceptingTags,
-                                           ContentPath.Create(message.ProfilePicturePath).Value,
                                            CreateUsers(message.BlockedUsers),
                                            CreateUsers(message.BlockedByUsers),
                                            CreateUsers(message.Following),
                                            CreateUsers(message.Followers),
-                                           CreateUsers(message.MyCloseFriends),
-                                           CreateUsers(message.CloseFriendTo)).Value;
+                                           CreateUsers(message.MutedByUsers),
+                                           CreateUsers(message.MutedUsers),
+                                           message.IsBanned).Value;
         }
     }
 }

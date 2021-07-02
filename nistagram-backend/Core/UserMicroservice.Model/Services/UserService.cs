@@ -45,6 +45,9 @@ namespace UserMicroservice.Core.Services
                 ProfilePicturePath = registeredUser.ProfileImagePath,
                 IsPrivate = registeredUser.IsPrivate,
                 IsAcceptingTags = registeredUser.IsAcceptingTags,
+                IsBanned = registeredUser.IsBanned,
+                Gender = registeredUser.Gender,
+                DateOfBirth = registeredUser.DateOfBirth,
                 Followers = CreateIds(registeredUser.Followers),
                 Following = CreateIds(registeredUser.Following)
             });
@@ -90,13 +93,18 @@ namespace UserMicroservice.Core.Services
                 LastName = registeredUser.LastName,
                 ProfilePicturePath = registeredUser.ProfileImagePath,
                 IsPrivate = registeredUser.IsPrivate,
+                Gender = registeredUser.Gender,
+                DateOfBirth = registeredUser.DateOfBirth,
                 IsAcceptingTags = registeredUser.IsAcceptingTags,
                 Followers = CreateIds(registeredUser.Followers),
                 Following = CreateIds(registeredUser.Following),
                 BlockedUsers = CreateIds(registeredUser.BlockedUsers),
                 BlockedByUsers = CreateIds(registeredUser.BlockedByUsers),
+                MutedUsers = CreateIds(registeredUser.MutedUsers),
+                MutedByUsers = CreateIds(registeredUser.MutedByUsers),
                 MyCloseFriends = CreateIds(registeredUser.MyCloseFriends),
                 CloseFriendTo = CreateIds(registeredUser.CloseFriendTo),
+                IsBanned = registeredUser.IsBanned,
 
                 OldEmailAddress = oldUser.EmailAddress,
                 OldUsername = oldUser.Username,
@@ -141,6 +149,16 @@ namespace UserMicroservice.Core.Services
         }
 
         public Task CompleteFollowAsync()
+        {
+            return Task.CompletedTask;
+        }
+
+        public Task CompleteMuteAsync()
+        {
+            return Task.CompletedTask;
+        }
+
+        public Task CompleteBlockAsync()
         {
             return Task.CompletedTask;
         }
@@ -299,6 +317,19 @@ namespace UserMicroservice.Core.Services
             return Result.Success("User successfully added to close friends");
         }
 
+        public async Task<Result> MuteAsync(Guid id, Guid mutedById, Guid mutingId)
+        {
+            var result = Mute(id, mutedById, mutingId);
+            if (result.IsFailure) return Result.Failure(result.Error);
+            await _bus.PubSub.PublishAsync(new UserMutedEvent
+            {
+                Id = id,
+                MutedById = mutedById,
+                MutingId = mutingId
+            });
+            return Result.Success();
+        }
+
         public Result Mute(Guid id, Guid mutedById, Guid mutingId)
         {
             var user = _userRepository.GetById(mutedById);
@@ -307,6 +338,32 @@ namespace UserMicroservice.Core.Services
             if (user.Value.MutedUsers.Contains(mutedUser.Value)) return Result.Failure("User is already a muted");
             _userRepository.Mute(id, mutedById, mutingId);
             return Result.Success("User is successfully muted");
+        }
+
+        public Task RejectMuteAsync(Guid id, string reason)
+        {
+            _userRepository.DeleteMute(id);
+
+            return Task.CompletedTask;
+        }
+
+        public async Task<Result> BlockAsync(Guid id, Guid blockedById, Guid blockingId)
+        {
+            var result = Block(id, blockedById, blockingId);
+            if (result.IsFailure) return Result.Failure(result.Error);
+            await _bus.PubSub.PublishAsync(new UserBlockedEvent
+            {
+                Id = id,
+                BlockedById = blockedById,
+                BlockingId = blockingId,
+            });
+            return Result.Success();
+        }
+
+        public Task RejectBlockAsync(Guid id, string reason)
+        {
+            _userRepository.DeleteBlock(id);
+            return Task.CompletedTask;
         }
 
         public Result Block(Guid id, Guid blockedById, Guid blockingId)

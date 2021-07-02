@@ -41,7 +41,8 @@ namespace CampaignService.DataAccess.Implementation
         public RegisteredUser Edit(RegisteredUser registeredUser)
         {
             StringBuilder queryBuilder = new StringBuilder("UPDATE dbo.RegisteredUser ");
-            queryBuilder.Append("SET username = @username ");
+            queryBuilder.Append("SET username = @username, first_name = @first_name, last_name = @last_name, date_of_birth = @date_of_birth," +
+                " gender = @gender, is_banned = @is_banned, is_private = @is_private, profile_image_path = @profile_image_path  ");
             queryBuilder.Append("WHERE id = @id;");
 
             string query = queryBuilder.ToString();
@@ -49,7 +50,14 @@ namespace CampaignService.DataAccess.Implementation
             List<SqlParameter> parameters = new List<SqlParameter>
             {
                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = registeredUser.Id },
-                new SqlParameter("@username", SqlDbType.NVarChar) { Value = registeredUser.Username.ToString() }
+                 new SqlParameter("@username", SqlDbType.NVarChar) { Value = registeredUser.Username.ToString() },
+                 new SqlParameter("@first_name", SqlDbType.NVarChar) { Value = registeredUser.FirstName.ToString() },
+                 new SqlParameter("@last_name", SqlDbType.NVarChar) { Value = registeredUser.LastName.ToString() },
+                 new SqlParameter("@date_of_birth", SqlDbType.NVarChar) { Value = registeredUser.DateOfBirth.ToString() },
+                 new SqlParameter("@gender", SqlDbType.NVarChar) { Value = registeredUser.Gender.ToString() },
+                 new SqlParameter("@is_private", SqlDbType.Bit) { Value = registeredUser.IsPrivate },
+                 new SqlParameter("@is_banned", SqlDbType.Bit) { Value = registeredUser.IsBanned },
+                 new SqlParameter("@profile_image_path", SqlDbType.NVarChar) { Value = registeredUser.ProfileImagePath.ToString() },
             };
 
             ExecuteQuery(query, parameters);
@@ -114,8 +122,8 @@ namespace CampaignService.DataAccess.Implementation
         public RegisteredUser Save(RegisteredUser registeredUser)
         {
             StringBuilder queryBuilder = new StringBuilder("INSERT INTO dbo.RegisteredUser ");
-            queryBuilder.Append("(id, username) ");
-            queryBuilder.Append("VALUES (@id, @username);");
+            queryBuilder.Append("(id, username, first_name, last_name, date_of_birth, gender, website_address, is_private, type, category, is_banned, profile_image_path) ");
+            queryBuilder.Append("VALUES (@id, @username, @first_name, @last_name, @date_of_birth, @gender, '', @is_private, 'default', '', @is_banned, @profile_image_path);");
 
             string query = queryBuilder.ToString();
 
@@ -123,6 +131,13 @@ namespace CampaignService.DataAccess.Implementation
              {
                  new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = registeredUser.Id },
                  new SqlParameter("@username", SqlDbType.NVarChar) { Value = registeredUser.Username.ToString() },
+                 new SqlParameter("@first_name", SqlDbType.NVarChar) { Value = registeredUser.FirstName.ToString() },
+                 new SqlParameter("@last_name", SqlDbType.NVarChar) { Value = registeredUser.LastName.ToString() },
+                 new SqlParameter("@date_of_birth", SqlDbType.NVarChar) { Value = registeredUser.DateOfBirth.ToString() },
+                 new SqlParameter("@profile_image_path", SqlDbType.NVarChar) { Value = registeredUser.ProfileImagePath.ToString() },
+                 new SqlParameter("@gender", SqlDbType.NVarChar) { Value = registeredUser.Gender.ToString() },
+                 new SqlParameter("@is_private", SqlDbType.Bit) { Value = registeredUser.IsPrivate },
+                 new SqlParameter("@is_banned", SqlDbType.Bit) { Value = registeredUser.IsBanned },
              };
 
             ExecuteQuery(query, parameters);
@@ -318,6 +333,73 @@ namespace CampaignService.DataAccess.Implementation
             DataTable dataTable = ExecuteQuery(query, parameters);
 
             return dataTable.Rows.Count > 0;
+        }
+
+        public void Mute(Guid id, Guid mutedById, Guid mutingId)
+        {
+            StringBuilder queryBuilder = new StringBuilder("INSERT INTO dbo.Mutes ");
+            queryBuilder.Append("(id, muted_by_id, muting_id) ");
+            queryBuilder.Append("VALUES (@id, @muted_by_id, @muting_id);");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = id },
+                 new SqlParameter("@muted_by_id", SqlDbType.UniqueIdentifier) { Value = mutedById },
+                 new SqlParameter("@muting_id", SqlDbType.UniqueIdentifier) { Value = mutingId }
+             };
+
+            ExecuteQuery(query, parameters);
+        }
+
+        public void Block(Guid id, Guid blockedById, Guid blockingId)
+        {
+            StringBuilder queryBuilder = new StringBuilder("INSERT INTO dbo.Blocks ");
+            queryBuilder.Append("(id, blocked_by_id, blocking_id) ");
+            queryBuilder.Append("VALUES (@id, @blocked_by_id, @blocking_id);");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = id },
+                 new SqlParameter("@blocked_by_id", SqlDbType.UniqueIdentifier) { Value = blockedById },
+                 new SqlParameter("@blocking_id", SqlDbType.UniqueIdentifier) { Value = blockingId }
+             };
+
+            ExecuteQuery(query, parameters);
+        }
+
+        public void DeleteBlock(Guid id)
+        {
+            StringBuilder queryBuilder = new StringBuilder("DELETE FROM dbo.Blocks ");
+            queryBuilder.Append("WHERE id = @id;");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = id },
+             };
+
+            ExecuteQuery(query, parameters);
+        }
+
+        public void DeleteFollows(Guid blockedById, Guid blockingId)
+        {
+            StringBuilder queryBuilder = new StringBuilder("DELETE FROM dbo.Follows ");
+            queryBuilder.Append("WHERE (followed_by_id = @blocked_by_id AND following_id = @blocking_id) OR (followed_by_id = @blocking_id AND following_id = @blocked_by_id);");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@blocked_by_id", SqlDbType.UniqueIdentifier) { Value = blockedById },
+                 new SqlParameter("@blocking_id", SqlDbType.UniqueIdentifier) { Value = blockingId }
+             };
+
+            ExecuteQuery(query, parameters);
         }
     }
 }

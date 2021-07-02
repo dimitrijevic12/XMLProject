@@ -52,5 +52,11 @@ namespace CampaignMicroservice.Core.Model
             return Result.Success(new RegisteredUser(id, username, firstName, lastName, dateOfBirth, gender, profileImagePath, isPrivate, blockedByUsers,
                                                         blockedUsers, following, followers, mutedByUsers, mutedUsers, isBanned));
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is RegisteredUser user &&
+                   Id.Equals(user.Id);
+        }
     }
 }

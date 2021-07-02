@@ -932,5 +932,35 @@ namespace UserMicroservice.DataAccess.Implementation
 
             ExecuteQuery(query, parameters);
         }
+
+        public void DeleteMute(Guid id)
+        {
+            StringBuilder queryBuilder = new StringBuilder("DELETE FROM dbo.Mutes ");
+            queryBuilder.Append("WHERE id = @id;");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = id },
+             };
+
+            ExecuteQuery(query, parameters);
+        }
+
+        public void DeleteBlock(Guid id)
+        {
+            StringBuilder queryBuilder = new StringBuilder("DELETE FROM dbo.Blocks ");
+            queryBuilder.Append("WHERE id = @id;");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = id },
+             };
+
+            ExecuteQuery(query, parameters);
+        }
     }
 }

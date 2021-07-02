@@ -53,6 +53,13 @@ namespace CampaignMicroservice.Api
 
             services.AddScoped<UserFollowedEventConsumer>();
             services.AddScoped<UnsuccessfulStoryFollowEventConsumer>();
+            services.AddScoped<UserRegisteredEventConsumer>();
+            services.AddScoped<UnsuccessfulStoryUserRegistrationEventConsumer>();
+            services.AddScoped<UnsuccessfulStoryUserBlockEventConsumer>();
+            services.AddScoped<UserEditedEventConsumer>();
+            services.AddScoped<UserMutedEventConsumer>();
+            services.AddScoped<UserBlockedEventConsumer>();
+            services.AddScoped<UnsuccessfulStoryUserEditEventConsumer>();
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {
