@@ -6,13 +6,13 @@ namespace CampaignMicroservice.Core.Model
 {
     public class OneTimeStoryCampaign : Campaign
     {
-        private readonly ExposureDate exposureDate;
+        public ExposureDate ExposureDate { get; }
 
         private OneTimeStoryCampaign(Guid id, TargetAudience targetAudience, Agent agent,
             CampaignStatistics campaignStatistics, ExposureDate exposureDate, IEnumerable<Ad> ads)
             : base(id, targetAudience, agent, campaignStatistics, ads)
         {
-            this.exposureDate = exposureDate;
+            ExposureDate = exposureDate;
         }
 
         public static Result<OneTimeStoryCampaign> Create(Guid id, TargetAudience targetAudience, Agent agent,

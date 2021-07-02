@@ -8,14 +8,10 @@ using System.Threading.Tasks;
 
 namespace CampaignMicroservice.Core.Interface
 {
-    public interface ICampaignRepository
+    public interface IExposureDateRepository
     {
-        public void Save(Campaign campaign);
+        public void Save(ExposureDate exposureDate);
 
-        public void Update(Campaign campaign);
-
-        public void Remove(Guid id);
-
-        public Maybe<Campaign> GetById(Guid id);
+        public Maybe<ExposureDate> GetById(Guid id);
     }
 }

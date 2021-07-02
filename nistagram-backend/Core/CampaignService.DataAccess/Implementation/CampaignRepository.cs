@@ -1,5 +1,6 @@
 ﻿using CampaignMicroservice.Core.Interface;
 using CampaignMicroservice.Core.Model;
+using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,11 @@ namespace CampaignService.DataAccess.Implementation
         {
         }
 
+        public Maybe<Campaign> GetById(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Remove(Guid id)
         {
             throw new NotImplementedException();
@@ -25,35 +31,35 @@ namespace CampaignService.DataAccess.Implementation
         public void Save(Campaign campaign)
         {
             StringBuilder queryBuilder = new StringBuilder("INSERT INTO dbo.Campaign ");
-            queryBuilder.Append("(id, target_audience_id, agent_id, likes_count, dislikes_count, exposure_count, click_count, type, start_date, end_date, date_of_change) ");
-            queryBuilder.Append("VALUES (@Id, @Target_audience_id, @Agent_id, @Likes_count, @Dislikes_count, @Exposure_count, @Click_count, @Type, @Start_date, @End_date, @Date_of_change);");
+            queryBuilder.Append("(id, agent_id, likes_count, dislikes_count, exposure_count, click_count, type, min_date_of_birth, max_date_of_birth, gender, start_date, end_date, date_of_change) ");
+            queryBuilder.Append("VALUES (@Id, @Agent_id, @Likes_count, @Dislikes_count, @Exposure_count, @Click_count, @Type, @MinDateOfBirth, @MaxDateOfBirth, @Gender, @Start_date, @End_date, @Date_of_change);");
 
             string query = queryBuilder.ToString();
 
             List<SqlParameter> parameters = new List<SqlParameter>
              {
                  new SqlParameter("@Id", SqlDbType.UniqueIdentifier) { Value = campaign.Id },
-                 new SqlParameter("@Target_audience_id", SqlDbType.UniqueIdentifier) { Value = new Guid("8C062887-1E37-489F-BA89-942FA64058BE")},
                  new SqlParameter("@Agent_id", SqlDbType.UniqueIdentifier) { Value = campaign.Agent.Id },
                  new SqlParameter("@Likes_count", SqlDbType.Int) { Value = int.Parse(campaign.CampaignStatistics.LikesCount.ToString()) },
                  new SqlParameter("@Dislikes_count", SqlDbType.Int) { Value = int.Parse(campaign.CampaignStatistics.DislikesCount.ToString()) },
                  new SqlParameter("@Exposure_count", SqlDbType.Int) { Value = int.Parse(campaign.CampaignStatistics.ExposureCount.ToString()) },
                  new SqlParameter("@Click_count", SqlDbType.Int) { Value = int.Parse(campaign.CampaignStatistics.ClickCount.ToString()) },
                  new SqlParameter("@Type", SqlDbType.NVarChar) { Value = campaign.GetType().Name },
+                 new SqlParameter("@MinDateOfBirth", SqlDbType.NVarChar) { Value = campaign.TargetAudience.MinDateOfBirth },
+                 new SqlParameter("@MaxDateOfBirth", SqlDbType.NVarChar) { Value = campaign.TargetAudience.MaxDateOfBirth},
+                 new SqlParameter("@Gender", SqlDbType.NVarChar) { Value = campaign.TargetAudience.Gender},
              };
             if (campaign.GetType().Name.Equals("RecurringPostCampaign"))
             {
-                var campaign2 = (RecurringPostCampaign)campaign;
-                parameters.Add(new SqlParameter("@Start_date", SqlDbType.DateTime) { Value = campaign2.StartDate });
-                parameters.Add(new SqlParameter("@End_date", SqlDbType.DateTime) { Value = campaign2.EndDate });
-                parameters.Add(new SqlParameter("@Date_of_change", SqlDbType.DateTime) { Value = campaign2.DateOfChange });
+                RecurringPostCampaign recurringPostCampaign = (RecurringPostCampaign)campaign;
+                parameters.Add(new SqlParameter("@Start_date", SqlDbType.DateTime) { Value = recurringPostCampaign.StartDate });
+                parameters.Add(new SqlParameter("@End_date", SqlDbType.DateTime) { Value = recurringPostCampaign.EndDate });
             }
             else
             {
-                var campaign2 = (RecurringStoryCampaign)campaign;
-                parameters.Add(new SqlParameter("@Start_date", SqlDbType.DateTime) { Value = campaign2.StartDate });
-                parameters.Add(new SqlParameter("@End_date", SqlDbType.DateTime) { Value = campaign2.EndDate });
-                parameters.Add(new SqlParameter("@Date_of_change", SqlDbType.DateTime) { Value = campaign2.DateOfChange });
+                RecurringStoryCampaign recurringStoryCampaign = (RecurringStoryCampaign)campaign;
+                parameters.Add(new SqlParameter("@Start_date", SqlDbType.DateTime) { Value = recurringStoryCampaign.StartDate });
+                parameters.Add(new SqlParameter("@End_date", SqlDbType.DateTime) { Value = recurringStoryCampaign.EndDate });
             }
 
             ExecuteQuery(query, parameters);
