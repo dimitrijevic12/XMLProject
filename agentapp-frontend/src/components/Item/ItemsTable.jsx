@@ -36,7 +36,7 @@ class ItemsTable extends Component {
                 type="button"
                 className="btn-primary btn"
                 onClick={() => {
-                  this.displayModalPost();
+                  this.createNew();
                 }}
               >
                 Create new item
@@ -107,6 +107,10 @@ class ItemsTable extends Component {
   async delete(item) {
     debugger;
     window.location = "/";
+  }
+
+  createNew() {
+    window.location = "/create";
   }
 
   view(f) {

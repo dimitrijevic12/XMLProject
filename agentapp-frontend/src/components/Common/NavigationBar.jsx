@@ -43,7 +43,9 @@ class NavigationBar extends Component {
           </NavItem>
 
           <UncontrolledDropdown style={{ float: "right" }}>
-            <DropdownToggle nav caret></DropdownToggle>
+            <DropdownToggle nav caret>
+              {sessionStorage.getItem("usernameAgentApp")}
+            </DropdownToggle>
             <DropdownMenu right>
               <DropdownItem>
                 <NavLink to="/login" onClick={this.logout.bind(this)}>

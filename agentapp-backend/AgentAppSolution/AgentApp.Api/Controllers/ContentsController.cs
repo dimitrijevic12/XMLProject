@@ -1,5 +1,6 @@
 ﻿using AgentApp.Core.Model.File;
 using AgentApp.Core.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -20,6 +21,7 @@ namespace AgentApp.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "RegisteredUser, Agent")]
         public IActionResult SaveImg([FromForm] FileModel file)
         {
             string fileName = itemService.ImageToSave(_env.WebRootPath, file);

@@ -19,7 +19,10 @@ import axios from "axios";
 export const getItems = () => async (dispatch) => {
   try {
     const response = await axios.get("http://localhost:55744/api/items", {
-      headers: { "Access-Control-Allow-Origin": "*" },
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        Authorization: "Bearer " + sessionStorage.getItem("tokenAgentApp"),
+      },
     });
     debugger;
     dispatch({
@@ -40,7 +43,10 @@ export const createItem = (item) => async (dispatch) => {
       "http://localhost:55744/api/items",
       item,
       {
-        headers: { "Access-Control-Allow-Origin": "*" },
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("tokenAgentApp"),
+        },
       }
     );
     dispatch({
@@ -59,7 +65,10 @@ export const getItemById = (id) => async (dispatch) => {
   try {
     const response = await axios
       .get("http://localhost:55744/api/items/" + id, {
-        headers: { "Access-Control-Allow-Origin": "*" },
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("tokenAgentApp"),
+        },
       })
       .then(async function (response) {
         dispatch({
@@ -73,6 +82,8 @@ export const getItemById = (id) => async (dispatch) => {
             {
               headers: {
                 "Access-Control-Allow-Origin": "*",
+                Authorization:
+                  "Bearer " + sessionStorage.getItem("tokenAgentApp"),
               },
             }
           )
@@ -96,7 +107,10 @@ export const loadImage = (path) => async (dispatch) => {
     const response = await axios.get(
       "http://localhost:55744/api/contents/" + path,
       {
-        headers: { "Access-Control-Allow-Origin": "*" },
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("tokenAgentApp"),
+        },
       }
     );
     dispatch({
@@ -114,7 +128,10 @@ export const loadImage = (path) => async (dispatch) => {
 export const editItem = (item) => async (dispatch) => {
   try {
     const response = await axios.put("http://localhost:55744/api/items", item, {
-      headers: { "Access-Control-Allow-Origin": "*" },
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        Authorization: "Bearer " + sessionStorage.getItem("tokenAgentApp"),
+      },
     });
     dispatch({
       type: EDIT_ITEM,
@@ -129,16 +146,16 @@ export const editItem = (item) => async (dispatch) => {
 };
 
 export const deleteItem = (item) => async (dispatch) => {
+  debugger;
   try {
-    const response = await axios.delete(
-      "http://localhost:55744/api/items",
-      {
-        data: item,
+    const response = await axios.delete("http://localhost:55744/api/items", {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        Authorization: "Bearer " + sessionStorage.getItem("tokenAgentApp"),
       },
-      {
-        headers: { "Access-Control-Allow-Origin": "*" },
-      }
-    );
+      data: item,
+    });
+    debugger;
     dispatch({
       type: DELETE_ITEM,
       payload: response.data,
@@ -157,7 +174,10 @@ export const buyItem = (item) => async (dispatch) => {
       "http://localhost:55744/api/items/buy",
       item,
       {
-        headers: { "Access-Control-Allow-Origin": "*" },
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("tokenAgentApp"),
+        },
       }
     );
     dispatch({

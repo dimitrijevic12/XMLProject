@@ -16,7 +16,9 @@ class NotLoggedNavigationBar extends Component {
       return (
         <React.Fragment>
           <UncontrolledDropdown style={{ float: "right" }}>
-            <DropdownToggle nav caret></DropdownToggle>
+            <DropdownToggle nav caret>
+              {" "}
+            </DropdownToggle>
             <DropdownMenu right>
               <DropdownItem>
                 <NavLink to="/registration">Register</NavLink>
