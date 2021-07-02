@@ -67,7 +67,7 @@ namespace UserMicroservice.Api
 
             services.AddScoped<UnsuccessfulStoryUserRegistrationEventConsumer>();
             services.AddScoped<UnsuccessfulStoryUserEditEventConsumer>();
-            services.AddScoped<UnsuccessfulFollowEventConsumer>();
+            services.AddScoped<UnsuccessfulCampaignFollowEventConsumer>();
             services.AddScoped<UserRegistrationCompletedEventConsumer>();
             services.AddScoped<UserEditCompletedEventConsumer>();
             services.AddScoped<UserFollowCompletedEventConsumer>();

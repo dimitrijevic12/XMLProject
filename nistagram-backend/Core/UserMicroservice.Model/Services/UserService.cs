@@ -12,7 +12,6 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using UserMicroservice.Core.Interface.Repository;
-using UserMicroservice.Core.Interface.Service;
 using UserMicroservice.Core.Model;
 using UserMicroservice.Core.Model.File;
 
@@ -229,6 +228,7 @@ namespace UserMicroservice.Core.Services
             if (result.IsFailure) return Result.Failure(result.Error);
             await _bus.PubSub.PublishAsync(new UserFollowedEvent
             {
+                Id = id,
                 FollowedById = followedById,
                 FollowingId = followingId
             });

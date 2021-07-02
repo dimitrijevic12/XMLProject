@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Shared.Contracts
 {
-    public class UserFollowedEvent
+    public class UnsuccessfulCampaignUserFollowEvent
     {
         public Guid Id { get; set; }
         public Guid FollowingId { get; set; }
