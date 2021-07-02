@@ -20,7 +20,7 @@ namespace CampaignService.DataAccess.Implementation
 
         public Maybe<ExposureDate> GetById(Guid id)
         {
-            StringBuilder queryBuilder = new StringBuilder("SELECT * ");
+            /*StringBuilder queryBuilder = new StringBuilder("SELECT * ");
             queryBuilder.Append("FROM dbo.ExposureDates ");
             queryBuilder.Append("WHERE id = @Id;");
 
@@ -39,8 +39,8 @@ namespace CampaignService.DataAccess.Implementation
                 GetMuted(id), GetMutedBy(id), GetFollowing(id), GetFollowers(id),
                 GetMyCloseFriends(id), GetCloseFriendsTo(id)
                 );
-            }
-            return Maybe<RegisteredUser>.None;
+            }*/
+            return Maybe<ExposureDate>.None;
         }
 
         public void Save(ExposureDate exposureDate)
