@@ -18,10 +18,10 @@ namespace CampaignMicroservice.Core.Services
             _exposureDateRepository = exposureDateRepository;
         }
 
-        public Result Save(ExposureDate exposureDate)
+        public Result Save(ExposureDate exposureDate, Guid campaignId)
         {
             if (_exposureDateRepository.GetById(exposureDate.Id).HasValue) return Result.Failure("Exposure date with that id already exist");
-            _exposureDateRepository.Save(exposureDate);
+            _exposureDateRepository.Save(exposureDate, campaignId);
             return Result.Success();
         }
     }

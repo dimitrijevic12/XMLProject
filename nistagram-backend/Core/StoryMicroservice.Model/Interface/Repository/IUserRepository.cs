@@ -21,5 +21,9 @@ namespace StoryMicroservice.Core.Interface.Repository
         public void Follow(Guid followedById, Guid followingId);
 
         public bool AlreadyFollows(Guid followedById, Guid followingId);
+
+        public void Block(Guid blockedById, Guid blockingId);
+
+        public void DeleteFollow(Guid followedById, Guid followingId);
     }
 }

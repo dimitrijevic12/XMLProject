@@ -254,10 +254,11 @@ namespace UserMicroservice.Api.Controllers
         }
 
         [HttpPost("mute")]
-        public IActionResult Mute(Mute mute)
+        public async Task<IActionResult> Mute(Mute mute)
         {
             Guid id = Guid.NewGuid();
-            if (userService.Mute(id, mute.MutedById, mute.MutingId).IsFailure) return BadRequest();
+            Result result = await userService.MuteAsync(id, mute.MutedById, mute.MutingId);
+            if (result.IsFailure) return BadRequest();
             return Created(this.Request.Path + id, "");
         }
 
@@ -269,10 +270,11 @@ namespace UserMicroservice.Api.Controllers
         }
 
         [HttpPost("block")]
-        public IActionResult Block(Block block)
+        public async Task<IActionResult> Block(Block block)
         {
             Guid id = Guid.NewGuid();
-            if (userService.Block(id, block.BlockedById, block.BlockingId).IsFailure) return BadRequest();
+            Result result = await userService.BlockAsync(id, block.BlockedById, block.BlockingId);
+            if (result.IsFailure) return BadRequest();
             return Created(this.Request.Path + id, "");
         }
 

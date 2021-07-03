@@ -9,6 +9,8 @@ import {
   UPDATE_CAMPAIGN_REQUEST_ERROR,
   GET_CAMPAIGN_REQUESTS_FOR_USER_PROFILE,
   GET_CAMPAIGN_REQUESTS_FOR_USER_PROFILE_ERROR,
+  CREATE_CAMPAIGN,
+  CREATE_CAMPAIGN_ERROR,
 } from "../types/types";
 import axios from "axios";
 
@@ -106,6 +108,32 @@ export const updateCampaignRequest = (campaignRequest) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: UPDATE_CAMPAIGN_REQUEST_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const createCampaign = (campaign) => async (dispatch) => {
+  try {
+    debugger;
+    const response = await axios.post(
+      `https://localhost:44355/api/campaigns`,
+      campaign,
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      }
+    );
+    debugger;
+    dispatch({
+      type: CREATE_CAMPAIGN,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: CREATE_CAMPAIGN_ERROR,
       payload: console.log(e),
     });
   }

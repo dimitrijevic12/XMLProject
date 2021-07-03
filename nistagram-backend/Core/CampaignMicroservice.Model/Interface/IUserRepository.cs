@@ -18,6 +18,14 @@ namespace CampaignMicroservice.Core.Interface
 
         public Boolean AlreadyFollowing(Guid requests_follow_id, Guid recieves_follow_id);
 
+        public void Mute(Guid id, Guid mutedById, Guid mutingId);
+
+        public void Block(Guid id, Guid blockedById, Guid blockingId);
+
+        public void DeleteBlock(Guid id);
+
+        public void DeleteFollows(Guid blockedById, Guid blockingId);
+
         public IEnumerable<RegisteredUser> GetBlocking(Guid id);
 
         public IEnumerable<RegisteredUser> GetBlockedBy(Guid id);
@@ -29,7 +37,11 @@ namespace CampaignMicroservice.Core.Interface
         public IEnumerable<RegisteredUser> GetFollowing(Guid id);
 
         public IEnumerable<RegisteredUser> GetFollowers(Guid id);
-        
+
         public IEnumerable<RegisteredUser> GetSeenBy(Guid exposureDateId);
+
+        public RegisteredUser EditVerifiedUser(VerifiedUser registeredUser);
+
+        public RegisteredUser EditAgent(Agent registeredUser);
     }
 }

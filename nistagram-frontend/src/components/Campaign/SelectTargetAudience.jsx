@@ -71,8 +71,28 @@ class SelectTargetAudience extends Component {
             Next
           </button>
         </div>
+        <div
+          className="pb-5"
+          style={{
+            width: "150px",
+            position: "fixed",
+            bottom: 0,
+            left: 250,
+          }}
+        >
+          <button
+            onClick={() => this.stepBack()}
+            className="btn btn-warning btn-lg"
+          >
+            Back
+          </button>
+        </div>
       </div>
     );
+  }
+
+  stepBack() {
+    this.props.changeStep(1);
   }
 
   changeStep() {

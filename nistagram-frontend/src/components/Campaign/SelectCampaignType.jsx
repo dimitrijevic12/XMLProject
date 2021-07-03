@@ -32,11 +32,11 @@ class SelectCampaignType extends Component {
           <label className="label">Select type of campaign:</label>
           <div className="w-100 pt-3 d-flex" onChange={this.props.handleChange}>
             <div style={{ width: 400 }}>
-              <input className="mr-3" type="radio" value="post" name="type" />
+              <input className="mr-3" type="radio" value="Post" name="type" />
               Post Campaign
             </div>
             <div className="w-100" style={{ paddingLeft: 300 }}>
-              <input className="mr-3" type="radio" value="story" name="type" />
+              <input className="mr-3" type="radio" value="Story" name="type" />
               Story Campaign
             </div>
           </div>

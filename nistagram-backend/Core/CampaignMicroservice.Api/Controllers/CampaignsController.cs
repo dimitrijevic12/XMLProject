@@ -2,6 +2,7 @@
 using CampaignMicroservice.Api.Factories;
 using CampaignMicroservice.Core.Interface;
 using CampaignMicroservice.Core.Model;
+using CampaignMicroservice.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -24,16 +25,19 @@ namespace CampaignMicroservice.Api.Controllers
         private readonly AdFactory _adFactory;
         private readonly TargetAudienceFactory _targetAudienceFactory;
         private readonly IUserRepository _userRepository;
+        private readonly CampaignService _campaignService;
         private readonly CampaignFactory _campaignFactory;
 
         public CampaignsController(ICampaignRepository campaignRepository, ExposureDateFactory exposureDateFactory, AdFactory adFactory,
-            TargetAudienceFactory targetAudienceFactory, IUserRepository userRepository, CampaignFactory campaignFactory)
+            TargetAudienceFactory targetAudienceFactory, IUserRepository userRepository, CampaignService campaignService,
+            CampaignFactory campaignFactory)
         {
             _campaignRepository = campaignRepository;
             _exposureDateFactory = exposureDateFactory;
             _adFactory = adFactory;
             _targetAudienceFactory = targetAudienceFactory;
             _userRepository = userRepository;
+            _campaignService = campaignService;
             _campaignFactory = campaignFactory;
         }
 
@@ -44,6 +48,7 @@ namespace CampaignMicroservice.Api.Controllers
             List<CampaignMicroservice.Core.Model.ExposureDate> exposureDates = new List<CampaignMicroservice.Core.Model.ExposureDate>();
             foreach (ExposureDate exposureDate in campaign.ExposureDates)
             {
+                exposureDate.Id = Guid.NewGuid();
                 List<RegisteredUser> seenBy = new List<RegisteredUser>();
                 foreach (Guid registeredUserId in exposureDate.SeenByIds)
                     seenBy.Add(_userRepository.GetById(registeredUserId).Value);
@@ -52,15 +57,39 @@ namespace CampaignMicroservice.Api.Controllers
             List<CampaignMicroservice.Core.Model.Ad> ads = new List<CampaignMicroservice.Core.Model.Ad>();
             foreach (Ad ad in campaign.Ads)
             {
+                ad.Id = Guid.NewGuid();
                 RegisteredUser profileOwner = _userRepository.GetById(ad.ProfileOwnerId).Value;
                 ads.Add(_adFactory.Create(ad, profileOwner));
             }
-            _campaignRepository.Save(RecurringPostCampaign.Create(Guid.NewGuid(), _targetAudienceFactory.Create(campaign.TargetAudience),
-                agent,
-                CampaignStatistics.Create(LikesCount.Create(0).Value,
-                DislikesCount.Create(0).Value, ExposureCount.Create(0).Value, ClickCount.Create(0).Value).Value, campaign.StartDate, campaign.EndDate,
-                exposureDates, campaign.DateOfChange, ads
-                ).Value);
+            if (campaign.Type.Equals("OneTimePostCampaign"))
+                _campaignService.Save(OneTimePostCampaign.Create(Guid.NewGuid(), _targetAudienceFactory.Create(campaign.TargetAudience),
+               agent,
+               CampaignStatistics.Create(LikesCount.Create(0).Value,
+               DislikesCount.Create(0).Value, ExposureCount.Create(0).Value, ClickCount.Create(0).Value).Value,
+               exposureDates.FirstOrDefault(), ads
+               ).Value);
+            else if (campaign.Type.Equals("OneTimeStoryCampaign"))
+                _campaignService.Save(OneTimeStoryCampaign.Create(Guid.NewGuid(), _targetAudienceFactory.Create(campaign.TargetAudience),
+               agent,
+               CampaignStatistics.Create(LikesCount.Create(0).Value,
+               DislikesCount.Create(0).Value, ExposureCount.Create(0).Value, ClickCount.Create(0).Value).Value,
+               exposureDates.FirstOrDefault(), ads
+               ).Value);
+            else if (campaign.Type.Equals("RecurringPostCampaign"))
+                _campaignService.Save(RecurringPostCampaign.Create(Guid.NewGuid(), _targetAudienceFactory.Create(campaign.TargetAudience),
+               agent,
+               CampaignStatistics.Create(LikesCount.Create(0).Value,
+               DislikesCount.Create(0).Value, ExposureCount.Create(0).Value, ClickCount.Create(0).Value).Value, campaign.StartDate, campaign.EndDate,
+               exposureDates, campaign.DateOfChange, ads
+               ).Value);
+            else
+                _campaignService.Save(RecurringStoryCampaign.Create(Guid.NewGuid(), _targetAudienceFactory.Create(campaign.TargetAudience),
+               agent,
+               CampaignStatistics.Create(LikesCount.Create(0).Value,
+               DislikesCount.Create(0).Value, ExposureCount.Create(0).Value, ClickCount.Create(0).Value).Value, campaign.StartDate, campaign.EndDate,
+               exposureDates, campaign.DateOfChange, ads
+               ).Value);
+
             return Ok();
         }
 

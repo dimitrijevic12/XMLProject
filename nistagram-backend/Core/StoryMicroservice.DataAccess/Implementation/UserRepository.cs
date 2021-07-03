@@ -114,18 +114,83 @@ namespace StoryMicroservice.DataAccess.Implementation
                 blockedUsers, blockedByUsers, followers, following, closeFriendTo, myCloseFriends);
 
             var userDTO2 = _users.Find<RegisteredUser>(user => user.Id.Equals(followingUser.Id.ToString())).FirstOrDefault();
-            var blockedByUsers2 = GetUsersById(userDTO.BlockedByUsers);
-            var blockedUsers2 = GetUsersById(userDTO.BlockedUsers);
-            var followers2 = GetUsersById(userDTO.Followers);
+            var blockedByUsers2 = GetUsersById(userDTO2.BlockedByUsers);
+            var blockedUsers2 = GetUsersById(userDTO2.BlockedUsers);
+            var followers2 = GetUsersById(userDTO2.Followers);
             List<Core.Model.RegisteredUser> following2 = followingUser.Following.ToList();
             following2.Add(updatedFollowedUser);
-            var closeFriendTo2 = GetUsersById(userDTO.CloseFriendTo);
-            var myCloseFriends2 = GetUsersById(userDTO.MyCloseFriends);
+            var closeFriendTo2 = GetUsersById(userDTO2.CloseFriendTo);
+            var myCloseFriends2 = GetUsersById(userDTO2.MyCloseFriends);
             Core.Model.RegisteredUser updatedFollowingUser = userFactory.Create(userDTO2,
                 blockedUsers2, blockedByUsers2, followers2, following2, closeFriendTo2, myCloseFriends2);
 
             Edit(followingId.ToString(), updatedFollowedUser);
             Edit(followedById.ToString(), updatedFollowingUser);
+        }
+
+        public void DeleteFollow(Guid followedById, Guid followingId)
+        {
+            Core.Model.RegisteredUser followedUser = GetById(followingId).Value;
+            Core.Model.RegisteredUser followingUser = GetById(followedById).Value;
+
+            var userDTO = _users.Find<RegisteredUser>(user => user.Id.Equals(followedUser.Id.ToString())).FirstOrDefault();
+            var blockedByUsers = GetUsersById(userDTO.BlockedByUsers);
+            var blockedUsers = GetUsersById(userDTO.BlockedUsers);
+            List<Core.Model.RegisteredUser> followers = followedUser.Followers.ToList();
+            if (followers.Contains(followingUser)) followers.Remove(followingUser);
+            List<Core.Model.RegisteredUser> following = followedUser.Following.ToList();
+            if (following.Contains(followingUser)) following.Remove(followingUser);
+            var closeFriendTo = GetUsersById(userDTO.CloseFriendTo);
+            var myCloseFriends = GetUsersById(userDTO.MyCloseFriends);
+            Core.Model.RegisteredUser updatedFollowedUser = userFactory.Create(userDTO,
+                blockedUsers, blockedByUsers, followers, following, closeFriendTo, myCloseFriends);
+
+            var userDTO2 = _users.Find<RegisteredUser>(user => user.Id.Equals(followingUser.Id.ToString())).FirstOrDefault();
+            var blockedByUsers2 = GetUsersById(userDTO2.BlockedByUsers);
+            var blockedUsers2 = GetUsersById(userDTO2.BlockedUsers);
+            List<Core.Model.RegisteredUser> followers2 = followingUser.Followers.ToList();
+            if (followers2.Contains(followedUser)) followers2.Remove(followedUser);
+            List<Core.Model.RegisteredUser> following2 = followingUser.Following.ToList();
+            if (following2.Contains(followedUser)) following2.Remove(followedUser);
+            var closeFriendTo2 = GetUsersById(userDTO2.CloseFriendTo);
+            var myCloseFriends2 = GetUsersById(userDTO2.MyCloseFriends);
+            Core.Model.RegisteredUser updatedFollowingUser = userFactory.Create(userDTO2,
+                blockedUsers2, blockedByUsers2, followers2, following2, closeFriendTo2, myCloseFriends2);
+
+            Edit(followingId.ToString(), updatedFollowedUser);
+            Edit(followedById.ToString(), updatedFollowingUser);
+        }
+
+        public void Block(Guid blockedById, Guid blockingId)
+        {
+            Core.Model.RegisteredUser blockedUser = GetById(blockingId).Value;
+            Core.Model.RegisteredUser blockedByUser = GetById(blockedById).Value;
+
+            var userDTO = _users.Find<RegisteredUser>(user => user.Id.Equals(blockedByUser.Id.ToString())).FirstOrDefault();
+            var blockedByUsers = GetUsersById(userDTO.BlockedByUsers);
+            List<Core.Model.RegisteredUser> blockedUsers = blockedByUser.BlockedUsers.ToList();
+            blockedUsers.Add(blockedUser);
+            var followers = GetUsersById(userDTO.Followers);
+            var following = GetUsersById(userDTO.Following);
+            var closeFriendTo = GetUsersById(userDTO.CloseFriendTo);
+            var myCloseFriends = GetUsersById(userDTO.MyCloseFriends);
+            Core.Model.RegisteredUser updatedBlockedByUser = userFactory.Create(userDTO,
+                blockedUsers, blockedByUsers, followers, following, closeFriendTo, myCloseFriends);
+
+            var userDTO2 = _users.Find<RegisteredUser>(user => user.Id.Equals(blockedUser.Id.ToString())).FirstOrDefault();
+            List<Core.Model.RegisteredUser> blockedByUsers2 = blockedUser.BlockedByUsers.ToList();
+            blockedByUsers2.Add(updatedBlockedByUser);
+            var blockedUsers2 = GetUsersById(userDTO2.BlockedUsers);
+            var followers2 = GetUsersById(userDTO2.Followers);
+            var following2 = GetUsersById(userDTO2.Following);
+
+            var closeFriendTo2 = GetUsersById(userDTO2.CloseFriendTo);
+            var myCloseFriends2 = GetUsersById(userDTO2.MyCloseFriends);
+            Core.Model.RegisteredUser updatedBlockedUser = userFactory.Create(userDTO2,
+                blockedUsers2, blockedByUsers2, followers2, following2, closeFriendTo2, myCloseFriends2);
+
+            Edit(blockedById.ToString(), updatedBlockedByUser);
+            Edit(blockingId.ToString(), updatedBlockedUser);
         }
 
         public bool AlreadyFollows(Guid followedById, Guid followingId)

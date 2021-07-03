@@ -9,6 +9,7 @@ import axios from "axios";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
 import { createNotification } from "../../actions/actionsNotification";
+import { createCampaign } from "../../actions/actionsCampaign";
 
 class CreatePost extends Component {
   state = {
@@ -29,6 +30,7 @@ class CreatePost extends Component {
     fileUrls: [],
     contentPaths: [],
     link: "",
+    campaignType: "",
   };
 
   async componentDidMount() {
@@ -41,6 +43,8 @@ class CreatePost extends Component {
     this.setState({
       taggableUsers: this.props.taggableUsers,
     });
+
+    this.createType();
   }
 
   render() {
@@ -139,18 +143,39 @@ class CreatePost extends Component {
             </div>
           </div>
         </div>
-        <div className="mt-5 pb-5">
+        <div
+          className="pb-5 mb-5 mt-5"
+          style={{
+            width: "150px",
+            position: "relative",
+            float: "right",
+          }}
+        >
           <button
             disabled={
-              this.state.contentPaths.length === 0 ||
-              this.state.location === undefined
+              this.props.minDateOfBirth === "" ||
+              this.props.maxDateOfBirth === "" ||
+              this.props.gender === ""
             }
-            className="btn btn-primary btn-block"
-            onClick={() => {
-              this.createPost();
-            }}
+            onClick={() => this.createPost()}
+            className="btn btn-success btn-lg"
           >
-            Post
+            Finish
+          </button>
+        </div>
+        <div
+          className="pb-5 mb-5 mt-5"
+          style={{
+            width: "150px",
+            position: "relative",
+            float: "left",
+          }}
+        >
+          <button
+            onClick={() => this.stepBack()}
+            className="btn btn-warning btn-lg"
+          >
+            Back
           </button>
         </div>
       </React.Fragment>
@@ -184,12 +209,63 @@ class CreatePost extends Component {
       HashTags: hashTagsObjects,
       Taggedusers: this.state.taggedUsers,
     });
-    await this.props.createNotification({
-      Type: "Post",
-      ContentId: this.props.post.id,
-      RegisteredUser: { id: this.state.registeredUser.id },
-    });
+    debugger;
+    await this.props.createCampaign(
+      this.props.startDate === "" && this.props.endDate === ""
+        ? {
+            Type: this.state.campaignType,
+            TargetAudience: {
+              MinDateOfBirth: this.props.minDateOfBirth,
+              MaxDateOfBirth: this.props.maxDateOfBirth,
+              Gender: this.props.gender,
+            },
+            AgentId: sessionStorage.getItem("userId"),
+            ExposureDates: this.props.exposureDates,
+            Ads: [
+              {
+                ContentId: this.props.post.id,
+                Type: this.props.type,
+                Link: this.state.link,
+                ClickCount: 0,
+                ProfileOwnerId: sessionStorage.getItem("userId"),
+              },
+            ],
+          }
+        : {
+            Type: this.state.campaignType,
+            TargetAudience: {
+              MinDateOfBirth: this.props.minDateOfBirth,
+              MaxDateOfBirth: this.props.maxDateOfBirth,
+              Gender: this.props.gender,
+            },
+            AgentId: sessionStorage.getItem("userId"),
+            StartDate: this.props.startDate,
+            EndDate: this.props.endDate,
+            ExposureDates: this.props.exposureDates,
+            Ads: [
+              {
+                ContentId: this.props.post.id,
+                Type: this.props.type,
+                Link: this.state.link,
+                ClickCount: 0,
+                ProfileOwnerId: sessionStorage.getItem("userId"),
+              },
+            ],
+          }
+    );
     window.location = "/profile/" + sessionStorage.getItem("userId");
+  }
+
+  createType() {
+    if (this.props.recurrence === "oneTimeCampaign") {
+      if (this.props.type === "Post")
+        this.setState({ campaignType: "OneTimePostCampaign" });
+      else this.setState({ campaignType: "OneTimeStoryCampaign" });
+    } else {
+      if (this.props.type === "Post")
+        this.setState({ campaignType: "RecurringPostCampaign" });
+      else this.setState({ campaignType: "RecurringStoryCampaign" });
+    }
   }
 
   handleChangeUser = (e) => {
@@ -262,6 +338,10 @@ class CreatePost extends Component {
       [name]: value,
     });
   };
+
+  stepBack() {
+    this.props.changeStep(2);
+  }
 }
 
 const mapStateToProps = (state) => ({
@@ -277,5 +357,6 @@ export default compose(
     getLocationsByText,
     getTaggableUsers,
     createNotification,
+    createCampaign,
   })
 )(CreatePost);

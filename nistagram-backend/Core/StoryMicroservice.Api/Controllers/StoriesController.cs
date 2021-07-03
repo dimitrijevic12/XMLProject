@@ -59,7 +59,7 @@ namespace StoryMicroservice.Api.Controllers
             }
             if (storyService.Create(storyFactory.Create(story, _userRepository.GetUsersByDTO(story.SeenByUsers),
                 _userRepository.GetUsersByDTO(story.TaggedUsers), _userRepository.GetUsersById(story.RegisteredUser.MyCloseFriends))).IsFailure) return BadRequest();
-            return Created(this.Request.Path + "/" + story.Id, "");
+            return Ok(story);
         }
 
         [HttpGet("{id}")]

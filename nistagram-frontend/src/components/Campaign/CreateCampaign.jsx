@@ -5,7 +5,6 @@ import {
   getTaggableUsers,
 } from "../../actions/actions";
 import { connect } from "react-redux";
-import axios from "axios";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
 import { createNotification } from "../../actions/actionsNotification";
@@ -15,6 +14,7 @@ import SelectTargetAudience from "./SelectTargetAudience";
 import SelectOneTimeExposureDate from "./SelectOneTimeExposureDate";
 import SelectRecurringExposureDate from "./SelectRecurringExposureDate";
 import CreatePostCampaign from "./CreatePostCampaign";
+import CreateStoryCampaign from "./CreateStoryCampaign";
 
 class CreatePost extends Component {
   state = {
@@ -25,6 +25,10 @@ class CreatePost extends Component {
     maxDateOfBirth: "",
     gender: "",
     exposureDates: [],
+    exposureTimes: [""],
+    startDate: "",
+    endDate: "",
+    exposureDate: "",
   };
 
   render() {
@@ -37,7 +41,7 @@ class CreatePost extends Component {
               { title: "Select Campaign Type" },
               { title: "Select Exposure Date" },
               { title: "Select Target Audience" },
-              { title: "Step Four" },
+              { title: "Create Ads" },
             ]}
             activeStep={this.state.activeStep}
           />
@@ -54,6 +58,10 @@ class CreatePost extends Component {
             <SelectOneTimeExposureDate
               addExposureDates={this.addExposureDates.bind(this)}
               changeStep={this.changeStep.bind(this)}
+              exposureDate={this.state.exposureDate}
+              handleChangeExposureDate={this.handleChangeExposureDate.bind(
+                this
+              )}
             />
           ) : null}
           {this.state.activeStep === 1 &&
@@ -61,6 +69,16 @@ class CreatePost extends Component {
             <SelectRecurringExposureDate
               addExposureDates={this.addExposureDates.bind(this)}
               changeStep={this.changeStep.bind(this)}
+              exposureTimes={this.state.exposureTimes}
+              startDate={this.state.startDate}
+              endDate={this.state.endDate}
+              handleChangeStartDate={this.handleChangeStartDate.bind(this)}
+              handleChangeEndDate={this.handleChangeEndDate.bind(this)}
+              handleChangeExposureTime={this.handleChangeExposureTime.bind(
+                this
+              )}
+              addExposureTime={this.addExposureTime.bind(this)}
+              removeExposureTime={this.removeExposureTime.bind(this)}
             />
           ) : null}
           {this.state.activeStep === 2 ? (
@@ -74,15 +92,28 @@ class CreatePost extends Component {
               changeStep={this.changeStep.bind(this)}
             />
           ) : null}
-          {this.state.activeStep === 3 && this.state.type === "post" ? (
+          {this.state.activeStep === 3 && this.state.type === "Post" ? (
             <CreatePostCampaign
+              recurrence={this.state.recurrence}
+              type={this.state.type}
+              startDate={this.state.startDate}
+              endDate={this.state.endDate}
               minDateOfBirth={this.state.minDateOfBirth}
               maxDateOfBirth={this.state.maxDateOfBirth}
               gender={this.state.gender}
-              handleChange={this.handleChange.bind(this)}
-              handleChangeMinDate={this.handleChangeMinDate.bind(this)}
-              handleChangeMaxDate={this.handleChangeMaxDate.bind(this)}
-              changeStep={this.changeStep.bind(this)}
+              exposureDates={this.state.exposureDates}
+            />
+          ) : null}
+          {this.state.activeStep === 3 && this.state.type === "Story" ? (
+            <CreateStoryCampaign
+              recurrence={this.state.recurrence}
+              type={this.state.type}
+              startDate={this.state.startDate}
+              endDate={this.state.endDate}
+              minDateOfBirth={this.state.minDateOfBirth}
+              maxDateOfBirth={this.state.maxDateOfBirth}
+              gender={this.state.gender}
+              exposureDates={this.state.exposureDates}
             />
           ) : null}
         </div>
@@ -90,8 +121,12 @@ class CreatePost extends Component {
     );
   }
 
-  addExposureDates(dates) {
-    this.setState({ exposureDates: this.state.exposureDates.concat(dates) });
+  async addExposureDates(dates) {
+    debugger;
+    //this.setState({ exposureDates: [...this.state.exposureDates, dates] });
+    await this.setState({
+      exposureDates: this.state.exposureDates.concat(dates),
+    });
   }
 
   changeStep(step) {
@@ -122,6 +157,58 @@ class CreatePost extends Component {
     debugger;
     this.setState({
       maxDateOfBirth: e,
+    });
+  };
+
+  handleChangeStartDate = (e) => {
+    debugger;
+    this.setState({
+      startDate: e,
+    });
+  };
+
+  handleChangeEndDate = (e) => {
+    debugger;
+    this.setState({
+      endDate: e,
+    });
+  };
+
+  handleChangeExposureTime = (e, i) => {
+    this.setState({
+      exposureTimes: this.state.exposureTimes.map((element, j) =>
+        j === i ? e : element
+      ),
+      validTimes: this.checkIfAllTimesNotEmpty(),
+    });
+  };
+
+  addExposureTime() {
+    this.setState({
+      exposureTimes: this.state.exposureTimes.concat(""),
+      validTimes: this.checkIfAllTimesNotEmpty(),
+    });
+  }
+
+  removeExposureTime(i) {
+    debugger;
+    this.setState({
+      exposureTimes: this.state.exposureTimes.filter((_, j) => j !== i),
+    });
+  }
+
+  checkIfAllTimesNotEmpty() {
+    let valid = true;
+    this.state.exposureTimes.forEach((time) =>
+      time === "" ? (valid = false) : null
+    );
+    return valid;
+  }
+
+  handleChangeExposureDate = (e) => {
+    debugger;
+    this.setState({
+      exposureDate: { Time: e, SeenByIds: [] },
     });
   };
 }
