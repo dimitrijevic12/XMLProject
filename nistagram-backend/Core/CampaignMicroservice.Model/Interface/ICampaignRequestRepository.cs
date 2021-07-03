@@ -10,6 +10,6 @@ namespace CampaignMicroservice.Core.Interface
 
         public CampaignRequest Update(CampaignRequest campaignRequest);
 
-        public IEnumerable<CampaignRequest> GetBy(Guid userId, string isApproved);
+        public IEnumerable<CampaignRequest> GetBy(Guid userId, string isApproved, string action);
     }
 }

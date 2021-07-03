@@ -28,7 +28,7 @@ namespace CampaignService.DataAccess.Implementation
             _adRepository = adRepository;
         }
 
-        public IEnumerable<CampaignRequest> GetBy(Guid userId, string isApproved)
+        public IEnumerable<CampaignRequest> GetBy(Guid userId, string isApproved, string action)
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT cr.id, cr.is_approved, r.id, r.username, " +
                 "r.first_name, r.last_name, r.date_of_birth, r.gender, r.profile_image_path, r.is_private, " +
@@ -41,16 +41,17 @@ namespace CampaignService.DataAccess.Implementation
                 " dbo.RegisteredUser as a ");
             queryBuilder.Append("WHERE cr.campaign_id = c.id AND cr.verified_user_id = r.id AND " +
                 "c.agent_id = a.id " +
-                "AND cr.action=\'created\' AND r.id = @Id ");
+                "AND cr.action=@action AND r.id = @Id ");
 
             List<SqlParameter> parameters = new List<SqlParameter>()
             {
                 new SqlParameter("@Id", SqlDbType.UniqueIdentifier) { Value = userId },
+                new SqlParameter("@action", SqlDbType.NVarChar) { Value = action },
             };
 
             if (!String.IsNullOrWhiteSpace(isApproved))
             {
-                queryBuilder.Append("AND cr.is_approved = @IsApproved");
+                queryBuilder.Append("AND cr.is_approved = @IsApproved ");
                 SqlParameter parameterIsApproved = new SqlParameter("@IsApproved", SqlDbType.Bit)
                 { Value = isApproved.Equals("true") ? 1 : 0 };
                 parameters.Add(parameterIsApproved);

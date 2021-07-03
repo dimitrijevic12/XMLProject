@@ -82,6 +82,7 @@ import {
   CREATE_CAMPAIGN_REQUEST,
   GET_CAMPAIGN_REQUESTS,
   UPDATE_CAMPAIGN_REQUEST,
+  GET_CAMPAIGN_REQUESTS_FOR_USER_PROFILE,
 } from "../types/types";
 
 const initialState = {
@@ -130,6 +131,7 @@ const initialState = {
   agentRequests: [],
   campaignsForAgent: [],
   campaignRequests: [],
+  campaignRequestsForUserProfile: [],
 };
 
 function reducer(state = initialState, action) {
@@ -517,6 +519,11 @@ function reducer(state = initialState, action) {
         campaignRequests: state.campaignRequests.filter(
           (campaignRequest) => action.payload.id !== campaignRequest.id
         ),
+      };
+    case GET_CAMPAIGN_REQUESTS_FOR_USER_PROFILE:
+      return {
+        ...state,
+        campaignRequestsForUserProfile: action.payload,
       };
     default:
       return state;

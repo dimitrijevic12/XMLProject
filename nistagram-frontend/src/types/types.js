@@ -182,3 +182,7 @@ export const GET_CAMPAIGN_REQUESTS = "getCampaignRequests";
 export const GET_CAMPAIGN_REQUESTS_ERROR = "getCampaignRequestsError";
 export const UPDATE_CAMPAIGN_REQUEST = "updateCampaignRequest";
 export const UPDATE_CAMPAIGN_REQUEST_ERROR = "updateCampaignRequestError";
+export const GET_CAMPAIGN_REQUESTS_FOR_USER_PROFILE =
+  "getCampaignRequestsForUserProfile";
+export const GET_CAMPAIGN_REQUESTS_FOR_USER_PROFILE_ERROR =
+  "getCampaignRequestsForUserProfileError";

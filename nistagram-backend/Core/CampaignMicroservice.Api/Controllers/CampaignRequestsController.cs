@@ -75,12 +75,13 @@ namespace CampaignMicroservice.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult Search([FromQuery] Guid userId, [FromQuery(Name = "is-approved")] string isApproved)
+        public IActionResult Search([FromQuery] Guid userId, [FromQuery(Name = "is-approved")] string isApproved,
+            [FromQuery] string action)
         {
             if (Request.Query.Count == 0) return BadRequest();
             if (String.IsNullOrEmpty(isApproved)) return BadRequest();
             if (String.IsNullOrEmpty(userId.ToString())) return BadRequest();
-            return Ok(_campaignRequestFactory.CreateCampaignRequests(_campaignRequestRepository.GetBy(userId, isApproved)));
+            return Ok(_campaignRequestFactory.CreateCampaignRequests(_campaignRequestRepository.GetBy(userId, isApproved, action)));
         }
     }
 }

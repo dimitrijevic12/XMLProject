@@ -7,6 +7,8 @@ import {
   GET_CAMPAIGN_REQUESTS_ERROR,
   UPDATE_CAMPAIGN_REQUEST,
   UPDATE_CAMPAIGN_REQUEST_ERROR,
+  GET_CAMPAIGN_REQUESTS_FOR_USER_PROFILE,
+  GET_CAMPAIGN_REQUESTS_FOR_USER_PROFILE_ERROR,
 } from "../types/types";
 import axios from "axios";
 
@@ -64,6 +66,7 @@ export const getCampaignRequests = () => async (dispatch) => {
         params: {
           userId: sessionStorage.getItem("userId"),
           "is-approved": "false",
+          action: "created",
         },
         headers: {
           "Access-Control-Allow-Origin": "*",
@@ -107,3 +110,32 @@ export const updateCampaignRequest = (campaignRequest) => async (dispatch) => {
     });
   }
 };
+
+export const getCampaignRequestsForUserProfile =
+  (parameters) => async (dispatch) => {
+    try {
+      const response = await axios.get(
+        `https://localhost:44355/api/campaignRequests`,
+        {
+          params: {
+            userId: parameters.userId,
+            "is-approved": parameters.isApproved,
+            action: parameters.action,
+          },
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            Authorization: "Bearer " + sessionStorage.getItem("token"),
+          },
+        }
+      );
+      dispatch({
+        type: GET_CAMPAIGN_REQUESTS_FOR_USER_PROFILE,
+        payload: response.data,
+      });
+    } catch (e) {
+      dispatch({
+        type: GET_CAMPAIGN_REQUESTS_FOR_USER_PROFILE_ERROR,
+        payload: console.log(e),
+      });
+    }
+  };

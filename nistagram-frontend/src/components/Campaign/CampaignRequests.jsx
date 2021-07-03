@@ -10,8 +10,14 @@ import {
 } from "../../actions/actionsCampaign";
 import moment from "moment";
 import NotLoggedPostModal from "../Profile/NotLoggedPostModal";
-import StoryReportModal from "../Report/StoryReportModal";
 import StoryAlbumReportModal from "../Report/StoryAlbumReportModal";
+import { savePost, getPost } from "../../actions/actions";
+import { createNotification } from "../../actions/actionsNotification";
+import {
+  getStoryById,
+  saveStory,
+  getUserForStory,
+} from "../../actions/actionsStory";
 
 class CampaignRequests extends Component {
   state = {
@@ -21,11 +27,16 @@ class CampaignRequests extends Component {
     storyId: "",
     storyIds: [],
     username: "",
+    storyOwner: {},
   };
 
   async componentDidMount() {
     debugger;
     await this.props.getCampaignRequests();
+    await this.props.getUserForStory();
+    this.setState({
+      storyOwner: this.props.storyOwner,
+    });
   }
 
   render() {
@@ -143,6 +154,66 @@ class CampaignRequests extends Component {
       VerifiedUser: f.verifiedUser,
       CampaignRequestAction: "accepted",
     });
+    if (
+      f.campaign.type === "OneTimePostCampaign" ||
+      f.campaign.type === "RecurringPostCampaign"
+    ) {
+      await this.createPost(f.campaign.ads[0]);
+    } else {
+      for (var j = 0; j < f.campaign.ads.length; j++) {
+        await this.createStory(f.campaign.ads[j]);
+      }
+    }
+  }
+
+  async createPost(ad) {
+    await this.props.getPost(ad.contentId);
+    debugger;
+    var contentPaths = [];
+    if (this.props.post.contentPaths === undefined) {
+      contentPaths.push(this.props.post.contentPath);
+    } else {
+      contentPaths = this.props.post.contentPaths;
+    }
+
+    await this.props.savePost({
+      Description: this.props.post.description,
+      RegisteredUser: { id: sessionStorage.getItem("userId") },
+      Location: this.props.post.location,
+      ContentPaths: contentPaths,
+      HashTags: this.props.post.hashTags,
+      Taggedusers: this.props.post.taggedUsers,
+    });
+    await this.props.createNotification({
+      Type: "Post",
+      ContentId: this.props.post.id,
+      RegisteredUser: { id: sessionStorage.getItem("userId") },
+    });
+  }
+
+  async createStory(ad) {
+    await this.props.getStoryById(ad.contentId);
+    debugger;
+
+    debugger;
+    this.props.saveStory({
+      Description: this.props.storyById.description,
+      RegisteredUser: this.state.storyOwner,
+      Location: this.props.storyById.location,
+      ContentPath: this.props.storyById.contentPath,
+      HashTags: this.props.storyById.hashTags,
+      TaggedUsers: this.props.storyById.taggedUsers,
+      SeenByUsers: [],
+      Duration: this.props.storyById.duration,
+      Type: "Story",
+      IsBanned: false,
+    });
+
+    await this.props.createNotification({
+      Type: "Story",
+      ContentId: "12345678-1234-1234-1234-123456789123",
+      RegisteredUser: { id: sessionStorage.getItem("userId") },
+    });
   }
 
   async reject(f) {
@@ -160,7 +231,7 @@ class CampaignRequests extends Component {
     if (f != undefined) {
       if (
         f.campaign.type === "OneTimePostCampaign" ||
-        f.campaign.type === "ReccuringPostCampaign"
+        f.campaign.type === "RecurringPostCampaign"
       ) {
         this.displayModalPost(f);
       } else {
@@ -199,9 +270,22 @@ class CampaignRequests extends Component {
 
 const mapStateToProps = (state) => ({
   campaignRequests: state.campaignRequests,
+  post: state.post,
+  storyById: state.storyById,
+  story: state.story,
+  storyOwner: state.registeredUser,
 });
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, { getCampaignRequests, updateCampaignRequest })
+  connect(mapStateToProps, {
+    getCampaignRequests,
+    updateCampaignRequest,
+    savePost,
+    createNotification,
+    getPost,
+    saveStory,
+    getStoryById,
+    getUserForStory,
+  })
 )(CampaignRequests);

@@ -162,7 +162,7 @@ function PublicProfile(props) {
       display = false;
     }
 
-    if (user.category === undefined) {
+    if (user.category !== "Influencer") {
       display = false;
     }
 
