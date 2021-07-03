@@ -22,6 +22,11 @@ namespace CampaignMicroservice.Core.Model
             yield return link;
         }
 
+        public override string ToString()
+        {
+            return link;
+        }
+
         public static implicit operator string(Link link) => link.link;
     }
 }

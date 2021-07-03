@@ -7,11 +7,11 @@ import { intersection } from "lodash";
 
 class SelectRecurringExposureDate extends Component {
   state = {
-    exposureTimes: [""],
+    exposureTimes: this.props.exposureTimes,
     maxExposureDates: 5,
-    startDate: "",
-    endDate: "",
-    validTimes: false,
+    startDate: this.props.startDate,
+    endDate: this.props.endDate,
+    validTimes: this.props.validTimes,
   };
   render() {
     debugger;
@@ -24,10 +24,10 @@ class SelectRecurringExposureDate extends Component {
             id="startDate"
             name="startDate"
             dateFormat="dd/MM/yyyy"
-            selected={this.state.startDate}
+            selected={this.props.startDate}
             minDate={new Date()}
-            maxDate={this.state.endDate === "" ? null : this.state.endDate}
-            onChange={(e) => this.handleChangeStartDate(e)}
+            maxDate={this.props.endDate === "" ? null : this.props.endDate}
+            onChange={(e) => this.props.handleChangeStartDate(e)}
           />
         </div>
         <div className="form-group w-75" style={{ paddingLeft: 300 }}>
@@ -37,14 +37,14 @@ class SelectRecurringExposureDate extends Component {
             id="endDate"
             name="endDate"
             dateFormat="dd/MM/yyyy"
-            selected={this.state.endDate}
+            selected={this.props.endDate}
             minDate={
-              this.state.startDate === "" ? new Date() : this.state.startDate
+              this.props.startDate === "" ? new Date() : this.props.startDate
             }
-            onChange={(e) => this.handleChangeEndDate(e)}
+            onChange={(e) => this.props.handleChangeEndDate(e)}
           />
         </div>
-        {this.state.exposureTimes.map((date, i) => {
+        {this.props.exposureTimes.map((date, i) => {
           return (
             <div className="form-group w-75" style={{ paddingLeft: 300 }}>
               <label className="label">Select exposure date:</label>
@@ -52,25 +52,25 @@ class SelectRecurringExposureDate extends Component {
                 <TimePicker
                   value={date}
                   format="HH:mm"
-                  onChange={(e) => this.handleChangeExposureTime(e, i)}
+                  onChange={(e) => this.props.handleChangeExposureTime(e, i)}
                 />
                 {i === 0 ? (
                   <div className="pl-4">
                     <button
                       className="btn btn-primary"
                       style={{ width: 50 }}
-                      onClick={() => this.addExposureTime()}
+                      onClick={() => this.props.addExposureTime()}
                     >
                       +
                     </button>
                   </div>
                 ) : null}
-                {this.state.exposureTimes.length > 1 && i !== 0 ? (
+                {this.props.exposureTimes.length > 1 && i !== 0 ? (
                   <div className="pl-4">
                     <button
                       className="btn btn-primary"
                       style={{ width: 50 }}
-                      onClick={() => this.removeExposureTime(i)}
+                      onClick={() => this.props.removeExposureTime(i)}
                     >
                       -
                     </button>
@@ -81,19 +81,18 @@ class SelectRecurringExposureDate extends Component {
           );
         })}
         <div
-          className="pb-5"
+          className="pb-5 mb-5 mt-5"
           style={{
             width: "150px",
-            position: "fixed",
-            bottom: 0,
-            right: 250,
+            position: "relative",
+            float: "right",
           }}
         >
           <button
             disabled={
-              this.state.startDate === "" ||
-              this.state.endDate === "" ||
-              this.state.validTimes === false
+              this.props.minDateOfBirth === "" ||
+              this.props.maxDateOfBirth === "" ||
+              this.props.gender === ""
             }
             onClick={() => this.changeStep()}
             className="btn btn-primary btn-lg"
@@ -101,72 +100,48 @@ class SelectRecurringExposureDate extends Component {
             Next
           </button>
         </div>
+        <div
+          className="pb-5 mb-5 mt-5"
+          style={{
+            width: "150px",
+            position: "relative",
+            float: "left",
+          }}
+        >
+          <button
+            onClick={() => this.stepBack()}
+            className="btn btn-warning btn-lg"
+          >
+            Back
+          </button>
+        </div>
       </div>
     );
   }
 
-  handleChangeStartDate = (e) => {
-    debugger;
-    this.setState({
-      startDate: e,
-    });
-  };
-
-  handleChangeEndDate = (e) => {
-    debugger;
-    this.setState({
-      endDate: e,
-    });
-  };
-
-  handleChangeExposureTime = (e, i) => {
-    this.setState({
-      exposureTimes: this.state.exposureTimes.map((element, j) =>
-        j === i ? e : element
-      ),
-      validTimes: this.checkIfAllTimesNotEmpty(),
-    });
-  };
-
-  addExposureTime() {
-    this.setState({
-      exposureTimes: this.state.exposureTimes.concat(""),
-      validTimes: this.checkIfAllTimesNotEmpty(),
-    });
-  }
-
-  removeExposureTime(i) {
-    debugger;
-    this.setState({
-      exposureTimes: this.state.exposureTimes.filter((_, j) => j !== i),
-    });
-  }
-
-  checkIfAllTimesNotEmpty() {
-    let valid = true;
-    this.state.exposureTimes.forEach((time) =>
-      time === "" ? (valid = false) : null
-    );
-    return valid;
+  stepBack() {
+    this.props.changeStep(0);
   }
 
   changeStep() {
     debugger;
-    let tempDate = new Date(this.state.startDate);
-    let endDate = new Date(this.state.endDate);
+    let exposureDates = [];
+    let tempDate = new Date(this.props.startDate);
+    let endDate = new Date(this.props.endDate);
     while (tempDate <= endDate) {
-      this.state.exposureTimes.forEach((time) => {
-        let dateToAdd = new Date(tempDate);
+      this.props.exposureTimes.forEach((time) => {
+        let timeToAdd = new Date(tempDate);
         let timeArray = time.split(":");
         let hours = parseInt(timeArray[0]);
         let minutes = parseInt(timeArray[1]);
-        dateToAdd.setHours(dateToAdd.getHours() + hours);
-        dateToAdd.setMinutes(dateToAdd.getMinutes() + minutes);
-        this.props.addExposureDates(dateToAdd);
+        timeToAdd.setHours(timeToAdd.getHours() + hours);
+        timeToAdd.setMinutes(timeToAdd.getMinutes() + minutes);
+        let dateToAdd = { Time: timeToAdd, SeenByIds: [] };
+        exposureDates.push(dateToAdd);
       });
-
       tempDate.setDate(tempDate.getDate() + 1);
     }
+    this.props.addExposureDates(exposureDates);
     this.props.changeStep(2);
   }
 }

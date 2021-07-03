@@ -306,7 +306,7 @@ export const saveStory = (story) => async (dispatch) => {
         },
       }
     );
-    dispatch({
+    await dispatch({
       type: SAVE_STORY,
       payload: response.data,
     });

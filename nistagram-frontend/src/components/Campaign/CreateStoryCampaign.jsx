@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import {
-  savePost,
-  getLocationsByText,
-  getTaggableUsers,
-} from "../../actions/actions";
+  saveStory,
+  getLocationsForStory,
+  getTaggableForStory,
+  getUserForStory,
+} from "../../actions/actionsStory";
 import { connect } from "react-redux";
 import axios from "axios";
 import { withRouter } from "react-router-dom";
@@ -11,14 +12,14 @@ import { compose } from "redux";
 import { createNotification } from "../../actions/actionsNotification";
 import { createCampaign } from "../../actions/actionsCampaign";
 
-class CreatePost extends Component {
+class CreateStoryCampaign extends Component {
   state = {
     file: null,
     fileName: "",
     fileUrl: null,
     fileType: "",
     description: "",
-    location: undefined,
+    location: {},
     locations: [],
     hashTagText: "",
     contentPath: "",
@@ -29,20 +30,25 @@ class CreatePost extends Component {
     leftTaggableUsers: [],
     fileUrls: [],
     contentPaths: [],
+    storyOwner: {},
+    duration: 1,
+    isCloseFriendsStory: false,
     link: "",
     campaignType: "",
   };
 
   async componentDidMount() {
-    await this.props.getLocationsByText("");
+    await this.props.getLocationsForStory();
     this.setState({
       locations: this.props.locations,
     });
 
-    await this.props.getTaggableUsers();
+    await this.props.getTaggableForStory();
     this.setState({
       taggableUsers: this.props.taggableUsers,
     });
+
+    await this.props.getUserForStory();
 
     this.createType();
   }
@@ -50,8 +56,9 @@ class CreatePost extends Component {
   render() {
     debugger;
     if (
-      this.props.locations == undefined ||
-      this.props.taggableUsers == undefined
+      this.props.locations === undefined ||
+      this.props.taggableUsers === undefined ||
+      this.props.storyOwner === undefined
     ) {
       return null;
     }
@@ -92,16 +99,45 @@ class CreatePost extends Component {
                 placeholder="Enter description"
               ></textarea>
               <br></br>
-              <label className="label">Link:</label>
-              <input
-                name="link"
-                value={this.state.link}
-                onChange={this.handleChange}
-                cols="40"
-                rows="5"
-                class="form-control"
-                placeholder="Enter link"
-              ></input>
+              <div>
+                <label className="label">Link:</label>
+                <input
+                  name="link"
+                  value={this.state.link}
+                  onChange={this.handleChange}
+                  cols="40"
+                  rows="5"
+                  class="form-control"
+                  placeholder="Enter link"
+                ></input>
+              </div>
+              <br></br>
+              <div>
+                <div class="form-group w-100 pr-5">
+                  <label for="location">Duration:</label>
+                  <select
+                    className="form-control"
+                    onChange={this.handleChangeDuration}
+                  >
+                    <option>Select duration</option>
+                    <option value={1}>1s</option>
+                    <option value={2}>2s</option>
+                    <option value={3}>3s</option>
+                    <option value={4}>4s</option>
+                    <option value={5}>5s</option>
+                    <option value={6}>6s</option>
+                    <option value={7}>7s</option>
+                    <option value={8}>8s</option>
+                    <option value={9}>9s</option>
+                    <option value={10}>10s</option>
+                    <option value={11}>11s</option>
+                    <option value={12}>12s</option>
+                    <option value={13}>13s</option>
+                    <option value={14}>14s</option>
+                    <option value={15}>15s</option>
+                  </select>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -143,39 +179,15 @@ class CreatePost extends Component {
             </div>
           </div>
         </div>
-        <div
-          className="pb-5 mb-5 mt-5"
-          style={{
-            width: "150px",
-            position: "relative",
-            float: "right",
-          }}
-        >
+        <div className="mt-5 pb-5">
           <button
-            disabled={
-              this.props.minDateOfBirth === "" ||
-              this.props.maxDateOfBirth === "" ||
-              this.props.gender === ""
-            }
-            onClick={() => this.createPost()}
-            className="btn btn-success btn-lg"
+            disabled={this.state.contentPaths.length === 0}
+            className="btn btn-primary btn-block"
+            onClick={() => {
+              this.createPost();
+            }}
           >
-            Finish
-          </button>
-        </div>
-        <div
-          className="pb-5 mb-5 mt-5"
-          style={{
-            width: "150px",
-            position: "relative",
-            float: "left",
-          }}
-        >
-          <button
-            onClick={() => this.stepBack()}
-            className="btn btn-warning btn-lg"
-          >
-            Back
+            Post
           </button>
         </div>
       </React.Fragment>
@@ -198,16 +210,38 @@ class CreatePost extends Component {
   }
 
   async createPost() {
-    const res = this.state.hashTagText.split(" ");
-    var hashTagsObjects = [];
-    res.forEach((element) => hashTagsObjects.push({ HashTagText: element }));
-    await this.props.savePost({
-      Description: this.state.description,
-      RegisteredUser: { id: this.state.registeredUser.id },
-      Location: this.state.location,
-      ContentPaths: this.state.contentPaths,
-      HashTags: hashTagsObjects,
-      Taggedusers: this.state.taggedUsers,
+    const hashTagsObjects = this.state.hashTagText.split(" ");
+    var stories = [];
+    for (var i = 0; i < this.state.contentPaths.length; i++) {
+      debugger;
+      await this.props.saveStory({
+        Description: this.state.description,
+        RegisteredUser: this.props.storyOwner,
+        Location: this.state.location,
+        ContentPath: this.state.contentPaths[i],
+        HashTags: hashTagsObjects,
+        TaggedUsers: this.state.taggedUsers,
+        SeenByUsers: [],
+        Duration: this.state.duration,
+        Type:
+          this.state.isCloseFriendsStory === true
+            ? "CloseFriendStory"
+            : "Story",
+        IsBanned: false,
+      });
+      debugger;
+      stories.push(this.props.story);
+    }
+    debugger;
+    let ads = [];
+    stories.forEach((story) => {
+      ads.push({
+        ContentId: story.id,
+        Type: this.props.type,
+        Link: this.state.link,
+        ClickCount: 0,
+        ProfileOwnerId: sessionStorage.getItem("userId"),
+      });
     });
     debugger;
     await this.props.createCampaign(
@@ -221,15 +255,7 @@ class CreatePost extends Component {
             },
             AgentId: sessionStorage.getItem("userId"),
             ExposureDates: this.props.exposureDates,
-            Ads: [
-              {
-                ContentId: this.props.post.id,
-                Type: this.props.type,
-                Link: this.state.link,
-                ClickCount: 0,
-                ProfileOwnerId: sessionStorage.getItem("userId"),
-              },
-            ],
+            Ads: ads,
           }
         : {
             Type: this.state.campaignType,
@@ -242,18 +268,11 @@ class CreatePost extends Component {
             StartDate: this.props.startDate,
             EndDate: this.props.endDate,
             ExposureDates: this.props.exposureDates,
-            Ads: [
-              {
-                ContentId: this.props.post.id,
-                Type: this.props.type,
-                Link: this.state.link,
-                ClickCount: 0,
-                ProfileOwnerId: sessionStorage.getItem("userId"),
-              },
-            ],
+            Ads: ads,
           }
     );
-    window.location = "/profile/" + sessionStorage.getItem("userId");
+
+    window.location = "/";
   }
 
   createType() {
@@ -268,6 +287,13 @@ class CreatePost extends Component {
     }
   }
 
+  handleChangeCheckboxCloseFriendsStory = (e) => {
+    debugger;
+    this.setState({
+      isCloseFriendsStory: !this.state.isCloseFriendsStory,
+    });
+  };
+
   handleChangeUser = (e) => {
     this.setState({
       taggableUser: this.state.leftTaggableUsers[e.target.value],
@@ -278,10 +304,15 @@ class CreatePost extends Component {
     this.setState({ location: this.state.locations[e.target.value] });
   };
 
+  handleChangeDuration = (e) => {
+    debugger;
+    this.setState({ duration: e.target.value });
+  };
+
   choosePost = async (event) => {
+    debugger;
     var result = [];
     var files = event.target.files;
-    debugger;
     Array.prototype.forEach.call(files, (file) => {
       result.push(URL.createObjectURL(file));
     });
@@ -305,7 +336,7 @@ class CreatePost extends Component {
       try {
         const res = await axios({
           method: "post",
-          url: "https://localhost:44355/api/posts/contents",
+          url: "https://localhost:44355/api/contents",
           data: formData,
           headers: {
             "Content-Type": "multipart/form-data",
@@ -338,25 +369,23 @@ class CreatePost extends Component {
       [name]: value,
     });
   };
-
-  stepBack() {
-    this.props.changeStep(2);
-  }
 }
 
 const mapStateToProps = (state) => ({
   locations: state.locations,
   taggableUsers: state.taggableUsers,
-  post: state.post,
+  storyOwner: state.registeredUser,
+  story: state.story,
 });
 
 export default compose(
   withRouter,
   connect(mapStateToProps, {
-    savePost,
-    getLocationsByText,
-    getTaggableUsers,
+    saveStory,
+    getLocationsForStory,
+    getTaggableForStory,
+    getUserForStory,
     createNotification,
     createCampaign,
   })
-)(CreatePost);
+)(CreateStoryCampaign);

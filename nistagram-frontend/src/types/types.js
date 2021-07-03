@@ -174,3 +174,5 @@ export const UPDATE_AGENT_REQUEST = "updateAgentRequest";
 export const UPDATE_AGENT_REQUEST_ERROR = "updateAgentRequestError";
 export const CREATE_AGENT_NOT_EXISTING = "createAgentNotExisting";
 export const CREATE_AGENT_NOT_EXISTING_ERROR = "createAgentNotExistingError";
+export const CREATE_CAMPAIGN = "createCampaign";
+export const CREATE_CAMPAIGN_ERROR = "createCampaignError";

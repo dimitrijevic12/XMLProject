@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import DateTimePicker from "react-datetime-picker";
 
 class SelectOneTimeExposureDate extends Component {
-  state = { exposureDate: "" };
+  state = { exposureDate: this.props.exposureDate };
   render() {
     return (
       <div className="mt-5">
@@ -10,10 +10,10 @@ class SelectOneTimeExposureDate extends Component {
           <label className="label">Select exposure date and time:</label>
           <div className="w-100">
             <DateTimePicker
-              value={this.state.exposureDate}
+              value={this.props.exposureDate.Time}
               format="dd/MM/yyyy HH:mm"
               minDate={new Date()}
-              onChange={this.handleChangeExposureDate}
+              onChange={this.props.handleChangeExposureDate}
             />
           </div>
         </div>
@@ -27,32 +27,41 @@ class SelectOneTimeExposureDate extends Component {
           }}
         >
           <button
-            disabled={
-              this.state.minDateOfBirth === "" ||
-              this.state.maxDateOfBirth === "" ||
-              this.state.gender === ""
-            }
+            disabled={this.props.exposureDate === ""}
             onClick={() => this.changeStep()}
             className="btn btn-primary btn-lg"
           >
             Next
           </button>
         </div>
+        <div
+          className="pb-5"
+          style={{
+            width: "150px",
+            position: "fixed",
+            bottom: 0,
+            left: 250,
+          }}
+        >
+          <button
+            onClick={() => this.stepBack()}
+            className="btn btn-warning btn-lg"
+          >
+            Back
+          </button>
+        </div>
       </div>
     );
   }
 
-  changeStep() {
-    this.props.addExposureDates(this.state.exposureDate);
-    this.props.changeStep(2);
+  stepBack() {
+    this.props.changeStep(0);
   }
 
-  handleChangeExposureDate = (e) => {
-    debugger;
-    this.setState({
-      exposureDate: e,
-    });
-  };
+  changeStep() {
+    this.props.addExposureDates(this.props.exposureDate);
+    this.props.changeStep(2);
+  }
 }
 
 export default SelectOneTimeExposureDate;
