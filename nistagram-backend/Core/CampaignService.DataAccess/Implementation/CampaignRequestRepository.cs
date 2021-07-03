@@ -41,7 +41,7 @@ namespace CampaignService.DataAccess.Implementation
                 " dbo.RegisteredUser as a, dbo.TargetAudience as t ");
             queryBuilder.Append("WHERE cr.campaign_id = c.id AND cr.verified_user_id = r.id AND " +
                 "c.target_audience_id = t.id AND c.agent_id = a.id " +
-                "AND a.action=\'created\' AND r.id = @Id ");
+                "AND cr.action=\'created\' AND r.id = @Id ");
 
             List<SqlParameter> parameters = new List<SqlParameter>()
             {
@@ -50,7 +50,7 @@ namespace CampaignService.DataAccess.Implementation
 
             if (!String.IsNullOrWhiteSpace(isApproved))
             {
-                queryBuilder.Append("AND a.is_approved = @IsApproved");
+                queryBuilder.Append("AND cr.is_approved = @IsApproved");
                 SqlParameter parameterIsApproved = new SqlParameter("@IsApproved", SqlDbType.Bit)
                 { Value = isApproved.Equals("true") ? 1 : 0 };
                 parameters.Add(parameterIsApproved);
@@ -106,7 +106,7 @@ namespace CampaignService.DataAccess.Implementation
         private bool AlreadyRequested(CampaignRequest campaignRequest)
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT * FROM dbo.CampaignRequest ");
-            queryBuilder.Append("WHERE @campaign_id = campaign_id AND @verified_user_id = verified_user_id AND (@action = \'accepted\' OR @action = \'created\'); ");
+            queryBuilder.Append("WHERE @campaign_id = campaign_id AND @verified_user_id = verified_user_id AND (action = \'accepted\' OR action = \'created\'); ");
 
             string query = queryBuilder.ToString();
 
@@ -136,7 +136,7 @@ namespace CampaignService.DataAccess.Implementation
                 new SqlParameter("@is_approved", SqlDbType.Bit) { Value = campaignRequest.IsApproved },
                 new SqlParameter("@campaign_id", SqlDbType.UniqueIdentifier) { Value = campaignRequest.Campaign.Id },
                 new SqlParameter("@action", SqlDbType.NVarChar) { Value = campaignRequest.CampaignRequestAction.ToString() },
-                new SqlParameter("@verified_user_id", SqlDbType.UniqueIdentifier) { Value = campaignRequest.VerifiedUser.ToString() },
+                new SqlParameter("@verified_user_id", SqlDbType.UniqueIdentifier) { Value = campaignRequest.VerifiedUser.Id },
             };
 
             ExecuteQuery(query, parameters);

@@ -39,6 +39,7 @@ namespace CampaignMicroservice.Api.Factories
                 return new Campaign
                 {
                     Id = campaign.Id,
+                    Type = campaign.GetType().Name,
                     TargetAudience = new TargetAudience
                     {
                         MinDateOfBirth = campaign.TargetAudience.MinDateOfBirth,
@@ -59,6 +60,7 @@ namespace CampaignMicroservice.Api.Factories
                 return new Campaign
                 {
                     Id = campaign.Id,
+                    Type = campaign.GetType().Name,
                     TargetAudience = new TargetAudience
                     {
                         MinDateOfBirth = campaign.TargetAudience.MinDateOfBirth,
@@ -79,6 +81,7 @@ namespace CampaignMicroservice.Api.Factories
                 return new Campaign
                 {
                     Id = campaign.Id,
+                    Type = campaign.GetType().Name,
                     TargetAudience = new TargetAudience
                     {
                         MinDateOfBirth = campaign.TargetAudience.MinDateOfBirth,
@@ -99,6 +102,7 @@ namespace CampaignMicroservice.Api.Factories
                 return new Campaign
                 {
                     Id = campaign.Id,
+                    Type = campaign.GetType().Name,
                     TargetAudience = new TargetAudience
                     {
                         MinDateOfBirth = campaign.TargetAudience.MinDateOfBirth,
@@ -135,12 +139,13 @@ namespace CampaignMicroservice.Api.Factories
 
         private ExposureDate ConvertExposureDate(Core.Model.ExposureDate exposureDate)
         {
-            return new ExposureDate
+            return exposureDate != null ?
+            new ExposureDate
             {
                 Id = exposureDate.Id,
                 Time = exposureDate.Time,
                 SeenByIds = ConvertSeenByIds(exposureDate.SeenBy)
-            };
+            } : null;
         }
 
         private IEnumerable<ExposureDate> ConvertExposureDates(IEnumerable<Core.Model.ExposureDate> exposureDates)
