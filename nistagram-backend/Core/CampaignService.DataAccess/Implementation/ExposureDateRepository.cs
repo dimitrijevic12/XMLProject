@@ -26,7 +26,7 @@ namespace CampaignService.DataAccess.Implementation
 
         public Maybe<ExposureDate> GetById(Guid id)
         {
-            StringBuilder queryBuilder = new StringBuilder("SELECT * ");
+            StringBuilder queryBuilder = new StringBuilder("SELECT id, exposure_date ");
             queryBuilder.Append("FROM dbo.ExposureDates ");
             queryBuilder.Append("WHERE id = @Id;");
 
@@ -56,7 +56,7 @@ namespace CampaignService.DataAccess.Implementation
 
         public IEnumerable<ExposureDate> GetExposureDatesForCampaign(Guid campaignId)
         {
-            StringBuilder queryBuilder = new StringBuilder("SELECT * ");
+            StringBuilder queryBuilder = new StringBuilder("SELECT id, exposure_date ");
             queryBuilder.Append("FROM dbo.ExposureDates ");
             queryBuilder.Append("WHERE campaign_id = @Id;");
 

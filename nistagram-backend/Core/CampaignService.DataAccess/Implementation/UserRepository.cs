@@ -323,7 +323,7 @@ namespace CampaignService.DataAccess.Implementation
         public IEnumerable<RegisteredUser> GetSeenBy(Guid exposureDateId)
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT * ");
-            queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.SeenBy AS s, ");
+            queryBuilder.Append("FROM dbo.RegisteredUser AS r, dbo.SeenBy AS s ");
             queryBuilder.Append("WHERE s.registered_user_id = r.id AND r.is_banned = 0 AND s.exposure_date_id = @ExposureDateId ");
 
             List<SqlParameter> parameters = new List<SqlParameter>{

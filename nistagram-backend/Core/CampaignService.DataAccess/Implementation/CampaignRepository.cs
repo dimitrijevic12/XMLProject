@@ -82,7 +82,7 @@ namespace CampaignService.DataAccess.Implementation
             DataTable dataTable = ExecuteQuery(query, parameters);
             return (from DataRow dataRow in dataTable.Rows
                     select (Campaign)_campaignTarget.ConvertSql(dataRow,
-                        _userRepository.GetBlockedBy(Guid.Parse(dataTable.Rows[0][4].ToString())),
+                        _userRepository.GetBlockedBy(Guid.Parse(dataRow[4].ToString())),
                         _userRepository.GetBlocking(Guid.Parse(dataRow[4].ToString())),
                         _userRepository.GetFollowing(Guid.Parse(dataRow[4].ToString())),
                         _userRepository.GetFollowers(Guid.Parse(dataRow[4].ToString())),

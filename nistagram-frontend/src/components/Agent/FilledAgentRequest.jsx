@@ -65,7 +65,7 @@ class FilledAgentRequest extends Component {
                   type="text"
                   name="email"
                   disabled={true}
-                  value={this.state.email}
+                  value={this.state.emailAddress}
                   class="form-control"
                   id="email"
                   placeholder="Enter email"

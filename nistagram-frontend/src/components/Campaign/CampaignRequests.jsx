@@ -53,8 +53,7 @@ class CampaignRequests extends Component {
                     <tr>
                       <th style={{ textAlign: "center" }}>Campaign</th>
                       <th style={{ textAlign: "center" }}>Type</th>
-                      <th style={{ textAlign: "center" }}>Start Date</th>
-                      <th style={{ textAlign: "center" }}>End Date</th>
+                      <th style={{ textAlign: "center" }}>Exposure Dates</th>
                       <th style={{ textAlign: "center" }}></th>
                     </tr>
                   </thead>
@@ -66,10 +65,9 @@ class CampaignRequests extends Component {
                           {f.campaign.type}
                         </td>
                         <td style={{ textAlign: "center" }}>
-                          {moment(f.campaign.startDate).format("DD/MM/YYYY")}
-                        </td>
-                        <td style={{ textAlign: "center" }}>
-                          {moment(f.campaign.endDate).format("DD/MM/YYYY")}
+                          {f.campaign.exposureDates.map(
+                            (date) => moment(date).format("DD/MM/YYYY") + ", "
+                          )}
                         </td>
                         <td style={{ textAlign: "center" }}>
                           <img
