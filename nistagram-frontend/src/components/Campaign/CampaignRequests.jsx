@@ -9,12 +9,18 @@ import {
   updateCampaignRequest,
 } from "../../actions/actionsCampaign";
 import moment from "moment";
+import NotLoggedPostModal from "../Profile/NotLoggedPostModal";
+import StoryReportModal from "../Report/StoryReportModal";
+import StoryAlbumReportModal from "../Report/StoryAlbumReportModal";
 
 class CampaignRequests extends Component {
   state = {
     showPostModal: false,
-    showEditModal: false,
-    itemToEdit: {},
+    showStoryModal: false,
+    postId: "",
+    storyId: "",
+    storyIds: [],
+    username: "",
   };
 
   async componentDidMount() {
@@ -29,6 +35,22 @@ class CampaignRequests extends Component {
     debugger;
     return (
       <div>
+        {this.state.showPostModal ? (
+          <NotLoggedPostModal
+            show={this.state.showPostModal}
+            postId={this.state.postId}
+            personPhoto="/images/download.jfif"
+            person={this.state.username}
+            onShowChange={() => this.displayModalPost()}
+          />
+        ) : null}
+        {this.state.showStoryModal ? (
+          <StoryAlbumReportModal
+            show={this.state.showStoryModal}
+            storyIds={this.state.storyIds}
+            onShowChange={() => this.displayModalStory()}
+          />
+        ) : null}
         <h3 className="mt-4" style={{ textAlign: "center" }}>
           Campaign Requests
         </h3>
@@ -52,6 +74,7 @@ class CampaignRequests extends Component {
                   <thead>
                     <tr>
                       <th style={{ textAlign: "center" }}>Campaign</th>
+                      <th style={{ textAlign: "center" }}>Agent</th>
                       <th style={{ textAlign: "center" }}>Type</th>
                       <th style={{ textAlign: "center" }}>Exposure Dates</th>
                       <th style={{ textAlign: "center" }}></th>
@@ -62,11 +85,18 @@ class CampaignRequests extends Component {
                       <tr>
                         <td style={{ textAlign: "center" }}>{f.campaign.id}</td>
                         <td style={{ textAlign: "center" }}>
+                          {f.campaign.agent.firstName +
+                            " " +
+                            f.campaign.agent.lastName}
+                        </td>
+                        <td style={{ textAlign: "center" }}>
                           {f.campaign.type}
                         </td>
                         <td style={{ textAlign: "center" }}>
-                          {f.campaign.exposureDates.map(
-                            (date) => moment(date).format("DD/MM/YYYY") + ", "
+                          {f.campaign.exposureDates.map((date, i) =>
+                            i === f.campaign.exposureDates.length - 1
+                              ? moment(date).format("DD/MM/YYYY")
+                              : moment(date).format("DD/MM/YYYY") + ", "
                           )}
                         </td>
                         <td style={{ textAlign: "center" }}>
@@ -125,21 +155,46 @@ class CampaignRequests extends Component {
     });
   }
 
-  view(f) {
-    window.location = "/items/" + f.id;
-  }
+  view = (f) => {
+    debugger;
+    if (f != undefined) {
+      if (
+        f.campaign.type === "OneTimePostCampaign" ||
+        f.campaign.type === "ReccuringPostCampaign"
+      ) {
+        this.displayModalPost(f);
+      } else {
+        this.displayModalStory(f);
+      }
+    }
+  };
 
-  displayModalPost() {
+  displayModalPost = (f) => {
+    if (f != undefined) {
+      this.setState({
+        postId: f.campaign.ads[0].contentId,
+        username: f.campaign.agent.username,
+      });
+    }
     this.setState({
       showPostModal: !this.state.showPostModal,
     });
-  }
+  };
 
-  displayModalEdit() {
+  displayModalStory = (f) => {
+    var storyIds = [];
+    if (f != undefined) {
+      for (var i = 0; i < f.campaign.ads.length; i++) {
+        storyIds.push(f.campaign.ads[i].contentId);
+      }
+      this.setState({
+        storyIds: storyIds,
+      });
+    }
     this.setState({
-      showEditModal: !this.state.showEditModal,
+      showStoryModal: !this.state.showStoryModal,
     });
-  }
+  };
 }
 
 const mapStateToProps = (state) => ({

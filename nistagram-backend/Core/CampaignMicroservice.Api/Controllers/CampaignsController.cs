@@ -11,6 +11,7 @@ using Ad = CampaignMicroservice.Api.DTOs.Ad;
 using Campaign = CampaignMicroservice.Api.DTOs.Campaign;
 using ExposureDate = CampaignMicroservice.Api.DTOs.ExposureDate;
 using RegisteredUser = CampaignMicroservice.Core.Model.RegisteredUser;
+using Agent = CampaignMicroservice.Core.Model.Agent;
 
 namespace CampaignMicroservice.Api.Controllers
 {

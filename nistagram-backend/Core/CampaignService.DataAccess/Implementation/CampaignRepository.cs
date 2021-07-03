@@ -31,13 +31,13 @@ namespace CampaignService.DataAccess.Implementation
 
         public Maybe<Campaign> GetById(Guid id)
         {
-            StringBuilder queryBuilder = new StringBuilder("SELECT c.id, t.min_date_of_birth, " +
-                "t.max_date_of_birth, t.gender, c.agent_id, a.username, a.first_name, a.last_name, " +
+            StringBuilder queryBuilder = new StringBuilder("SELECT c.id, c.min_date_of_birth, " +
+                "c.max_date_of_birth, c.gender, c.agent_id, a.username, a.first_name, a.last_name, " +
                 "a.date_of_birth, a.gender, a.profile_image_path, a.is_private, a.is_banned, " +
                 "a.website_address, c.likes_count, c.dislikes_count, c.exposure_count, c.click_count, " +
                 "c.type, c.start_date, c.end_date, c.date_of_change ");
-            queryBuilder.Append("FROM dbo.Campaign AS c, dbo.TargetAudience AS t, dbo.RegisteredUser AS a ");
-            queryBuilder.Append("WHERE c.agent_id = a.id AND c.target_audience_id = t.id AND c.id = @Id;");
+            queryBuilder.Append("FROM dbo.Campaign AS c, dbo.RegisteredUser AS a ");
+            queryBuilder.Append("WHERE c.agent_id = a.id AND c.id = @Id;");
 
             string query = queryBuilder.ToString();
 
@@ -65,13 +65,13 @@ namespace CampaignService.DataAccess.Implementation
 
         public IEnumerable<Campaign> GetBy(Guid agentId)
         {
-            StringBuilder queryBuilder = new StringBuilder("SELECT c.id, t.min_date_of_birth, " +
-                "t.max_date_of_birth, t.gender, c.agent_id, a.username, a.first_name, a.last_name, " +
+            StringBuilder queryBuilder = new StringBuilder("SELECT c.id, c.min_date_of_birth, " +
+                "c.max_date_of_birth, c.gender, c.agent_id, a.username, a.first_name, a.last_name, " +
                 "a.date_of_birth, a.gender, a.profile_image_path, a.is_private, a.is_banned, " +
                 "a.website_address, c.likes_count, c.dislikes_count, c.exposure_count, c.click_count, " +
                 "c.type, c.start_date, c.end_date, c.date_of_change ");
-            queryBuilder.Append("FROM dbo.Campaign AS c, dbo.TargetAudience AS t, dbo.RegisteredUser AS a ");
-            queryBuilder.Append("WHERE c.agent_id = a.id AND c.target_audience_id = t.id AND c.agent_id = @Id;");
+            queryBuilder.Append("FROM dbo.Campaign AS c, dbo.RegisteredUser AS a ");
+            queryBuilder.Append("WHERE c.agent_id = a.id AND c.agent_id = @Id;");
 
             string query = queryBuilder.ToString();
 

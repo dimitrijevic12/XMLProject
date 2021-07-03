@@ -6,7 +6,7 @@ namespace CampaignMicroservice.Api.DTOs
     {
         public Guid Id { get; set; }
         public bool IsApproved { get; set; }
-        public Campaign Campaign { get; set; }
+        public CampaignWithAgent Campaign { get; set; }
         public VerifiedUser VerifiedUser { get; set; }
         public string CampaignRequestAction { get; set; }
     }

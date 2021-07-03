@@ -32,15 +32,15 @@ namespace CampaignService.DataAccess.Implementation
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT cr.id, cr.is_approved, r.id, r.username, " +
                 "r.first_name, r.last_name, r.date_of_birth, r.gender, r.profile_image_path, r.is_private, " +
-                "r.is_banned, r.category, cr.action, c.id, t.min_date_of_birth, t.max_date_of_birth, " +
-                "t.gender, a.id, a.username, a.first_name, a.last_name, a.date_of_birth, a.gender, " +
+                "r.is_banned, r.category, cr.action, c.id, c.min_date_of_birth, c.max_date_of_birth, " +
+                "c.gender, a.id, a.username, a.first_name, a.last_name, a.date_of_birth, a.gender, " +
                 "a.profile_image_path, a.is_private, a.is_banned, a.website_address, c.likes_count, " +
                 "c.dislikes_count, c.exposure_count, c.click_count, c.type, c.start_date, c.end_date, " +
                 "c.date_of_change ");
             queryBuilder.Append("FROM dbo.CampaignRequest as cr, dbo.Campaign as c, dbo.RegisteredUser as r," +
-                " dbo.RegisteredUser as a, dbo.TargetAudience as t ");
+                " dbo.RegisteredUser as a ");
             queryBuilder.Append("WHERE cr.campaign_id = c.id AND cr.verified_user_id = r.id AND " +
-                "c.target_audience_id = t.id AND c.agent_id = a.id " +
+                "c.agent_id = a.id " +
                 "AND cr.action=\'created\' AND r.id = @Id ");
 
             List<SqlParameter> parameters = new List<SqlParameter>()

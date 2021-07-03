@@ -2,39 +2,20 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CampaignMicroservice.Api.Factories
 {
-    public class CampaignRequestFactory
+    public class CampaignWithAgentFactory
     {
-        private readonly VerifiedUserFactory verifiedUserFactory;
         private readonly AgentFactory agentFactory;
 
-        public CampaignRequestFactory(VerifiedUserFactory verifiedUserFactory,
-            AgentFactory agentFactory)
+        public CampaignWithAgentFactory(AgentFactory agentFactory)
         {
-            this.verifiedUserFactory = verifiedUserFactory;
             this.agentFactory = agentFactory;
         }
 
-        public CampaignRequest Create(Core.Model.CampaignRequest campaignRequest)
-        {
-            return new CampaignRequest
-            {
-                Id = campaignRequest.Id,
-                IsApproved = campaignRequest.IsApproved,
-                VerifiedUser = verifiedUserFactory.Create(campaignRequest.VerifiedUser),
-                Campaign = ConvertCampaign(campaignRequest.Campaign),
-                CampaignRequestAction = campaignRequest.CampaignRequestAction
-            };
-        }
-
-        public IEnumerable<CampaignRequest> CreateCampaignRequests(IEnumerable<Core.Model.CampaignRequest> campaignRequests)
-        {
-            return campaignRequests.Select(campaignRequest => Create(campaignRequest)).ToList();
-        }
-
-        private CampaignWithAgent ConvertCampaign(Core.Model.Campaign campaign)
+        public CampaignWithAgent Create(Core.Model.Campaign campaign)
         {
             if (campaign.GetType().Name.Equals("OneTimePostCampaign"))
             {
@@ -122,6 +103,11 @@ namespace CampaignMicroservice.Api.Factories
             }
         }
 
+        public IEnumerable<CampaignWithAgent> CreateCampaigns(IEnumerable<Core.Model.Campaign> campaigns)
+        {
+            return campaigns.Select(campaign => Create(campaign)).ToList();
+        }
+
         private Ad ConvertAd(Core.Model.Ad ad)
         {
             return new Ad
@@ -143,12 +129,12 @@ namespace CampaignMicroservice.Api.Factories
         private ExposureDate ConvertExposureDate(Core.Model.ExposureDate exposureDate)
         {
             return exposureDate != null ?
-            new ExposureDate
-            {
-                Id = exposureDate.Id,
-                Time = exposureDate.Time,
-                SeenByIds = ConvertSeenByIds(exposureDate.SeenBy)
-            } : null;
+             new ExposureDate
+             {
+                 Id = exposureDate.Id,
+                 Time = exposureDate.Time,
+                 SeenByIds = ConvertSeenByIds(exposureDate.SeenBy)
+             } : null;
         }
 
         private IEnumerable<ExposureDate> ConvertExposureDates(IEnumerable<Core.Model.ExposureDate> exposureDates)

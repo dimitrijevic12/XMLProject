@@ -142,6 +142,21 @@ class MyOptionsModal extends Component {
           >
             <label>Send agent request</label>
           </button>
+          <hr />
+          <button
+            style={{
+              height: "100%",
+              width: "100%",
+              alignSelf: "stretch",
+              float: "center",
+            }}
+            className="btn btn-block btn-primary btn-md mb-2"
+            onClick={() => {
+              window.location = "/campaign-requests";
+            }}
+          >
+            <label>Campaign requests</label>
+          </button>
         </ModalBody>
       </Modal>
     );
