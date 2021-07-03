@@ -55,5 +55,9 @@ namespace UserMicroservice.Core.Interface.Repository
         public RegisteredUser EditAgent(Agent agent);
 
         public void DeleteFollow(Guid followedById, Guid followingId);
+
+        public void DeleteMute(Guid id);
+
+        public void DeleteBlock(Guid id);
     }
 }

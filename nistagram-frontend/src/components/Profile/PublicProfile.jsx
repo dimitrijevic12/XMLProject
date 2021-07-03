@@ -26,10 +26,12 @@ import {
 import ProfileStoryCard from "./ProfileStoryCard";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import SelectCampaignModal from "../Campaign/SelectCampaignModal";
 
 function PublicProfile(props) {
   const [postId, setPostId] = useState("");
   const [showPostModal, setShowPostModal] = useState(false);
+  const [showCampaignModal, setShowCampaignModal] = useState(false);
   const [username, setUsername] = useState("");
   const [followedById, setFollowedById] = useState(0);
   const [followingId, setFollowingId] = useState(0);
@@ -131,6 +133,10 @@ function PublicProfile(props) {
     }
   };
 
+  const displayCampaignModal = () => {
+    setShowCampaignModal(!showCampaignModal);
+  };
+
   const displayModalPost = (post) => {
     if (post != undefined) {
       setPostId(post.id);
@@ -147,6 +153,45 @@ function PublicProfile(props) {
   ) {
     return null;
   }
+
+  const DisplayCampaignRequestButton = () => {
+    var display = true;
+    debugger;
+
+    if (sessionStorage.getItem("role") !== "Agent") {
+      display = false;
+    }
+
+    if (user.category === undefined) {
+      display = false;
+    }
+
+    var isFollowing = false;
+    for (var i = 0; i < user.followers.length; i++) {
+      if (user.followers[i].id === sessionStorage.getItem("userId")) {
+        isFollowing = true;
+        break;
+      }
+    }
+
+    if (isFollowing === false) {
+      display = false;
+    }
+
+    if (display === true) {
+      return (
+        <button
+          onClick={() => displayCampaignModal()}
+          style={{ float: "right" }}
+          className="btn btn-block btn-primary btn-md mt-4 mb-4"
+        >
+          Send Campaign Request
+        </button>
+      );
+    } else {
+      return "";
+    }
+  };
 
   const DisplayFollowButton = () => {
     var display = true;
@@ -205,6 +250,13 @@ function PublicProfile(props) {
           onShowChange={() => displayModalPost()}
         />
       ) : null}
+      {showCampaignModal ? (
+        <SelectCampaignModal
+          show={showCampaignModal}
+          user={user}
+          onShowChange={() => displayCampaignModal()}
+        />
+      ) : null}
       {props.location.pathname.slice(9) === sessionStorage.getItem("userId") ? (
         <MyOptionsButton />
       ) : (
@@ -243,6 +295,13 @@ function PublicProfile(props) {
       ) : (
         <DisplayFollowButton />
       )}
+
+      {props.location.pathname.slice(9) === sessionStorage.getItem("userId") ? (
+        ""
+      ) : (
+        <DisplayCampaignRequestButton />
+      )}
+
       <Grid>
         <GridControlBar>
           <GridControlBarItem isActive>𐄹 Posts</GridControlBarItem>

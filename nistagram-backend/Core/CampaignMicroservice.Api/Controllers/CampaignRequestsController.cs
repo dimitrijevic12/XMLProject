@@ -1,4 +1,5 @@
-﻿using CampaignMicroservice.Core.Interface;
+﻿using CampaignMicroservice.Api.Factories;
+using CampaignMicroservice.Core.Interface;
 using CampaignMicroservice.Core.Model;
 using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Http;
@@ -17,13 +18,16 @@ namespace CampaignMicroservice.Api.Controllers
         private readonly ICampaignRequestRepository _campaignRequestRepository;
         private readonly IUserRepository _userRepository;
         private readonly ICampaignRepository _campaignRepository;
+        private readonly CampaignRequestFactory _campaignRequestFactory;
 
         public CampaignRequestsController(ICampaignRequestRepository campaignRequestRepository,
-            IUserRepository userRepository, ICampaignRepository campaignRepository)
+            IUserRepository userRepository, ICampaignRepository campaignRepository,
+            CampaignRequestFactory campaignRequestFactory)
         {
             _campaignRequestRepository = campaignRequestRepository;
             _userRepository = userRepository;
             _campaignRepository = campaignRepository;
+            _campaignRequestFactory = campaignRequestFactory;
         }
 
         [HttpPost]
@@ -68,6 +72,15 @@ namespace CampaignMicroservice.Api.Controllers
                 return BadRequest("Couldn't create  campaign request");
 
             return Ok(campaignRequest);
+        }
+
+        [HttpGet]
+        public IActionResult Search([FromQuery] Guid userId, [FromQuery(Name = "is-approved")] string isApproved)
+        {
+            if (Request.Query.Count == 0) return BadRequest();
+            if (String.IsNullOrEmpty(isApproved)) return BadRequest();
+            if (String.IsNullOrEmpty(userId.ToString())) return BadRequest();
+            return Ok(_campaignRequestFactory.CreateCampaignRequests(_campaignRequestRepository.GetBy(userId, isApproved)));
         }
     }
 }

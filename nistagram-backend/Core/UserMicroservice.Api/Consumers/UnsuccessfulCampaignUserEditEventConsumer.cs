@@ -12,25 +12,25 @@ using UserMicroservice.Core.Services;
 
 namespace UserMicroservice.Api.Consumers
 {
-    public class UnsuccessfulStoryUserEditEventConsumer : IConsumeAsync<UnsuccessfulStoryUserEditEvent>
+    public class UnsuccessfulCampaignUserEditEventConsumer : IConsumeAsync<UnsuccessfulCampaignUserEditEvent>
     {
         private readonly UserService userService;
         private readonly IUserRepository _userRepository;
         private readonly IBus _bus;
 
-        public UnsuccessfulStoryUserEditEventConsumer(UserService userService, IBus bus, IUserRepository userRepository)
+        public UnsuccessfulCampaignUserEditEventConsumer(UserService userService, IBus bus, IUserRepository userRepository)
         {
             this.userService = userService;
             _userRepository = userRepository;
             _bus = bus;
         }
 
-        public async Task ConsumeAsync(UnsuccessfulStoryUserEditEvent message, CancellationToken cancellationToken = default)
+        public async Task ConsumeAsync(UnsuccessfulCampaignUserEditEvent message, CancellationToken cancellationToken = default)
         {
             await userService.RejectEditAsync(Convert(message), "Unsuccessful user edit error!");
         }
 
-        private RegisteredUser Convert(UnsuccessfulStoryUserEditEvent user)
+        private RegisteredUser Convert(UnsuccessfulCampaignUserEditEvent user)
         {
             return RegisteredUser.Create(new Guid(user.Id), Username.Create(user.Username).Value, EmailAddress.Create(user.EmailAddress).Value, FirstName.Create(user.FirstName).Value,
             LastName.Create(user.LastName).Value, user.DateOfBirth, PhoneNumber.Create(user.PhoneNumber).Value,

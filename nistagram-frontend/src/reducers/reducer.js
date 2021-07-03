@@ -78,6 +78,10 @@ import {
   GET_AGENT_REQUESTS,
   UPDATE_AGENT_REQUEST,
   CREATE_AGENT_NOT_EXISTING,
+  GET_CAMPAIGNS_FOR_AGENT,
+  CREATE_CAMPAIGN_REQUEST,
+  GET_CAMPAIGN_REQUESTS,
+  UPDATE_CAMPAIGN_REQUEST,
 } from "../types/types";
 
 const initialState = {
@@ -124,6 +128,8 @@ const initialState = {
   imageForStory: "",
   notLoggedInUserStories: [],
   agentRequests: [],
+  campaignsForAgent: [],
+  campaignRequests: [],
 };
 
 function reducer(state = initialState, action) {
@@ -490,6 +496,27 @@ function reducer(state = initialState, action) {
     case CREATE_AGENT_NOT_EXISTING:
       return {
         ...state,
+      };
+    case GET_CAMPAIGNS_FOR_AGENT:
+      return {
+        ...state,
+        campaignsForAgent: action.payload,
+      };
+    case CREATE_CAMPAIGN_REQUEST:
+      return {
+        ...state,
+      };
+    case GET_CAMPAIGN_REQUESTS:
+      return {
+        ...state,
+        campaignRequests: action.payload,
+      };
+    case UPDATE_CAMPAIGN_REQUEST:
+      return {
+        ...state,
+        campaignRequests: state.campaignRequests.filter(
+          (campaignRequest) => action.payload.id !== campaignRequest.id
+        ),
       };
     default:
       return state;

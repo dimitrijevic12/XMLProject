@@ -27,7 +27,7 @@ namespace CampaignMicroservice.Core.Model
 
         public override string ToString()
         {
-            return gender;
+            return this.gender;
         }
 
         public static implicit operator string(Gender gender) => gender.gender;

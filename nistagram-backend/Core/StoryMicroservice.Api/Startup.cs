@@ -65,8 +65,9 @@ namespace StoryMicroservice.Api
 
             services.AddScoped<UnsuccessfulPostUserRegistrationEventConsumer>();
             services.AddScoped<UnsuccessfulPostUserEditEventConsumer>();
-            services.AddScoped<UserRegisteredEventConsumer>();
-            services.AddScoped<UserEditedEventConsumer>();
+            services.AddScoped<CampaignUserRegisteredEventConsumer>();
+            services.AddScoped<CampaignUserEditedEventConsumer>();
+            services.AddScoped<CampaignUserBlockedEventConsumer>();
             services.AddScoped<CampaignUserFollowedEventConsumer>();
 
             services.AddSingleton<IStoryDatabaseSettings>(sp =>

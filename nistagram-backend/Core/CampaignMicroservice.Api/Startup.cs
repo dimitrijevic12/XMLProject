@@ -59,6 +59,16 @@ namespace CampaignMicroservice.Api
             services.AddScoped<IExposureDateRepository, ExposureDateRepository>();
             services.AddScoped<UserFollowedEventConsumer>();
             services.AddScoped<UnsuccessfulStoryFollowEventConsumer>();
+            services.AddScoped<UserRegisteredEventConsumer>();
+            services.AddScoped<UnsuccessfulStoryUserRegistrationEventConsumer>();
+            services.AddScoped<UnsuccessfulStoryUserBlockEventConsumer>();
+            services.AddScoped<UserEditedEventConsumer>();
+            services.AddScoped<UserMutedEventConsumer>();
+            services.AddScoped<AgentEditedEventConsumer>();
+            services.AddScoped<VerifiedUserEditedEventConsumer>();
+            services.AddScoped<UserBlockedEventConsumer>();
+            services.AddScoped<UnsuccessfulStoryUserEditEventConsumer>();
+
             services.AddScoped<CampaignRequestFactory>();
             services.AddScoped<VerifiedUserFactory>();
             services.AddScoped<ExposureDateFactory>();

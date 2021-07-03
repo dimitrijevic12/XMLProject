@@ -12,20 +12,20 @@ using System.Threading.Tasks;
 
 namespace StoryMicroservice.Api.Consumers
 {
-    public class UserEditedEventConsumer : IConsumeAsync<UserEditedEvent>
+    public class CampaignUserEditedEventConsumer : IConsumeAsync<CampaignUserEditedEvent>
     {
         private readonly UserService userService;
         private readonly IUserRepository _userRepository;
         private readonly IBus _bus;
 
-        public UserEditedEventConsumer(UserService userService, IBus bus, IUserRepository userRepository)
+        public CampaignUserEditedEventConsumer(UserService userService, IBus bus, IUserRepository userRepository)
         {
             this.userService = userService;
             _userRepository = userRepository;
             _bus = bus;
         }
 
-        public async Task ConsumeAsync(UserEditedEvent message, CancellationToken cancellationToken = default)
+        public async Task ConsumeAsync(CampaignUserEditedEvent message, CancellationToken cancellationToken = default)
         {
             var result = await userService.EditRegistrationAsync(Convert(message));
             if (result.IsSuccess)
@@ -129,7 +129,7 @@ namespace StoryMicroservice.Api.Consumers
             return test;
         }
 
-        private RegisteredUser Convert(UserEditedEvent message)
+        private RegisteredUser Convert(CampaignUserEditedEvent message)
         {
             return RegisteredUser.Create(new Guid(message.Id),
                                            Username.Create(message.Username).Value,
