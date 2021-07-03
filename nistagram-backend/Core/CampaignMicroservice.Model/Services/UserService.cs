@@ -57,9 +57,6 @@ namespace CampaignMicroservice.Core.Services
 
         public Result Edit(RegisteredUser registeredUser)
         {
-            string test1 = registeredUser.Username;
-            string test2 = _userRepository.GetById(registeredUser.Id).Value.Username.ToString();
-            string test3 = _userRepository.GetById(registeredUser.Id).Value.Username;
             if (!_userRepository.GetById(registeredUser.Id).Value.Username.Equals(registeredUser.Username))
             {
                 if (_userRepository.GetByUsername(registeredUser.Username).HasValue) return Result.Failure("There is already user with that username");
@@ -129,6 +126,40 @@ namespace CampaignMicroservice.Core.Services
             _userRepository.Block(id, blockedById, blockingId);
             _userRepository.DeleteFollows(blockedById, blockingId);
             return Result.Success("User is successfully blocked");
+        }
+
+        public async Task<Result> EditAgentAsync(Agent registeredUser)
+        {
+            var result = EditAgent(registeredUser);
+            if (result.IsFailure) return Result.Failure(result.Error);
+            return Result.Success(registeredUser);
+        }
+
+        public Result EditAgent(Agent agent)
+        {
+            if (!_userRepository.GetById(agent.Id).Value.Username.Equals(agent.Username))
+            {
+                if (_userRepository.GetByUsername(agent.Username).HasValue) return Result.Failure("There is already user with that username");
+            }
+            _userRepository.EditAgent(agent);
+            return Result.Success(agent);
+        }
+
+        public async Task<Result> EditVerifiedUserAsync(VerifiedUser registeredUser)
+        {
+            var result = EditVerifiedUser(registeredUser);
+            if (result.IsFailure) return Result.Failure(result.Error);
+            return Result.Success(registeredUser);
+        }
+
+        public Result EditVerifiedUser(VerifiedUser verifiedUser)
+        {
+            if (!_userRepository.GetById(verifiedUser.Id).Value.Username.ToString().Equals(verifiedUser.Username))
+            {
+                if (_userRepository.GetByUsername(verifiedUser.Username).HasValue) return Result.Failure("User with that username already exist");
+            }
+            _userRepository.EditVerifiedUser(verifiedUser);
+            return Result.Success(verifiedUser);
         }
     }
 }

@@ -12,68 +12,32 @@ using System.Threading.Tasks;
 
 namespace CampaignMicroservice.Api.Consumers
 {
-    public class UserEditedEventConsumer : IConsumeAsync<UserEditedEvent>
+    public class VerifiedUserEditedEventConsumer : IConsumeAsync<VerifiedUserEditedEvent>
     {
         private readonly UserService userService;
         private readonly IUserRepository _userRepository;
         private readonly IBus _bus;
 
-        public UserEditedEventConsumer(UserService userService, IBus bus, IUserRepository userRepository)
+        public VerifiedUserEditedEventConsumer(UserService userService, IBus bus, IUserRepository userRepository)
         {
             this.userService = userService;
             _userRepository = userRepository;
             _bus = bus;
         }
 
-        public async Task ConsumeAsync(UserEditedEvent message, CancellationToken cancellationToken = default)
+        public async Task ConsumeAsync(VerifiedUserEditedEvent message, CancellationToken cancellationToken = default)
         {
-            var result = await userService.CreateEditAsync(Convert(message));
+            var result = await userService.EditVerifiedUserAsync(Convert(message));
             if (result.IsSuccess)
             {
-                await _bus.PubSub.PublishAsync(new CampaignUserEditedEvent
+                await _bus.PubSub.PublishAsync(new VerifiedUserEditCompletedEvent
                 {
-                    Id = message.Id,
-                    Username = message.Username,
-                    FirstName = message.FirstName,
-                    LastName = message.LastName,
-                    ProfilePicturePath = message.ProfilePicturePath,
-                    IsPrivate = message.IsPrivate,
-                    IsAcceptingTags = message.IsAcceptingTags,
-                    Followers = message.Followers,
-                    Following = message.Following,
-                    BlockedUsers = message.BlockedUsers,
-                    BlockedByUsers = message.BlockedByUsers,
-                    MyCloseFriends = message.MyCloseFriends,
-                    CloseFriendTo = message.CloseFriendTo,
-
-                    OldEmailAddress = message.OldEmailAddress,
-                    OldUsername = message.OldUsername,
-                    OldFirstName = message.OldFirstName,
-                    OldLastName = message.OldLastName,
-                    OldDateOfBirth = message.OldDateOfBirth,
-                    OldPhoneNumber = message.OldPhoneNumber,
-                    OldGender = message.OldGender,
-                    OldWebsiteAddress = message.OldWebsiteAddress,
-                    OldBio = message.OldBio,
-                    OldPassword = message.OldPassword,
-                    OldIsPrivate = message.OldIsPrivate,
-                    OldIsAcceptingMessages = message.OldIsAcceptingMessages,
-                    OldIsAcceptingTags = message.OldIsAcceptingTags,
-                    OldProfileImagePath = message.OldProfileImagePath,
-                    OldBlockedUsers = message.OldBlockedUsers,
-                    OldBlockedByUsers = message.OldBlockedByUsers,
-                    OldMutedUsers = message.OldMutedUsers,
-                    OldMutedByUsers = message.OldMutedByUsers,
-                    OldFollowing = message.OldFollowing,
-                    OldFollowers = message.OldFollowers,
-                    OldMyCloseFriends = message.OldMyCloseFriends,
-                    OldCloseFriendTo = message.OldCloseFriendTo,
-                    OldIsBanned = message.OldIsBanned
+                    Id = new Guid(message.Id),
                 });
             }
             else
             {
-                await _bus.PubSub.PublishAsync(new UnsuccessfulCampaignUserEditEvent
+                await _bus.PubSub.PublishAsync(new UnsuccessfulCampaignVerifiedUserEditEvent
                 {
                     Id = message.Id,
                     EmailAddress = message.OldEmailAddress,
@@ -83,6 +47,7 @@ namespace CampaignMicroservice.Api.Consumers
                     DateOfBirth = message.OldDateOfBirth,
                     PhoneNumber = message.OldPhoneNumber,
                     Gender = message.OldGender,
+                    Category = message.Category,
                     WebsiteAddress = message.OldWebsiteAddress,
                     Bio = message.OldBio,
                     Password = message.OldPassword,
@@ -129,9 +94,9 @@ namespace CampaignMicroservice.Api.Consumers
             return test;
         }
 
-        private RegisteredUser Convert(UserEditedEvent message)
+        private VerifiedUser Convert(VerifiedUserEditedEvent message)
         {
-            return RegisteredUser.Create(new Guid(message.Id),
+            return VerifiedUser.Create(new Guid(message.Id),
                                            Username.Create(message.Username).Value,
                                            FirstName.Create(message.FirstName).Value,
                                            LastName.Create(message.LastName).Value,
@@ -145,7 +110,8 @@ namespace CampaignMicroservice.Api.Consumers
                                            CreateUsers(message.Followers),
                                            CreateUsers(message.MutedByUsers),
                                            CreateUsers(message.MutedUsers),
-                                           message.IsBanned).Value;
+                                           message.IsBanned,
+                                           Category.Create(message.Category).Value).Value;
         }
     }
 }

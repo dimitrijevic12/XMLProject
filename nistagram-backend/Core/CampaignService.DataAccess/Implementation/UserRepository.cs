@@ -401,6 +401,7 @@ namespace CampaignService.DataAccess.Implementation
 
             ExecuteQuery(query, parameters);
         }
+
         public IEnumerable<RegisteredUser> GetSeenBy(Guid exposureDateId)
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT * ");
@@ -420,6 +421,65 @@ namespace CampaignService.DataAccess.Implementation
                     new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>(),
                     new List<RegisteredUser>(), new List<RegisteredUser>(), new List<RegisteredUser>()
                     )).ToList();
+        }
+
+        public RegisteredUser EditVerifiedUser(VerifiedUser registeredUser)
+        {
+            StringBuilder queryBuilder = new StringBuilder("UPDATE dbo.RegisteredUser ");
+            queryBuilder.Append("SET username = @username, first_name = @first_name, last_name = @last_name, date_of_birth = @date_of_birth," +
+              " gender = @gender, is_banned = @is_banned, is_private = @is_private, profile_image_path = @profile_image_path, type = @type, category = @category  ");
+            queryBuilder.Append("WHERE id = @id;");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+            {
+                  new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = registeredUser.Id },
+                 new SqlParameter("@username", SqlDbType.NVarChar) { Value = registeredUser.Username.ToString() },
+                 new SqlParameter("@first_name", SqlDbType.NVarChar) { Value = registeredUser.FirstName.ToString() },
+                 new SqlParameter("@last_name", SqlDbType.NVarChar) { Value = registeredUser.LastName.ToString() },
+                 new SqlParameter("@date_of_birth", SqlDbType.NVarChar) { Value = registeredUser.DateOfBirth.ToString() },
+                 new SqlParameter("@gender", SqlDbType.NVarChar) { Value = registeredUser.Gender.ToString() },
+                 new SqlParameter("@profile_image_path", SqlDbType.NVarChar) { Value = registeredUser.ProfileImagePath.ToString() },
+                 new SqlParameter("@is_private", SqlDbType.Bit) { Value = registeredUser.IsPrivate },
+                 new SqlParameter("@is_banned", SqlDbType.Bit) { Value = registeredUser.IsBanned },
+                 new SqlParameter("@type", SqlDbType.NVarChar) { Value = registeredUser.GetType().Name },
+                 new SqlParameter("@category", SqlDbType.NVarChar) { Value = registeredUser.Category.ToString() },
+            };
+
+            ExecuteQuery(query, parameters);
+
+            return registeredUser;
+        }
+
+        public RegisteredUser EditAgent(Agent registeredUser)
+        {
+            string type = registeredUser.GetType().Name;
+            StringBuilder queryBuilder = new StringBuilder("UPDATE dbo.RegisteredUser ");
+            queryBuilder.Append("SET username = @username, first_name = @first_name, last_name = @last_name, date_of_birth = @date_of_birth, website_address = @website_address," +
+                " gender = @gender, is_banned = @is_banned, is_private = @is_private, profile_image_path = @profile_image_path, type = @type ");
+            queryBuilder.Append("WHERE id = @id;");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+            {
+                new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = registeredUser.Id },
+                 new SqlParameter("@username", SqlDbType.NVarChar) { Value = registeredUser.Username.ToString() },
+                 new SqlParameter("@first_name", SqlDbType.NVarChar) { Value = registeredUser.FirstName.ToString() },
+                 new SqlParameter("@last_name", SqlDbType.NVarChar) { Value = registeredUser.LastName.ToString() },
+                 new SqlParameter("@date_of_birth", SqlDbType.NVarChar) { Value = registeredUser.DateOfBirth.ToString() },
+                 new SqlParameter("@gender", SqlDbType.NVarChar) { Value = registeredUser.Gender.ToString() },
+                 new SqlParameter("@website_address", SqlDbType.NVarChar) { Value = registeredUser.WebsiteAddress.ToString() },
+                 new SqlParameter("@profile_image_path", SqlDbType.NVarChar) { Value = registeredUser.ProfileImagePath.ToString() },
+                 new SqlParameter("@is_private", SqlDbType.Bit) { Value = registeredUser.IsPrivate },
+                 new SqlParameter("@is_banned", SqlDbType.Bit) { Value = registeredUser.IsBanned },
+                 new SqlParameter("@type", SqlDbType.NVarChar) { Value = registeredUser.GetType().Name },
+            };
+
+            ExecuteQuery(query, parameters);
+
+            return registeredUser;
         }
     }
 }

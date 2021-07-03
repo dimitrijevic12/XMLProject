@@ -38,9 +38,9 @@ namespace UserMicroservice.Core.Services
                 agentRequest.RegisteredUser.BlockedByUsers, agentRequest.RegisteredUser.MutedUsers, agentRequest.RegisteredUser.MutedByUsers,
                 agentRequest.RegisteredUser.Following, agentRequest.RegisteredUser.Followers, agentRequest.RegisteredUser.MyCloseFriends,
                 agentRequest.RegisteredUser.CloseFriendTo, agentRequest.RegisteredUser.IsBanned);
-                result = _userService.Edit(agent.Value);
+                result = await _userService.EditAsync(agent.Value);
                 if (result.IsFailure) return Result.Failure(result.Error);
-                result = _userService.EditAgent(agent.Value);
+                result = await _userService.EditAgentAsync(agent.Value);
                 if (result.IsFailure) return Result.Failure(result.Error);
             }
 
