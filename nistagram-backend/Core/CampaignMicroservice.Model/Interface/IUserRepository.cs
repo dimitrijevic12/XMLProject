@@ -25,5 +25,19 @@ namespace CampaignMicroservice.Core.Interface
         public void DeleteBlock(Guid id);
 
         public void DeleteFollows(Guid blockedById, Guid blockingId);
+        
+        public IEnumerable<RegisteredUser> GetBlocking(Guid id);
+
+        public IEnumerable<RegisteredUser> GetBlockedBy(Guid id);
+
+        public IEnumerable<RegisteredUser> GetMutedBy(Guid id);
+
+        public IEnumerable<RegisteredUser> GetMuted(Guid id);
+
+        public IEnumerable<RegisteredUser> GetFollowing(Guid id);
+
+        public IEnumerable<RegisteredUser> GetFollowers(Guid id);
+        
+        public IEnumerable<RegisteredUser> GetSeenBy(Guid exposureDateId);
     }
 }

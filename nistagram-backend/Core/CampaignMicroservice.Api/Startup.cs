@@ -1,4 +1,5 @@
 using CampaignMicroservice.Api.Consumers;
+using CampaignMicroservice.Api.Factories;
 using CampaignMicroservice.Core.Interface;
 using CampaignMicroservice.Core.Services;
 using CampaignService.DataAccess.Implementation;
@@ -50,7 +51,7 @@ namespace CampaignMicroservice.Api
             services.AddScoped<ICampaignRepository, CampaignRepository>();
             services.AddScoped<UserService>();
             services.AddScoped<IUserRepository, UserRepository>();
-
+            services.AddScoped<ICampaignRequestRepository, CampaignRequestRepository>();
             services.AddScoped<UserFollowedEventConsumer>();
             services.AddScoped<UnsuccessfulStoryFollowEventConsumer>();
             services.AddScoped<UserRegisteredEventConsumer>();
@@ -60,6 +61,14 @@ namespace CampaignMicroservice.Api
             services.AddScoped<UserMutedEventConsumer>();
             services.AddScoped<UserBlockedEventConsumer>();
             services.AddScoped<UnsuccessfulStoryUserEditEventConsumer>();
+            services.AddScoped<CampaignRequestFactory>();
+            services.AddScoped<VerifiedUserFactory>();
+            services.AddScoped<IExposureDateRepository, ExposureDateRepository>();
+            services.AddScoped<IAdRepository, AdRepository>();
+            services.AddScoped<CampaignFactory>();
+            services.AddScoped<ExposureDateFactory>();
+            services.AddScoped<AdFactory>();
+            services.AddScoped<TargetAudienceFactory>();
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {

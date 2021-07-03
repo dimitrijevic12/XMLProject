@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
 import "react-toastify/dist/ReactToastify.css";
-import "react-datepicker/dist/react-datepicker-cssmodules.css";
+import "react-datepicker/dist/react-datepicker.css";
 
 class EditProfile extends Component {
   state = {

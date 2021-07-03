@@ -7,26 +7,22 @@ using System.Threading.Tasks;
 
 namespace CampaignMicroservice.Core.Model
 {
-    public class ExposureDate : ValueObject
+    public class ExposureDate
     {
+        public Guid Id { get; }
         public DateTime Time { get; }
         public IEnumerable<RegisteredUser> SeenBy { get; }
 
-        private ExposureDate(DateTime time, IEnumerable<RegisteredUser> seenBy)
+        private ExposureDate(Guid id, DateTime time, IEnumerable<RegisteredUser> seenBy)
         {
+            Id = id;
             Time = time;
             SeenBy = seenBy;
         }
 
-        public static Result<ExposureDate> Create(DateTime time, IEnumerable<RegisteredUser> seenBy)
+        public static Result<ExposureDate> Create(Guid id, DateTime time, IEnumerable<RegisteredUser> seenBy)
         {
-            return new ExposureDate(time, seenBy);
-        }
-
-        protected override IEnumerable<object> GetEqualityComponents()
-        {
-            yield return Time;
-            yield return SeenBy;
+            return new ExposureDate(id, time, seenBy);
         }
     }
 }

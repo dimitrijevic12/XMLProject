@@ -20,7 +20,7 @@ namespace CampaignService.DataAccess.Adapter
             IEnumerable<RegisteredUser> mutedByUsers, IEnumerable<RegisteredUser> following,
             IEnumerable<RegisteredUser> followers)
         {
-            return registeredUserAdaptee.ConvertSqlDataReaderToRegisteredUser(dataRow, blockedUsers,
+            return registeredUserAdaptee.ConvertSqlDataReaderToUserModel(dataRow, blockedUsers,
                 blockedByUsers, mutedUsers, mutedByUsers, following, followers);
         }
     }

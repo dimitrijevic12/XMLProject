@@ -5,24 +5,24 @@ namespace CampaignMicroservice.Core.Model
 {
     public class Ad
     {
-        private readonly Guid id;
-        private readonly ContentPath contentPath;
-        private readonly Link link;
-        private readonly ClickCount clickCount;
-        private readonly RegisteredUser profileOwner;
+        public Guid Id { get; }
+        public Content Content { get; }
+        public Link Link { get; }
+        public ClickCount ClickCount { get; }
+        public RegisteredUser ProfileOwner { get; }
 
-        private Ad(Guid id, ContentPath contentPath, Link link, ClickCount clickCount, RegisteredUser profileOwner)
+        private Ad(Guid id, Content content, Link link, ClickCount clickCount, RegisteredUser profileOwner)
         {
-            this.id = id;
-            this.contentPath = contentPath;
-            this.link = link;
-            this.clickCount = clickCount;
-            this.profileOwner = profileOwner;
+            Id = id;
+            Content = content;
+            Link = link;
+            ClickCount = clickCount;
+            ProfileOwner = profileOwner;
         }
 
-        public static Result<Ad> Create(Guid id, ContentPath contentPath, Link link, ClickCount clickCount, RegisteredUser profileOwner)
+        public static Result<Ad> Create(Guid id, Content content, Link link, ClickCount clickCount, RegisteredUser profileOwner)
         {
-            return Result.Success(new Ad(id, contentPath, link, clickCount, profileOwner));
+            return Result.Success(new Ad(id, content, link, clickCount, profileOwner));
         }
     }
 }

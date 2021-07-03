@@ -32,6 +32,8 @@ import ReportsPage from "./pages/ReportsPage";
 import AgentRegistrationPage from "./pages/AgentRegistrationPage";
 import NotLoggedAgentRegistrationPage from "./pages/NotLoggedAgentRegistrationPage";
 import CreateCampaign from "./components/Campaign/CreateCampaign";
+import CreateCampaignPage from "./pages/CreateCampaignPage";
+import CampaignRequestsPage from "./pages/CampaignRequestsPage";
 
 function App() {
   return (
@@ -132,7 +134,15 @@ function App() {
             path="/viewVerificationRequests"
             component={ViewVerificationRequestPage}
           />
-          <ProtectedRoute exact path="/campaign" component={CreatePostPage} />
+          <ProtectedRoute
+            path="/campaign-requests"
+            component={CampaignRequestsPage}
+          />
+          <ProtectedRoute
+            exact
+            path="/campaign"
+            component={CreateCampaignPage}
+          />
           <ProtectedRoute exact path="/" component={HomePage} />
         </Switch>
       </div>

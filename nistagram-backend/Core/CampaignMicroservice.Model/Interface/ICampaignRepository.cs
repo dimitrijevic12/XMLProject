@@ -1,9 +1,7 @@
 ﻿using CampaignMicroservice.Core.Model;
+using CSharpFunctionalExtensions;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CampaignMicroservice.Core.Interface
 {
@@ -14,5 +12,9 @@ namespace CampaignMicroservice.Core.Interface
         public void Update(Campaign campaign);
 
         public void Remove(Guid id);
+
+        public Maybe<Campaign> GetById(Guid id);
+
+        public IEnumerable<Campaign> GetBy(Guid agentId);
     }
 }
