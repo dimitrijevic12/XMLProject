@@ -2,9 +2,6 @@
 using CSharpFunctionalExtensions;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CampaignMicroservice.Core.Interface
 {
@@ -15,5 +12,7 @@ namespace CampaignMicroservice.Core.Interface
         public Maybe<Ad> GetById(Guid id);
 
         public IEnumerable<Ad> GetAdsForCampaign(Guid campaignId);
+
+        public Maybe<Ad> GetByContentId(Guid contentId);
     }
 }

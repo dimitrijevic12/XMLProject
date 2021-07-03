@@ -77,6 +77,7 @@ namespace CampaignMicroservice.Api
             services.AddScoped<TargetAudienceFactory>();
             services.AddScoped<CampaignWithAgentFactory>();
             services.AddScoped<AgentFactory>();
+            services.AddScoped<DTOAdFactory>();
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {

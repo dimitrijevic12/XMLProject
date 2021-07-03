@@ -188,3 +188,7 @@ export const GET_CAMPAIGN_REQUESTS_FOR_USER_PROFILE =
   "getCampaignRequestsForUserProfile";
 export const GET_CAMPAIGN_REQUESTS_FOR_USER_PROFILE_ERROR =
   "getCampaignRequestsForUserProfileError";
+export const GET_AD_FOR_CONTENT = "getAdForContent";
+export const GET_AD_FOR_CONTENT_ERROR = "getAdForContentError";
+export const CREATE_AD = "createAd";
+export const CREATE_AD_ERROR = "createAdError";

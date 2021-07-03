@@ -11,6 +11,10 @@ import {
   GET_CAMPAIGN_REQUESTS_FOR_USER_PROFILE_ERROR,
   CREATE_CAMPAIGN,
   CREATE_CAMPAIGN_ERROR,
+  GET_AD_FOR_CONTENT,
+  GET_AD_FOR_CONTENT_ERROR,
+  CREATE_AD,
+  CREATE_AD_ERROR,
 } from "../types/types";
 import axios from "axios";
 
@@ -167,3 +171,48 @@ export const getCampaignRequestsForUserProfile =
       });
     }
   };
+
+export const getAdForContent = (contentId) => async (dispatch) => {
+  debugger;
+  try {
+    const response = await axios.get(`https://localhost:44355/api/ads`, {
+      params: {
+        contentId: contentId,
+      },
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
+      },
+    });
+    dispatch({
+      type: GET_AD_FOR_CONTENT,
+      payload: response.data,
+    });
+    return true;
+  } catch (e) {
+    dispatch({
+      type: GET_AD_FOR_CONTENT_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const createAd = (ad) => async (dispatch) => {
+  try {
+    const response = await axios.post("https://localhost:44355/api/ads", ad, {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
+      },
+    });
+    dispatch({
+      type: CREATE_AD,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: CREATE_AD_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
