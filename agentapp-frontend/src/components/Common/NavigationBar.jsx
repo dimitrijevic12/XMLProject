@@ -41,6 +41,16 @@ class NavigationBar extends Component {
               <img src="/images/home.png" />
             </NavLink>
           </NavItem>
+          <NavItem style={{ float: "right" }}>
+            <NavLink
+              exact
+              to="/token"
+              className="nav-link"
+              activeClassName="nav-link-active"
+            >
+              <img src="/images/campaign.png" />
+            </NavLink>
+          </NavItem>
 
           <UncontrolledDropdown style={{ float: "right" }}>
             <DropdownToggle nav caret>

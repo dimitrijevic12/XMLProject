@@ -88,6 +88,13 @@ class NavigationBar extends Component {
                   Edit profile
                 </NavLink>
               </DropdownItem>
+              {sessionStorage.getItem("role") === "Agent" ? (
+                <DropdownItem>
+                  <NavLink to="/token">Generate token</NavLink>
+                </DropdownItem>
+              ) : (
+                ""
+              )}
               <DropdownItem divider />
               <DropdownItem>
                 <NavLink to="/login" onClick={this.logout.bind(this)}>
