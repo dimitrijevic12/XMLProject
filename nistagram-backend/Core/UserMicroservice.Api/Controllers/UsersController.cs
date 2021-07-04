@@ -108,9 +108,20 @@ namespace UserMicroservice.Api.Controllers
         [HttpGet("{idUser}")]
         public IActionResult GetById(Guid idUser)
         {
-            Core.Model.RegisteredUser user = userService.GetUserById(idUser);
+            Core.Model.User user = userService.GetUserByIdWithType(idUser);
             if (user == null) return BadRequest();
-            return Ok(registerUserFactory.Create(user));
+            if (user.GetType().Name.Equals("VerifiedUser"))
+            {
+                return Ok(verifiedUserFactory.Create((Core.Model.VerifiedUser)user));
+            }
+            else if (user.GetType().Name.Equals("Agent"))
+            {
+                return Ok(agentFactory.Create((Core.Model.Agent)user));
+            }
+            else
+            {
+                return Ok(registerUserFactory.Create((Core.Model.RegisteredUser)user));
+            }
         }
 
         [HttpGet("{loggedId}/logged/{userId}/user")]

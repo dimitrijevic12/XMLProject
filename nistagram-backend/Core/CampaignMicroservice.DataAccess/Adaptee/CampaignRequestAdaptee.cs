@@ -159,6 +159,8 @@ namespace CampaignMicroservice.DataAccess.Adaptee
         IEnumerable<RegisteredUser> followingVerified, IEnumerable<RegisteredUser> followersVerified, IEnumerable<RegisteredUser> mutedByUsersVerified,
         IEnumerable<RegisteredUser> mutedUsersVerified)
         {
+            DateTime dateOfChange = new DateTime();
+            if (!dataRow[34].ToString().Equals("")) dateOfChange = DateTime.Parse(dataRow[34].ToString());
             return CampaignRequest.Create(
                     id: Guid.Parse(dataRow[0].ToString().Trim()),
                     isApproved: bool.Parse(dataRow[1].ToString().Trim()),
@@ -189,7 +191,7 @@ namespace CampaignMicroservice.DataAccess.Adaptee
                                                DateTime.Parse(dataRow[32].ToString()),
                                                DateTime.Parse(dataRow[33].ToString()),
                                                exposureDates,
-                                               DateTime.Parse(dataRow[34].ToString()),
+                                               dateOfChange,
                                                ads).Value,
                     verifiedUser: VerifiedUser.Create(Guid.Parse(dataRow[2].ToString()),
                                     Username.Create(dataRow[3].ToString()).Value,
@@ -219,6 +221,8 @@ namespace CampaignMicroservice.DataAccess.Adaptee
         IEnumerable<RegisteredUser> followingVerified, IEnumerable<RegisteredUser> followersVerified, IEnumerable<RegisteredUser> mutedByUsersVerified,
         IEnumerable<RegisteredUser> mutedUsersVerified)
         {
+            DateTime dateOfChange = new DateTime();
+            if (!dataRow[34].ToString().Equals("")) dateOfChange = DateTime.Parse(dataRow[34].ToString());
             return CampaignRequest.Create(
                     id: Guid.Parse(dataRow[0].ToString().Trim()),
                     isApproved: bool.Parse(dataRow[1].ToString().Trim()),
@@ -246,10 +250,10 @@ namespace CampaignMicroservice.DataAccess.Adaptee
                                                                          DislikesCount.Create(int.Parse(dataRow[28].ToString())).Value,
                                                                          ExposureCount.Create(int.Parse(dataRow[29].ToString())).Value,
                                                                          ClickCount.Create(int.Parse(dataRow[30].ToString())).Value).Value,
-                                               DateTime.Parse(dataRow[31].ToString()),
                                                DateTime.Parse(dataRow[32].ToString()),
-                                               exposureDates,
                                                DateTime.Parse(dataRow[33].ToString()),
+                                               exposureDates,
+                                               dateOfChange,
                                                ads).Value,
                     verifiedUser: VerifiedUser.Create(Guid.Parse(dataRow[2].ToString()),
                                     Username.Create(dataRow[3].ToString()).Value,

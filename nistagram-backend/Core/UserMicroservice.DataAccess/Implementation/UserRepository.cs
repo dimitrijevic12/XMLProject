@@ -168,6 +168,50 @@ namespace UserMicroservice.DataAccess.Implementation
             return Maybe<RegisteredUser>.None;
         }
 
+        public Maybe<User> GetByIdWithType(Guid id)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT * ");
+            queryBuilder.Append("FROM dbo.RegisteredUser ");
+            queryBuilder.Append("WHERE id = @Id AND is_banned=0;");
+
+            string query = queryBuilder.ToString();
+
+            SqlParameter parameterId = new SqlParameter("@Id", SqlDbType.UniqueIdentifier) { Value = id };
+
+            List<SqlParameter> parameters = new List<SqlParameter>() { parameterId };
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            if (dataTable.Rows.Count > 0)
+            {
+                if (dataTable.Rows[0][13].Equals("default"))
+                {
+                    return (RegisteredUser)_userModelTarget.ConvertSql(
+                  dataTable.Rows[0], GetBlocking(id), GetBlockedBy(id),
+                  GetMuted(id), GetMutedBy(id), GetFollowing(id), GetFollowers(id),
+                  GetMyCloseFriends(id), GetCloseFriendsTo(id)
+                );
+                }
+                else if (dataTable.Rows[0][13].Equals("Agent"))
+                {
+                    return (Agent)_userModelTarget.ConvertSql(
+                 dataTable.Rows[0], GetBlocking(id), GetBlockedBy(id),
+                 GetMuted(id), GetMutedBy(id), GetFollowing(id), GetFollowers(id),
+                 GetMyCloseFriends(id), GetCloseFriendsTo(id)
+                 );
+                }
+                else
+                {
+                    return (VerifiedUser)_userModelTarget.ConvertSql(
+                   dataTable.Rows[0], GetBlocking(id), GetBlockedBy(id),
+                   GetMuted(id), GetMutedBy(id), GetFollowing(id), GetFollowers(id),
+                   GetMyCloseFriends(id), GetCloseFriendsTo(id)
+                );
+                }
+            }
+            return Maybe<User>.None;
+        }
+
         private Boolean IsBlocked(Guid loggedId, Guid userId)
         {
             StringBuilder queryBuilder = new StringBuilder("SELECT * ");

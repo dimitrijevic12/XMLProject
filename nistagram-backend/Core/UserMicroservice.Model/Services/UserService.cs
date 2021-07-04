@@ -338,6 +338,12 @@ namespace UserMicroservice.Core.Services
             return _userRepository.GetByIdWithoutBlocked(loggedId, userId).Value;
         }
 
+        public User GetUserByIdWithType(Guid userId)
+        {
+            if (_userRepository.GetByIdWithType(userId).HasNoValue) return null;
+            return _userRepository.GetByIdWithType(userId).Value;
+        }
+
         public User FindUser(String username, String password)
         {
             var admin = _adminRepository.GetByUsername(username);
