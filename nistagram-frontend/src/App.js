@@ -34,6 +34,7 @@ import NotLoggedAgentRegistrationPage from "./pages/NotLoggedAgentRegistrationPa
 import CreateCampaign from "./components/Campaign/CreateCampaign";
 import CreateCampaignPage from "./pages/CreateCampaignPage";
 import CampaignRequestsPage from "./pages/CampaignRequestsPage";
+import EditCampaignPage from "./pages/EditCampaignPage"
 
 function App() {
   return (
@@ -134,6 +135,10 @@ function App() {
             path="/viewVerificationRequests"
             component={ViewVerificationRequestPage}
           />
+            <ProtectedRoute
+            path="/edit-campaign"
+            component={EditCampaignPage}
+          />         
           <ProtectedRoute
             path="/campaign-requests"
             component={CampaignRequestsPage}

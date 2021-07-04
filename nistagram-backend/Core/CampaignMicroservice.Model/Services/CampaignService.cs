@@ -1,6 +1,7 @@
 ﻿using CampaignMicroservice.Core.Interface;
 using CampaignMicroservice.Core.Model;
 using CSharpFunctionalExtensions;
+using System;
 
 namespace CampaignMicroservice.Core.Services
 {
@@ -53,6 +54,23 @@ namespace CampaignMicroservice.Core.Services
                 if (_adService.Save(ad, campaign.Id).IsFailure) return Result.Failure("Ad with that id already exist");
             }
             return Result.Success();
+        }
+
+        public Result Update(Campaign campaign)
+        {
+            //if (_campaignRepository.GetById(campaign.Id).HasNoValue) return Result.Failure("Campaign with that id does not exist");
+
+            if (campaign.GetType().Name.Equals("RecurringPostCampaign"))
+            {
+                _campaignRepository.Update(campaign);
+                return Result.Success();
+            }
+            else if (campaign.GetType().Name.Equals("RecurringStoryCampaign"))
+            {
+                _campaignRepository.Update(campaign);
+                return Result.Success();
+            }
+            return Result.Failure("Can't edit one time campaigns");
         }
     }
 }

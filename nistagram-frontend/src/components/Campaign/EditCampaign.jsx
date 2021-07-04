@@ -5,8 +5,7 @@ import { Card } from "reactstrap";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
 import {
-  getCampaignRequests,
-  updateCampaignRequest,
+    getCampaignsForAgent,
 } from "../../actions/actionsCampaign";
 import moment from "moment";
 import NotLoggedPostModal from "../Profile/NotLoggedPostModal";
@@ -19,7 +18,7 @@ import {
   getUserForStory,
 } from "../../actions/actionsStory";
 
-class CampaignRequests extends Component {
+class EditCampaign extends Component {
   state = {
     showPostModal: false,
     showStoryModal: false,
@@ -32,15 +31,15 @@ class CampaignRequests extends Component {
 
   async componentDidMount() {
     debugger;
-    await this.props.getCampaignRequests();
-    await this.props.getUserForStory();
+    await this.props.getCampaignsForAgent();
+    //await this.props.getUserForStory();
     this.setState({
       storyOwner: this.props.storyOwner,
     });
   }
 
   render() {
-    if (this.props.campaignRequests === undefined) {
+    if (this.props.campaignsForAgent === undefined) {
       return null;
     }
     debugger;
@@ -85,56 +84,41 @@ class CampaignRequests extends Component {
                   <thead>
                     <tr>
                       <th style={{ textAlign: "center" }}>Campaign</th>
-                      <th style={{ textAlign: "center" }}>Agent</th>
                       <th style={{ textAlign: "center" }}>Type</th>
-                      <th style={{ textAlign: "center" }}>Exposure Dates</th>
+                      <th style={{ textAlign: "center" }}>Gender</th>
+                      <th style={{ textAlign: "center" }}>Min Age</th>
+                      <th style={{ textAlign: "center" }}>Max Age</th>
                       <th style={{ textAlign: "center" }}></th>
                     </tr>
                   </thead>
                   <tbody>
-                    {this.props.campaignRequests.map((f) => (
+                    {this.props.campaignsForAgent.map((f) => (
                       <tr>
-                        <td style={{ textAlign: "center" }}>{f.campaign.id}</td>
+                        <td style={{ textAlign: "center" }}>{f.id}</td>
                         <td style={{ textAlign: "center" }}>
-                          {f.campaign.agent.firstName +
-                            " " +
-                            f.campaign.agent.lastName}
+                        {f.type}
                         </td>
                         <td style={{ textAlign: "center" }}>
-                          {f.campaign.type}
+                          {f.targetAudience.gender}
                         </td>
                         <td style={{ textAlign: "center" }}>
-                          {f.campaign.exposureDates.map((date, i) =>
-                            i === f.campaign.exposureDates.length - 1
-                              ? moment(date).format("DD/MM/YYYY")
-                              : moment(date).format("DD/MM/YYYY") + ", "
-                          )}
+                          {moment(f.targetAudience.minDateOfBirth).format("DD/MM/YYYY")}
                         </td>
                         <td style={{ textAlign: "center" }}>
-                          <img
-                            onClick={() => {
-                              this.accept(f);
-                            }}
-                            src="/images/checked.png"
-                          />
+                          {moment(f.targetAudience.maxDateOfBirth).format("DD/MM/YYYY")}
                         </td>
                         <td style={{ textAlign: "center" }}>
-                          <img
-                            onClick={() => {
-                              this.reject(f);
-                            }}
-                            src="/images/cancel.png"
-                          />
+                        <button
+                                
+                                className="btn btn-primary"
+                                // onClick={() => {
+                                // this.addPostToCollection();
+                                // }}
+                                >
+                                Edit
+                        </button>
                         </td>
-                        <td style={{ textAlign: "center" }}>
-                          <img
-                            onClick={() => {
-                              this.view(f);
-                            }}
-                            src="/images/analytics.png"
-                          />
-                         
-                        </td>
+                        
                       </tr>
                     ))}
                   </tbody>
@@ -270,7 +254,7 @@ class CampaignRequests extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  campaignRequests: state.campaignRequests,
+  campaignsForAgent: state.campaignsForAgent,
   post: state.post,
   storyById: state.storyById,
   story: state.story,
@@ -280,8 +264,7 @@ const mapStateToProps = (state) => ({
 export default compose(
   withRouter,
   connect(mapStateToProps, {
-    getCampaignRequests,
-    updateCampaignRequest,
+    getCampaignsForAgent,
     savePost,
     createNotification,
     getPost,
@@ -289,4 +272,4 @@ export default compose(
     getStoryById,
     getUserForStory,
   })
-)(CampaignRequests);
+)(EditCampaign);

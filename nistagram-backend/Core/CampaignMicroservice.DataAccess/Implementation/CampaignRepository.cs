@@ -144,7 +144,21 @@ namespace CampaignMicroservice.DataAccessImplementation
 
         public void Update(Campaign campaign)
         {
-            throw new NotImplementedException();
+            StringBuilder queryBuilder = new StringBuilder("UPDATE dbo.Campaign ");
+            queryBuilder.Append("SET min_date_of_birth = @MinDateOfBirth, max_date_of_birth = @MaxDateOfBirth, gender = @Gender ");
+            queryBuilder.Append("WHERE id = @id;");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@Id", SqlDbType.UniqueIdentifier) { Value = campaign.Id },
+                 new SqlParameter("@MinDateOfBirth", SqlDbType.NVarChar) { Value = campaign.TargetAudience.MinDateOfBirth.ToString()},
+                 new SqlParameter("@MaxDateOfBirth", SqlDbType.NVarChar) { Value = campaign.TargetAudience.MaxDateOfBirth.ToString()},
+                 new SqlParameter("@Gender", SqlDbType.NVarChar) { Value = campaign.TargetAudience.Gender.ToString()},
+             };
+
+            ExecuteQuery(query, parameters);
         }
     }
 }
