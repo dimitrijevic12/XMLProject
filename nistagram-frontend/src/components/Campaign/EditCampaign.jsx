@@ -10,6 +10,7 @@ import {
 import moment from "moment";
 import NotLoggedPostModal from "../Profile/NotLoggedPostModal";
 import StoryAlbumReportModal from "../Report/StoryAlbumReportModal";
+import EditCampaignModal from "./EditCampaignModal";
 import { savePost, getPost } from "../../actions/actions";
 import { createNotification } from "../../actions/actionsNotification";
 import {
@@ -20,22 +21,22 @@ import {
 
 class EditCampaign extends Component {
   state = {
-    showPostModal: false,
-    showStoryModal: false,
-    postId: "",
-    storyId: "",
-    storyIds: [],
-    username: "",
-    storyOwner: {},
+    showEditModal: false,
+    campaignId: "",
+    agentId: "",
+    type: "",
+    startDate: "",
+    endDate: "",
+    dateOfChange: "",
+    minDateOfBirth: "",
+    maxDateOfBirth: "",
+    gender: "",
   };
 
   async componentDidMount() {
     debugger;
     await this.props.getCampaignsForAgent();
     //await this.props.getUserForStory();
-    this.setState({
-      storyOwner: this.props.storyOwner,
-    });
   }
 
   render() {
@@ -45,22 +46,21 @@ class EditCampaign extends Component {
     debugger;
     return (
       <div>
-        {this.state.showPostModal ? (
-          <NotLoggedPostModal
-            show={this.state.showPostModal}
-            postId={this.state.postId}
-            personPhoto="/images/download.jfif"
-            person={this.state.username}
-            onShowChange={() => this.displayModalPost()}
+        {this.state.showEditModal ? (
+          <EditCampaignModal
+            show={this.state.showEditModal}
+            campaignId= {this.state.campaignId}
+            agentId= {this.state.agentId}
+            type= {this.state.type}
+            startDate= {this.state.startDate}
+            endDate= {this.state.endDate}
+            dateOfChange= {this.state.dateOfChange}
+            minDateOfBirth= {this.state.minDateOfBirth}
+            maxDateOfBirth= {this.state.maxDateOfBirth}
+            gender= {this.state.gender}
+            onShowChange={() => this.displayModalEdit()}
           />
-        ) : null}
-        {this.state.showStoryModal ? (
-          <StoryAlbumReportModal
-            show={this.state.showStoryModal}
-            storyIds={this.state.storyIds}
-            onShowChange={() => this.displayModalStory()}
-          />
-        ) : null}
+        ) : null}       
         <h3 className="mt-4" style={{ textAlign: "center" }}>
           Campaign Requests
         </h3>
@@ -111,9 +111,9 @@ class EditCampaign extends Component {
                         <button
                                 
                                 className="btn btn-primary"
-                                // onClick={() => {
-                                // this.addPostToCollection();
-                                // }}
+                                 onClick={() => {
+                                 this.displayModalEdit(f);
+                                 }}
                                 >
                                 Edit
                         </button>
@@ -131,126 +131,32 @@ class EditCampaign extends Component {
     );
   }
 
-  async accept(f) {
-    await this.props.updateCampaignRequest({
-      Id: f.id,
-      IsApproved: true,
-      Campaign: f.campaign,
-      VerifiedUser: f.verifiedUser,
-      CampaignRequestAction: "accepted",
-    });
-    if (
-      f.campaign.type === "OneTimePostCampaign" ||
-      f.campaign.type === "RecurringPostCampaign"
-    ) {
-      await this.createPost(f.campaign.ads[0]);
-    } else {
-      for (var j = 0; j < f.campaign.ads.length; j++) {
-        await this.createStory(f.campaign.ads[j]);
-      }
-    }
-  }
+  
 
-  async createPost(ad) {
-    await this.props.getPost(ad.contentId);
-    debugger;
-    var contentPaths = [];
-    if (this.props.post.contentPaths === undefined) {
-      contentPaths.push(this.props.post.contentPath);
-    } else {
-      contentPaths = this.props.post.contentPaths;
-    }
+ 
 
-    await this.props.savePost({
-      Description: this.props.post.description,
-      RegisteredUser: { id: sessionStorage.getItem("userId") },
-      Location: this.props.post.location,
-      ContentPaths: contentPaths,
-      HashTags: this.props.post.hashTags,
-      Taggedusers: this.props.post.taggedUsers,
-    });
-    await this.props.createNotification({
-      Type: "Post",
-      ContentId: this.props.post.id,
-      RegisteredUser: { id: sessionStorage.getItem("userId") },
-    });
-  }
+  
 
-  async createStory(ad) {
-    await this.props.getStoryById(ad.contentId);
-    debugger;
-
-    debugger;
-    this.props.saveStory({
-      Description: this.props.storyById.description,
-      RegisteredUser: this.state.storyOwner,
-      Location: this.props.storyById.location,
-      ContentPath: this.props.storyById.contentPath,
-      HashTags: this.props.storyById.hashTags,
-      TaggedUsers: this.props.storyById.taggedUsers,
-      SeenByUsers: [],
-      Duration: this.props.storyById.duration,
-      Type: "Story",
-      IsBanned: false,
-    });
-
-    await this.props.createNotification({
-      Type: "Story",
-      ContentId: "12345678-1234-1234-1234-123456789123",
-      RegisteredUser: { id: sessionStorage.getItem("userId") },
-    });
-  }
-
-  async reject(f) {
-    await this.props.updateCampaignRequest({
-      Id: f.id,
-      IsApproved: false,
-      Campaign: f.campaign,
-      VerifiedUser: f.verifiedUser,
-      CampaignRequestAction: "rejected",
-    });
-  }
-
-  view = (f) => {
-    debugger;
-    if (f != undefined) {
-      if (
-        f.campaign.type === "OneTimePostCampaign" ||
-        f.campaign.type === "RecurringPostCampaign"
-      ) {
-        this.displayModalPost(f);
-      } else {
-        this.displayModalStory(f);
-      }
-    }
-  };
-
-  displayModalPost = (f) => {
+  displayModalEdit = (f) => {
     if (f != undefined) {
       this.setState({
-        postId: f.campaign.ads[0].contentId,
-        username: f.campaign.agent.username,
+        campaignId: f.id,
+        agentId: f.agentId,
+        type: f.type,
+        startDate: f.startDate,
+        endDate: f.endDate,
+        dateOfChange: f.dateOfChange,
+        minDateOfBirth: f.targetAudience.minDateOfBirth,
+        maxDateOfBirth: f.targetAudience.maxDateOfBirth,
+        gender: f.targetAudience.gender,
       });
     }
     this.setState({
-      showPostModal: !this.state.showPostModal,
+      showEditModal: !this.state.showEditModal,
     });
   };
 
-  displayModalStory = (f) => {
-    var storyIds = [];
-    if (f != undefined) {
-      for (var i = 0; i < f.campaign.ads.length; i++) {
-        storyIds.push(f.campaign.ads[i].contentId);
-      }
-      this.setState({
-        storyIds: storyIds,
-      });
-    }
-    this.setState({
-      showStoryModal: !this.state.showStoryModal,
-    });
-  };
+
 }
 
 const mapStateToProps = (state) => ({

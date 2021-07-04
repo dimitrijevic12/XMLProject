@@ -41,6 +41,31 @@ export const getCampaignsForAgent = () => async (dispatch) => {
   }
 };
 
+export const editCampaign = (campaign) => async (dispatch) => {
+  try {
+    const response = await axios.put(
+      "https://localhost:44355/api/campaigns",
+      campaign,
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      }
+    );
+    dispatch({
+      type: GET_CAMPAIGNS_FOR_AGENT,
+      payload: response.data,
+    });
+    return true;
+  } catch (e) {
+    dispatch({
+      type: GET_CAMPAIGNS_FOR_AGENT_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
 export const createCampaignRequest = (campaignRequest) => async (dispatch) => {
   try {
     const response = await axios.post(
