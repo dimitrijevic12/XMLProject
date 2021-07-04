@@ -47,7 +47,6 @@ import {
 import axios from "axios";
 
 export const userRegistration = (user) => async (dispatch) => {
-  debugger;
   try {
     const response = await axios.post(
       "https://localhost:44355/api/users",
@@ -281,11 +280,7 @@ export const getUsersByName = (name) => async (dispatch) => {
 export const getUserById = (id) => async (dispatch) => {
   try {
     const response = await axios.get(
-      "https://localhost:44355/api/users/" +
-        sessionStorage.getItem("userId") +
-        "/logged/" +
-        id +
-        "/user",
+      "https://localhost:44355/api/users/" + id,
       {
         headers: { "Access-Control-Allow-Origin": "" },
       }
@@ -440,7 +435,6 @@ export const getFollowingWithoutMuted = () => async (dispatch) => {
 export const changeProfilePictureUsermicroservice =
   (picture) => async (dispatch) => {
     try {
-      debugger;
       const response = await axios.put(
         "https://localhost:44355/api/users/" +
           sessionStorage.getItem("userId") +
@@ -451,7 +445,7 @@ export const changeProfilePictureUsermicroservice =
           headers: { "Access-Control-Allow-Origin": "" },
         }
       );
-      debugger;
+
       dispatch({
         type: CHANGE_PROFILE_PICTURE_USERMICROSERVICE,
         payload: response.data,
@@ -466,14 +460,13 @@ export const changeProfilePictureUsermicroservice =
 
 export const loadImageProfile = (path) => async (dispatch) => {
   try {
-    debugger;
     const response = await axios.get(
       "https://localhost:44355/api/users/contents/" + path,
       {
         headers: { "Access-Control-Allow-Origin": "*" },
       }
     );
-    debugger;
+
     dispatch({
       type: LOAD_IMAGE_PROFILE,
       payload: response.data.fileContents,
@@ -560,7 +553,6 @@ export const blockProfile = (block) => async (dispatch) => {
 };
 
 export const sendVerificationRequest = (request) => async (dispatch) => {
-  debugger;
   try {
     const response = await axios.post(
       `https://localhost:44355/api/VerificationRequests`,
@@ -585,7 +577,6 @@ export const sendVerificationRequest = (request) => async (dispatch) => {
 };
 
 export const getUnapprovedVerificationRequests = () => async (dispatch) => {
-  debugger;
   try {
     const response = await axios.get(
       `https://localhost:44355/api/VerificationRequests`,
@@ -610,7 +601,6 @@ export const getUnapprovedVerificationRequests = () => async (dispatch) => {
 };
 
 export const deleteVerificationRequest = (request) => async (dispatch) => {
-  debugger;
   try {
     const response = await axios.delete(
       `https://localhost:44355/api/VerificationRequests/${request.id}`,
@@ -634,7 +624,6 @@ export const deleteVerificationRequest = (request) => async (dispatch) => {
 };
 
 export const verifyUser = (request) => async (dispatch) => {
-  debugger;
   request.registeredUserId = request.registeredUser.id;
   try {
     const response = await axios.put(

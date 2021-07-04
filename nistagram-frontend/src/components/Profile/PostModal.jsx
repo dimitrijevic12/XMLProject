@@ -24,6 +24,8 @@ import "react-toastify/dist/ReactToastify.css";
 import ChooseCollectionModal from "../Collection/ChooseCollectionModal";
 import ReportModal from "../Report/ReportModal";
 import { createNotification } from "../../actions/actionsNotification";
+import { getAdForContent } from "../../actions/actionsCampaign";
+import LinkModal from "../Campaign/LinkModal";
 
 class PostModal extends Component {
   state = {
@@ -31,22 +33,27 @@ class PostModal extends Component {
     showTaggedModal: false,
     showChooseCollectionModal: false,
     showReportModal: false,
+    showLinkModal: false,
     likesCount: 0,
     dislikesCount: 0,
     liked: false,
     disliked: false,
     commentText: "",
     comments: [],
+    result: false,
+    link: "",
   };
 
   async componentDidMount() {
-    debugger;
+    var result = false;
+    result = await this.props.getAdForContent(this.props.postId);
     await this.props.getPost(this.props.postId);
     await this.props.loadImageProfile(this.props.personPhoto);
     this.setState({
       likesCount: this.props.post.likes.length,
       dislikesCount: this.props.post.dislikes.length,
       comments: this.props.post.comments,
+      result: result,
     });
   }
 
@@ -66,6 +73,7 @@ class PostModal extends Component {
     ) {
       return null;
     }
+
     debugger;
     var profileImage = "/images/user.png";
     if (this.props.profileImage !== undefined) {
@@ -98,6 +106,13 @@ class PostModal extends Component {
               onShowChange={this.displayModalCollection.bind(this)}
             />
           ) : null}
+          {this.state.showLinkModal ? (
+            <LinkModal
+              show={this.state.showLinkModal}
+              link={this.state.link}
+              onShowChange={this.displayModalLink.bind(this)}
+            />
+          ) : null}
           {this.state.showReportModal ? (
             <ReportModal
               show={this.state.showReportModal}
@@ -124,6 +139,15 @@ class PostModal extends Component {
         </ModalHeader>
         <ModalBody>
           <div>
+            {this.state.result === true ? (
+              <div className="ml-4 mb-2" style={{ textAlign: "right" }}>
+                {" "}
+                <b>Sponsored</b>{" "}
+                <img classNmae="ml-4 mb-4" src="/images/star.png" />
+              </div>
+            ) : (
+              ""
+            )}
             {post.contentPath == undefined ? (
               <Slide easing="ease">
                 {loadedImages.map((f, i) =>
@@ -379,9 +403,21 @@ class PostModal extends Component {
   }
 
   displayModalPost() {
+    if (this.state.result === true) {
+      this.displayModalLink();
+    } else {
+      debugger;
+      this.setState({
+        showTaggedModal: !this.state.showTaggedModal,
+      });
+    }
+  }
+
+  displayModalLink() {
     debugger;
     this.setState({
-      showTaggedModal: !this.state.showTaggedModal,
+      showLinkModal: !this.state.showLinkModal,
+      link: this.props.ad.link,
     });
   }
 
@@ -406,6 +442,7 @@ const mapStateToProps = (state) => ({
   loadedImages: state.loadedImages,
   profileImage: state.profileImage,
   commentId: state.commentId,
+  ad: state.ad,
 });
 
 export default connect(mapStateToProps, {
@@ -417,4 +454,5 @@ export default connect(mapStateToProps, {
   loadImages,
   loadImageProfile,
   createNotification,
+  getAdForContent,
 })(PostModal);

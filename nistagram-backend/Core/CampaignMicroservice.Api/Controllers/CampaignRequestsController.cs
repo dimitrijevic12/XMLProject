@@ -2,6 +2,7 @@
 using CampaignMicroservice.Core.Interface;
 using CampaignMicroservice.Core.Model;
 using CSharpFunctionalExtensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -31,6 +32,7 @@ namespace CampaignMicroservice.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Agent")]
         public IActionResult Create(DTOs.CampaignRequest campaignRequest)
         {
             Guid id = Guid.NewGuid();
@@ -54,6 +56,7 @@ namespace CampaignMicroservice.Api.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
         public IActionResult Update(DTOs.CampaignRequest campaignRequest)
         {
             Result<CampaignRequestAction> campaignRequestAction = CampaignRequestAction.Create(campaignRequest.CampaignRequestAction);

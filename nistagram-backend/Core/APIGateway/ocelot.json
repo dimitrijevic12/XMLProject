@@ -835,6 +835,28 @@
         }
       ],
       "UpstreamPathTemplate": "/api/campaigns"
+    },
+    {
+      "DownstreamPathTemplate": "/api/ads?{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44381
+        }
+      ],
+      "UpstreamPathTemplate": "/api/ads?{everything}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/ads",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44381
+        }
+      ],
+      "UpstreamPathTemplate": "/api/ads"
     }
   ],
   "GlobalConfiguration": {

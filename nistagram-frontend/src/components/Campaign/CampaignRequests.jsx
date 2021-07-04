@@ -7,6 +7,7 @@ import { compose } from "redux";
 import {
   getCampaignRequests,
   updateCampaignRequest,
+  createAd,
 } from "../../actions/actionsCampaign";
 import moment from "moment";
 import NotLoggedPostModal from "../Profile/NotLoggedPostModal";
@@ -28,6 +29,7 @@ class CampaignRequests extends Component {
     storyIds: [],
     username: "",
     storyOwner: {},
+    campaignId: "",
   };
 
   async componentDidMount() {
@@ -155,6 +157,9 @@ class CampaignRequests extends Component {
       VerifiedUser: f.verifiedUser,
       CampaignRequestAction: "accepted",
     });
+    this.setState({
+      campaignId: f.campaign.id,
+    });
     if (
       f.campaign.type === "OneTimePostCampaign" ||
       f.campaign.type === "RecurringPostCampaign"
@@ -185,6 +190,14 @@ class CampaignRequests extends Component {
       HashTags: this.props.post.hashTags,
       Taggedusers: this.props.post.taggedUsers,
     });
+    var ad = {
+      ContentId: this.props.post.id,
+      Type: "Post",
+      Link: ad.link,
+      ClickCount: 0,
+      ProfileOwnerId: sessionStorage.getItem("userId"),
+    };
+    await this.props.createAd({ Ad: ad, CampaignId: this.state.campaignId });
     await this.props.createNotification({
       Type: "Post",
       ContentId: this.props.post.id,
@@ -197,7 +210,7 @@ class CampaignRequests extends Component {
     debugger;
 
     debugger;
-    this.props.saveStory({
+    await this.props.saveStory({
       Description: this.props.storyById.description,
       RegisteredUser: this.state.storyOwner,
       Location: this.props.storyById.location,
@@ -209,7 +222,14 @@ class CampaignRequests extends Component {
       Type: "Story",
       IsBanned: false,
     });
-
+    var ad = {
+      ContentId: this.props.story.id,
+      Type: "Story",
+      Link: ad.link,
+      ClickCount: 0,
+      ProfileOwnerId: sessionStorage.getItem("userId"),
+    };
+    await this.props.createAd({ Ad: ad, CampaignId: this.state.campaignId });
     await this.props.createNotification({
       Type: "Story",
       ContentId: "12345678-1234-1234-1234-123456789123",
@@ -288,5 +308,6 @@ export default compose(
     saveStory,
     getStoryById,
     getUserForStory,
+    createAd,
   })
 )(CampaignRequests);

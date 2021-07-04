@@ -79,6 +79,7 @@ namespace UserMicroservice.Api
             services.AddScoped<UserBlockCompletedEventConsumer>();
             services.AddScoped<AgentEditCompletedEventConsumer>();
             services.AddScoped<VerifiedUserEditCompletedEventConsumer>();
+            services.AddScoped<AgentFactory>();
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {

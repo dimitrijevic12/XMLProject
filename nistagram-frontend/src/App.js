@@ -35,6 +35,7 @@ import CreateCampaign from "./components/Campaign/CreateCampaign";
 import CreateCampaignPage from "./pages/CreateCampaignPage";
 import CampaignRequestsPage from "./pages/CampaignRequestsPage";
 import EditCampaignPage from "./pages/EditCampaignPage"
+import TokenPage from "./pages/TokenPage";
 
 function App() {
   return (
@@ -148,6 +149,7 @@ function App() {
             path="/campaign"
             component={CreateCampaignPage}
           />
+          <ProtectedRoute exact path="/token" component={TokenPage} />
           <ProtectedRoute exact path="/" component={HomePage} />
         </Switch>
       </div>

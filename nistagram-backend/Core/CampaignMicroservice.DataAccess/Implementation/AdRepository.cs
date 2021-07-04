@@ -86,5 +86,28 @@ namespace CampaignMicroservice.DataAccessImplementation
             return (from DataRow dataRow in dataTable.Rows
                     select (Ad)_adAdapter.ConvertSql(dataRow, _userRepository.GetById(new Guid(dataRow[5].ToString())).Value)).ToList();
         }
+
+        public Maybe<Ad> GetByContentId(Guid contentId)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT * ");
+            queryBuilder.Append("FROM dbo.Ad ");
+            queryBuilder.Append("WHERE content_id = @Id;");
+
+            string query = queryBuilder.ToString();
+
+            SqlParameter parameterId = new SqlParameter("@Id", SqlDbType.UniqueIdentifier) { Value = contentId };
+
+            List<SqlParameter> parameters = new List<SqlParameter>() { parameterId };
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            if (dataTable.Rows.Count > 0)
+            {
+                return (Ad)_adAdapter.ConvertSql(
+                dataTable.Rows[0], _userRepository.GetById(new Guid(dataTable.Rows[0][5].ToString())).Value
+                );
+            }
+            return Maybe<Ad>.None;
+        }
     }
 }

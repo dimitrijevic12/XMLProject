@@ -9,6 +9,8 @@ import { connect } from "react-redux";
 import "../../css/story.css";
 import TaggedUsersStoryModal from "./TaggedUsersStoryModal";
 import ReportModal from "../Report/ReportModal";
+import { getAdForContent } from "../../actions/actionsCampaign";
+import StoryLinkModal from "../Campaign/StoryLinkModal";
 
 class StoryModal extends Component {
   state = {
@@ -17,6 +19,9 @@ class StoryModal extends Component {
     showReportModal: false,
     users: [],
     story: {},
+    showLinkModal: false,
+    results: [],
+    contentId: "",
   };
 
   async componentDidMount() {
@@ -25,6 +30,15 @@ class StoryModal extends Component {
       sessionStorage.getItem("userId")
     );
     await this.props.loadImagesStory(this.createImagesList(this.props.stories));
+    var results2 = [];
+    for (var i = 0; i < this.props.stories.length; i++) {
+      var result = false;
+      result = await this.props.getAdForContent(this.props.stories[i].id);
+      results2.push(result);
+    }
+    this.setState({
+      results: results2,
+    });
   }
 
   render() {
@@ -56,6 +70,15 @@ class StoryModal extends Component {
         seeMore: ({ close }) => {
           return (
             <div>
+              {this.state.results[i] === true ? (
+                <div className="ml-4 mb-2" style={{ textAlign: "right" }}>
+                  {" "}
+                  <b>Sponsored</b>{" "}
+                  <img classNmae="ml-4 mb-4" src="/images/star.png" />
+                </div>
+              ) : (
+                ""
+              )}
               <div
                 onClick={close}
                 style={{
@@ -75,14 +98,25 @@ class StoryModal extends Component {
               <div className="story-footer-hashtag">
                 {this.convertHashtagsToString(story.hashTags)}
               </div>
-              <div className="story-footer-tagged">
-                <button
-                  className="btn btn-sm btn-primary"
-                  onClick={() => this.displayModalStory(story.taggedUsers)}
-                >
-                  Tagged users:
-                </button>
-              </div>
+              {this.state.results[i] === true ? (
+                <div className="story-footer-tagged">
+                  <button
+                    className="btn btn-sm btn-primary"
+                    onClick={() => this.displayModalLink(story.id)}
+                  >
+                    Link:
+                  </button>
+                </div>
+              ) : (
+                <div className="story-footer-tagged">
+                  <button
+                    className="btn btn-sm btn-primary"
+                    onClick={() => this.displayModalStory(story.taggedUsers)}
+                  >
+                    Tagged users:
+                  </button>
+                </div>
+              )}
               {sessionStorage.getItem("userId") === "" ? null : (
                 <div className="story-footer-collections">
                   <button
@@ -118,6 +152,13 @@ class StoryModal extends Component {
             show={this.state.showTaggedUsersModal}
             taggedUsers={this.state.users}
             onShowChange={this.displayModalStory.bind(this)}
+          />
+        ) : null}
+        {this.state.showLinkModal ? (
+          <StoryLinkModal
+            show={this.state.showLinkModal}
+            contentId={this.state.contentId}
+            onShowChange={this.displayModalLink.bind(this)}
           />
         ) : null}
         {this.state.showReportModal ? (
@@ -201,6 +242,14 @@ class StoryModal extends Component {
     this.props.onShowChange();
   }
 
+  displayModalLink(contentId) {
+    debugger;
+    this.setState({
+      contentId: contentId,
+      showLinkModal: !this.state.showLinkModal,
+    });
+  }
+
   displayModalReport(story) {
     debugger;
     this.setState({
@@ -221,9 +270,11 @@ class StoryModal extends Component {
 const mapStateToProps = (state) => ({
   stories: state.storiesForModal,
   images: state.storyImages,
+  ad: state.ad,
 });
 
 export default connect(mapStateToProps, {
   getStoriesForModal,
   loadImagesStory,
+  getAdForContent,
 })(StoryModal);

@@ -8,7 +8,7 @@ function ProtectedRoute({ component: Component, ...rest }) {
     <Route
       {...rest}
       render={(props) => {
-        return isAuthorized !== "" ? (
+        return isAuthorized ? (
           <Component />
         ) : (
           <Redirect

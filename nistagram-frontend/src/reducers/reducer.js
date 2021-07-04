@@ -83,6 +83,11 @@ import {
   GET_CAMPAIGN_REQUESTS,
   UPDATE_CAMPAIGN_REQUEST,
   GET_CAMPAIGN_REQUESTS_FOR_USER_PROFILE,
+  GET_AD_FOR_CONTENT,
+  CREATE_AD,
+  GET_CAMPAIGNS_FOR_CLIENT,
+  GET_STORIES_FOR_CAMPAIGN,
+  GET_POSTS_FOR_CAMPAIGN,
 } from "../types/types";
 
 const initialState = {
@@ -132,6 +137,8 @@ const initialState = {
   campaignsForAgent: [],
   campaignRequests: [],
   campaignRequestsForUserProfile: [],
+  ad: {},
+  clientCampaigns: [],
 };
 
 function reducer(state = initialState, action) {
@@ -205,7 +212,6 @@ function reducer(state = initialState, action) {
         ...state,
       };
     case COMMENT_POST:
-      debugger;
       return {
         ...state,
         commentId: action.payload,
@@ -318,7 +324,6 @@ function reducer(state = initialState, action) {
         locations: action.payload,
       };
     case SAVE_STORY:
-      debugger;
       return {
         ...state,
         story: action.payload,
@@ -524,6 +529,30 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         campaignRequestsForUserProfile: action.payload,
+      };
+    case GET_AD_FOR_CONTENT:
+      return {
+        ...state,
+        ad: action.payload,
+      };
+    case CREATE_AD:
+      return {
+        ...state,
+      };
+    case GET_CAMPAIGNS_FOR_CLIENT:
+      return {
+        ...state,
+        clientCampaigns: action.payload,
+      };
+    case GET_STORIES_FOR_CAMPAIGN:
+      return {
+        ...state,
+        stories: state.stories.concat(action.payload),
+      };
+    case GET_POSTS_FOR_CAMPAIGN:
+      return {
+        ...state,
+        posts: state.posts.concat(action.payload),
       };
     default:
       return state;

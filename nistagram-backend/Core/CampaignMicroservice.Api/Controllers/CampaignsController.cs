@@ -13,6 +13,7 @@ using Campaign = CampaignMicroservice.Api.DTOs.Campaign;
 using ExposureDate = CampaignMicroservice.Api.DTOs.ExposureDate;
 using RegisteredUser = CampaignMicroservice.Core.Model.RegisteredUser;
 using Agent = CampaignMicroservice.Core.Model.Agent;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CampaignMicroservice.Api.Controllers
 {
@@ -27,10 +28,11 @@ namespace CampaignMicroservice.Api.Controllers
         private readonly IUserRepository _userRepository;
         private readonly CampaignService _campaignService;
         private readonly CampaignFactory _campaignFactory;
+        private readonly ISeenByRepository _seenByRepository;
 
         public CampaignsController(ICampaignRepository campaignRepository, ExposureDateFactory exposureDateFactory, AdFactory adFactory,
             TargetAudienceFactory targetAudienceFactory, IUserRepository userRepository, CampaignService campaignService,
-            CampaignFactory campaignFactory)
+            CampaignFactory campaignFactory, ISeenByRepository seenByRepository)
         {
             _campaignRepository = campaignRepository;
             _exposureDateFactory = exposureDateFactory;
@@ -39,9 +41,11 @@ namespace CampaignMicroservice.Api.Controllers
             _userRepository = userRepository;
             _campaignService = campaignService;
             _campaignFactory = campaignFactory;
+            _seenByRepository = seenByRepository;
         }
 
         [HttpPost]
+        [Authorize(Roles = "Agent, VerifiedUser")]
         public IActionResult Save(Campaign campaign)
         {
             Agent agent = (Agent)_userRepository.GetById(campaign.AgentId).Value;
@@ -121,11 +125,21 @@ namespace CampaignMicroservice.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult Search([FromQuery] Guid agentId)
+        public IActionResult Search([FromQuery] Guid agentId, [FromQuery] Guid clientId)
         {
             if (Request.Query.Count == 0) return BadRequest();
             if (String.IsNullOrEmpty(agentId.ToString())) return BadRequest();
-            return Ok(_campaignFactory.CreateCampaigns(_campaignRepository.GetBy(agentId)));
+            var campaigns = _campaignFactory.CreateCampaigns(_campaignRepository.GetBy(agentId, clientId));
+
+            foreach (Campaign campaign in campaigns)
+            {
+                foreach (ExposureDate exposureDate in campaign.ExposureDates)
+                {
+                    if (!exposureDate.SeenByIds.Contains(clientId) && exposureDate.Time < DateTime.Now)
+                        _seenByRepository.Save(exposureDate.Id, clientId);
+                }
+            }
+            return Ok(campaigns);
         }
     }
 }

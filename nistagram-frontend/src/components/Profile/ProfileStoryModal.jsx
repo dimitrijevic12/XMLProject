@@ -10,16 +10,21 @@ import "../../css/story.css";
 import TaggedUsersProfileStoryModal from "./TaggedUsersProfileStoryModal";
 import CollectionsModal from "./CollectionsModal";
 import ReportModal from "../Report/ReportModal";
+import { getAdForContent } from "../../actions/actionsCampaign";
+import StoryLinkModal from "../Campaign/StoryLinkModal";
 
 function ProfileStoryModal(props) {
   const [showProfileStoryModal, setShowProfileStoryModal] = useState(
     props.show
   );
   const [showTaggedUsersModal, setShowTaggedUsersModal] = useState(false);
+  const [showLinkModal, setShowLinkModal] = useState(false);
   const [showCollectionsModal, setShowCollectionsModal] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
   const [users, setUsers] = useState([]);
   const [story, setStory] = useState({});
+  const [results, setResults] = useState([]);
+  const [contentId, setContentId] = useState("");
   var tempStories = [];
 
   const timeSince = (date) => {
@@ -83,6 +88,12 @@ function ProfileStoryModal(props) {
     setUsers(users);
   };
 
+  const displayModalLink = (contentId) => {
+    debugger;
+    setShowLinkModal(!showLinkModal);
+    setContentId(contentId);
+  };
+
   const displayModalReport = (story) => {
     debugger;
     setShowReportModal(!showReportModal);
@@ -98,6 +109,21 @@ function ProfileStoryModal(props) {
   useEffect(() => {
     debugger;
     props.loadImagesStory(createImagesList(props.stories));
+  }, [props.stories]);
+
+  useEffect(() => {
+    async function fetchMyAPI() {
+      var results2 = [];
+      for (var i = 0; i < props.stories.length; i++) {
+        var result = false;
+        result = await props.getAdForContent(props.stories[i].id);
+        results2.push(result);
+      }
+      debugger;
+      setResults(results2);
+    }
+
+    fetchMyAPI();
   }, [props.stories]);
 
   useEffect(() => {
@@ -130,6 +156,15 @@ function ProfileStoryModal(props) {
       seeMore: ({ close }) => {
         return (
           <div>
+            {results[i] === true ? (
+              <div className="ml-4 mb-2" style={{ textAlign: "right" }}>
+                {" "}
+                <b>Sponsored</b>{" "}
+                <img classNmae="ml-4 mb-4" src="/images/star.png" />
+              </div>
+            ) : (
+              ""
+            )}
             {showReportModal ? (
               <ReportModal
                 show={showReportModal}
@@ -156,14 +191,26 @@ function ProfileStoryModal(props) {
             <div className="story-footer-hashtag">
               {convertHashtagsToString(story.hashTags)}
             </div>
-            <div className="story-footer-tagged">
-              <button
-                className="btn btn-sm btn-primary"
-                onClick={() => displayModalStory(story.taggedUsers)}
-              >
-                Tagged users:
-              </button>
-            </div>
+            {results[i] === true ? (
+              <div className="story-footer-tagged">
+                <button
+                  className="btn btn-sm btn-primary"
+                  onClick={() => displayModalLink(story.id)}
+                >
+                  Link:
+                </button>
+              </div>
+            ) : (
+              <div className="story-footer-tagged">
+                <button
+                  className="btn btn-sm btn-primary"
+                  onClick={() => displayModalStory(story.taggedUsers)}
+                >
+                  Tagged users:
+                </button>
+              </div>
+            )}
+
             {sessionStorage.getItem("token") === "" ? null : (
               <div className="story-footer-collections">
                 <button
@@ -213,6 +260,13 @@ function ProfileStoryModal(props) {
           onShowChange={displayModalStory}
         />
       ) : null}
+      {showLinkModal ? (
+        <StoryLinkModal
+          show={showLinkModal}
+          contentId={contentId}
+          onShowChange={displayModalLink}
+        />
+      ) : null}
       {showCollectionsModal ? (
         <CollectionsModal
           show={showCollectionsModal}
@@ -241,9 +295,11 @@ function ProfileStoryModal(props) {
 const mapStateToProps = (state) => ({
   images: state.storyImages,
   allImages: state.allStoriesImages,
+  ad: state.ad,
 });
 
 export default connect(mapStateToProps, {
   getStoriesForModal,
   loadImagesStory,
+  getAdForContent,
 })(ProfileStoryModal);
