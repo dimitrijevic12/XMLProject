@@ -1,9 +1,9 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
 
-function ProtectedRoute({ component: Component, ...rest }) {
+function SavedTokenRoute({ component: Component, ...rest }) {
   debugger;
-  const isAuthorized = sessionStorage.getItem("tokenAgentApp");
+  const isAuthorized = sessionStorage.getItem("savedToken");
   return (
     <Route
       {...rest}
@@ -12,7 +12,7 @@ function ProtectedRoute({ component: Component, ...rest }) {
           <Component />
         ) : (
           <Redirect
-            to={{ pathname: "/login", state: { from: props.location } }}
+            to={{ pathname: "/token", state: { from: props.location } }}
           />
         );
       }}
@@ -20,4 +20,4 @@ function ProtectedRoute({ component: Component, ...rest }) {
   );
 }
 
-export default ProtectedRoute;
+export default SavedTokenRoute;

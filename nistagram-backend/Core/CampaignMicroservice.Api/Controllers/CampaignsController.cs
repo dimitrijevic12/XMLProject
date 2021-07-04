@@ -13,6 +13,7 @@ using Campaign = CampaignMicroservice.Api.DTOs.Campaign;
 using ExposureDate = CampaignMicroservice.Api.DTOs.ExposureDate;
 using RegisteredUser = CampaignMicroservice.Core.Model.RegisteredUser;
 using Agent = CampaignMicroservice.Core.Model.Agent;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CampaignMicroservice.Api.Controllers
 {
@@ -42,6 +43,7 @@ namespace CampaignMicroservice.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Agent")]
         public IActionResult Save(Campaign campaign)
         {
             Agent agent = (Agent)_userRepository.GetById(campaign.AgentId).Value;

@@ -2,6 +2,7 @@
 using CampaignMicroservice.Core.Interface;
 using CampaignMicroservice.Core.Model;
 using CSharpFunctionalExtensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
@@ -26,6 +27,7 @@ namespace CampaignMicroservice.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "RegisteredUser, Agent")]
         public IActionResult Save(DTOs.CreateAdDto dto)
         {
             dto.Ad.Id = Guid.NewGuid();
