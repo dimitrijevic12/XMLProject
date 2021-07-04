@@ -45,7 +45,7 @@ namespace CampaignMicroservice.Api.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Agent")]
+        [Authorize(Roles = "Agent, VerifiedUser")]
         public IActionResult Save(Campaign campaign)
         {
             Agent agent = (Agent)_userRepository.GetById(campaign.AgentId).Value;

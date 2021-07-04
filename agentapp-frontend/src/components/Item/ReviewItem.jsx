@@ -19,6 +19,7 @@ function ReviewItem(props) {
       return null;
     }
     debugger;
+    console.log(sessionStorage.getItem("userIdAgentApp"));
     return (
       <img
         src={"data:image/jpg;base64," + props.loadedImage.fileContents}
@@ -109,7 +110,10 @@ function ReviewItem(props) {
           </div>
         </div>
       </div>
-      {sessionStorage.getItem("roleAgentApp") === "Agent" ? (
+      {sessionStorage.getItem("userIdAgentApp") === undefined ||
+      sessionStorage.getItem("userIdAgentApp") === "" ? (
+        ""
+      ) : sessionStorage.getItem("roleAgentApp") === "Agent" ? (
         <div style={{ textAlign: "center" }} className="mt-5 pb-5">
           <button
             onClick={() => {
