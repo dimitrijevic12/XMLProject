@@ -158,7 +158,7 @@ class StoryModal extends Component {
           <StoryLinkModal
             show={this.state.showLinkModal}
             contentId={this.state.contentId}
-            onShowChange={this.state.displayModalLink.bind(this)}
+            onShowChange={this.displayModalLink.bind(this)}
           />
         ) : null}
         {this.state.showReportModal ? (

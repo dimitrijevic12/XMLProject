@@ -58,8 +58,11 @@ import {
   GET_DISLIKED_POSTS_ERROR,
   BAN_POST,
   BAN_POST_ERROR,
+  GET_POSTS_FOR_CAMPAIGN_ERROR,
+  GET_POSTS_FOR_CAMPAIGN,
 } from "../types/types";
 import axios from "axios";
+import { getAdForContent } from "./actionsCampaign";
 
 export const getPostsByUserId = (id) => async (dispatch) => {
   try {
@@ -556,7 +559,6 @@ export const getAllImagesForSearch = (posts) => async (dispatch) => {
 export const changeProfilePicturePostmicroservice =
   (picture) => async (dispatch) => {
     try {
-      debugger;
       const response = await axios.put(
         "https://localhost:44355/api/post-microservice/users/" +
           sessionStorage.getItem("userId") +
@@ -567,7 +569,6 @@ export const changeProfilePicturePostmicroservice =
           headers: { "Access-Control-Allow-Origin": "" },
         }
       );
-      debugger;
       dispatch({
         type: CHANGE_PROFILE_PICTURE_POSTMICROSERVICE,
         payload: response.data,
@@ -718,6 +719,40 @@ export const banPost = (id) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: BAN_POST_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const getPostsForCampaign = (id) => async (dispatch) => {
+  try {
+    const response = await axios.get(
+      `https://localhost:44355/api/posts/${id}`,
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      }
+    );
+    const response2 = await axios.get(`https://localhost:44355/api/ads`, {
+      params: {
+        contentId: response.data.id,
+      },
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
+      },
+    });
+    var payload = response.data;
+    payload.link = response2.data.link;
+    dispatch({
+      type: GET_POSTS_FOR_CAMPAIGN,
+      payload: payload,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_POSTS_FOR_CAMPAIGN_ERROR,
       payload: console.log(e),
     });
   }

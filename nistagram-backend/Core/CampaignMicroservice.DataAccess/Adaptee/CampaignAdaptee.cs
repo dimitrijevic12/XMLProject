@@ -102,6 +102,8 @@ namespace CampaignMicroservice.DataAccess.Adaptee
            IEnumerable<RegisteredUser> mutedByUsers, IEnumerable<RegisteredUser> mutedUsers, IEnumerable<Ad> ads,
            IEnumerable<ExposureDate> exposureDates)
         {
+            DateTime dateOfChange = new DateTime();
+            if (!dataRow[21].ToString().Equals("")) dateOfChange = DateTime.Parse(dataRow[21].ToString());
             return RecurringPostCampaign.Create(Guid.Parse(dataRow[0].ToString()),
                                               TargetAudience.Create(DateTime.Parse(dataRow[1].ToString()),
                                                                     DateTime.Parse(dataRow[2].ToString()),
@@ -129,7 +131,7 @@ namespace CampaignMicroservice.DataAccess.Adaptee
                                                DateTime.Parse(dataRow[19].ToString()),
                                                DateTime.Parse(dataRow[20].ToString()),
                                                exposureDates,
-                                               DateTime.Parse(dataRow[21].ToString()),
+                                               dateOfChange,
                                                ads).Value;
         }
 
@@ -138,6 +140,8 @@ namespace CampaignMicroservice.DataAccess.Adaptee
            IEnumerable<RegisteredUser> mutedByUsers, IEnumerable<RegisteredUser> mutedUsers, IEnumerable<Ad> ads,
            IEnumerable<ExposureDate> exposureDates)
         {
+            DateTime dateOfChange = new DateTime();
+            if (!dataRow[21].ToString().Equals("")) dateOfChange = DateTime.Parse(dataRow[21].ToString());
             return RecurringStoryCampaign.Create(Guid.Parse(dataRow[0].ToString()),
                                               TargetAudience.Create(DateTime.Parse(dataRow[1].ToString()),
                                                                     DateTime.Parse(dataRow[2].ToString()),
@@ -165,7 +169,7 @@ namespace CampaignMicroservice.DataAccess.Adaptee
                                                DateTime.Parse(dataRow[19].ToString()),
                                                DateTime.Parse(dataRow[20].ToString()),
                                                exposureDates,
-                                               DateTime.Parse(dataRow[21].ToString()),
+                                               dateOfChange,
                                                ads).Value;
         }
     }

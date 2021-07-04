@@ -3,6 +3,7 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { connect } from "react-redux";
 import { getAdForContent } from "../../actions/actionsCampaign";
+import "../../css/linkModal.css";
 
 class StoryLinkModal extends Component {
   state = {
@@ -28,7 +29,9 @@ class StoryLinkModal extends Component {
       >
         <ModalHeader toggle={this.toggle.bind(this)}>Link</ModalHeader>
         <ModalBody>
-          <a href={this.props.ad.link}>{this.props.ad.link}</a>
+          <a className="link" href={this.props.ad.link}>
+            <span>{this.props.ad.link}</span>
+          </a>
         </ModalBody>
         <ModalFooter></ModalFooter>
       </Modal>

@@ -2,6 +2,7 @@ using CampaignMicroservice.Api.Consumers;
 using CampaignMicroservice.Api.Factories;
 using CampaignMicroservice.Core.Interface;
 using CampaignMicroservice.Core.Services;
+using CampaignMicroservice.DataAccess.Implementation;
 using CampaignMicroservice.DataAccessImplementation;
 using EasyNetQ;
 using EasyNetQ.AutoSubscribe;
@@ -57,6 +58,7 @@ namespace CampaignMicroservice.Api
             services.AddScoped<ICampaignRequestRepository, CampaignRequestRepository>();
             services.AddScoped<IAdRepository, AdRepository>();
             services.AddScoped<IExposureDateRepository, ExposureDateRepository>();
+            services.AddScoped<ISeenByRepository, SeenByRepository>();
             services.AddScoped<UserFollowedEventConsumer>();
             services.AddScoped<UnsuccessfulStoryFollowEventConsumer>();
             services.AddScoped<UserRegisteredEventConsumer>();

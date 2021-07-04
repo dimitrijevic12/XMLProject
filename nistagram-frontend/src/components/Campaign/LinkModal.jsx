@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { connect } from "react-redux";
+import "../../css/linkModal.css";
 
 class LinkModal extends Component {
   state = {
@@ -20,7 +21,9 @@ class LinkModal extends Component {
       >
         <ModalHeader toggle={this.toggle.bind(this)}>Link</ModalHeader>
         <ModalBody>
-          <a href={this.props.link}>{this.props.link}</a>
+          <a className="link" href={this.props.link}>
+            <span>{this.props.link}</span>
+          </a>
         </ModalBody>
         <ModalFooter></ModalFooter>
       </Modal>
