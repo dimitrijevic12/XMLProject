@@ -24,13 +24,14 @@ namespace UserMicroservice.Api.Controllers
         private readonly UserService userService;
         private readonly RegisteredUserFactory registerUserFactory;
         private readonly VerifiedUserFactory verifiedUserFactory;
+        private readonly AgentFactory agentFactory;
         private readonly IUserRepository _userRepository;
         private readonly FollowRequestFactory followRequestFactory;
         private readonly IWebHostEnvironment _env;
 
         public UsersController(UserService userService, IUserRepository userRepository,
             RegisteredUserFactory registerUserFactory, FollowRequestFactory followRequestFactory,
-            IWebHostEnvironment env, VerifiedUserFactory verifiedUserFactory)
+            IWebHostEnvironment env, VerifiedUserFactory verifiedUserFactory, AgentFactory agentFactory)
         {
             this.userService = userService;
             _userRepository = userRepository;
@@ -38,6 +39,7 @@ namespace UserMicroservice.Api.Controllers
             this.followRequestFactory = followRequestFactory;
             _env = env;
             this.verifiedUserFactory = verifiedUserFactory;
+            this.agentFactory = agentFactory;
         }
 
         //[Authorize(Roles = "ApprovedAgent")]
@@ -119,6 +121,10 @@ namespace UserMicroservice.Api.Controllers
             if (user.GetType().Name.Equals("VerifiedUser"))
             {
                 return Ok(verifiedUserFactory.Create((Core.Model.VerifiedUser)user));
+            }
+            else if (user.GetType().Name.Equals("Agent"))
+            {
+                return Ok(agentFactory.Create((Core.Model.Agent)user));
             }
             else
             {

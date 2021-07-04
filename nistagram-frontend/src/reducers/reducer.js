@@ -83,6 +83,8 @@ import {
   GET_CAMPAIGN_REQUESTS,
   UPDATE_CAMPAIGN_REQUEST,
   GET_CAMPAIGN_REQUESTS_FOR_USER_PROFILE,
+  GET_AD_FOR_CONTENT,
+  CREATE_AD,
 } from "../types/types";
 
 const initialState = {
@@ -132,6 +134,7 @@ const initialState = {
   campaignsForAgent: [],
   campaignRequests: [],
   campaignRequestsForUserProfile: [],
+  ad: {},
 };
 
 function reducer(state = initialState, action) {
@@ -524,6 +527,16 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         campaignRequestsForUserProfile: action.payload,
+      };
+    case GET_AD_FOR_CONTENT:
+      debugger;
+      return {
+        ...state,
+        ad: action.payload,
+      };
+    case CREATE_AD:
+      return {
+        ...state,
       };
     default:
       return state;
