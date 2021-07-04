@@ -94,11 +94,11 @@ namespace CampaignMicroservice.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult Search([FromQuery] Guid agentId)
+        public IActionResult Search([FromQuery] Guid agentId, [FromQuery] Guid clientId)
         {
             if (Request.Query.Count == 0) return BadRequest();
             if (String.IsNullOrEmpty(agentId.ToString())) return BadRequest();
-            return Ok(_campaignFactory.CreateCampaigns(_campaignRepository.GetBy(agentId)));
+            return Ok(_campaignFactory.CreateCampaigns(_campaignRepository.GetBy(agentId, clientId)));
         }
     }
 }

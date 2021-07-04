@@ -10,12 +10,14 @@ using System.Data.SqlClient;
 using System.Text;
 using System.Linq;
 using CampaignMicroservice.DataAccessAdapter;
+using CampaignMicroservice.DataAccess.Adapter;
 
 namespace CampaignMicroservice.DataAccessImplementation
 {
     public class CampaignRepository : Repository, ICampaignRepository
     {
         private readonly CampaignAdapter _campaignTarget = new CampaignAdapter(new CampaignAdaptee());
+        private readonly GetCampaignAdapter _getCampaignTarget = new GetCampaignAdapter(new GetCampaignAdaptee());
         private readonly IExposureDateRepository _exposureDateRepository;
         private readonly IAdRepository _adRepository;
         private readonly IUserRepository _userRepository;
@@ -63,31 +65,43 @@ namespace CampaignMicroservice.DataAccessImplementation
             return Maybe<Campaign>.None;
         }
 
-        public IEnumerable<Campaign> GetBy(Guid agentId)
+        public IEnumerable<Campaign> GetBy(Guid agentId, Guid clientId)
         {
-            StringBuilder queryBuilder = new StringBuilder("SELECT c.id, c.min_date_of_birth, " +
-                "c.max_date_of_birth, c.gender, c.agent_id, a.username, a.first_name, a.last_name, " +
-                "a.date_of_birth, a.gender, a.profile_image_path, a.is_private, a.is_banned, " +
-                "a.website_address, c.likes_count, c.dislikes_count, c.exposure_count, c.click_count, " +
+            StringBuilder queryBuilder = new StringBuilder("SELECT DISTINCT c.id, c.min_date_of_birth, " +
+                "c.max_date_of_birth, c.gender, c.agent_id, " +
+                "c.likes_count, c.dislikes_count, c.exposure_count, c.click_count, " +
                 "c.type, c.start_date, c.end_date, c.date_of_change ");
-            queryBuilder.Append("FROM dbo.Campaign AS c, dbo.RegisteredUser AS a ");
-            queryBuilder.Append("WHERE c.agent_id = a.id AND c.agent_id = @Id;");
+            queryBuilder.Append("FROM dbo.Campaign AS c, dbo.RegisteredUser AS a, dbo.ExposureDates AS e ");
+            List<SqlParameter> parameters = new List<SqlParameter>();
+            if (agentId != new Guid())
+            {
+                queryBuilder.Append("WHERE c.agent_id = a.id AND c.agent_id = @Id;");
+
+                SqlParameter parameterId = new SqlParameter("@Id", SqlDbType.UniqueIdentifier) { Value = agentId };
+
+                parameters.Add(parameterId);
+            }
+            else if (clientId != new Guid())
+            {
+                queryBuilder.Append("WHERE e.campaign_id = c.id " +
+                                    "AND((a.date_of_birth < c.max_date_of_birth " +
+                                    "AND a.date_of_birth > c.min_date_of_birth " +
+                                    "AND c.gender = a.gender) " +
+                                    "OR(a.id in (select f.followed_by_id from dbo.Follows AS f where f.following_id = c.agent_id))) " +
+                                    "AND e.exposure_date > GETDATE() " +
+                                    "AND a.id not in (select s2.registered_user_id from dbo.SeenBy AS s2 where s2.exposure_date_id = e.id) " +
+                                    "AND a.id = @ClientId");
+
+                SqlParameter parameterId = new SqlParameter("@ClientId", SqlDbType.UniqueIdentifier) { Value = clientId };
+
+                parameters.Add(parameterId);
+            }
 
             string query = queryBuilder.ToString();
-
-            SqlParameter parameterId = new SqlParameter("@Id", SqlDbType.UniqueIdentifier) { Value = agentId };
-
-            List<SqlParameter> parameters = new List<SqlParameter>() { parameterId };
-
             DataTable dataTable = ExecuteQuery(query, parameters);
             return (from DataRow dataRow in dataTable.Rows
-                    select (Campaign)_campaignTarget.ConvertSql(dataRow,
-                        _userRepository.GetBlockedBy(Guid.Parse(dataRow[4].ToString())),
-                        _userRepository.GetBlocking(Guid.Parse(dataRow[4].ToString())),
-                        _userRepository.GetFollowing(Guid.Parse(dataRow[4].ToString())),
-                        _userRepository.GetFollowers(Guid.Parse(dataRow[4].ToString())),
-                        _userRepository.GetMutedBy(Guid.Parse(dataRow[4].ToString())),
-                        _userRepository.GetMuted(Guid.Parse(dataRow[4].ToString())),
+                    select (Campaign)_getCampaignTarget.ConvertSql(dataRow,
+                        (Agent)_userRepository.GetById(new Guid(dataTable.Rows[0][4].ToString())).Value,
                         _adRepository.GetAdsForCampaign(Guid.Parse(dataRow[0].ToString())),
                         _exposureDateRepository.GetExposureDatesForCampaign(Guid.Parse(dataRow[0].ToString())))).ToList();
         }
