@@ -39,6 +39,8 @@ import {
   BAN_STORY_ERROR,
   GET_STORIES_FOR_NOT_LOGGED_IN_USER,
   GET_STORIES_FOR_NOT_LOGGED_IN_USER_ERROR,
+  GET_STORIES_FOR_CAMPAIGN,
+  GET_STORIES_FOR_CAMPAIGN_ERROR,
 } from "../types/types";
 import axios from "axios";
 
@@ -54,7 +56,6 @@ export const getStories = () => async (dispatch) => {
         Authorization: "Bearer " + sessionStorage.getItem("token"),
       },
     });
-    debugger;
     dispatch({
       type: GET_STORIES,
       payload: response.data,
@@ -68,7 +69,6 @@ export const getStories = () => async (dispatch) => {
 };
 
 export const getStoriesForUser = () => async (dispatch) => {
-  debugger;
   try {
     const response = await axios.get("https://localhost:44355/api/stories", {
       params: {
@@ -79,7 +79,6 @@ export const getStoriesForUser = () => async (dispatch) => {
         Authorization: "Bearer " + sessionStorage.getItem("token"),
       },
     });
-    debugger;
     dispatch({
       type: GET_STORIES_FOR_ARCHIVE,
       payload: response.data,
@@ -93,7 +92,6 @@ export const getStoriesForUser = () => async (dispatch) => {
 };
 
 export const getActiveStoriesForUser = (userId) => async (dispatch) => {
-  debugger;
   try {
     const response = await axios.get("https://localhost:44355/api/stories", {
       params: {
@@ -106,7 +104,6 @@ export const getActiveStoriesForUser = (userId) => async (dispatch) => {
         Authorization: "Bearer " + sessionStorage.getItem("token"),
       },
     });
-    debugger;
     dispatch({
       type: GET_ACTIVE_STORIES,
       payload: response.data,
@@ -120,7 +117,6 @@ export const getActiveStoriesForUser = (userId) => async (dispatch) => {
 };
 
 export const addStoryToHighlight = (highlightId, story) => async (dispatch) => {
-  debugger;
   try {
     const response = await axios.post(
       `https://localhost:44355/api/highlights/${highlightId}/stories`,
@@ -171,7 +167,6 @@ export const getStoriesForModal = (ownerId, userid) => async (dispatch) => {
 
 export const loadImagesStory = (images) => async (dispatch) => {
   try {
-    debugger;
     const response = await axios.post(
       "https://localhost:44355/api/contents/images",
       images,
@@ -196,7 +191,6 @@ export const loadImagesStory = (images) => async (dispatch) => {
 
 export const loadImagesForArchive = (images) => async (dispatch) => {
   try {
-    debugger;
     const response = await axios.post(
       "https://localhost:44355/api/contents/images",
       images,
@@ -220,7 +214,6 @@ export const loadImagesForArchive = (images) => async (dispatch) => {
 };
 
 export const loadProfileImagesStory = (images) => async (dispatch) => {
-  debugger;
   try {
     const response = await axios.post(
       "https://localhost:44355/api/contents/images",
@@ -245,7 +238,6 @@ export const loadProfileImagesStory = (images) => async (dispatch) => {
 };
 
 export const getTaggableForStory = () => async (dispatch) => {
-  debugger;
   try {
     const response = await axios.get(
       "https://localhost:44355/api/users-for-story",
@@ -257,13 +249,11 @@ export const getTaggableForStory = () => async (dispatch) => {
         },
       }
     );
-    debugger;
     dispatch({
       type: GET_TAGGABLE_USERS_FOR_STORY,
       payload: response.data,
     });
   } catch (e) {
-    debugger;
     dispatch({
       type: GET_TAGGABLE_USERS_FOR_STORY_ERROR,
       payload: console.log(e),
@@ -494,7 +484,6 @@ export const banStory = (id) => async (dispatch) => {
 };
 
 export const getStoriesForNotLogged = (id) => async (dispatch) => {
-  debugger;
   try {
     const response = await axios.get("https://localhost:44355/api/stories", {
       params: {
@@ -506,7 +495,6 @@ export const getStoriesForNotLogged = (id) => async (dispatch) => {
         Authorization: "Bearer " + sessionStorage.getItem("token"),
       },
     });
-    debugger;
     dispatch({
       type: GET_STORIES_FOR_NOT_LOGGED_IN_USER,
       payload: response.data,
@@ -514,6 +502,29 @@ export const getStoriesForNotLogged = (id) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: GET_STORIES_FOR_NOT_LOGGED_IN_USER_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const getStoriesForCampaign = (id) => async (dispatch) => {
+  try {
+    const response = await axios.get(
+      `https://localhost:44355/api/stories/${id}`,
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      }
+    );
+    dispatch({
+      type: GET_STORIES_FOR_CAMPAIGN,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: GET_STORIES_FOR_CAMPAIGN_ERROR,
       payload: console.log(e),
     });
   }

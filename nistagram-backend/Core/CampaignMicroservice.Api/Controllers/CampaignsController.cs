@@ -27,10 +27,11 @@ namespace CampaignMicroservice.Api.Controllers
         private readonly IUserRepository _userRepository;
         private readonly CampaignService _campaignService;
         private readonly CampaignFactory _campaignFactory;
+        private readonly ISeenByRepository _seenByRepository;
 
         public CampaignsController(ICampaignRepository campaignRepository, ExposureDateFactory exposureDateFactory, AdFactory adFactory,
             TargetAudienceFactory targetAudienceFactory, IUserRepository userRepository, CampaignService campaignService,
-            CampaignFactory campaignFactory)
+            CampaignFactory campaignFactory, ISeenByRepository seenByRepository)
         {
             _campaignRepository = campaignRepository;
             _exposureDateFactory = exposureDateFactory;
@@ -39,6 +40,7 @@ namespace CampaignMicroservice.Api.Controllers
             _userRepository = userRepository;
             _campaignService = campaignService;
             _campaignFactory = campaignFactory;
+            _seenByRepository = seenByRepository;
         }
 
         [HttpPost]
@@ -98,7 +100,17 @@ namespace CampaignMicroservice.Api.Controllers
         {
             if (Request.Query.Count == 0) return BadRequest();
             if (String.IsNullOrEmpty(agentId.ToString())) return BadRequest();
-            return Ok(_campaignFactory.CreateCampaigns(_campaignRepository.GetBy(agentId, clientId)));
+            var campaigns = _campaignFactory.CreateCampaigns(_campaignRepository.GetBy(agentId, clientId));
+
+            foreach (Campaign campaign in campaigns)
+            {
+                foreach (ExposureDate exposureDate in campaign.ExposureDates)
+                {
+                    if (!exposureDate.SeenByIds.Contains(clientId) && exposureDate.Time < DateTime.Now)
+                        _seenByRepository.Save(exposureDate.Id, clientId);
+                }
+            }
+            return Ok(campaigns);
         }
     }
 }

@@ -21,14 +21,16 @@ namespace CampaignMicroservice.DataAccessImplementation
         private readonly IExposureDateRepository _exposureDateRepository;
         private readonly IAdRepository _adRepository;
         private readonly IUserRepository _userRepository;
+        private readonly ISeenByRepository _seenByRepository;
 
         public CampaignRepository(IConfiguration configuration, IUserRepository userRepository,
-            IExposureDateRepository exposureDateRepository, IAdRepository adRepository) :
+            IExposureDateRepository exposureDateRepository, IAdRepository adRepository, ISeenByRepository seenByRepository) :
             base(configuration)
         {
             _userRepository = userRepository;
             _exposureDateRepository = exposureDateRepository;
             _adRepository = adRepository;
+            _seenByRepository = seenByRepository;
         }
 
         public Maybe<Campaign> GetById(Guid id)
@@ -88,7 +90,7 @@ namespace CampaignMicroservice.DataAccessImplementation
                                     "AND a.date_of_birth > c.min_date_of_birth " +
                                     "AND c.gender = a.gender) " +
                                     "OR(a.id in (select f.followed_by_id from dbo.Follows AS f where f.following_id = c.agent_id))) " +
-                                    "AND e.exposure_date > GETDATE() " +
+                                    "AND e.exposure_date < GETDATE() " +
                                     "AND a.id not in (select s2.registered_user_id from dbo.SeenBy AS s2 where s2.exposure_date_id = e.id) " +
                                     "AND a.id = @ClientId");
 
