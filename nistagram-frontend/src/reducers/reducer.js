@@ -550,9 +550,19 @@ function reducer(state = initialState, action) {
         stories: state.stories.concat(action.payload),
       };
     case GET_POSTS_FOR_CAMPAIGN:
+      debugger;
+      var exists = false;
+      var posts = state.posts;
+      for (let i = 0; i < posts.length; i++) {
+        if (posts[i].id === action.payload.id) {
+          exists = true;
+          posts.splice(i, 1, action.payload);
+        }
+      }
+      if (!exists) posts.push(action.payload);
       return {
         ...state,
-        posts: state.posts.concat(action.payload),
+        posts: posts,
       };
     default:
       return state;
