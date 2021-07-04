@@ -55,7 +55,7 @@ class HomePage extends Component {
     await this.props.getPostsForFollowing(this.props.following);
     await this.props.getStories();
     await this.props.getCampaignsForClient();
-    debugger;
+    var postCampaigns = 0;
     if (this.props.clientCampaigns.length > 0) {
       for (let i = 0; i < this.props.clientCampaigns.length; i++) {
         for (let j = 0; j < this.props.clientCampaigns[i].ads.length; j++) {
@@ -64,6 +64,7 @@ class HomePage extends Component {
               this.props.clientCampaigns[i].ads[j].contentId
             );
           } else {
+            postCampaigns++;
             await this.props.getPostsForCampaign(
               this.props.clientCampaigns[i].ads[j].contentId
             );
@@ -72,18 +73,12 @@ class HomePage extends Component {
       }
     }
     var posts = [...this.props.posts];
-    var allPosts = [...this.props.posts];
-    for (let i = 0; i < allPosts.length; i++) {
-      for (let j = 0; j < allPosts.length; j++) {
-        if (
-          allPosts[i].link !== undefined &&
-          allPosts[j].link === undefined &&
-          allPosts[i].id === allPosts[j].id
-        ) {
-          posts.splice(j, 1);
-        }
+    if (postCampaigns === 0) {
+      for (let i = 0; i < posts.length; i++) {
+        await this.props.getPostsForCampaign(posts[i].id);
       }
     }
+
     posts.sort(function compare(a, b) {
       var dateA = new Date(a.timeStamp);
       var dateB = new Date(b.timeStamp);
@@ -114,18 +109,7 @@ class HomePage extends Component {
     var users = this.getAllUsersFromStories();
 
     var posts = [...this.props.posts];
-    var allPosts = [...this.props.posts];
-    for (let i = 0; i < allPosts.length; i++) {
-      for (let j = 0; j < allPosts.length; j++) {
-        if (
-          allPosts[i].link !== undefined &&
-          allPosts[j].link === undefined &&
-          allPosts[i].id === allPosts[j].id
-        ) {
-          posts.splice(j, 1);
-        }
-      }
-    }
+
     posts.sort(function compare(a, b) {
       var dateA = new Date(a.timeStamp);
       var dateB = new Date(b.timeStamp);
@@ -200,7 +184,6 @@ class HomePage extends Component {
                   <CardBody>
                     {post.link !== undefined ? (
                       <div className="ml-4 mb-2" style={{ textAlign: "right" }}>
-                        {" "}
                         <b>Sponsored</b>{" "}
                         <img className="ml-4 mb-4" src="/images/star.png" />
                       </div>
@@ -348,6 +331,14 @@ class HomePage extends Component {
                     {post.registeredUser.username}
                   </CardHeader>
                   <CardBody>
+                    {post.link !== undefined ? (
+                      <div className="ml-4 mb-2" style={{ textAlign: "right" }}>
+                        <b>Sponsored</b>{" "}
+                        <img className="ml-4 mb-4" src="/images/star.png" />
+                      </div>
+                    ) : (
+                      ""
+                    )}
                     <video
                       controls
                       onClick={() => {
