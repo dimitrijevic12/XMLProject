@@ -56,7 +56,7 @@ namespace CampaignMicroservice.Api.Controllers
         }
 
         [HttpPut]
-        [Authorize(Roles = "RegisteredUser, Agent")]
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
         public IActionResult Update(DTOs.CampaignRequest campaignRequest)
         {
             Result<CampaignRequestAction> campaignRequestAction = CampaignRequestAction.Create(campaignRequest.CampaignRequestAction);
