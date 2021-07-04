@@ -283,6 +283,21 @@ function PublicProfile(props) {
           <b>{props.user.category}</b>
         </div>
       ) : null}
+      {props.user.type === "Agent" ? (
+        <div
+          style={{
+            marginLeft: "340px",
+            marginTop: "-40px",
+            marginBottom: "50px",
+          }}
+        >
+          <img
+            style={{ width: "30px", height: "30px", marginRight: "10px" }}
+            src="/images/seller.png"
+          />
+          <b>Agent</b>
+        </div>
+      ) : null}
       {shouldDisplayStories ? (
         <ProfileStoryCard
           user={props.user}
