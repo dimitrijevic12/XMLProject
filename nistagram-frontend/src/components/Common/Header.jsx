@@ -10,7 +10,7 @@ class Header extends Component {
     return (
       <header className="pt-4">
         <img height="50" src="/images/nistagram-logo.PNG" />
-        <span style={{ width: 300, display: "inline-block" }}></span>
+        <span style={{ width: 200, display: "inline-block" }}></span>
         <span style={{ width: 300, display: "inline-block" }}>
           <SearchBar></SearchBar>
         </span>

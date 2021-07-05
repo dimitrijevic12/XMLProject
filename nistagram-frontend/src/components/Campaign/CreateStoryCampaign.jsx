@@ -179,15 +179,39 @@ class CreateStoryCampaign extends Component {
             </div>
           </div>
         </div>
-        <div className="mt-5 pb-5">
+        <div
+          className="pb-5 mb-5 mt-5"
+          style={{
+            width: "150px",
+            position: "relative",
+            float: "right",
+          }}
+        >
           <button
-            disabled={this.state.contentPaths.length === 0}
-            className="btn btn-primary btn-block"
-            onClick={() => {
-              this.createPost();
-            }}
+            disabled={
+              this.props.minDateOfBirth === "" ||
+              this.props.maxDateOfBirth === "" ||
+              this.props.gender === ""
+            }
+            onClick={() => this.createPost()}
+            className="btn btn-success btn-lg"
           >
-            Post
+            Finish
+          </button>
+        </div>
+        <div
+          className="pb-5 mb-5 mt-5"
+          style={{
+            width: "150px",
+            position: "relative",
+            float: "left",
+          }}
+        >
+          <button
+            onClick={() => this.stepBack()}
+            className="btn btn-warning btn-lg"
+          >
+            Back
           </button>
         </div>
       </React.Fragment>
@@ -369,6 +393,10 @@ class CreateStoryCampaign extends Component {
       [name]: value,
     });
   };
+
+  stepBack() {
+    this.props.changeStep(2);
+  }
 }
 
 const mapStateToProps = (state) => ({
