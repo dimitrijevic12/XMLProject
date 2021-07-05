@@ -16,5 +16,13 @@ namespace CampaignMicroservice.Core.Interface
         public Maybe<Campaign> GetById(Guid id);
 
         public IEnumerable<Campaign> GetBy(Guid agentId, Guid clientId);
+
+        public void SaveCampaignUpdate(CampaignUpdate campaignUpdate);
+
+        public IEnumerable<CampaignUpdate> GetAllCampaignUpdates();
+
+        public void UpdateCampaignUpdate(Guid id);
+
+        public void UpdateWithoutType(CampaignUpdate campaign);
     }
 }

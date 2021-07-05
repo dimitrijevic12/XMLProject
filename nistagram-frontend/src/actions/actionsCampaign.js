@@ -42,9 +42,10 @@ export const getCampaignsForAgent = () => async (dispatch) => {
 };
 
 export const editCampaign = (campaign) => async (dispatch) => {
+  debugger;
   try {
-    const response = await axios.put(
-      "https://localhost:44355/api/campaigns",
+    const response = await axios.post(
+      "https://localhost:44355/api/campaigns/campaign-update",
       campaign,
       {
         headers: {

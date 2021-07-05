@@ -2,6 +2,7 @@
 using CampaignMicroservice.Core.Model;
 using CSharpFunctionalExtensions;
 using System;
+using System.Collections.Generic;
 
 namespace CampaignMicroservice.Core.Services
 {
@@ -56,21 +57,22 @@ namespace CampaignMicroservice.Core.Services
             return Result.Success();
         }
 
-        public Result Update(Campaign campaign)
+        public Result Update()
         {
-            //if (_campaignRepository.GetById(campaign.Id).HasNoValue) return Result.Failure("Campaign with that id does not exist");
-
-            if (campaign.GetType().Name.Equals("RecurringPostCampaign"))
+            List<CampaignMicroservice.Core.Model.ExposureDate> exposureDates = new List<CampaignMicroservice.Core.Model.ExposureDate>();
+            List<CampaignMicroservice.Core.Model.Ad> ads = new List<CampaignMicroservice.Core.Model.Ad>();
+            List<RegisteredUser> users = new List<RegisteredUser>();
+            Agent agent = Agent.Create(Guid.NewGuid(), Username.Create("username").Value, FirstName.Create("firstName").Value, LastName.Create("lastName").Value,
+                DateTime.Now, Gender.Create("male").Value, ProfileImagePath.Create("").Value, true, users, users, users, users, users, users, false, WebsiteAddress.Create("").Value).Value;
+            foreach (CampaignUpdate campaign in _campaignRepository.GetAllCampaignUpdates())
             {
-                _campaignRepository.Update(campaign);
-                return Result.Success();
+                if ((campaign.DateOfChange.AddDays(1) < DateTime.Now) && !campaign.IsUpdated)
+                {
+                    _campaignRepository.UpdateWithoutType(campaign);
+                    _campaignRepository.UpdateCampaignUpdate(campaign.Id);
+                }
             }
-            else if (campaign.GetType().Name.Equals("RecurringStoryCampaign"))
-            {
-                _campaignRepository.Update(campaign);
-                return Result.Success();
-            }
-            return Result.Failure("Can't edit one time campaigns");
+            return Result.Success();
         }
     }
 }

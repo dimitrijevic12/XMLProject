@@ -99,6 +99,7 @@ class EditCampaignModal extends Component {
               dateFormat="dd/MM/yyyy"
               selected={this.state.maxDateOfBirth}
               maxDate={new Date()}
+              minDate={this.state.minDateOfBirth}
               onChange={(e) => this.handleChangeMaxDate(e)}
             />
           </div>
@@ -113,9 +114,9 @@ class EditCampaignModal extends Component {
               dateFormat="dd/MM/yyyy"
               selected={this.state.minDateOfBirth}
               maxDate={
-                this.props.maxDateOfBirth === ""
+                this.state.maxDateOfBirth === ""
                   ? new Date()
-                  : this.props.maxDateOfBirth
+                  : this.state.maxDateOfBirth
               }
               onChange={(e) => this.handleChangeMinDate(e)}
             />
@@ -239,7 +240,7 @@ class EditCampaignModal extends Component {
             Gender : this.state.gender
       }
     });
-    window.location = "/";
+    window.location = "/edit-campaign";
   }
   
 }

@@ -97,36 +97,21 @@ namespace CampaignMicroservice.Api.Controllers
             return Ok();
         }
 
-        [HttpPut]
-        public IActionResult Update(Campaign campaign)
+        [HttpPost("campaign-update")]
+        public IActionResult SaveCampaignUpdate(Campaign campaign)
         {
-            List<CampaignMicroservice.Core.Model.ExposureDate> exposureDates = new List<CampaignMicroservice.Core.Model.ExposureDate>();
-            List<CampaignMicroservice.Core.Model.Ad> ads = new List<CampaignMicroservice.Core.Model.Ad>();
-
-            if (campaign.Type.Equals("RecurringPostCampaign"))
-            {
-                if (_campaignService.Update(Core.Model.RecurringPostCampaign.Create(campaign.Id, _targetAudienceFactory.Create(campaign.TargetAudience),
-                    (Agent)_userRepository.GetById(campaign.AgentId).Value, CampaignStatistics.Create(LikesCount.Create(0).Value,
-                    DislikesCount.Create(0).Value, ExposureCount.Create(0).Value, ClickCount.Create(0).Value).Value, campaign.StartDate,
-                    campaign.EndDate, exposureDates, campaign.DateOfChange, ads).Value).IsFailure) return BadRequest();
-
-                return Ok();
-            }
-            else if (campaign.Type.Equals("RecurringStoryCampaign"))
-            {
-                if (_campaignService.Update(Core.Model.RecurringPostCampaign.Create(campaign.Id, _targetAudienceFactory.Create(campaign.TargetAudience),
-                    (Agent)_userRepository.GetById(campaign.AgentId).Value, CampaignStatistics.Create(LikesCount.Create(0).Value,
-                     DislikesCount.Create(0).Value, ExposureCount.Create(0).Value, ClickCount.Create(0).Value).Value, campaign.StartDate,
-                    campaign.EndDate, exposureDates, campaign.DateOfChange, ads).Value).IsFailure) return BadRequest();
-
-                return Ok();
-            }
-            return BadRequest();
+            Guid id = Guid.NewGuid();
+            _campaignRepository.SaveCampaignUpdate(CampaignUpdate.Create(
+                id, campaign.Id,
+                Core.Model.TargetAudience.Create(campaign.TargetAudience.MinDateOfBirth, campaign.TargetAudience.MaxDateOfBirth, Core.Model.Gender.Create(campaign.TargetAudience.Gender).Value).Value,
+                campaign.DateOfChange, false).Value);
+            return Ok();
         }
 
         [HttpGet]
         public IActionResult Search([FromQuery] Guid agentId, [FromQuery] Guid clientId)
         {
+            _campaignService.Update();
             if (Request.Query.Count == 0) return BadRequest();
             if (String.IsNullOrEmpty(agentId.ToString())) return BadRequest();
             var campaigns = _campaignFactory.CreateCampaigns(_campaignRepository.GetBy(agentId, clientId));
