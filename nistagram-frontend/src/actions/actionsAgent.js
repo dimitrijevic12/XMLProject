@@ -13,7 +13,7 @@ import axios from "axios";
 export const createAgentRequest = (request) => async (dispatch) => {
   try {
     const response = await axios.post(
-      `https://localhost:44355/api/agentRequests`,
+      `http://localhost:44355/api/agentRequests`,
       request,
       {
         headers: {
@@ -37,7 +37,7 @@ export const createAgentRequest = (request) => async (dispatch) => {
 export const getAgentRequests = () => async (dispatch) => {
   try {
     const response = await axios.get(
-      `https://localhost:44355/api/agentRequests`,
+      `http://localhost:44355/api/agentRequests`,
       {
         params: { "is-approved": "false" },
         headers: {
@@ -61,7 +61,7 @@ export const getAgentRequests = () => async (dispatch) => {
 export const updateAgentRequest = (agentRequest) => async (dispatch) => {
   try {
     const response = await axios.put(
-      `https://localhost:44355/api/agentRequests`,
+      `http://localhost:44355/api/agentRequests`,
       agentRequest,
       {
         headers: {

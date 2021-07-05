@@ -283,15 +283,12 @@ export const getUsersByName = (name) => async (dispatch) => {
 
 export const getUserById = (id) => async (dispatch) => {
   try {
-    const response = await axios.get(
-      "https://localhost:44355/api/users/" + id,
-      {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          Authorization: "Bearer " + sessionStorage.getItem("token"),
-        },
-      }
-    );
+    const response = await axios.get("http://localhost:44355/api/users/" + id, {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
+      },
+    });
     dispatch({
       type: GET_USER_BY_ID,
       payload: response.data,

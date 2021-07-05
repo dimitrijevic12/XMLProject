@@ -407,7 +407,7 @@ export const addCloseFriendStory = (userId) => async (dispatch) => {
 export const getStoryById = (id) => async (dispatch) => {
   try {
     const response = await axios
-      .get("https://localhost:44355/api/stories/" + id, {
+      .get("http://localhost:44355/api/stories/" + id, {
         headers: {
           "Access-Control-Allow-Origin": "*",
           Authorization: "Bearer " + sessionStorage.getItem("token"),
@@ -519,7 +519,7 @@ export const getStoriesForNotLogged = (id) => async (dispatch) => {
 export const getStoriesForCampaign = (id) => async (dispatch) => {
   try {
     const response = await axios.get(
-      `https://localhost:44355/api/stories/${id}`,
+      `http://localhost:44355/api/stories/${id}`,
       {
         headers: {
           "Access-Control-Allow-Origin": "*",

@@ -1,8 +1,8 @@
 version: "3.7"
 
 services:
-  sample-nistagram:
-    container_name: sample-nistagram
+  sample:
+    container_name: sample
     build:
       context: .
       dockerfile: Dockerfile
@@ -10,6 +10,6 @@ services:
       - ".:/app"
       - "/app/node_modules"
     ports:
-      - 3000:3000
+      - 3005:3005
     environment:
       - CHOKIDAR_USEPOLLING=true

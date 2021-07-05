@@ -136,7 +136,7 @@ export const getPostsByLocation =
 export const getPost = (id) => async (dispatch) => {
   try {
     const response = await axios
-      .get("https://localhost:44355/api/posts/" + id, {
+      .get("http://localhost:44355/api/posts/" + id, {
         headers: {
           "Access-Control-Allow-Origin": "*",
           Authorization: "Bearer " + sessionStorage.getItem("token"),
@@ -315,7 +315,7 @@ export const getLocationsByText = (text) => async (dispatch) => {
 
 export const getLocations = () => async (dispatch) => {
   try {
-    const response = await axios.get("https://localhost:44355/api/locations", {
+    const response = await axios.get("http://localhost:44355/api/locations", {
       headers: {
         "Access-Control-Allow-Origin": "*",
         Authorization: "Bearer " + sessionStorage.getItem("token"),
@@ -336,7 +336,7 @@ export const getLocations = () => async (dispatch) => {
 export const getTaggableUsers = () => async (dispatch) => {
   try {
     const response = await axios.get(
-      "http://localhost:44355/api/users?isTaggable=" + true,
+      "http://localhost:44355/api/users?isTaggable=true",
       {
         headers: {
           "Access-Control-Allow-Origin": "*",
@@ -766,16 +766,13 @@ export const banPost = (id) => async (dispatch) => {
 
 export const getPostsForCampaign = (id) => async (dispatch) => {
   try {
-    const response = await axios.get(
-      `https://localhost:44355/api/posts/${id}`,
-      {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          Authorization: "Bearer " + sessionStorage.getItem("token"),
-        },
-      }
-    );
-    const response2 = await axios.get(`https://localhost:44355/api/ads`, {
+    const response = await axios.get(`http://localhost:44355/api/posts/${id}`, {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
+      },
+    });
+    const response2 = await axios.get(`http://localhost:44355/api/ads`, {
       params: {
         contentId: response.data.id,
       },

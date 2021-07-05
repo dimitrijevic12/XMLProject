@@ -63,7 +63,7 @@ import axios from "axios";
 
 export const getPostsByUserId = (id) => async (dispatch) => {
   try {
-    const response = await axios.get("https://localhost:44355/api/posts?", {
+    const response = await axios.get("http://localhost:44355/api/posts?", {
       params: { userid: id },
       headers: {
         "Access-Control-Allow-Origin": "*",
@@ -84,7 +84,7 @@ export const getPostsByUserId = (id) => async (dispatch) => {
 
 export const getPostsByHashTag = (hashtag) => async (dispatch) => {
   try {
-    const response = await axios.get("https://localhost:44355/api/posts?", {
+    const response = await axios.get("http://localhost:44355/api/posts?", {
       params: { hashtag: hashtag, access: "public" },
       headers: {
         "Access-Control-Allow-Origin": "*",
@@ -106,7 +106,7 @@ export const getPostsByHashTag = (hashtag) => async (dispatch) => {
 export const getPostsByLocation =
   (country, city, street) => async (dispatch) => {
     try {
-      const response = await axios.get("https://localhost:44355/api/posts?", {
+      const response = await axios.get("http://localhost:44355/api/posts?", {
         params: {
           country: country,
           city: city,
@@ -133,7 +133,7 @@ export const getPostsByLocation =
 export const getPost = (id) => async (dispatch) => {
   try {
     const response = await axios
-      .get("https://localhost:44355/api/posts/" + id, {
+      .get("http://localhost:44355/api/posts/" + id, {
         headers: {
           "Access-Control-Allow-Origin": "*",
           Authorization: "Bearer " + sessionStorage.getItem("savedToken"),
@@ -150,7 +150,7 @@ export const getPost = (id) => async (dispatch) => {
           for (i = 0; i < response.data.contentPaths.length; i++) {
             const response2 = await axios
               .get(
-                "https://localhost:44355/api/posts/contents/" +
+                "http://localhost:44355/api/posts/contents/" +
                   response.data.contentPaths[i],
                 {
                   headers: {
@@ -170,7 +170,7 @@ export const getPost = (id) => async (dispatch) => {
         } else {
           const response2 = axios
             .get(
-              "https://localhost:44355/api/posts/contents/" +
+              "http://localhost:44355/api/posts/contents/" +
                 response.data.contentPath,
               {
                 headers: {
@@ -199,7 +199,7 @@ export const getPost = (id) => async (dispatch) => {
 export const loadImage = (path) => async (dispatch) => {
   try {
     const response = await axios.get(
-      "https://localhost:44355/api/posts/contents/" + path,
+      "http://localhost:44355/api/posts/contents/" + path,
       {
         headers: {
           "Access-Control-Allow-Origin": "*",
@@ -222,7 +222,7 @@ export const loadImage = (path) => async (dispatch) => {
 export const loadImages = (path) => async (dispatch) => {
   try {
     const response = await axios.get(
-      "https://localhost:44355/api/posts/contents/" + path,
+      "http://localhost:44355/api/posts/contents/" + path,
       {
         headers: {
           "Access-Control-Allow-Origin": "*",
@@ -245,7 +245,7 @@ export const loadImages = (path) => async (dispatch) => {
 export const savePost = (post) => async (dispatch) => {
   try {
     const response = await axios.post(
-      "https://localhost:44355/api/posts/",
+      "http://localhost:44355/api/posts/",
       post,
       {
         headers: {
@@ -269,7 +269,7 @@ export const savePost = (post) => async (dispatch) => {
 export const getHashTagsByText = (text) => async (dispatch) => {
   try {
     const response = await axios.get(
-      "https://localhost:44355/api/hashtags?text=" + text,
+      "http://localhost:44355/api/hashtags?text=" + text,
       {
         headers: {
           "Access-Control-Allow-Origin": "*",
@@ -292,7 +292,7 @@ export const getHashTagsByText = (text) => async (dispatch) => {
 export const getLocationsByText = (text) => async (dispatch) => {
   try {
     const response = await axios.get(
-      "https://localhost:44355/api/locations?text=" + text,
+      "http://localhost:44355/api/locations?text=" + text,
       {
         headers: {
           "Access-Control-Allow-Origin": "*",
@@ -314,7 +314,7 @@ export const getLocationsByText = (text) => async (dispatch) => {
 
 export const getLocations = () => async (dispatch) => {
   try {
-    const response = await axios.get("https://localhost:44355/api/locations", {
+    const response = await axios.get("http://localhost:44355/api/locations", {
       headers: {
         "Access-Control-Allow-Origin": "*",
         Authorization: "Bearer " + sessionStorage.getItem("savedToken"),
@@ -335,7 +335,7 @@ export const getLocations = () => async (dispatch) => {
 export const getTaggableUsers = () => async (dispatch) => {
   try {
     const response = await axios.get(
-      "https://localhost:44355/api/users?isTaggable=" + true,
+      "http://localhost:44355/api/users?isTaggable=" + true,
       {
         headers: {
           "Access-Control-Allow-Origin": "*",
@@ -358,7 +358,7 @@ export const getTaggableUsers = () => async (dispatch) => {
 export const likePost = (dto) => async (dispatch) => {
   try {
     const response = await axios.put(
-      "https://localhost:44355/api/posts/" +
+      "http://localhost:44355/api/posts/" +
         dto.id +
         "/users/" +
         dto.userId +
@@ -387,7 +387,7 @@ export const likePost = (dto) => async (dispatch) => {
 export const dislikePost = (dto) => async (dispatch) => {
   try {
     const response = await axios.put(
-      "https://localhost:44355/api/posts/" +
+      "http://localhost:44355/api/posts/" +
         dto.id +
         "/users/" +
         dto.userId +
@@ -417,7 +417,7 @@ export const commentPost = (dto) => async (dispatch) => {
   try {
     const comment = dto.comment;
     const response = await axios.post(
-      "https://localhost:44355/api/posts/" + dto.id + "/comments",
+      "http://localhost:44355/api/posts/" + dto.id + "/comments",
       comment,
       {
         headers: {
@@ -442,7 +442,7 @@ export const commentPost = (dto) => async (dispatch) => {
 export const getCollectionsByUser = () => async (dispatch) => {
   try {
     const response = await axios.get(
-      "https://localhost:44355/api/collections?userId=" +
+      "http://localhost:44355/api/collections?userId=" +
         sessionStorage.getItem("savedUserId"),
       {
         headers: {
@@ -466,7 +466,7 @@ export const getCollectionsByUser = () => async (dispatch) => {
 export const addPostToCollection = (dto) => async (dispatch) => {
   try {
     const response = await axios.put(
-      "https://localhost:44355/api/collections/" +
+      "http://localhost:44355/api/collections/" +
         dto.id +
         "/posts/" +
         dto.post.id,
@@ -495,7 +495,7 @@ export const getPostsByCollectionAndUser =
   (collectionId) => async (dispatch) => {
     try {
       const response = await axios.get(
-        "https://localhost:44355/api/posts/collections/" +
+        "http://localhost:44355/api/posts/collections/" +
           collectionId +
           "/users/" +
           sessionStorage.getItem("savedUserId"),
@@ -521,7 +521,7 @@ export const getPostsByCollectionAndUser =
 export const getPostsForFollowing = (users) => async (dispatch) => {
   try {
     const response = await axios.post(
-      "https://localhost:44355/api/posts/following",
+      "http://localhost:44355/api/posts/following",
       users,
       {
         headers: {
@@ -545,7 +545,7 @@ export const getPostsForFollowing = (users) => async (dispatch) => {
 export const getAllImages = (posts) => async (dispatch) => {
   try {
     const response = await axios.post(
-      "https://localhost:44355/api/posts/images",
+      "http://localhost:44355/api/posts/images",
       posts,
       {
         headers: {
@@ -569,7 +569,7 @@ export const getAllImages = (posts) => async (dispatch) => {
 export const getAllImagesForSearch = (posts) => async (dispatch) => {
   try {
     const response = await axios.post(
-      "https://localhost:44355/api/posts/images",
+      "http://localhost:44355/api/posts/images",
       posts,
       {
         headers: {
@@ -595,7 +595,7 @@ export const changeProfilePicturePostmicroservice =
     try {
       debugger;
       const response = await axios.put(
-        "https://localhost:44355/api/post-microservice/users/" +
+        "http://localhost:44355/api/post-microservice/users/" +
           sessionStorage.getItem("savedUserId") +
           "/profile-picture/" +
           picture,
@@ -623,7 +623,7 @@ export const changeProfilePicturePostmicroservice =
 export const getAllImagesForProfile = (posts) => async (dispatch) => {
   try {
     const response = await axios.post(
-      "https://localhost:44355/api/posts/images",
+      "http://localhost:44355/api/posts/images",
       posts,
       {
         headers: {
@@ -647,7 +647,7 @@ export const getAllImagesForProfile = (posts) => async (dispatch) => {
 export const getAllImagesForCollection = (posts) => async (dispatch) => {
   try {
     const response = await axios.post(
-      "https://localhost:44355/api/posts/images",
+      "http://localhost:44355/api/posts/images",
       posts,
       {
         headers: {
@@ -671,7 +671,7 @@ export const getAllImagesForCollection = (posts) => async (dispatch) => {
 export const createNewCollection = (collection) => async (dispatch) => {
   try {
     const response = await axios.post(
-      "https://localhost:44355/api/collections",
+      "http://localhost:44355/api/collections",
       collection,
       {
         headers: {
@@ -695,7 +695,7 @@ export const createNewCollection = (collection) => async (dispatch) => {
 export const getLikedPosts = () => async (dispatch) => {
   try {
     const response = await axios.get(
-      "https://localhost:44355/api/posts/liked/" +
+      "http://localhost:44355/api/posts/liked/" +
         sessionStorage.getItem("savedUserId"),
       {
         headers: {
@@ -719,7 +719,7 @@ export const getLikedPosts = () => async (dispatch) => {
 export const getDislikedPosts = () => async (dispatch) => {
   try {
     const response = await axios.get(
-      "https://localhost:44355/api/posts/disliked/" +
+      "http://localhost:44355/api/posts/disliked/" +
         sessionStorage.getItem("savedUserId"),
       {
         headers: {
@@ -743,7 +743,7 @@ export const getDislikedPosts = () => async (dispatch) => {
 export const banPost = (id) => async (dispatch) => {
   try {
     const response = await axios.put(
-      "https://localhost:44355/api/posts/" + id + "/ban",
+      "http://localhost:44355/api/posts/" + id + "/ban",
       {},
       {
         headers: {

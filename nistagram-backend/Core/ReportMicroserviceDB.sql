@@ -3,6 +3,8 @@ GO
 /****** Object:  Database [reportdb]    Script Date: 6/19/2021 8:06:32 PM ******/
 CREATE DATABASE [reportdb]
 GO
+ALTER DATABASE [reportdb] SET COMPATIBILITY_LEVEL = 130
+GO
 IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
 begin
 EXEC [reportdb].[dbo].[sp_fulltext_database] @action = 'enable'

@@ -769,6 +769,105 @@
         }
       ],
       "UpstreamPathTemplate": "/api/notificationOptions"
+    },
+    {
+      "DownstreamPathTemplate": "/api/agentRequests",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_usermicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/agentRequests"
+    },
+    {
+      "DownstreamPathTemplate": "/api/agentRequests?{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_usermicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/agentRequests?{everything}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/campaigns?{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_campaignmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/campaigns?{everything}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/campaignRequests",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_campaignmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/campaignRequests"
+    },
+    {
+      "DownstreamPathTemplate": "/api/campaignRequests?{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_campaignmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/campaignRequests?{everything}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/campaigns",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_campaignmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/campaigns"
+    },
+    {
+      "DownstreamPathTemplate": "/api/ads?{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_campaignmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/ads?{everything}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/ads",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_campaignmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/ads"
+    },
+    {
+      "DownstreamPathTemplate": "/api/campaigns/campaign-update",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "core_campaignmicroservice-api_1",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/campaigns/campaign-update"
     }
   ]
 }

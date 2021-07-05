@@ -73,6 +73,26 @@ services:
     ports:
       - "44382:80"
 
+  campaignmicroservice-api:
+    image: xmldockerid/campaignmicroserviceapi:latest
+    restart: on-failure
+    build:
+      context: .
+      dockerfile: Dockerfile.CampaignMicroservice
+    depends_on:
+      - ms-sql-server
+    ports:
+      - "44381:80"
+
+  agentapp-api:
+    image: xmldockerid/agentappapi:latest
+    restart: on-failure
+    build:
+      context: .
+      dockerfile: ../../agentapp-backend/AgentAppSolution/Dockerfile
+    ports:
+      - "55744:80"
+
   apigateway:
     image: xmldockerid/apigateway:latest
     restart: on-failure
@@ -84,3 +104,10 @@ services:
 
 volumes:
   ms-sql-server:
+  usermicroservice-api:
+  postmicroservice-api:
+  storymicroservice-api:
+  notificationmicroservice-api:
+  reportmicroservice-api:
+  campaignmicroservice-api:
+  agentapp-api:

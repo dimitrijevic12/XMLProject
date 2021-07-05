@@ -3,6 +3,8 @@ GO
 /****** Object:  Database [notificationdb]    Script Date: 6/21/2021 3:34:22 PM ******/
 CREATE DATABASE [notificationdb]
 GO
+ALTER DATABASE [notificationdb] SET COMPATIBILITY_LEVEL = 130
+GO
 IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
 begin
 EXEC [notificationdb].[dbo].[sp_fulltext_database] @action = 'enable'

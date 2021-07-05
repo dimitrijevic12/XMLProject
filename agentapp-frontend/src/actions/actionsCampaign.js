@@ -20,7 +20,7 @@ import axios from "axios";
 
 export const getCampaignsForAgent = () => async (dispatch) => {
   try {
-    const response = await axios.get(`https://localhost:44355/api/campaigns`, {
+    const response = await axios.get(`http://localhost:44355/api/campaigns`, {
       params: { agentId: sessionStorage.getItem("savedUserId") },
       headers: {
         "Access-Control-Allow-Origin": "*",
@@ -42,7 +42,7 @@ export const getCampaignsForAgent = () => async (dispatch) => {
 export const createCampaignRequest = (campaignRequest) => async (dispatch) => {
   try {
     const response = await axios.post(
-      "https://localhost:44355/api/campaignRequests",
+      "http://localhost:44355/api/campaignRequests",
       campaignRequest,
       {
         headers: {
@@ -67,7 +67,7 @@ export const createCampaignRequest = (campaignRequest) => async (dispatch) => {
 export const getCampaignRequests = () => async (dispatch) => {
   try {
     const response = await axios.get(
-      `https://localhost:44355/api/campaignRequests`,
+      `http://localhost:44355/api/campaignRequests`,
       {
         params: {
           userId: sessionStorage.getItem("savedUserId"),
@@ -95,7 +95,7 @@ export const getCampaignRequests = () => async (dispatch) => {
 export const updateCampaignRequest = (campaignRequest) => async (dispatch) => {
   try {
     const response = await axios.put(
-      "https://localhost:44355/api/campaignRequests",
+      "http://localhost:44355/api/campaignRequests",
       campaignRequest,
       {
         headers: {
@@ -121,7 +121,7 @@ export const createCampaign = (campaign) => async (dispatch) => {
   try {
     debugger;
     const response = await axios.post(
-      `https://localhost:44355/api/campaigns`,
+      `http://localhost:44355/api/campaigns`,
       campaign,
       {
         headers: {
@@ -147,7 +147,7 @@ export const getCampaignRequestsForUserProfile =
   (parameters) => async (dispatch) => {
     try {
       const response = await axios.get(
-        `https://localhost:44355/api/campaignRequests`,
+        `http://localhost:44355/api/campaignRequests`,
         {
           params: {
             userId: parameters.userId,
@@ -175,7 +175,7 @@ export const getCampaignRequestsForUserProfile =
 export const getAdForContent = (contentId) => async (dispatch) => {
   debugger;
   try {
-    const response = await axios.get(`https://localhost:44355/api/ads`, {
+    const response = await axios.get(`http://localhost:44355/api/ads`, {
       params: {
         contentId: contentId,
       },
@@ -199,7 +199,7 @@ export const getAdForContent = (contentId) => async (dispatch) => {
 
 export const createAd = (ad) => async (dispatch) => {
   try {
-    const response = await axios.post("https://localhost:44355/api/ads", ad, {
+    const response = await axios.post("http://localhost:44355/api/ads", ad, {
       headers: {
         "Access-Control-Allow-Origin": "*",
         Authorization: "Bearer " + sessionStorage.getItem("savedToken"),
