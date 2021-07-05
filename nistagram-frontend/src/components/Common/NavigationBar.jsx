@@ -35,6 +35,20 @@ class NavigationBar extends Component {
           >
             <img src="/images/addpost.png" />
           </NavLink>
+          {sessionStorage.getItem("role") === "Agent" ? (
+            <React.Fragment>
+              <span style={{ width: 25, display: "inline-block" }}></span>
+              <NavLink
+                exact
+                to="/campaign"
+                onClick={() => {
+                  window.location = "/campaign";
+                }}
+              >
+                <img width="25px" height="21px" src="/images/campaign.png" />
+              </NavLink>
+            </React.Fragment>
+          ) : null}
           <span style={{ width: 25, display: "inline-block" }}></span>
           <NavLink exact to="/messages">
             <img src="/images/send.png" />

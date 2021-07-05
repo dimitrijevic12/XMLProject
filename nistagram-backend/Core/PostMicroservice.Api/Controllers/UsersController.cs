@@ -60,6 +60,7 @@ namespace PostMicroservice.Api.Controllers
         }
 
         [HttpPut("edit")]
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
         public IActionResult Edit(DTOs.RegisteredUser dto)
         {
             Result<Username> username = Username.Create(dto.Username);
@@ -84,6 +85,7 @@ namespace PostMicroservice.Api.Controllers
         }
 
         [HttpPut("{id}/profile-picture/{image}")]
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
         public IActionResult AddProfilePicture([FromRoute] Guid id, [FromRoute] string image)
         {
             userService.AddProfilePicture(id, image);

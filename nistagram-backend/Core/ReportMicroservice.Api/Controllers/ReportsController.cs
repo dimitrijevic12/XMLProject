@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReportMicroservice.Api.Factories;
 using ReportMicroservice.Core.Interface.Repository;
@@ -49,12 +50,14 @@ namespace ReportMicroservice.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult GetReports()
         {
             return Ok(reportFactory.CreateReports(_reportRepository.GetAll()));
         }
 
         [HttpPut]
+        [Authorize(Roles = "Admin")]
         public IActionResult EditReport(DTOs.Report report)
         {
             Result<DateTime> timeStamp = report.TimeStamp;

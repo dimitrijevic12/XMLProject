@@ -59,5 +59,7 @@ namespace UserMicroservice.Core.Interface.Repository
         public void DeleteMute(Guid id);
 
         public void DeleteBlock(Guid id);
+
+        public Maybe<User> GetByIdWithType(Guid id);
     }
 }

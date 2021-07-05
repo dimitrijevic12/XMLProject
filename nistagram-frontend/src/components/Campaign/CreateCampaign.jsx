@@ -102,6 +102,7 @@ class CreatePost extends Component {
               maxDateOfBirth={this.state.maxDateOfBirth}
               gender={this.state.gender}
               exposureDates={this.state.exposureDates}
+              changeStep={this.changeStep.bind(this)}
             />
           ) : null}
           {this.state.activeStep === 3 && this.state.type === "Story" ? (
@@ -114,6 +115,7 @@ class CreatePost extends Component {
               maxDateOfBirth={this.state.maxDateOfBirth}
               gender={this.state.gender}
               exposureDates={this.state.exposureDates}
+              changeStep={this.changeStep.bind(this)}
             />
           ) : null}
         </div>
@@ -123,9 +125,11 @@ class CreatePost extends Component {
 
   async addExposureDates(dates) {
     debugger;
-    //this.setState({ exposureDates: [...this.state.exposureDates, dates] });
+    var datesArray = [];
+    if (dates.length === undefined) datesArray.push(dates);
+    else datesArray = dates;
     await this.setState({
-      exposureDates: this.state.exposureDates.concat(dates),
+      exposureDates: datesArray,
     });
   }
 

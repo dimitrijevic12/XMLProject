@@ -253,7 +253,10 @@ export const getUsersByName = (name) => async (dispatch) => {
           name: name,
           access: "public",
         },
-        headers: { "Access-Control-Allow-Origin": "" },
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
       });
     } else {
       response = await axios.get("https://localhost:44355/api/users?", {
@@ -262,7 +265,10 @@ export const getUsersByName = (name) => async (dispatch) => {
           name: name,
           access: "public",
         },
-        headers: { "Access-Control-Allow-Origin": "" },
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
       });
     }
     dispatch({
@@ -282,7 +288,10 @@ export const getUserById = (id) => async (dispatch) => {
     const response = await axios.get(
       "https://localhost:44355/api/users/" + id,
       {
-        headers: { "Access-Control-Allow-Origin": "" },
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
       }
     );
     dispatch({
@@ -306,7 +315,10 @@ export const getUserByIdWithoutBlocked = (id) => async (dispatch) => {
         id +
         "/user",
       {
-        headers: { "Access-Control-Allow-Origin": "" },
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
       }
     );
     dispatch({
@@ -352,7 +364,10 @@ export const getFollowRequests = () => async (dispatch) => {
         sessionStorage.getItem("userId") +
         "/followRequests",
       {
-        headers: { "Access-Control-Allow-Origin": "" },
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
       }
     );
     dispatch({
@@ -373,7 +388,10 @@ export const handleRequests = (follow) => async (dispatch) => {
       "https://localhost:44355/api/users/handlerequest",
       follow,
       {
-        headers: { "Access-Control-Allow-Origin": "" },
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
       }
     );
     dispatch({
@@ -395,7 +413,10 @@ export const getFollowing = () => async (dispatch) => {
         sessionStorage.getItem("userId") +
         "/following",
       {
-        headers: { "Access-Control-Allow-Origin": "" },
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
       }
     );
     dispatch({
@@ -417,7 +438,10 @@ export const getFollowingWithoutMuted = () => async (dispatch) => {
         sessionStorage.getItem("userId") +
         "/following-without-muted",
       {
-        headers: { "Access-Control-Allow-Origin": "" },
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
       }
     );
     dispatch({
@@ -442,7 +466,10 @@ export const changeProfilePictureUsermicroservice =
           picture,
         {},
         {
-          headers: { "Access-Control-Allow-Origin": "" },
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            Authorization: "Bearer " + sessionStorage.getItem("token"),
+          },
         }
       );
 
@@ -463,7 +490,10 @@ export const loadImageProfile = (path) => async (dispatch) => {
     const response = await axios.get(
       "https://localhost:44355/api/users/contents/" + path,
       {
-        headers: { "Access-Control-Allow-Origin": "*" },
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
       }
     );
 
