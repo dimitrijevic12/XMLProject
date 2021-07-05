@@ -108,8 +108,9 @@ class CampaignRequests extends Component {
                         <td style={{ textAlign: "center" }}>
                           {f.campaign.exposureDates.map((date, i) =>
                             i === f.campaign.exposureDates.length - 1
-                              ? moment(date).format("DD/MM/YYYY")
-                              : moment(date).format("DD/MM/YYYY") + ", "
+                              ? moment(date.time).format("DD/MM/YYYY HH:mm")
+                              : moment(date.time).format("DD/MM/YYYY HH:mm") +
+                                ", "
                           )}
                         </td>
                         <td style={{ textAlign: "center" }}>
@@ -166,6 +167,7 @@ class CampaignRequests extends Component {
       await this.createPost(f.campaign.ads[0]);
     } else {
       for (var j = 0; j < f.campaign.ads.length; j++) {
+        debugger;
         await this.createStory(f.campaign.ads[j]);
       }
     }
@@ -205,10 +207,10 @@ class CampaignRequests extends Component {
   }
 
   async createStory(ad) {
+    debugger;
     await this.props.getStoryById(ad.contentId);
     debugger;
 
-    debugger;
     await this.props.saveStory({
       Description: this.props.storyById.description,
       RegisteredUser: this.state.storyOwner,
@@ -221,6 +223,7 @@ class CampaignRequests extends Component {
       Type: "Story",
       IsBanned: false,
     });
+    debugger;
     var ad = {
       ContentId: this.props.story.id,
       Type: "Story",
@@ -229,6 +232,7 @@ class CampaignRequests extends Component {
       ProfileOwnerId: sessionStorage.getItem("userId"),
     };
     await this.props.createAd({ Ad: ad, CampaignId: this.state.campaignId });
+    debugger;
     await this.props.createNotification({
       Type: "Story",
       ContentId: "12345678-1234-1234-1234-123456789123",

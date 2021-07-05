@@ -413,7 +413,7 @@ export const getStoryById = (id) => async (dispatch) => {
           type: GET_STORY_BY_ID,
           payload: response.data,
         });
-        const response2 = axios
+        const response2 = await axios
           .get(
             "https://localhost:44355/api/stories/contents/" +
               response.data.contentPath,

@@ -157,7 +157,7 @@ export const getPost = (id) => async (dispatch) => {
               });
           }
         } else {
-          const response2 = axios
+          const response2 = await axios
             .get(
               "https://localhost:44355/api/posts/contents/" +
                 response.data.contentPath,
