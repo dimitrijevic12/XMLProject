@@ -136,6 +136,7 @@ class CampaignRequests extends Component {
                             }}
                             src="/images/analytics.png"
                           />
+                         
                         </td>
                       </tr>
                     ))}

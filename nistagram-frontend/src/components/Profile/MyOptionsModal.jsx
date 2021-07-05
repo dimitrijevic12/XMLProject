@@ -172,6 +172,25 @@ class MyOptionsModal extends Component {
               </button>
             </React.Fragment>
           ) : null}
+          {sessionStorage.getItem("role") === "Agent" ? (
+            <React.Fragment>
+              <hr />
+              <button
+                style={{
+                  height: "100%",
+                  width: "100%",
+                  alignSelf: "stretch",
+                  float: "center",
+                }}
+                className="btn btn-block btn-primary btn-md mb-2"
+                onClick={() => {
+                  window.location = "/edit-campaign";
+                }}
+              >
+                <label>Edit campaign</label>
+              </button>
+            </React.Fragment>
+          ) : null}
         </ModalBody>
       </Modal>
     );

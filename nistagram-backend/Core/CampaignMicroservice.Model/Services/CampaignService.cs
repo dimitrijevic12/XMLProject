@@ -1,6 +1,8 @@
 ﻿using CampaignMicroservice.Core.Interface;
 using CampaignMicroservice.Core.Model;
 using CSharpFunctionalExtensions;
+using System;
+using System.Collections.Generic;
 
 namespace CampaignMicroservice.Core.Services
 {
@@ -51,6 +53,24 @@ namespace CampaignMicroservice.Core.Services
             foreach (Ad ad in campaign.Ads)
             {
                 if (_adService.Save(ad, campaign.Id).IsFailure) return Result.Failure("Ad with that id already exist");
+            }
+            return Result.Success();
+        }
+
+        public Result Update()
+        {
+            List<CampaignMicroservice.Core.Model.ExposureDate> exposureDates = new List<CampaignMicroservice.Core.Model.ExposureDate>();
+            List<CampaignMicroservice.Core.Model.Ad> ads = new List<CampaignMicroservice.Core.Model.Ad>();
+            List<RegisteredUser> users = new List<RegisteredUser>();
+            Agent agent = Agent.Create(Guid.NewGuid(), Username.Create("username").Value, FirstName.Create("firstName").Value, LastName.Create("lastName").Value,
+                DateTime.Now, Gender.Create("male").Value, ProfileImagePath.Create("").Value, true, users, users, users, users, users, users, false, WebsiteAddress.Create("").Value).Value;
+            foreach (CampaignUpdate campaign in _campaignRepository.GetAllCampaignUpdates())
+            {
+                if ((campaign.DateOfChange.AddDays(1) < DateTime.Now) && !campaign.IsUpdated)
+                {
+                    _campaignRepository.UpdateWithoutType(campaign);
+                    _campaignRepository.UpdateCampaignUpdate(campaign.Id);
+                }
             }
             return Result.Success();
         }

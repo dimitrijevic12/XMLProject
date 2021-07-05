@@ -97,9 +97,21 @@ namespace CampaignMicroservice.Api.Controllers
             return Ok();
         }
 
+        [HttpPost("campaign-update")]
+        public IActionResult SaveCampaignUpdate(Campaign campaign)
+        {
+            Guid id = Guid.NewGuid();
+            _campaignRepository.SaveCampaignUpdate(CampaignUpdate.Create(
+                id, campaign.Id,
+                Core.Model.TargetAudience.Create(campaign.TargetAudience.MinDateOfBirth, campaign.TargetAudience.MaxDateOfBirth, Core.Model.Gender.Create(campaign.TargetAudience.Gender).Value).Value,
+                campaign.DateOfChange, false).Value);
+            return Ok();
+        }
+
         [HttpGet]
         public IActionResult Search([FromQuery] Guid agentId, [FromQuery] Guid clientId)
         {
+            _campaignService.Update();
             if (Request.Query.Count == 0) return BadRequest();
             if (String.IsNullOrEmpty(agentId.ToString())) return BadRequest();
             var campaigns = _campaignFactory.CreateCampaigns(_campaignRepository.GetBy(agentId, clientId));

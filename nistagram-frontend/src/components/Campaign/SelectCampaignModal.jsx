@@ -46,7 +46,7 @@ class SelectCampaignModal extends Component {
             <option>Select campaign</option>
             {this.state.campaigns.map((option, index) => (
               <option key={index} value={index}>
-                {"Campaign: " + option.id}
+                {"Campaign: " + option.id}                
               </option>
             ))}
           </select>
