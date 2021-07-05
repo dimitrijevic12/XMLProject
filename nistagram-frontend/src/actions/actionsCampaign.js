@@ -17,6 +17,8 @@ import {
   CREATE_AD_ERROR,
   GET_CAMPAIGNS_FOR_CLIENT,
   GET_CAMPAIGNS_FOR_CLIENT_ERROR,
+  DELETE_CAMPAIGN,
+  DELETE_CAMPAIGN_ERROR,
 } from "../types/types";
 import axios from "axios";
 
@@ -258,6 +260,32 @@ export const getCampaignsForClient = () => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: GET_CAMPAIGNS_FOR_CLIENT_ERROR,
+      payload: console.log(e),
+    });
+  }
+};
+
+export const deleteCampaign = (item) => async (dispatch) => {
+  debugger;
+  try {
+    const response = await axios.delete(
+      "https://localhost:44355/api/campaigns",
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("tokenAgentApp"),
+        },
+        data: item,
+      }
+    );
+    debugger;
+    dispatch({
+      type: DELETE_CAMPAIGN,
+      payload: response.data,
+    });
+  } catch (e) {
+    dispatch({
+      type: DELETE_CAMPAIGN_ERROR,
       payload: console.log(e),
     });
   }

@@ -249,5 +249,104 @@ namespace CampaignMicroservice.DataAccessImplementation
             return (from DataRow dataRow in dataTable.Rows
                     select (CampaignUpdate)_campaignUpdateTarget.ConvertSql(dataRow)).ToList();
         }
+
+        public void Delete(Guid id)
+        {
+            DeleteAds(id);
+            DeleteCampaignUpdates(id);
+            DeleteCampaignRequests(id);
+            DeleteFromExposureDates(id);
+            StringBuilder queryBuilder = new StringBuilder("DELETE FROM dbo.Campaign ");
+            queryBuilder.Append("WHERE id = @id ");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = id },
+             };
+
+            ExecuteQuery(query, parameters);
+        }
+
+        private void DeleteFromExposureDates(Guid campaignId)
+        {
+            List<ExposureDate> exposureDates = (List<ExposureDate>)_exposureDateRepository.GetExposureDatesForCampaign(campaignId);
+            foreach (ExposureDate exposureDate in exposureDates)
+            {
+                DeleteFromSeenBy(exposureDate.Id);
+            }
+            StringBuilder queryBuilder = new StringBuilder("DELETE FROM dbo.ExposureDates ");
+            queryBuilder.Append("WHERE campaign_id = @id ");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = campaignId },
+             };
+
+            ExecuteQuery(query, parameters);
+        }
+
+        private void DeleteFromSeenBy(Guid exposureDateId)
+        {
+            StringBuilder queryBuilder = new StringBuilder("DELETE FROM dbo.SeenBy ");
+            queryBuilder.Append("WHERE exposure_date_id = @id ");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = exposureDateId },
+             };
+
+            ExecuteQuery(query, parameters);
+        }
+
+        private void DeleteCampaignRequests(Guid campaignId)
+        {
+            StringBuilder queryBuilder = new StringBuilder("DELETE FROM dbo.CampaignRequest ");
+            queryBuilder.Append("WHERE campaign_id = @id ");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = campaignId },
+             };
+
+            ExecuteQuery(query, parameters);
+        }
+
+        private void DeleteCampaignUpdates(Guid campaignId)
+        {
+            StringBuilder queryBuilder = new StringBuilder("DELETE FROM dbo.CampaignUpdates ");
+            queryBuilder.Append("WHERE campaign_id = @id ");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = campaignId },
+             };
+
+            ExecuteQuery(query, parameters);
+        }
+
+        private void DeleteAds(Guid campaignId)
+        {
+            StringBuilder queryBuilder = new StringBuilder("DELETE FROM dbo.Ad ");
+            queryBuilder.Append("WHERE campaign_id = @id ");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = campaignId },
+             };
+
+            ExecuteQuery(query, parameters);
+        }
     }
 }

@@ -198,3 +198,5 @@ export const GET_STORIES_FOR_CAMPAIGN = "getStoriesForCampaign";
 export const GET_STORIES_FOR_CAMPAIGN_ERROR = "getStoriesForCampaignError";
 export const GET_POSTS_FOR_CAMPAIGN = "getPostsForCampaign";
 export const GET_POSTS_FOR_CAMPAIGN_ERROR = "getPostsForCampaignError";
+export const DELETE_CAMPAIGN = "deleteCampaign";
+export const DELETE_CAMPAIGN_ERROR = "deleteCampaignError";
