@@ -35,6 +35,7 @@ import CreateCampaign from "./components/Campaign/CreateCampaign";
 import CreateCampaignPage from "./pages/CreateCampaignPage";
 import CampaignRequestsPage from "./pages/CampaignRequestsPage";
 import TokenPage from "./pages/TokenPage";
+import AgentProtectedRoute from "./routes/AgentProtectedRoute";
 
 function App() {
   return (
@@ -139,7 +140,7 @@ function App() {
             path="/campaign-requests"
             component={CampaignRequestsPage}
           />
-          <ProtectedRoute
+          <AgentProtectedRoute
             exact
             path="/campaign"
             component={CreateCampaignPage}

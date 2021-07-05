@@ -45,7 +45,7 @@ namespace CampaignMicroservice.Api.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Agent, VerifiedUser")]
+        [Authorize(Roles = "Agent")]
         public IActionResult Save(Campaign campaign)
         {
             Agent agent = (Agent)_userRepository.GetById(campaign.AgentId).Value;
@@ -104,12 +104,15 @@ namespace CampaignMicroservice.Api.Controllers
             if (String.IsNullOrEmpty(agentId.ToString())) return BadRequest();
             var campaigns = _campaignFactory.CreateCampaigns(_campaignRepository.GetBy(agentId, clientId));
 
-            foreach (Campaign campaign in campaigns)
+            if (agentId == new Guid() && clientId != new Guid())
             {
-                foreach (ExposureDate exposureDate in campaign.ExposureDates)
+                foreach (Campaign campaign in campaigns)
                 {
-                    if (!exposureDate.SeenByIds.Contains(clientId) && exposureDate.Time < DateTime.Now)
-                        _seenByRepository.Save(exposureDate.Id, clientId);
+                    foreach (ExposureDate exposureDate in campaign.ExposureDates)
+                    {
+                        if (!exposureDate.SeenByIds.Contains(clientId) && exposureDate.Time < DateTime.Now)
+                            _seenByRepository.Save(exposureDate.Id, clientId);
+                    }
                 }
             }
             return Ok(campaigns);

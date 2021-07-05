@@ -36,6 +36,7 @@ namespace StoryMicroservice.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
         public IActionResult Save(Highlights highlight)
         {
             highlight.Id = Guid.NewGuid().ToString();
@@ -46,6 +47,7 @@ namespace StoryMicroservice.Api.Controllers
         }
 
         [HttpPost("{id}/stories")]
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
         public IActionResult AddStory([FromRoute] string id, Core.DTOs.Story story)
         {
             _highlightRepository.AddStory(id, storyFactory.Create(story, new List<Core.Model.RegisteredUser>(),

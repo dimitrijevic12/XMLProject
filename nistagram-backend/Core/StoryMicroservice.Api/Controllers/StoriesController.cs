@@ -46,6 +46,7 @@ namespace StoryMicroservice.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
         public IActionResult Create(Story story)
         {
             story.Id = Guid.NewGuid().ToString();
@@ -79,6 +80,7 @@ namespace StoryMicroservice.Api.Controllers
         }
 
         [Microsoft.AspNetCore.Mvc.HttpPut("{id}/ban")]
+        [Authorize(Roles = "Admin")]
         public IActionResult BanStory(string id)
         {
             _storyRepository.BanStory(id);

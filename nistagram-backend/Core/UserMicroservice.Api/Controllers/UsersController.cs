@@ -42,7 +42,6 @@ namespace UserMicroservice.Api.Controllers
             this.agentFactory = agentFactory;
         }
 
-        //[Authorize(Roles = "ApprovedAgent")]
         [HttpPost]
         public async Task<IActionResult> RegisterUser(DTOs.RegisteredUser dto)
         {
@@ -89,7 +88,7 @@ namespace UserMicroservice.Api.Controllers
 
             if (registrationResult.IsFailure) return BadRequest();
             dto.Id = id;
-            return Ok(/*this.Request.Path + id, ""*/ dto);
+            return Ok(dto);
         }
 
         [HttpPost("login")]
@@ -144,6 +143,7 @@ namespace UserMicroservice.Api.Controllers
         }
 
         [HttpPut("edit")]
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
         public async Task<IActionResult> Edit(DTOs.RegisteredUser dto)
         {
             Result<Username> username = Username.Create(dto.Username);
@@ -198,6 +198,7 @@ namespace UserMicroservice.Api.Controllers
         }
 
         [HttpPost("follow")]
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
         public async Task<IActionResult> Follow(Follow follow)
         {
             Guid id = Guid.NewGuid();
@@ -207,6 +208,7 @@ namespace UserMicroservice.Api.Controllers
         }
 
         [HttpPost("followprivate")]
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
         public IActionResult FollowPrivate(Follow follow)
         {
             Guid id = Guid.NewGuid();
@@ -215,6 +217,7 @@ namespace UserMicroservice.Api.Controllers
         }
 
         [HttpPut("handlerequest")]
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
         public IActionResult HandleFollowRequest(Follow follow)
         {
             Guid newId = Guid.NewGuid();
@@ -257,6 +260,7 @@ namespace UserMicroservice.Api.Controllers
         }
 
         [HttpPut("{id}/profile-picture/{image}")]
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
         public IActionResult AddProfilePicture([FromRoute] Guid id, [FromRoute] string image)
         {
             _userRepository.AddProfilePicture(id, image);
@@ -264,6 +268,7 @@ namespace UserMicroservice.Api.Controllers
         }
 
         [HttpPut("{userId}/close-friends/{closeFriendId}")]
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
         public IActionResult AddCloseFriend([FromRoute] string userId, [FromRoute] string closeFriendId)
         {
             if (userService.AddCloseFriend(Guid.NewGuid(), new Guid(userId), new Guid(closeFriendId)).IsFailure) return BadRequest();
@@ -271,6 +276,7 @@ namespace UserMicroservice.Api.Controllers
         }
 
         [HttpPost("mute")]
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
         public async Task<IActionResult> Mute(Mute mute)
         {
             Guid id = Guid.NewGuid();
@@ -287,6 +293,7 @@ namespace UserMicroservice.Api.Controllers
         }
 
         [HttpPost("block")]
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
         public async Task<IActionResult> Block(Block block)
         {
             Guid id = Guid.NewGuid();
@@ -296,6 +303,7 @@ namespace UserMicroservice.Api.Controllers
         }
 
         [HttpPut("{id}/ban")]
+        [Authorize(Roles = "Admin")]
         public IActionResult BanUser(Guid id)
         {
             _userRepository.BanUser(id);

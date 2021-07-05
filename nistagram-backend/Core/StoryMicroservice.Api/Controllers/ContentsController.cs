@@ -24,6 +24,7 @@ namespace StoryMicroservice.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
         public IActionResult SaveImg([FromForm] FileModel file)
         {
             string fileName = storyService.ImageToSave(_env.WebRootPath, file);

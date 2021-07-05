@@ -65,7 +65,10 @@ export const getPostsByUserId = (id) => async (dispatch) => {
   try {
     const response = await axios.get("https://localhost:44355/api/posts?", {
       params: { userid: id },
-      headers: { "Access-Control-Allow-Origin": "*" },
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        Authorization: "Bearer " + sessionStorage.getItem("savedToken"),
+      },
     });
     dispatch({
       type: GET_POSTS_BY_USER_ID,
@@ -83,7 +86,10 @@ export const getPostsByHashTag = (hashtag) => async (dispatch) => {
   try {
     const response = await axios.get("https://localhost:44355/api/posts?", {
       params: { hashtag: hashtag, access: "public" },
-      headers: { "Access-Control-Allow-Origin": "*" },
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        Authorization: "Bearer " + sessionStorage.getItem("savedToken"),
+      },
     });
     dispatch({
       type: GET_POSTS_BY_HASHTAG,
@@ -107,7 +113,10 @@ export const getPostsByLocation =
           street: street,
           access: "public",
         },
-        headers: { "Access-Control-Allow-Origin": "*" },
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("savedToken"),
+        },
       });
       dispatch({
         type: GET_POSTS_BY_LOCATION,
@@ -125,7 +134,10 @@ export const getPost = (id) => async (dispatch) => {
   try {
     const response = await axios
       .get("https://localhost:44355/api/posts/" + id, {
-        headers: { "Access-Control-Allow-Origin": "*" },
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("savedToken"),
+        },
       })
       .then(async function (response) {
         dispatch({ type: CLEAR_IMAGES });
@@ -143,6 +155,8 @@ export const getPost = (id) => async (dispatch) => {
                 {
                   headers: {
                     "Access-Control-Allow-Origin": "*",
+                    Authorization:
+                      "Bearer " + sessionStorage.getItem("savedToken"),
                   },
                 }
               )
@@ -161,6 +175,8 @@ export const getPost = (id) => async (dispatch) => {
               {
                 headers: {
                   "Access-Control-Allow-Origin": "*",
+                  Authorization:
+                    "Bearer " + sessionStorage.getItem("savedToken"),
                 },
               }
             )
@@ -185,7 +201,10 @@ export const loadImage = (path) => async (dispatch) => {
     const response = await axios.get(
       "https://localhost:44355/api/posts/contents/" + path,
       {
-        headers: { "Access-Control-Allow-Origin": "*" },
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("savedToken"),
+        },
       }
     );
     dispatch({
@@ -205,7 +224,10 @@ export const loadImages = (path) => async (dispatch) => {
     const response = await axios.get(
       "https://localhost:44355/api/posts/contents/" + path,
       {
-        headers: { "Access-Control-Allow-Origin": "*" },
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("savedToken"),
+        },
       }
     );
     dispatch({
@@ -249,7 +271,10 @@ export const getHashTagsByText = (text) => async (dispatch) => {
     const response = await axios.get(
       "https://localhost:44355/api/hashtags?text=" + text,
       {
-        headers: { "Access-Control-Allow-Origin": "*" },
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("savedToken"),
+        },
       }
     );
     dispatch({
@@ -269,7 +294,10 @@ export const getLocationsByText = (text) => async (dispatch) => {
     const response = await axios.get(
       "https://localhost:44355/api/locations?text=" + text,
       {
-        headers: { "Access-Control-Allow-Origin": "*" },
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("savedToken"),
+        },
       }
     );
     dispatch({
@@ -287,7 +315,10 @@ export const getLocationsByText = (text) => async (dispatch) => {
 export const getLocations = () => async (dispatch) => {
   try {
     const response = await axios.get("https://localhost:44355/api/locations", {
-      headers: { "Access-Control-Allow-Origin": "*" },
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        Authorization: "Bearer " + sessionStorage.getItem("savedToken"),
+      },
     });
     dispatch({
       type: GET_LOCATIONS,
@@ -306,7 +337,10 @@ export const getTaggableUsers = () => async (dispatch) => {
     const response = await axios.get(
       "https://localhost:44355/api/users?isTaggable=" + true,
       {
-        headers: { "Access-Control-Allow-Origin": "*" },
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("savedToken"),
+        },
       }
     );
     dispatch({
@@ -492,6 +526,7 @@ export const getPostsForFollowing = (users) => async (dispatch) => {
       {
         headers: {
           "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("savedToken"),
         },
       }
     );
@@ -515,6 +550,7 @@ export const getAllImages = (posts) => async (dispatch) => {
       {
         headers: {
           "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("savedToken"),
         },
       }
     );
@@ -538,6 +574,7 @@ export const getAllImagesForSearch = (posts) => async (dispatch) => {
       {
         headers: {
           "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("savedToken"),
         },
       }
     );
@@ -564,7 +601,10 @@ export const changeProfilePicturePostmicroservice =
           picture,
         {},
         {
-          headers: { "Access-Control-Allow-Origin": "" },
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            Authorization: "Bearer " + sessionStorage.getItem("savedToken"),
+          },
         }
       );
       debugger;
@@ -588,6 +628,7 @@ export const getAllImagesForProfile = (posts) => async (dispatch) => {
       {
         headers: {
           "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("savedToken"),
         },
       }
     );
@@ -611,6 +652,7 @@ export const getAllImagesForCollection = (posts) => async (dispatch) => {
       {
         headers: {
           "Access-Control-Allow-Origin": "*",
+          Authorization: "Bearer " + sessionStorage.getItem("savedToken"),
         },
       }
     );

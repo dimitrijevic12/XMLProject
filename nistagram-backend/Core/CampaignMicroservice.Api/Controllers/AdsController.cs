@@ -27,7 +27,7 @@ namespace CampaignMicroservice.Api.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
+        [Authorize(Roles = "Agent, VerifiedUser")]
         public IActionResult Save(DTOs.CreateAdDto dto)
         {
             dto.Ad.Id = Guid.NewGuid();

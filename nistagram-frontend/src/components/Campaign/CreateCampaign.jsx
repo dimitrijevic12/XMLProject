@@ -125,8 +125,11 @@ class CreatePost extends Component {
 
   async addExposureDates(dates) {
     debugger;
+    var datesArray = [];
+    if (dates.length === undefined) datesArray.push(dates);
+    else datesArray = dates;
     await this.setState({
-      exposureDates: dates,
+      exposureDates: datesArray,
     });
   }
 
