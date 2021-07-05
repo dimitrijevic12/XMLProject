@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NotificationMicroservice.Api.Factories;
 using NotificationMicroservice.Core.Interface.Repository;
 using NotificationMicroservice.Core.Model;
@@ -33,6 +34,7 @@ namespace NotificationMicroservice.Api.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
         public IActionResult Edit(DTOs.NotificationOptions notificationOptions)
         {
             return Ok(notificationOptionsFactory.Create(_notificationOptionsRepository.Edit(

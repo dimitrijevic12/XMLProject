@@ -32,6 +32,7 @@ namespace PostMicroservice.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
         public IActionResult Save(DTOs.Collection collection)
         {
             Result<CollectionName> collectionName = CollectionName.Create(collection.CollectionName);
@@ -45,6 +46,7 @@ namespace PostMicroservice.Api.Controllers
         }
 
         [HttpPut("{id}/posts/{postId}")]
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
         public IActionResult AddPostToCollection([FromRoute] Guid id, [FromRoute] Guid postId)
         {
             return Ok(_collectionRepository.AddPostToCollection(id, postId));

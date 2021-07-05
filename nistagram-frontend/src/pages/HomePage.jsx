@@ -15,8 +15,9 @@ import {
   likePost,
   dislikePost,
   commentPost,
+  getPostsForCampaign,
 } from "../actions/actions";
-import { getStories } from "../actions/actionsStory";
+import { getStories, getStoriesForCampaign } from "../actions/actionsStory";
 import moment from "moment";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -24,6 +25,8 @@ import ChooseCollectionModal from "../components/Collection/ChooseCollectionModa
 import TaggedUsersModal from "../components/Profile/TaggedUsersModal";
 import { createNotification } from "../actions/actionsNotification";
 import ReportModal from "../components/Report/ReportModal";
+import { getCampaignsForClient } from "../actions/actionsCampaign";
+import LinkModal from "../components/Campaign/LinkModal";
 
 const style = {
   height: 30,
@@ -42,6 +45,8 @@ class HomePage extends Component {
     liked: false,
     disliked: false,
     post: {},
+    link: "",
+    showLinkModal: false,
   };
 
   async componentDidMount() {
@@ -49,12 +54,37 @@ class HomePage extends Component {
     await this.props.getFollowingWithoutMuted();
     await this.props.getPostsForFollowing(this.props.following);
     await this.props.getStories();
+    await this.props.getCampaignsForClient();
+    var postCampaigns = 0;
+    if (this.props.clientCampaigns.length > 0) {
+      for (let i = 0; i < this.props.clientCampaigns.length; i++) {
+        for (let j = 0; j < this.props.clientCampaigns[i].ads.length; j++) {
+          if (this.props.clientCampaigns[i].ads[j].type === "Story") {
+            await this.props.getStoriesForCampaign(
+              this.props.clientCampaigns[i].ads[j].contentId
+            );
+          } else {
+            postCampaigns++;
+            await this.props.getPostsForCampaign(
+              this.props.clientCampaigns[i].ads[j].contentId
+            );
+          }
+        }
+      }
+    }
     var posts = [...this.props.posts];
+    if (postCampaigns === 0) {
+      for (let i = 0; i < posts.length; i++) {
+        await this.props.getPostsForCampaign(posts[i].id);
+      }
+    }
+
     posts.sort(function compare(a, b) {
       var dateA = new Date(a.timeStamp);
       var dateB = new Date(b.timeStamp);
       return dateB - dateA;
     });
+
     await this.getAllImages(posts);
   }
   render() {
@@ -72,19 +102,14 @@ class HomePage extends Component {
       return null;
     }
 
-    debugger;
-    var allUsers = this.props.following;
-    var storyUsers = this.getAllUsersFromStories();
-    var users = [];
-    allUsers.forEach((user) => {
-      storyUsers.forEach((storyUser) => {
-        if (user.id === storyUser.id) users.push(user);
-      });
-    });
-    debugger;
-    users = [...new Set(users)];
+    if (this.props.clientCampaigns === undefined) {
+      return null;
+    }
+
+    var users = this.getAllUsersFromStories();
 
     var posts = [...this.props.posts];
+
     posts.sort(function compare(a, b) {
       var dateA = new Date(a.timeStamp);
       var dateB = new Date(b.timeStamp);
@@ -141,6 +166,13 @@ class HomePage extends Component {
                     height: "900px",
                   }}
                 >
+                  {this.state.showLinkModal ? (
+                    <LinkModal
+                      show={this.state.showLinkModal}
+                      link={this.state.link}
+                      onShowChange={this.displayModalLink.bind(this)}
+                    />
+                  ) : null}
                   <CardHeader>
                     <img
                       src="images/nature.jpg"
@@ -150,6 +182,14 @@ class HomePage extends Component {
                     {post.registeredUser.username}
                   </CardHeader>
                   <CardBody>
+                    {post.link !== undefined ? (
+                      <div className="ml-4 mb-2" style={{ textAlign: "right" }}>
+                        <b>Sponsored</b>{" "}
+                        <img className="ml-4 mb-4" src="/images/star.png" />
+                      </div>
+                    ) : (
+                      ""
+                    )}
                     <img
                       onClick={() => {
                         this.displayModalPost(post);
@@ -291,6 +331,14 @@ class HomePage extends Component {
                     {post.registeredUser.username}
                   </CardHeader>
                   <CardBody>
+                    {post.link !== undefined ? (
+                      <div className="ml-4 mb-2" style={{ textAlign: "right" }}>
+                        <b>Sponsored</b>{" "}
+                        <img className="ml-4 mb-4" src="/images/star.png" />
+                      </div>
+                    ) : (
+                      ""
+                    )}
                     <video
                       controls
                       onClick={() => {
@@ -537,10 +585,22 @@ class HomePage extends Component {
   }
 
   displayModalPost(post) {
+    if (post !== undefined && post.link !== undefined) {
+      this.displayModalLink(post.link);
+    } else {
+      debugger;
+      this.setState({
+        post: post,
+        showTaggedModal: !this.state.showTaggedModal,
+      });
+    }
+  }
+
+  displayModalLink(link) {
     debugger;
     this.setState({
-      post: post,
-      showTaggedModal: !this.state.showTaggedModal,
+      showLinkModal: !this.state.showLinkModal,
+      link: link,
     });
   }
 
@@ -580,6 +640,7 @@ const mapStateToProps = (state) => ({
   homePageImages: state.homePageImages,
   stories: state.stories,
   commentId: state.commentId,
+  clientCampaigns: state.clientCampaigns,
 });
 
 export default compose(
@@ -594,5 +655,8 @@ export default compose(
     getStories,
     getFollowingWithoutMuted,
     createNotification,
+    getCampaignsForClient,
+    getStoriesForCampaign,
+    getPostsForCampaign,
   })
 )(HomePage);

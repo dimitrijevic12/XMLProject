@@ -105,6 +105,39 @@ namespace UserMicroservice.DataAccess.Implementation
             return registeredUser;
         }
 
+        public RegisteredUser EditAgent(Agent registeredUser)
+        {
+            StringBuilder queryBuilder = new StringBuilder("UPDATE dbo.RegisteredUser ");
+            queryBuilder.Append("SET username = @username, email = @email, first_name = @first_name, last_name = @last_name, date_of_birth = @date_of_birth," +
+                " phone_number = @phone_number, gender = @gender, website_address = @website_address, bio = @bio, is_private = @is_private," +
+                " is_accepting_messages = @is_accepting_messages, is_accepting_tags = @is_accepting_tags, type = @type ");
+            queryBuilder.Append("WHERE id = @id;");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+            {
+                new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = registeredUser.Id },
+                 new SqlParameter("@username", SqlDbType.NVarChar) { Value = registeredUser.Username.ToString() },
+                 new SqlParameter("@email", SqlDbType.NVarChar) { Value = registeredUser.EmailAddress.ToString() },
+                 new SqlParameter("@first_name", SqlDbType.NVarChar) { Value = registeredUser.FirstName.ToString() },
+                 new SqlParameter("@last_name", SqlDbType.NVarChar) { Value = registeredUser.LastName.ToString() },
+                 new SqlParameter("@date_of_birth", SqlDbType.NVarChar) { Value = registeredUser.DateOfBirth.ToString() },
+                 new SqlParameter("@phone_number", SqlDbType.NVarChar) { Value = registeredUser.PhoneNumber.ToString() },
+                 new SqlParameter("@gender", SqlDbType.NVarChar) { Value = registeredUser.Gender.ToString() },
+                 new SqlParameter("@website_address", SqlDbType.NVarChar) { Value = registeredUser.WebsiteAddress.ToString() },
+                 new SqlParameter("@bio", SqlDbType.NVarChar) { Value = registeredUser.Bio.ToString() },
+                 new SqlParameter("@is_private", SqlDbType.Bit) { Value = registeredUser.IsPrivate },
+                 new SqlParameter("@is_accepting_messages", SqlDbType.Bit) { Value = registeredUser.IsAcceptingMessages },
+                 new SqlParameter("@is_accepting_tags", SqlDbType.Bit) { Value = registeredUser.IsAcceptingTags },
+                 new SqlParameter("@type", SqlDbType.NVarChar) { Value = registeredUser.GetType().Name },
+            };
+
+            ExecuteQuery(query, parameters);
+
+            return registeredUser;
+        }
+
         public IEnumerable<RegisteredUser> GetAll()
         {
             throw new NotImplementedException();
@@ -133,6 +166,50 @@ namespace UserMicroservice.DataAccess.Implementation
                 );
             }
             return Maybe<RegisteredUser>.None;
+        }
+
+        public Maybe<User> GetByIdWithType(Guid id)
+        {
+            StringBuilder queryBuilder = new StringBuilder("SELECT * ");
+            queryBuilder.Append("FROM dbo.RegisteredUser ");
+            queryBuilder.Append("WHERE id = @Id AND is_banned=0;");
+
+            string query = queryBuilder.ToString();
+
+            SqlParameter parameterId = new SqlParameter("@Id", SqlDbType.UniqueIdentifier) { Value = id };
+
+            List<SqlParameter> parameters = new List<SqlParameter>() { parameterId };
+
+            DataTable dataTable = ExecuteQuery(query, parameters);
+
+            if (dataTable.Rows.Count > 0)
+            {
+                if (dataTable.Rows[0][13].Equals("default"))
+                {
+                    return (RegisteredUser)_userModelTarget.ConvertSql(
+                  dataTable.Rows[0], GetBlocking(id), GetBlockedBy(id),
+                  GetMuted(id), GetMutedBy(id), GetFollowing(id), GetFollowers(id),
+                  GetMyCloseFriends(id), GetCloseFriendsTo(id)
+                );
+                }
+                else if (dataTable.Rows[0][13].Equals("Agent"))
+                {
+                    return (Agent)_userModelTarget.ConvertSql(
+                 dataTable.Rows[0], GetBlocking(id), GetBlockedBy(id),
+                 GetMuted(id), GetMutedBy(id), GetFollowing(id), GetFollowers(id),
+                 GetMyCloseFriends(id), GetCloseFriendsTo(id)
+                 );
+                }
+                else
+                {
+                    return (VerifiedUser)_userModelTarget.ConvertSql(
+                   dataTable.Rows[0], GetBlocking(id), GetBlockedBy(id),
+                   GetMuted(id), GetMutedBy(id), GetFollowing(id), GetFollowers(id),
+                   GetMyCloseFriends(id), GetCloseFriendsTo(id)
+                );
+                }
+            }
+            return Maybe<User>.None;
         }
 
         private Boolean IsBlocked(Guid loggedId, Guid userId)
@@ -179,13 +256,21 @@ namespace UserMicroservice.DataAccess.Implementation
                   GetMyCloseFriends(userId), GetCloseFriendsTo(userId)
                 );
                 }
+                else if (dataTable.Rows[0][13].Equals("Agent"))
+                {
+                    return (Agent)_userModelTarget.ConvertSql(
+                 dataTable.Rows[0], GetBlocking(userId), GetBlockedBy(userId),
+                 GetMuted(userId), GetMutedBy(userId), GetFollowing(userId), GetFollowers(userId),
+                 GetMyCloseFriends(userId), GetCloseFriendsTo(userId)
+                 );
+                }
                 else
                 {
                     return (VerifiedUser)_userModelTarget.ConvertSql(
                    dataTable.Rows[0], GetBlocking(userId), GetBlockedBy(userId),
                    GetMuted(userId), GetMutedBy(userId), GetFollowing(userId), GetFollowers(userId),
                    GetMyCloseFriends(userId), GetCloseFriendsTo(userId)
-                    );
+                );
                 }
             }
             return Maybe<User>.None;
@@ -843,6 +928,22 @@ namespace UserMicroservice.DataAccess.Implementation
             ExecuteQuery(query, parameters);
         }
 
+        public void DeleteFollow(Guid followedById, Guid followingId)
+        {
+            StringBuilder queryBuilder = new StringBuilder("DELETE FROM dbo.Follows ");
+            queryBuilder.Append("WHERE followed_by_id = @followed_by_id AND following_id = @following_id;");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@followed_by_id", SqlDbType.UniqueIdentifier) { Value = followedById },
+                 new SqlParameter("@following_id", SqlDbType.UniqueIdentifier) { Value = followingId }
+             };
+
+            ExecuteQuery(query, parameters);
+        }
+
         public void DeleteFollowRequests(Guid blockedById, Guid blockingId)
         {
             StringBuilder queryBuilder = new StringBuilder("DELETE FROM dbo.FollowRequest ");
@@ -864,6 +965,36 @@ namespace UserMicroservice.DataAccess.Implementation
         {
             StringBuilder queryBuilder = new StringBuilder("UPDATE dbo.RegisteredUser ");
             queryBuilder.Append("SET is_banned = 1 ");
+            queryBuilder.Append("WHERE id = @id;");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = id },
+             };
+
+            ExecuteQuery(query, parameters);
+        }
+
+        public void DeleteMute(Guid id)
+        {
+            StringBuilder queryBuilder = new StringBuilder("DELETE FROM dbo.Mutes ");
+            queryBuilder.Append("WHERE id = @id;");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+             {
+                 new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = id },
+             };
+
+            ExecuteQuery(query, parameters);
+        }
+
+        public void DeleteBlock(Guid id)
+        {
+            StringBuilder queryBuilder = new StringBuilder("DELETE FROM dbo.Blocks ");
             queryBuilder.Append("WHERE id = @id;");
 
             string query = queryBuilder.ToString();

@@ -53,6 +53,7 @@ namespace StoryMicroservice.Api.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
         public IActionResult Edit(RegisteredUser dto, [FromRoute] string id)
         {
             Result<Username> username = Username.Create(dto.Username);
@@ -77,6 +78,7 @@ namespace StoryMicroservice.Api.Controllers
         }
 
         [HttpPut("{userId}/close-friends/{closeFriendId}")]
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
         public IActionResult AddCloseFriend([FromRoute] string userId, [FromRoute] string closeFriendId)
         {
             if (userService.AddCloseFriend(userId, closeFriendId).IsFailure) return BadRequest();

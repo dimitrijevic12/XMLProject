@@ -23,6 +23,11 @@ namespace CampaignMicroservice.Core.Model
             yield return count;
         }
 
+        public override string ToString()
+        {
+            return count.ToString();
+        }
+
         public static implicit operator string(DislikesCount dislikesCount) => dislikesCount.count.ToString();
     }
 }

@@ -24,13 +24,14 @@ namespace UserMicroservice.Api.Controllers
         private readonly UserService userService;
         private readonly RegisteredUserFactory registerUserFactory;
         private readonly VerifiedUserFactory verifiedUserFactory;
+        private readonly AgentFactory agentFactory;
         private readonly IUserRepository _userRepository;
         private readonly FollowRequestFactory followRequestFactory;
         private readonly IWebHostEnvironment _env;
 
         public UsersController(UserService userService, IUserRepository userRepository,
             RegisteredUserFactory registerUserFactory, FollowRequestFactory followRequestFactory,
-            IWebHostEnvironment env, VerifiedUserFactory verifiedUserFactory)
+            IWebHostEnvironment env, VerifiedUserFactory verifiedUserFactory, AgentFactory agentFactory)
         {
             this.userService = userService;
             _userRepository = userRepository;
@@ -38,9 +39,9 @@ namespace UserMicroservice.Api.Controllers
             this.followRequestFactory = followRequestFactory;
             _env = env;
             this.verifiedUserFactory = verifiedUserFactory;
+            this.agentFactory = agentFactory;
         }
 
-        //[Authorize(Roles = "ApprovedAgent")]
         [HttpPost]
         public async Task<IActionResult> RegisterUser(DTOs.RegisteredUser dto)
         {
@@ -87,7 +88,7 @@ namespace UserMicroservice.Api.Controllers
 
             if (registrationResult.IsFailure) return BadRequest();
             dto.Id = id;
-            return Ok(/*this.Request.Path + id, ""*/ dto);
+            return Ok(dto);
         }
 
         [HttpPost("login")]
@@ -106,9 +107,20 @@ namespace UserMicroservice.Api.Controllers
         [HttpGet("{idUser}")]
         public IActionResult GetById(Guid idUser)
         {
-            Core.Model.RegisteredUser user = userService.GetUserById(idUser);
+            Core.Model.User user = userService.GetUserByIdWithType(idUser);
             if (user == null) return BadRequest();
-            return Ok(registerUserFactory.Create(user));
+            if (user.GetType().Name.Equals("VerifiedUser"))
+            {
+                return Ok(verifiedUserFactory.Create((Core.Model.VerifiedUser)user));
+            }
+            else if (user.GetType().Name.Equals("Agent"))
+            {
+                return Ok(agentFactory.Create((Core.Model.Agent)user));
+            }
+            else
+            {
+                return Ok(registerUserFactory.Create((Core.Model.RegisteredUser)user));
+            }
         }
 
         [HttpGet("{loggedId}/logged/{userId}/user")]
@@ -120,6 +132,10 @@ namespace UserMicroservice.Api.Controllers
             {
                 return Ok(verifiedUserFactory.Create((Core.Model.VerifiedUser)user));
             }
+            else if (user.GetType().Name.Equals("Agent"))
+            {
+                return Ok(agentFactory.Create((Core.Model.Agent)user));
+            }
             else
             {
                 return Ok(registerUserFactory.Create((Core.Model.RegisteredUser)user));
@@ -127,7 +143,8 @@ namespace UserMicroservice.Api.Controllers
         }
 
         [HttpPut("edit")]
-        public IActionResult Edit(DTOs.RegisteredUser dto)
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
+        public async Task<IActionResult> Edit(DTOs.RegisteredUser dto)
         {
             Result<Username> username = Username.Create(dto.Username);
             Result<EmailAddress> emailAddress = EmailAddress.Create(dto.EmailAddress);
@@ -141,11 +158,7 @@ namespace UserMicroservice.Api.Controllers
 
             Result result = Result.Combine(username, emailAddress, firstName, lastName, phoneNumber, gender, websiteAddress, bio, password);
             if (result.IsFailure) return BadRequest(result.Error);
-            if (!_userRepository.GetById(dto.Id).Value.Username.ToString().Equals(dto.Username))
-            {
-                if (_userRepository.GetByUsername(dto.Username).HasValue) return BadRequest();
-            }
-            return Ok(userService.Edit((Core.Model.RegisteredUser.Create(dto.Id,
+            Result userResult = await userService.EditAsync((Core.Model.RegisteredUser.Create(dto.Id,
                                           username.Value,
                                           emailAddress.Value,
                                           firstName.Value,
@@ -168,7 +181,10 @@ namespace UserMicroservice.Api.Controllers
                                           new List<Core.Model.RegisteredUser>(),
                                           new List<Core.Model.RegisteredUser>(),
                                           new List<Core.Model.RegisteredUser>(),
-                                          dto.IsBanned).Value)));
+                                          dto.IsBanned).Value));
+
+            if (userResult.IsFailure) return BadRequest();
+            return Ok(userResult);
         }
 
         [HttpGet]
@@ -182,14 +198,17 @@ namespace UserMicroservice.Api.Controllers
         }
 
         [HttpPost("follow")]
-        public IActionResult Follow(Follow follow)
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
+        public async Task<IActionResult> Follow(Follow follow)
         {
             Guid id = Guid.NewGuid();
-            if (userService.Follow(id, follow.FollowedById, follow.FollowingId).IsFailure) return BadRequest();
+            Result result = await userService.FollowAsync(id, follow.FollowedById, follow.FollowingId);
+            if (result.IsFailure) return BadRequest();
             return Created(this.Request.Path + id, "");
         }
 
         [HttpPost("followprivate")]
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
         public IActionResult FollowPrivate(Follow follow)
         {
             Guid id = Guid.NewGuid();
@@ -198,6 +217,7 @@ namespace UserMicroservice.Api.Controllers
         }
 
         [HttpPut("handlerequest")]
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
         public IActionResult HandleFollowRequest(Follow follow)
         {
             Guid newId = Guid.NewGuid();
@@ -240,6 +260,7 @@ namespace UserMicroservice.Api.Controllers
         }
 
         [HttpPut("{id}/profile-picture/{image}")]
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
         public IActionResult AddProfilePicture([FromRoute] Guid id, [FromRoute] string image)
         {
             _userRepository.AddProfilePicture(id, image);
@@ -247,6 +268,7 @@ namespace UserMicroservice.Api.Controllers
         }
 
         [HttpPut("{userId}/close-friends/{closeFriendId}")]
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
         public IActionResult AddCloseFriend([FromRoute] string userId, [FromRoute] string closeFriendId)
         {
             if (userService.AddCloseFriend(Guid.NewGuid(), new Guid(userId), new Guid(closeFriendId)).IsFailure) return BadRequest();
@@ -254,10 +276,12 @@ namespace UserMicroservice.Api.Controllers
         }
 
         [HttpPost("mute")]
-        public IActionResult Mute(Mute mute)
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
+        public async Task<IActionResult> Mute(Mute mute)
         {
             Guid id = Guid.NewGuid();
-            if (userService.Mute(id, mute.MutedById, mute.MutingId).IsFailure) return BadRequest();
+            Result result = await userService.MuteAsync(id, mute.MutedById, mute.MutingId);
+            if (result.IsFailure) return BadRequest();
             return Created(this.Request.Path + id, "");
         }
 
@@ -269,14 +293,17 @@ namespace UserMicroservice.Api.Controllers
         }
 
         [HttpPost("block")]
-        public IActionResult Block(Block block)
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
+        public async Task<IActionResult> Block(Block block)
         {
             Guid id = Guid.NewGuid();
-            if (userService.Block(id, block.BlockedById, block.BlockingId).IsFailure) return BadRequest();
+            Result result = await userService.BlockAsync(id, block.BlockedById, block.BlockingId);
+            if (result.IsFailure) return BadRequest();
             return Created(this.Request.Path + id, "");
         }
 
         [HttpPut("{id}/ban")]
+        [Authorize(Roles = "Admin")]
         public IActionResult BanUser(Guid id)
         {
             _userRepository.BanUser(id);

@@ -16,12 +16,18 @@ namespace CampaignMicroservice.Core.Model
         {
             if (gender.ToLower().Equals("male")) return Result.Success(new Gender(gender));
             if (gender.ToLower().Equals("female")) return Result.Success(new Gender(gender));
+            if (gender.ToLower().Equals("none")) return Result.Success(new Gender(gender));
             return Result.Failure<Gender>("Gender has to be either 'male' or 'female'");
         }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return gender;
+        }
+
+        public override string ToString()
+        {
+            return this.gender;
         }
 
         public static implicit operator string(Gender gender) => gender.gender;

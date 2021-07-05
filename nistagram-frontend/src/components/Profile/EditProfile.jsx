@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
 import "react-toastify/dist/ReactToastify.css";
-import "react-datepicker/dist/react-datepicker-cssmodules.css";
+import "react-datepicker/dist/react-datepicker.css";
 
 class EditProfile extends Component {
   state = {
@@ -328,38 +328,38 @@ class EditProfile extends Component {
   async edit() {
     debugger;
     var successful = false;
-    successful = await this.props.editUserForStory({
-      Id: this.state.id,
-      Username: this.state.username,
-      FirstName: this.state.firstName,
-      LastName: this.state.lastName,
-      IsPrivate: this.state.isPrivate,
-      IsAcceptingTags: this.state.isAcceptingTags,
-      IsAcceptingMessages: this.state.isAcceptingMessages,
-      ProfilePicturePath: this.state.profilePicturePath,
-      BlockedUsers: this.state.blockedUsers,
-      BlockedByUsers: this.state.blockedByUsers,
-      Following: this.state.following,
-      Followers: this.state.followers,
-      MyCloseFriends: this.state.myCloseFriends,
-      CloseFriendTo: this.state.closeFriendTo,
-    });
+    // successful = await this.props.editUserForStory({
+    //   Id: this.state.id,
+    //   Username: this.state.username,
+    //   FirstName: this.state.firstName,
+    //   LastName: this.state.lastName,
+    //   IsPrivate: this.state.isPrivate,
+    //   IsAcceptingTags: this.state.isAcceptingTags,
+    //   IsAcceptingMessages: this.state.isAcceptingMessages,
+    //   ProfilePicturePath: this.state.profilePicturePath,
+    //   BlockedUsers: this.state.blockedUsers,
+    //   BlockedByUsers: this.state.blockedByUsers,
+    //   Following: this.state.following,
+    //   Followers: this.state.followers,
+    //   MyCloseFriends: this.state.myCloseFriends,
+    //   CloseFriendTo: this.state.closeFriendTo,
+    // });
 
-    successful = await this.props.editUserForPost({
-      Id: this.state.id,
-      Username: this.state.username,
-      EmailAddress: this.state.email,
-      FirstName: this.state.firstName,
-      LastName: this.state.lastName,
-      DateOfBirth: this.state.dateOfBirth,
-      PhoneNumber: this.state.phoneNumber,
-      Gender: this.state.gender,
-      WebsiteAddress: this.state.webSite,
-      Bio: this.state.bio,
-      IsPrivate: this.state.isPrivate,
-      IsAcceptingTags: this.state.isAcceptingTags,
-      IsAcceptingMessages: this.state.IsAcceptingMessages,
-    });
+    // successful = await this.props.editUserForPost({
+    //   Id: this.state.id,
+    //   Username: this.state.username,
+    //   EmailAddress: this.state.email,
+    //   FirstName: this.state.firstName,
+    //   LastName: this.state.lastName,
+    //   DateOfBirth: this.state.dateOfBirth,
+    //   PhoneNumber: this.state.phoneNumber,
+    //   Gender: this.state.gender,
+    //   WebsiteAddress: this.state.webSite,
+    //   Bio: this.state.bio,
+    //   IsPrivate: this.state.isPrivate,
+    //   IsAcceptingTags: this.state.isAcceptingTags,
+    //   IsAcceptingMessages: this.state.IsAcceptingMessages,
+    // });
     successful = await this.props.editUser({
       Id: this.state.id,
       Username: this.state.username,

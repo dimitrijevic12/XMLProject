@@ -20,6 +20,7 @@ namespace UserMicroservice.Api.DTOs
         public bool IsPrivate { get; set; }
         public bool IsAcceptingMessages { get; set; }
         public bool IsAcceptingTags { get; set; }
+        public bool IsBanned { get; set; }
         public IEnumerable<RegisteredUser> BlockedUsers { get; set; }
         public IEnumerable<RegisteredUser> BlockedByUsers { get; set; }
         public IEnumerable<RegisteredUser> MutedUsers { get; set; }
@@ -28,6 +29,5 @@ namespace UserMicroservice.Api.DTOs
         public IEnumerable<RegisteredUser> Followers { get; set; }
         public IEnumerable<RegisteredUser> MyCloseFriends { get; set; }
         public IEnumerable<RegisteredUser> CloseFriendTo { get; set; }
-        public bool IsBanned { get; set; }
     }
 }

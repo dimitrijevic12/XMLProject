@@ -35,9 +35,9 @@ class AgentRegistration extends Component {
             <div className="text-center pt-5">
               <img
                 alt=""
-                width="100"
-                height="100"
-                src="/images/iconfinder_00-ELASTOFONT-STORE-READY_user-circle_2703062.png"
+                width="50"
+                height="50"
+                src="/images/agent-verification.png"
               />
             </div>
             <div className="mt-5">
@@ -245,7 +245,19 @@ class AgentRegistration extends Component {
             </div>
             <div className="mt-5 pb-5">
               <button
-                disabled={this.state.password != this.state.repeatPassword}
+                disabled={
+                  this.state.password != this.state.repeatPassword ||
+                  this.state.firstName === "" ||
+                  this.state.lastName === "" ||
+                  this.state.username === "" ||
+                  this.state.phoneNumber === "" ||
+                  this.state.dateOfBirth === "" ||
+                  this.state.phoneNumber === "" ||
+                  this.state.gender === "" ||
+                  this.state.bio === "" ||
+                  this.state.website === "" ||
+                  this.state.password === ""
+                }
                 className="btn btn-lg btn-primary btn-block"
                 onClick={this.register.bind(this)}
               >
@@ -298,7 +310,35 @@ class AgentRegistration extends Component {
     debugger;
     await this.props.createAgentRequest({
       IsApproved: false,
-      RegisteredUser: { id: sessionStorage.getItem("userId") },
+      RegisteredUser: {
+        Id: sessionStorage.getItem("userId"),
+        Username: this.state.username,
+        EmailAddress: this.state.email,
+        FirstName: this.state.firstName,
+        LastName: this.state.lastName,
+        DateOfBirth: this.state.dateOfBirth,
+        PhoneNumber: this.state.phoneNumber,
+        Gender: this.state.gender,
+        WebsiteAddress: this.state.webSite,
+        Bio: this.state.bio,
+        IsPrivate: this.state.isPrivate,
+        IsAcceptingTags: this.state.isAcceptingTags,
+        IsAcceptingMessages: this.state.isAcceptingMessages,
+        IsBanned: this.state.isBanned,
+      },
+      Username: this.state.username,
+      EmailAddress: this.state.email,
+      FirstName: this.state.firstName,
+      LastName: this.state.lastName,
+      DateOfBirth: this.state.dateOfBirth,
+      PhoneNumber: this.state.phoneNumber,
+      Gender: this.state.gender,
+      WebsiteAddress: this.state.webSite,
+      Bio: this.state.bio,
+      IsPrivate: this.state.isPrivate,
+      IsAcceptingTags: this.state.isAcceptingTags,
+      IsAcceptingMessages: this.state.isAcceptingMessages,
+      Password: this.state.password,
     });
 
     this.props.history.replace({

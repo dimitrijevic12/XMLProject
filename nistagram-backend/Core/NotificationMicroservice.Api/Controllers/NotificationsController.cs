@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NotificationMicroservice.Api.Factories;
 using NotificationMicroservice.Core.Interface.Repository;
@@ -26,6 +27,7 @@ namespace NotificationMicroservice.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
         public IActionResult Save(DTOs.Notification notification)
         {
             Result<DateTime> timeStamp = DateTime.Now;
@@ -68,6 +70,7 @@ namespace NotificationMicroservice.Api.Controllers
         }
 
         [HttpPost("following")]
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
         public IActionResult GetNotificationsForFollowing(DTOs.NotificationUsers notificationUsers)
         {
             List<RegisteredUser> users = (notificationUsers.RegisteredUsers.Select(registeredUser =>

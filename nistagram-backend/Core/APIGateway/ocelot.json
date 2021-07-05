@@ -791,6 +791,72 @@
         }
       ],
       "UpstreamPathTemplate": "/api/agentRequests?{everything}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/campaigns?{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44381
+        }
+      ],
+      "UpstreamPathTemplate": "/api/campaigns?{everything}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/campaignRequests",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44381
+        }
+      ],
+      "UpstreamPathTemplate": "/api/campaignRequests"
+    },
+    {
+      "DownstreamPathTemplate": "/api/campaignRequests?{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44381
+        }
+      ],
+      "UpstreamPathTemplate": "/api/campaignRequests?{everything}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/campaigns",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44381
+        }
+      ],
+      "UpstreamPathTemplate": "/api/campaigns"
+    },
+    {
+      "DownstreamPathTemplate": "/api/ads?{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44381
+        }
+      ],
+      "UpstreamPathTemplate": "/api/ads?{everything}"
+    },
+    {
+      "DownstreamPathTemplate": "/api/ads",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44381
+        }
+      ],
+      "UpstreamPathTemplate": "/api/ads"
     }
   ],
   "GlobalConfiguration": {

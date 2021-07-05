@@ -30,6 +30,12 @@ import ChangeNotificationSettingsPage from "./pages/ChangeNotificationSettingsPa
 import NotificationsPage from "./pages/NotificationsPage";
 import ReportsPage from "./pages/ReportsPage";
 import AgentRegistrationPage from "./pages/AgentRegistrationPage";
+import NotLoggedAgentRegistrationPage from "./pages/NotLoggedAgentRegistrationPage";
+import CreateCampaign from "./components/Campaign/CreateCampaign";
+import CreateCampaignPage from "./pages/CreateCampaignPage";
+import CampaignRequestsPage from "./pages/CampaignRequestsPage";
+import TokenPage from "./pages/TokenPage";
+import AgentProtectedRoute from "./routes/AgentProtectedRoute";
 
 function App() {
   return (
@@ -41,6 +47,9 @@ function App() {
           </Route>
           <Route exact path="/login">
             <LoginPage />
+          </Route>
+          <Route exact path="/not-logged-agent-registration">
+            <NotLoggedAgentRegistrationPage />
           </Route>
           <ProtectedRoute exact path="/post" component={CreatePostPage} />
           <ProtectedRoute exact path="/story" component={CreateStoryPage} />
@@ -127,6 +136,16 @@ function App() {
             path="/viewVerificationRequests"
             component={ViewVerificationRequestPage}
           />
+          <ProtectedRoute
+            path="/campaign-requests"
+            component={CampaignRequestsPage}
+          />
+          <AgentProtectedRoute
+            exact
+            path="/campaign"
+            component={CreateCampaignPage}
+          />
+          <ProtectedRoute exact path="/token" component={TokenPage} />
           <ProtectedRoute exact path="/" component={HomePage} />
         </Switch>
       </div>

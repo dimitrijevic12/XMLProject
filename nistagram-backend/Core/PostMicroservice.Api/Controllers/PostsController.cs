@@ -97,6 +97,7 @@ namespace PostMicroservice.Api.Controllers
         }
 
         [HttpPost("contents")]
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
         public IActionResult SaveImg([FromForm] FileModel file)
         {
             string fileName = _postService.ImageToSave(_env.WebRootPath, file);
@@ -105,6 +106,7 @@ namespace PostMicroservice.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
         public IActionResult Save(DTOs.PostAlbum post)
         {
             Result<DateTime> timeStamp = DateTime.Now;
@@ -145,6 +147,7 @@ namespace PostMicroservice.Api.Controllers
         }
 
         [HttpPut("{id}/users/{userId}/likes")]
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
         public IActionResult Like([FromRoute] Guid id, [FromRoute] Guid userId)
         {
             bool like = _postService.Like(id, userId);
@@ -152,8 +155,8 @@ namespace PostMicroservice.Api.Controllers
             return Ok();
         }
 
-        [Authorize(Roles = "RegisteredUser")]
         [HttpPut("{id}/users/{userId}/dislikes")]
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
         public IActionResult Dislike([FromRoute] Guid id, [FromRoute] Guid userId)
         {
             bool dislike = _postService.Dislike(id, userId);
@@ -162,6 +165,7 @@ namespace PostMicroservice.Api.Controllers
         }
 
         [HttpPost("{id}/comments")]
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
         public IActionResult CommentPost([FromRoute] Guid id, [FromBody] DTOs.Comment comment)
         {
             Result<DateTime> timeStamp = DateTime.Now;
@@ -235,6 +239,7 @@ namespace PostMicroservice.Api.Controllers
         }
 
         [HttpGet("liked/{userId}")]
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
         public IActionResult GetLikedByUser(Guid userId)
         {
             List<Post> posts = _postRepository.GetLikedByUser(userId).ToList();
@@ -254,6 +259,7 @@ namespace PostMicroservice.Api.Controllers
         }
 
         [HttpGet("disliked/{userId}")]
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
         public IActionResult GetDislikedByUser(Guid userId)
         {
             List<Post> posts = _postRepository.GetDislikedByUser(userId).ToList();
@@ -273,6 +279,7 @@ namespace PostMicroservice.Api.Controllers
         }
 
         [HttpPut("{id}/ban")]
+        [Authorize(Roles = "Admin")]
         public IActionResult BanPost(Guid id)
         {
             _postRepository.BanPost(id);

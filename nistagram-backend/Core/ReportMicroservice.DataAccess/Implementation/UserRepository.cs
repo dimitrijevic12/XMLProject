@@ -38,9 +38,23 @@ namespace ReportMicroservice.DataAccess.Implementation
             ExecuteQuery(query, parameters);
         }
 
-        public RegisteredUser Edit(RegisteredUser obj)
+        public RegisteredUser Edit(RegisteredUser registeredUser)
         {
-            throw new NotImplementedException();
+            StringBuilder queryBuilder = new StringBuilder("UPDATE dbo.RegisteredUser ");
+            queryBuilder.Append("SET username = @username ");
+            queryBuilder.Append("WHERE id = @id;");
+
+            string query = queryBuilder.ToString();
+
+            List<SqlParameter> parameters = new List<SqlParameter>
+            {
+                new SqlParameter("@id", SqlDbType.UniqueIdentifier) { Value = registeredUser.Id },
+                new SqlParameter("@username", SqlDbType.NVarChar) { Value = registeredUser.Username.ToString() }
+            };
+
+            ExecuteQuery(query, parameters);
+
+            return registeredUser;
         }
 
         public IEnumerable<RegisteredUser> GetAll()

@@ -65,6 +65,7 @@ namespace NotificationMicroservice.Api
             services.AddScoped<NotificationOptionsService>();
 
             services.AddScoped<ReportUserRegisteredEventConsumer>();
+            services.AddScoped<ReportUserEditedEventConsumer>();
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {

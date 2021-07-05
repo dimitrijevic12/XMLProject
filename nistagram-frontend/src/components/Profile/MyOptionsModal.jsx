@@ -112,21 +112,66 @@ class MyOptionsModal extends Component {
           >
             <label>Disliked posts</label>
           </button>
-          <hr />
-          <button
-            style={{
-              height: "100%",
-              width: "100%",
-              alignSelf: "stretch",
-              float: "center",
-            }}
-            className="btn btn-block btn-primary btn-md mb-2"
-            onClick={() => {
-              window.location = "/sendVerificationRequest";
-            }}
-          >
-            <label>Send verification request</label>
-          </button>
+
+          {sessionStorage.getItem("role") === "RegisteredUser" ? (
+            <React.Fragment>
+              {" "}
+              <hr />
+              <button
+                style={{
+                  height: "100%",
+                  width: "100%",
+                  alignSelf: "stretch",
+                  float: "center",
+                }}
+                className="btn btn-block btn-primary btn-md mb-2"
+                onClick={() => {
+                  window.location = "/sendVerificationRequest";
+                }}
+              >
+                <label>Send verification request</label>
+              </button>
+            </React.Fragment>
+          ) : null}
+
+          {sessionStorage.getItem("role") !== "Agent" ? (
+            <React.Fragment>
+              <hr />
+              <button
+                style={{
+                  height: "100%",
+                  width: "100%",
+                  alignSelf: "stretch",
+                  float: "center",
+                }}
+                className="btn btn-block btn-primary btn-md mb-2"
+                onClick={() => {
+                  window.location = "/agent-registration";
+                }}
+              >
+                <label>Send agent request</label>
+              </button>
+            </React.Fragment>
+          ) : null}
+          {sessionStorage.getItem("role") === "VerifiedUser" ? (
+            <React.Fragment>
+              <hr />
+              <button
+                style={{
+                  height: "100%",
+                  width: "100%",
+                  alignSelf: "stretch",
+                  float: "center",
+                }}
+                className="btn btn-block btn-primary btn-md mb-2"
+                onClick={() => {
+                  window.location = "/campaign-requests";
+                }}
+              >
+                <label>Campaign requests</label>
+              </button>
+            </React.Fragment>
+          ) : null}
         </ModalBody>
       </Modal>
     );

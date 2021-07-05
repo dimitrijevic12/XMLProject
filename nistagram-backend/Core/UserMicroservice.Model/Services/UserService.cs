@@ -12,7 +12,6 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using UserMicroservice.Core.Interface.Repository;
-using UserMicroservice.Core.Interface.Service;
 using UserMicroservice.Core.Model;
 using UserMicroservice.Core.Model.File;
 
@@ -46,6 +45,9 @@ namespace UserMicroservice.Core.Services
                 ProfilePicturePath = registeredUser.ProfileImagePath,
                 IsPrivate = registeredUser.IsPrivate,
                 IsAcceptingTags = registeredUser.IsAcceptingTags,
+                IsBanned = registeredUser.IsBanned,
+                Gender = registeredUser.Gender,
+                DateOfBirth = registeredUser.DateOfBirth,
                 Followers = CreateIds(registeredUser.Followers),
                 Following = CreateIds(registeredUser.Following)
             });
@@ -78,16 +80,250 @@ namespace UserMicroservice.Core.Services
             return Task.CompletedTask;
         }
 
+        public async Task<Result> EditAsync(RegisteredUser registeredUser)
+        {
+            var oldUser = _userRepository.GetById(registeredUser.Id).Value;
+            var result = Edit(registeredUser);
+            if (result.IsFailure) return Result.Failure(result.Error);
+            await _bus.PubSub.PublishAsync(new UserEditedEvent
+            {
+                Id = registeredUser.Id.ToString(),
+                Username = registeredUser.Username,
+                FirstName = registeredUser.FirstName,
+                LastName = registeredUser.LastName,
+                ProfilePicturePath = registeredUser.ProfileImagePath,
+                IsPrivate = registeredUser.IsPrivate,
+                Gender = registeredUser.Gender,
+                DateOfBirth = registeredUser.DateOfBirth,
+                IsAcceptingTags = registeredUser.IsAcceptingTags,
+                Followers = CreateIds(registeredUser.Followers),
+                Following = CreateIds(registeredUser.Following),
+                BlockedUsers = CreateIds(registeredUser.BlockedUsers),
+                BlockedByUsers = CreateIds(registeredUser.BlockedByUsers),
+                MutedUsers = CreateIds(registeredUser.MutedUsers),
+                MutedByUsers = CreateIds(registeredUser.MutedByUsers),
+                MyCloseFriends = CreateIds(registeredUser.MyCloseFriends),
+                CloseFriendTo = CreateIds(registeredUser.CloseFriendTo),
+                IsBanned = registeredUser.IsBanned,
+
+                OldEmailAddress = oldUser.EmailAddress,
+                OldUsername = oldUser.Username,
+                OldFirstName = oldUser.FirstName,
+                OldLastName = oldUser.LastName,
+                OldDateOfBirth = oldUser.DateOfBirth,
+                OldPhoneNumber = oldUser.PhoneNumber,
+                OldGender = oldUser.Gender,
+                OldWebsiteAddress = oldUser.WebsiteAddress,
+                OldBio = oldUser.Bio,
+                OldPassword = oldUser.Password,
+                OldIsPrivate = oldUser.IsPrivate,
+                OldIsAcceptingMessages = oldUser.IsAcceptingMessages,
+                OldIsAcceptingTags = oldUser.IsAcceptingTags,
+                OldProfileImagePath = oldUser.ProfileImagePath,
+                OldBlockedUsers = CreateIds(oldUser.BlockedUsers),
+                OldBlockedByUsers = CreateIds(oldUser.BlockedByUsers),
+                OldMutedUsers = CreateIds(oldUser.MutedUsers),
+                OldMutedByUsers = CreateIds(oldUser.MutedByUsers),
+                OldFollowing = CreateIds(oldUser.Following),
+                OldFollowers = CreateIds(oldUser.Followers),
+                OldMyCloseFriends = CreateIds(oldUser.MyCloseFriends),
+                OldCloseFriendTo = CreateIds(oldUser.CloseFriendTo),
+                OldIsBanned = oldUser.IsBanned
+            });
+            return Result.Success(registeredUser);
+        }
+
         public Result Edit(RegisteredUser registeredUser)
         {
+            if (!_userRepository.GetById(registeredUser.Id).Value.Username.ToString().Equals(registeredUser.Username))
+            {
+                if (_userRepository.GetByUsername(registeredUser.Username).HasValue) return Result.Failure("User with that username already exist");
+            }
             _userRepository.Edit(registeredUser);
             return Result.Success(registeredUser);
         }
 
+        public Task CompleteEditAsync(Guid registeredUserId)
+        {
+            return Task.CompletedTask;
+        }
+
+        public Task CompleteFollowAsync()
+        {
+            return Task.CompletedTask;
+        }
+
+        public Task CompleteAgentEditAsync()
+        {
+            return Task.CompletedTask;
+        }
+
+        public Task CompleteVerifiedUserEditAsync()
+        {
+            return Task.CompletedTask;
+        }
+
+        public Task CompleteMuteAsync()
+        {
+            return Task.CompletedTask;
+        }
+
+        public Task CompleteBlockAsync()
+        {
+            return Task.CompletedTask;
+        }
+
+        public Task RejectEditAsync(RegisteredUser user, string reason)
+        {
+            _userRepository.Edit(user);
+
+            return Task.CompletedTask;
+        }
+
+        public Task RejectAgentEditAsync(Agent agent, string reason)
+        {
+            _userRepository.EditAgent(agent);
+
+            return Task.CompletedTask;
+        }
+
+        public async Task<Result> EditVerifiedUserAsync(VerifiedUser registeredUser)
+        {
+            var oldUser = _userRepository.GetById(registeredUser.Id).Value;
+            var result = EditVerifiedUser(registeredUser);
+            if (result.IsFailure) return Result.Failure(result.Error);
+            await _bus.PubSub.PublishAsync(new VerifiedUserEditedEvent
+            {
+                Id = registeredUser.Id.ToString(),
+                Username = registeredUser.Username,
+                FirstName = registeredUser.FirstName,
+                LastName = registeredUser.LastName,
+                ProfilePicturePath = registeredUser.ProfileImagePath,
+                IsPrivate = registeredUser.IsPrivate,
+                Gender = registeredUser.Gender,
+                WebsiteAddress = registeredUser.WebsiteAddress,
+                DateOfBirth = registeredUser.DateOfBirth,
+                Category = registeredUser.Category,
+                IsAcceptingTags = registeredUser.IsAcceptingTags,
+                Followers = CreateIds(registeredUser.Followers),
+                Following = CreateIds(registeredUser.Following),
+                BlockedUsers = CreateIds(registeredUser.BlockedUsers),
+                BlockedByUsers = CreateIds(registeredUser.BlockedByUsers),
+                MutedUsers = CreateIds(registeredUser.MutedUsers),
+                MutedByUsers = CreateIds(registeredUser.MutedByUsers),
+                MyCloseFriends = CreateIds(registeredUser.MyCloseFriends),
+                CloseFriendTo = CreateIds(registeredUser.CloseFriendTo),
+                IsBanned = registeredUser.IsBanned,
+
+                OldEmailAddress = oldUser.EmailAddress,
+                OldUsername = oldUser.Username,
+                OldFirstName = oldUser.FirstName,
+                OldLastName = oldUser.LastName,
+                OldDateOfBirth = oldUser.DateOfBirth,
+                OldPhoneNumber = oldUser.PhoneNumber,
+                OldGender = oldUser.Gender,
+                OldWebsiteAddress = oldUser.WebsiteAddress,
+                OldBio = oldUser.Bio,
+                OldPassword = oldUser.Password,
+                OldIsPrivate = oldUser.IsPrivate,
+                OldIsAcceptingMessages = oldUser.IsAcceptingMessages,
+                OldIsAcceptingTags = oldUser.IsAcceptingTags,
+                OldProfileImagePath = oldUser.ProfileImagePath,
+                OldBlockedUsers = CreateIds(oldUser.BlockedUsers),
+                OldBlockedByUsers = CreateIds(oldUser.BlockedByUsers),
+                OldMutedUsers = CreateIds(oldUser.MutedUsers),
+                OldMutedByUsers = CreateIds(oldUser.MutedByUsers),
+                OldFollowing = CreateIds(oldUser.Following),
+                OldFollowers = CreateIds(oldUser.Followers),
+                OldMyCloseFriends = CreateIds(oldUser.MyCloseFriends),
+                OldCloseFriendTo = CreateIds(oldUser.CloseFriendTo),
+                OldIsBanned = oldUser.IsBanned
+            });
+            return Result.Success(registeredUser);
+        }
+
+        public Task RejectVerifiedUserEditAsync(VerifiedUser user, string reason)
+        {
+            _userRepository.EditVerifiedUser(user);
+
+            return Task.CompletedTask;
+        }
+
         public Result EditVerifiedUser(VerifiedUser verifiedUser)
         {
+            var test1 = verifiedUser.Username;
+            var test2 = _userRepository.GetById(verifiedUser.Id).Value.Username.ToString();
+            var test3 = _userRepository.GetById(verifiedUser.Id).Value.Username;
+            if (!_userRepository.GetById(verifiedUser.Id).Value.Username.ToString().Equals(verifiedUser.Username))
+            {
+                if (_userRepository.GetByUsername(verifiedUser.Username).HasValue) return Result.Failure("User with that username already exist");
+            }
             _userRepository.EditVerifiedUser(verifiedUser);
             return Result.Success(verifiedUser);
+        }
+
+        public async Task<Result> EditAgentAsync(Agent registeredUser)
+        {
+            var oldUser = _userRepository.GetById(registeredUser.Id).Value;
+            var result = EditAgent(registeredUser);
+            if (result.IsFailure) return Result.Failure(result.Error);
+            await _bus.PubSub.PublishAsync(new AgentEditedEvent
+            {
+                Id = registeredUser.Id.ToString(),
+                Username = registeredUser.Username,
+                FirstName = registeredUser.FirstName,
+                LastName = registeredUser.LastName,
+                ProfilePicturePath = registeredUser.ProfileImagePath,
+                IsPrivate = registeredUser.IsPrivate,
+                Gender = registeredUser.Gender,
+                WebsiteAddress = registeredUser.WebsiteAddress,
+                DateOfBirth = registeredUser.DateOfBirth,
+                IsAcceptingTags = registeredUser.IsAcceptingTags,
+                Followers = CreateIds(registeredUser.Followers),
+                Following = CreateIds(registeredUser.Following),
+                BlockedUsers = CreateIds(registeredUser.BlockedUsers),
+                BlockedByUsers = CreateIds(registeredUser.BlockedByUsers),
+                MutedUsers = CreateIds(registeredUser.MutedUsers),
+                MutedByUsers = CreateIds(registeredUser.MutedByUsers),
+                MyCloseFriends = CreateIds(registeredUser.MyCloseFriends),
+                CloseFriendTo = CreateIds(registeredUser.CloseFriendTo),
+                IsBanned = registeredUser.IsBanned,
+
+                OldEmailAddress = oldUser.EmailAddress,
+                OldUsername = oldUser.Username,
+                OldFirstName = oldUser.FirstName,
+                OldLastName = oldUser.LastName,
+                OldDateOfBirth = oldUser.DateOfBirth,
+                OldPhoneNumber = oldUser.PhoneNumber,
+                OldGender = oldUser.Gender,
+                OldWebsiteAddress = oldUser.WebsiteAddress,
+                OldBio = oldUser.Bio,
+                OldPassword = oldUser.Password,
+                OldIsPrivate = oldUser.IsPrivate,
+                OldIsAcceptingMessages = oldUser.IsAcceptingMessages,
+                OldIsAcceptingTags = oldUser.IsAcceptingTags,
+                OldProfileImagePath = oldUser.ProfileImagePath,
+                OldBlockedUsers = CreateIds(oldUser.BlockedUsers),
+                OldBlockedByUsers = CreateIds(oldUser.BlockedByUsers),
+                OldMutedUsers = CreateIds(oldUser.MutedUsers),
+                OldMutedByUsers = CreateIds(oldUser.MutedByUsers),
+                OldFollowing = CreateIds(oldUser.Following),
+                OldFollowers = CreateIds(oldUser.Followers),
+                OldMyCloseFriends = CreateIds(oldUser.MyCloseFriends),
+                OldCloseFriendTo = CreateIds(oldUser.CloseFriendTo),
+                OldIsBanned = oldUser.IsBanned
+            });
+            return Result.Success(registeredUser);
+        }
+
+        public Result EditAgent(Agent agent)
+        {
+            if (!_userRepository.GetById(agent.Id).Value.Username.ToString().Equals(agent.Username))
+            {
+                if (_userRepository.GetByUsername(agent.Username).HasValue) return Result.Failure("User with that username already exist");
+            }
+            _userRepository.EditAgent(agent);
+            return Result.Success(agent);
         }
 
         public RegisteredUser GetUserById(Guid id)
@@ -100,6 +336,12 @@ namespace UserMicroservice.Core.Services
         {
             if (_userRepository.GetByIdWithoutBlocked(loggedId, userId).HasNoValue) return null;
             return _userRepository.GetByIdWithoutBlocked(loggedId, userId).Value;
+        }
+
+        public User GetUserByIdWithType(Guid userId)
+        {
+            if (_userRepository.GetByIdWithType(userId).HasNoValue) return null;
+            return _userRepository.GetByIdWithType(userId).Value;
         }
 
         public User FindUser(String username, String password)
@@ -146,6 +388,26 @@ namespace UserMicroservice.Core.Services
         public RegisteredUser Save(RegisteredUser obj)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<Result> FollowAsync(Guid id, Guid followedById, Guid followingId)
+        {
+            var result = Follow(id, followedById, followingId);
+            if (result.IsFailure) return Result.Failure(result.Error);
+            await _bus.PubSub.PublishAsync(new UserFollowedEvent
+            {
+                Id = id,
+                FollowedById = followedById,
+                FollowingId = followingId
+            });
+            return Result.Success();
+        }
+
+        public Task RejectFollowAsync(Guid followedById, Guid followingId, string reson)
+        {
+            _userRepository.DeleteFollow(followedById, followingId);
+
+            return Task.CompletedTask;
         }
 
         public Result Follow(Guid id, Guid followedById, Guid followingId)
@@ -205,6 +467,19 @@ namespace UserMicroservice.Core.Services
             return Result.Success("User successfully added to close friends");
         }
 
+        public async Task<Result> MuteAsync(Guid id, Guid mutedById, Guid mutingId)
+        {
+            var result = Mute(id, mutedById, mutingId);
+            if (result.IsFailure) return Result.Failure(result.Error);
+            await _bus.PubSub.PublishAsync(new UserMutedEvent
+            {
+                Id = id,
+                MutedById = mutedById,
+                MutingId = mutingId
+            });
+            return Result.Success();
+        }
+
         public Result Mute(Guid id, Guid mutedById, Guid mutingId)
         {
             var user = _userRepository.GetById(mutedById);
@@ -213,6 +488,32 @@ namespace UserMicroservice.Core.Services
             if (user.Value.MutedUsers.Contains(mutedUser.Value)) return Result.Failure("User is already a muted");
             _userRepository.Mute(id, mutedById, mutingId);
             return Result.Success("User is successfully muted");
+        }
+
+        public Task RejectMuteAsync(Guid id, string reason)
+        {
+            _userRepository.DeleteMute(id);
+
+            return Task.CompletedTask;
+        }
+
+        public async Task<Result> BlockAsync(Guid id, Guid blockedById, Guid blockingId)
+        {
+            var result = Block(id, blockedById, blockingId);
+            if (result.IsFailure) return Result.Failure(result.Error);
+            await _bus.PubSub.PublishAsync(new UserBlockedEvent
+            {
+                Id = id,
+                BlockedById = blockedById,
+                BlockingId = blockingId,
+            });
+            return Result.Success();
+        }
+
+        public Task RejectBlockAsync(Guid id, string reason)
+        {
+            _userRepository.DeleteBlock(id);
+            return Task.CompletedTask;
         }
 
         public Result Block(Guid id, Guid blockedById, Guid blockingId)

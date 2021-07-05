@@ -19,6 +19,8 @@ import TaggedUsersModal from "./TaggedUsersModal";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { createNotification } from "../../actions/actionsNotification";
+import { getAdForContent } from "../../actions/actionsCampaign";
+import LinkModal from "../Campaign/LinkModal";
 
 class NotLoggedPostModal extends Component {
   state = {
@@ -32,9 +34,13 @@ class NotLoggedPostModal extends Component {
     disliked: false,
     commentText: "",
     comments: [],
+    result: false,
+    link: "",
   };
 
   async componentDidMount() {
+    var result = false;
+    result = await this.props.getAdForContent(this.props.postId);
     debugger;
     await this.props.getPost(this.props.postId);
     await this.props.loadImageProfile(this.props.personPhoto);
@@ -42,6 +48,7 @@ class NotLoggedPostModal extends Component {
       likesCount: this.props.post.likes.length,
       dislikesCount: this.props.post.dislikes.length,
       comments: this.props.post.comments,
+      result: result,
     });
     if (this.props.posts !== undefined) this.getAllImages(this.props.posts);
   }
@@ -87,6 +94,13 @@ class NotLoggedPostModal extends Component {
               onShowChange={this.displayModalPost.bind(this)}
             />
           ) : null}
+          {this.state.showLinkModal ? (
+            <LinkModal
+              show={this.state.showLinkModal}
+              link={this.state.link}
+              onShowChange={this.displayModalLink.bind(this)}
+            />
+          ) : null}
           {profileImage === "/images/user.png" ? (
             <img
               src={profileImage}
@@ -104,6 +118,15 @@ class NotLoggedPostModal extends Component {
         </ModalHeader>
         <ModalBody>
           <div>
+            {this.state.result === true ? (
+              <div className="ml-4 mb-2" style={{ textAlign: "right" }}>
+                {" "}
+                <b>Sponsored</b>{" "}
+                <img classNmae="ml-4 mb-4" src="/images/star.png" />
+              </div>
+            ) : (
+              ""
+            )}
             {post.contentPath == undefined ? (
               <Slide easing="ease">
                 {loadedImages.map((f, i) =>
@@ -297,8 +320,20 @@ class NotLoggedPostModal extends Component {
 
   displayModalPost() {
     debugger;
+    if (this.state.result === true) {
+      this.displayModalLink();
+    } else {
+      this.setState({
+        showTaggedModal: !this.state.showTaggedModal,
+      });
+    }
+  }
+
+  displayModalLink() {
+    debugger;
     this.setState({
-      showTaggedModal: !this.state.showTaggedModal,
+      showLinkModal: !this.state.showLinkModal,
+      link: this.props.ad.link,
     });
   }
 
@@ -324,6 +359,7 @@ const mapStateToProps = (state) => ({
   profileImage: state.profileImage,
   commentId: state.commentId,
   profileImages: state.profileImages,
+  ad: state.ad,
 });
 
 export default connect(mapStateToProps, {
@@ -336,4 +372,5 @@ export default connect(mapStateToProps, {
   loadImageProfile,
   createNotification,
   getAllImagesForProfile,
+  getAdForContent,
 })(NotLoggedPostModal);

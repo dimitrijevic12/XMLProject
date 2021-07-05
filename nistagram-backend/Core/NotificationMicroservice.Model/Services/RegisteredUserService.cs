@@ -22,12 +22,32 @@ namespace NotificationMicroservice.Core.Services
 
         public Result Create(RegisteredUser registeredUser)
         {
-            var test = _userRepository.GetById(registeredUser.Id);
-            var test2 = _userRepository.GetByUsername(registeredUser.Username);
-            if (test.HasValue) return Result.Failure("User with that id already exist");
-            if (test2.HasValue) return Result.Failure("User with that username already exist");
+            if (_userRepository.GetById(registeredUser.Id).HasValue) return Result.Failure("User with that id already exist");
+            if (_userRepository.GetByUsername(registeredUser.Username).HasValue) return Result.Failure("User with that username already exist");
             _userRepository.Save(registeredUser);
             return Result.Success(registeredUser);
+        }
+
+        public async Task<Result> CreateEditAsync(RegisteredUser registeredUser)
+        {
+            return Edit(registeredUser);
+        }
+
+        public Result Edit(RegisteredUser registeredUser)
+        {
+            if (!_userRepository.GetById(registeredUser.Id).Value.Username.ToString().Equals(registeredUser.Username))
+            {
+                if (_userRepository.GetByUsername(registeredUser.Username).HasValue) return Result.Failure("There is already user with that username");
+            }
+            _userRepository.Edit(registeredUser);
+            return Result.Success(registeredUser);
+        }
+
+        public Task RejectEditAsync(RegisteredUser user, string reason)
+        {
+            _userRepository.Edit(user);
+
+            return Task.CompletedTask;
         }
     }
 }

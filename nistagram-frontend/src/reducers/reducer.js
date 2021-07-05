@@ -76,6 +76,18 @@ import {
   GET_STORIES_FOR_NOT_LOGGED_IN_USER,
   CREATE_AGENT_REQUEST,
   GET_AGENT_REQUESTS,
+  UPDATE_AGENT_REQUEST,
+  CREATE_AGENT_NOT_EXISTING,
+  GET_CAMPAIGNS_FOR_AGENT,
+  CREATE_CAMPAIGN_REQUEST,
+  GET_CAMPAIGN_REQUESTS,
+  UPDATE_CAMPAIGN_REQUEST,
+  GET_CAMPAIGN_REQUESTS_FOR_USER_PROFILE,
+  GET_AD_FOR_CONTENT,
+  CREATE_AD,
+  GET_CAMPAIGNS_FOR_CLIENT,
+  GET_STORIES_FOR_CAMPAIGN,
+  GET_POSTS_FOR_CAMPAIGN,
 } from "../types/types";
 
 const initialState = {
@@ -122,6 +134,11 @@ const initialState = {
   imageForStory: "",
   notLoggedInUserStories: [],
   agentRequests: [],
+  campaignsForAgent: [],
+  campaignRequests: [],
+  campaignRequestsForUserProfile: [],
+  ad: {},
+  clientCampaigns: [],
 };
 
 function reducer(state = initialState, action) {
@@ -195,7 +212,6 @@ function reducer(state = initialState, action) {
         ...state,
       };
     case COMMENT_POST:
-      debugger;
       return {
         ...state,
         commentId: action.payload,
@@ -308,7 +324,6 @@ function reducer(state = initialState, action) {
         locations: action.payload,
       };
     case SAVE_STORY:
-      debugger;
       return {
         ...state,
         story: action.payload,
@@ -477,6 +492,77 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         agentRequests: action.payload,
+      };
+    case UPDATE_AGENT_REQUEST:
+      return {
+        ...state,
+        agentRequests: state.agentRequests.filter(
+          (agentRequest) => action.payload.id !== agentRequest.id
+        ),
+      };
+    case CREATE_AGENT_NOT_EXISTING:
+      return {
+        ...state,
+      };
+    case GET_CAMPAIGNS_FOR_AGENT:
+      return {
+        ...state,
+        campaignsForAgent: action.payload,
+      };
+    case CREATE_CAMPAIGN_REQUEST:
+      return {
+        ...state,
+      };
+    case GET_CAMPAIGN_REQUESTS:
+      return {
+        ...state,
+        campaignRequests: action.payload,
+      };
+    case UPDATE_CAMPAIGN_REQUEST:
+      return {
+        ...state,
+        campaignRequests: state.campaignRequests.filter(
+          (campaignRequest) => action.payload.id !== campaignRequest.id
+        ),
+      };
+    case GET_CAMPAIGN_REQUESTS_FOR_USER_PROFILE:
+      return {
+        ...state,
+        campaignRequestsForUserProfile: action.payload,
+      };
+    case GET_AD_FOR_CONTENT:
+      return {
+        ...state,
+        ad: action.payload,
+      };
+    case CREATE_AD:
+      return {
+        ...state,
+      };
+    case GET_CAMPAIGNS_FOR_CLIENT:
+      return {
+        ...state,
+        clientCampaigns: action.payload,
+      };
+    case GET_STORIES_FOR_CAMPAIGN:
+      return {
+        ...state,
+        stories: state.stories.concat(action.payload),
+      };
+    case GET_POSTS_FOR_CAMPAIGN:
+      debugger;
+      var exists = false;
+      var posts = state.posts;
+      for (let i = 0; i < posts.length; i++) {
+        if (posts[i].id === action.payload.id) {
+          exists = true;
+          posts.splice(i, 1, action.payload);
+        }
+      }
+      if (!exists) posts.push(action.payload);
+      return {
+        ...state,
+        posts: posts,
       };
     default:
       return state;

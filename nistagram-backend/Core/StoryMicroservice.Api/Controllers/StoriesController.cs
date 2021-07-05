@@ -46,6 +46,7 @@ namespace StoryMicroservice.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "RegisteredUser, Agent, VerifiedUser")]
         public IActionResult Create(Story story)
         {
             story.Id = Guid.NewGuid().ToString();
@@ -59,7 +60,7 @@ namespace StoryMicroservice.Api.Controllers
             }
             if (storyService.Create(storyFactory.Create(story, _userRepository.GetUsersByDTO(story.SeenByUsers),
                 _userRepository.GetUsersByDTO(story.TaggedUsers), _userRepository.GetUsersById(story.RegisteredUser.MyCloseFriends))).IsFailure) return BadRequest();
-            return Created(this.Request.Path + "/" + story.Id, "");
+            return Ok(story);
         }
 
         [HttpGet("{id}")]
@@ -79,6 +80,7 @@ namespace StoryMicroservice.Api.Controllers
         }
 
         [Microsoft.AspNetCore.Mvc.HttpPut("{id}/ban")]
+        [Authorize(Roles = "Admin")]
         public IActionResult BanStory(string id)
         {
             _storyRepository.BanStory(id);
