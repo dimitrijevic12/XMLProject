@@ -4,15 +4,16 @@ services:
   ms-sql-server:
     image: xmldockerid/ms-sql-server:latest
     restart: always
-    build:
-      context: .
-      dockerfile: Dockerfile.MSSQLServer
+    volumes:
+      - ms-sql-server-data:/var/opt/mssql/data
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=1Secure*Password1
     ports:
       - "1433:1433"
 
   rabbitmq:
     image: rabbitmq:3-management
-    container_name: "rabbitmq"
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -103,7 +104,7 @@ services:
       - "44355:80"
 
 volumes:
-  ms-sql-server:
+  ms-sql-server-data:
   usermicroservice-api:
   postmicroservice-api:
   storymicroservice-api:

@@ -269,7 +269,7 @@ export const deleteCampaign = (item) => async (dispatch) => {
   debugger;
   try {
     const response = await axios.delete(
-      "https://localhost:44355/api/campaigns",
+      "http://localhost:44355/api/campaigns",
       {
         headers: {
           "Access-Control-Allow-Origin": "*",

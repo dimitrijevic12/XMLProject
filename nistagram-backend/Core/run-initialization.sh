@@ -7,6 +7,8 @@ sleep 90s
 /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 1Secure*Password1 -d master -i PostMicroserviceDB.sql
 /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 1Secure*Password1 -d master -i NotificationMicroserviceDB.sql
 /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 1Secure*Password1 -d master -i ReportMicroserviceDB.sql
+/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 1Secure*Password1 -d master -i CampaignMicroserviceDB.sql
+/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 1Secure*Password1 -d master -i AgentAppDB.sql
 /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 1Secure*Password1 -d master -i UserMicroserviceDBData.sql
 /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 1Secure*Password1 -d master -i PostMicroserviceDBData.sql
 /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 1Secure*Password1 -d master -i NotificationMicroserviceDBData.sql
