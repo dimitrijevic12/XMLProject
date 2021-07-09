@@ -187,7 +187,7 @@ class MyOptionsModal extends Component {
                   window.location = "/edit-campaign";
                 }}
               >
-                <label>Edit campaign</label>
+                <label>My campaigns</label>
               </button>
             </React.Fragment>
           ) : null}

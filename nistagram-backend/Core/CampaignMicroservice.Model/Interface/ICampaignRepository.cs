@@ -24,5 +24,7 @@ namespace CampaignMicroservice.Core.Interface
         public void UpdateCampaignUpdate(Guid id);
 
         public void UpdateWithoutType(CampaignUpdate campaign);
+
+        public void Delete(Guid id);
     }
 }

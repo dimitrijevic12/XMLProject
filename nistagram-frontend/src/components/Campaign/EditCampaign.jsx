@@ -5,7 +5,8 @@ import { Card } from "reactstrap";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
 import {
-    getCampaignsForAgent,
+  getCampaignsForAgent,
+  deleteCampaign,
 } from "../../actions/actionsCampaign";
 import moment from "moment";
 import NotLoggedPostModal from "../Profile/NotLoggedPostModal";
@@ -49,20 +50,20 @@ class EditCampaign extends Component {
         {this.state.showEditModal ? (
           <EditCampaignModal
             show={this.state.showEditModal}
-            campaignId= {this.state.campaignId}
-            agentId= {this.state.agentId}
-            type= {this.state.type}
-            startDate= {this.state.startDate}
-            endDate= {this.state.endDate}
-            dateOfChange= {this.state.dateOfChange}
-            minDateOfBirth= {this.state.minDateOfBirth}
-            maxDateOfBirth= {this.state.maxDateOfBirth}
-            gender= {this.state.gender}
+            campaignId={this.state.campaignId}
+            agentId={this.state.agentId}
+            type={this.state.type}
+            startDate={this.state.startDate}
+            endDate={this.state.endDate}
+            dateOfChange={this.state.dateOfChange}
+            minDateOfBirth={this.state.minDateOfBirth}
+            maxDateOfBirth={this.state.maxDateOfBirth}
+            gender={this.state.gender}
             onShowChange={() => this.displayModalEdit()}
           />
-        ) : null}       
+        ) : null}
         <h3 className="mt-4" style={{ textAlign: "center" }}>
-          Campaign Requests
+          Campaigns
         </h3>
         <hr />
         <div className="wrap bg-white pt-3">
@@ -95,30 +96,40 @@ class EditCampaign extends Component {
                     {this.props.campaignsForAgent.map((f) => (
                       <tr>
                         <td style={{ textAlign: "center" }}>{f.id}</td>
-                        <td style={{ textAlign: "center" }}>
-                        {f.type}
-                        </td>
+                        <td style={{ textAlign: "center" }}>{f.type}</td>
                         <td style={{ textAlign: "center" }}>
                           {f.targetAudience.gender}
                         </td>
                         <td style={{ textAlign: "center" }}>
-                          {moment(f.targetAudience.minDateOfBirth).format("DD/MM/YYYY")}
+                          {moment(f.targetAudience.minDateOfBirth).format(
+                            "DD/MM/YYYY"
+                          )}
                         </td>
                         <td style={{ textAlign: "center" }}>
-                          {moment(f.targetAudience.maxDateOfBirth).format("DD/MM/YYYY")}
+                          {moment(f.targetAudience.maxDateOfBirth).format(
+                            "DD/MM/YYYY"
+                          )}
                         </td>
                         <td style={{ textAlign: "center" }}>
-                        <button
-                                
-                                className="btn btn-primary"
-                                 onClick={() => {
-                                 this.displayModalEdit(f);
-                                 }}
-                                >
-                                Edit
-                        </button>
+                          <button
+                            className="btn btn-primary"
+                            onClick={() => {
+                              this.displayModalEdit(f);
+                            }}
+                          >
+                            Edit
+                          </button>
                         </td>
-                        
+                        <td style={{ textAlign: "center" }}>
+                          <button
+                            className="btn btn-primary"
+                            onClick={() => {
+                              this.deleteCampaign(f);
+                            }}
+                          >
+                            Delete
+                          </button>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -131,11 +142,10 @@ class EditCampaign extends Component {
     );
   }
 
-  
-
- 
-
-  
+  deleteCampaign = async (f) => {
+    await this.props.deleteCampaign(f);
+    window.location = "edit-campaign";
+  };
 
   displayModalEdit = (f) => {
     if (f != undefined) {
@@ -155,8 +165,6 @@ class EditCampaign extends Component {
       showEditModal: !this.state.showEditModal,
     });
   };
-
-
 }
 
 const mapStateToProps = (state) => ({
@@ -177,5 +185,6 @@ export default compose(
     saveStory,
     getStoryById,
     getUserForStory,
+    deleteCampaign,
   })
 )(EditCampaign);

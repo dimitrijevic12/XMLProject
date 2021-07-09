@@ -88,6 +88,7 @@ import {
   GET_CAMPAIGNS_FOR_CLIENT,
   GET_STORIES_FOR_CAMPAIGN,
   GET_POSTS_FOR_CAMPAIGN,
+  DELETE_CAMPAIGN,
 } from "../types/types";
 
 const initialState = {
@@ -563,6 +564,10 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         posts: posts,
+      };
+    case DELETE_CAMPAIGN:
+      return {
+        ...state,
       };
     default:
       return state;

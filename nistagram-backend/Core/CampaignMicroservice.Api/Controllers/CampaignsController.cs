@@ -129,5 +129,13 @@ namespace CampaignMicroservice.Api.Controllers
             }
             return Ok(campaigns);
         }
+
+        [HttpDelete]
+        public IActionResult Delete(Campaign campaign)
+        {
+            _campaignRepository.Delete(campaign.Id);
+
+            return NoContent();
+        }
     }
 }
